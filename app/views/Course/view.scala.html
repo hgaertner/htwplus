@@ -1,0 +1,24 @@
+@(course: Course)
+
+@import helper._
+
+@main("Course View") {
+    
+    <h1>@course.title</h1>
+    
+    Description:<br />
+    @course.description
+    <br />
+    Token:<br />
+    @course.token
+    <br />
+    Created At:<br />
+    @course.createdAt.format("dd. MMM yyyy")
+    <br />
+    Updated At:<br />
+    @course.updatedAt.format("dd. MMM yyyy")
+    <br />
+    Owner:<br />
+    @course.owner.name
+  
+}

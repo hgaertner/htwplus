@@ -1,0 +1,21 @@
+@(courses: List[Course])
+
+@import helper._
+
+@main("Todo list") {
+    
+    <h1>@courses.size() course(s)</h1>
+    
+    <table class="table">
+         @for(course <- courses) {
+    	<tr>
+    	<td>@course.title                    
+    	<td><a href="@routes.CourseController.view(course.id)" class="btn">View</a> </td>
+    	<td><a href="@routes.CourseController.edit(course.id)" class="btn">Edit</a> </td>
+    	<td><a href="@routes.CourseController.delete(course.id)" class="btn">Delete</a> </td>
+    	</tr>
+    }
+    </table>
+    
+    
+}

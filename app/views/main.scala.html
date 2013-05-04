@@ -1,0 +1,26 @@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@title</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("bootstrap/css/bootstrap.min.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <script src="@routes.Assets.at("bootstrap/js/bootstrap.min.js") type="text/javascript"></script>
+        <script src="http://code.jquery.com/jquery.js"></script>
+    </head>
+    <body>
+    	<a href="@routes.CourseController.index()" class="btn btn-primary">Liste Courses</a>
+    	<a href="@routes.CourseController.add()" class="btn btn-primary">Add Course</a>
+    	
+    	<br />
+    	    @if(flash.containsKey("message")) {
+        <div class="alert-message warning">
+            @flash.get("message")
+        </div>
+    } 
+        @content
+    </body>
+</html>
