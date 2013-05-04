@@ -5,10 +5,6 @@
 # Home page
 GET     /                       controllers.CourseController.index()
 
-# Tasks
-GET     /tasks                  controllers.Application.tasks()
-POST    /tasks                  controllers.Application.newTask()
-POST    /tasks/:id/delete       controllers.Application.deleteTask(id: Long)
 
 # Course
 GET     /courses                controllers.CourseController.index()

@@ -6,40 +6,63 @@ import play.Logger;
 import play.data.validation.Constraints.*;
 import play.data.format.Formats.*;
 import javax.persistence.*;
+
+import models.base.BaseModel;
+
 import org.hibernate.validator.constraints.Length;
 import play.db.jpa.*;
 
 @Entity
-@SequenceGenerator(name = "user_seq", sequenceName = "user_seq")
-public class Account {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-	public Long id;
+@SequenceGenerator(name = "default_seq", sequenceName = "account_seq")
+public class Account extends BaseModel {
 	
 	@Required
-	public String name;
+	public String loginname;
+	
+	@Required
+	public String firstname;
 
-	public Date createdAt;
-	public Date updatedAt;
+	@Required
+	public String lastname;
+	
+	@Required
+	@Email
+	public String email;
+	
+	@Required
+	public String password;
+	
+	@ManyToMany
+	public List<Account> friends;
+	
+	public Date lastLogin;
+	
+	public String studentId;
+	
+	public int role;
+	
+	public Boolean approved;
 
-	@PrePersist
-	void createdAt() {
-		this.createdAt = this.updatedAt = new Date();
-	}
-
-	@PreUpdate
-	void updatedAt() {
-		this.updatedAt = new Date();
-	}
 	
 	public static Account findById(Long id) {
 		return JPA.em().find(Account.class, id);
 	}
 	
+	
+	@Override
 	public void create() {
 		JPA.em().persist(this);
 	}
 
-	
+	@Override
+	public void update(Long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete() {
+		// TODO Auto-generated method stub		
+	}
+
 }

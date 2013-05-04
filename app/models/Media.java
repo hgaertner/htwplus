@@ -8,36 +8,33 @@ import javax.persistence.*;
 import models.base.BaseModel;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.URL;
+
 import play.db.jpa.*;
 
 @Entity
-@SequenceGenerator(name = "default_seq", sequenceName = "course_seq")
-public class Course extends BaseModel {
+@SequenceGenerator(name = "default_seq", sequenceName = "media_seq")
+public class Media extends BaseModel {
 
 	@Required
 	public String title;
 	
 	public String description;
 	
-	@ManyToOne
-	public Account owner;
-	
-	@ManyToMany
-	public List<Account> members;
+	@URL
+	public String url;
 
 	@Required
-	@Length(min = 4, max = 45)
-	public String token;
-
-	public static List<Course> all() {
-		List<Course> courses = JPA.em().createQuery("SELECT t FROM Course t").getResultList();
-		return courses;
-	}
-
-	public static Course findById(Long id) {
-		return JPA.em().find(Course.class, id);
-	}
-
+	public String mimetype;
+	
+	@Required
+	public Long size;
+	
+	@ManyToOne
+	public Group group;
+	
+	@ManyToOne
+	public Course course;
 	
 	@Override
 	public void create() {
@@ -55,4 +52,4 @@ public class Course extends BaseModel {
 		JPA.em().remove(this);
 	}
 	
- }
+}

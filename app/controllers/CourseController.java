@@ -24,14 +24,12 @@ public class CourseController extends Controller {
     
     @Transactional
     public static Result create() {
-    	Account a = Account.findById((long)50);
     	Form<Course> filledForm = courseForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			flash("message", "Error in Form!");
 			return badRequest(add.render(filledForm));
 		} else {
 			Course c = filledForm.get();
-			c.owner = a;
 			c.create();
 			flash("message", "Created new Course!");
 			return redirect(routes.CourseController.index());

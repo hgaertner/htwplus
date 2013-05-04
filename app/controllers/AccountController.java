@@ -14,7 +14,7 @@ public class AccountController extends Controller {
     @Transactional
     public static Result create(String name) {
     	Account u = new Account();
-    	u.name = name;
+    	u.loginname = name;
     	u.create();
     	return redirect(routes.CourseController.index());
     }
