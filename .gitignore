@@ -20,6 +20,7 @@ test-result
 server.pid
 *.iml
 *.eml
+<<<<<<< HEAD
 .metadata
 .settings
 .target
