@@ -25,5 +25,3 @@ server.pid
 .target
 .classpath
 .project
-conf/application.dev.conf
-conf/application.prod.conf
