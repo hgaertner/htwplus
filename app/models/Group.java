@@ -14,14 +14,14 @@ import play.db.jpa.*;
 @SequenceGenerator(name = "default_seq", sequenceName = "group_seq")
 @Table(name = "Group_")
 public class Group extends BaseModel {
-
+	
 	@Required
 	public String title;
 	
 	public String description;
 	
-	@ManyToMany
-	public List<Account> members;
+	@OneToMany(mappedBy = "group")
+	public Set<GroupAccount> groupAccounts;
 
 	@Required
 	public Boolean isClosed;

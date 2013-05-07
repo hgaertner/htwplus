@@ -11,6 +11,10 @@ import models.base.BaseModel;
 
 import org.hibernate.validator.constraints.Length;
 import play.db.jpa.*;
+//import scala.collection.mutable.HashSet;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @SequenceGenerator(name = "default_seq", sequenceName = "account_seq")
@@ -32,8 +36,11 @@ public class Account extends BaseModel {
 	@Required
 	public String password;
 	
-	@ManyToMany
-	public List<Account> friends;
+	@OneToMany(mappedBy = "account")
+	public Set<Friendship> friends;
+	
+	@OneToMany(mappedBy="account")
+	public Set<GroupAccount> groupMemberships;
 	
 	public Date lastLogin;
 	

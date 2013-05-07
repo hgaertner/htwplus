@@ -13,7 +13,7 @@ import play.db.jpa.*;
 @Entity
 @SequenceGenerator(name = "default_seq", sequenceName = "course_seq")
 public class Course extends BaseModel {
-
+	
 	@Required
 	public String title;
 	
@@ -23,7 +23,7 @@ public class Course extends BaseModel {
 	public Account owner;
 	
 	@ManyToMany
-	public List<Account> members;
+	public Set<Account> members;
 
 	@Required
 	@Length(min = 4, max = 45)

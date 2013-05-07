@@ -15,7 +15,7 @@ import play.db.jpa.*;
 @Entity
 @SequenceGenerator(name = "default_seq", sequenceName = "media_seq")
 public class Media extends BaseModel {
-
+	
 	@Required
 	public String title;
 	
