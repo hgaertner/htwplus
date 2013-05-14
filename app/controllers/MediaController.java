@@ -8,6 +8,7 @@ import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.data.*;
 import models.*;
+import views.html.Course.view;
 import views.html.Media.*;
 import play.db.jpa.*;
 import scala.reflect.internal.Trees.This;
@@ -18,7 +19,12 @@ public class MediaController extends Controller {
 	
     @Transactional(readOnly=true)	
     public static Result view(Long id) {
-    	return TODO;
+    	Media media = Media.findById(id);
+    	if(media == null) {
+    		return redirect(routes.MediaController.add());
+    	} else {
+    		return ok(media.file);
+    	}
     }
     
     public static Result add() {
@@ -28,11 +34,18 @@ public class MediaController extends Controller {
 	@Transactional
     public static Result upload() {
 		MultipartFormData body = request().body().asMultipartFormData();
-		FilePart picture = body.getFile("picture");
-		if (picture != null) {
-			String fileName = picture.getFilename();
-		    String contentType = picture.getContentType(); 
-		    File file = picture.getFile();
+		FilePart upload  = body.getFile("picture");
+		
+		Media med = new Media();
+		
+		if (upload != null) {
+			
+			med.title = upload.getFilename();
+			med.mimetype = upload.getContentType();
+			med.fileName = upload.getFilename();
+			med.file = upload.getFile();
+			med.create();
+			
 		    return ok("File uploaded");
 		} else {
 			flash("error", "Missing file");
