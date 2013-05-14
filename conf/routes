@@ -15,9 +15,13 @@ GET		/course/:id/edit		controllers.CourseController.edit(id:Long)
 POST	/course/:id/edit		controllers.CourseController.update(id:Long)
 GET		/course/:id/delete		controllers.CourseController.delete(id:Long)
 
-#User
+# User
 GET		/user/:name				controllers.AccountController.create(name:String)
 
+# Media
+GET		/media/upload			controllers.MediaController.add()
+POST 	/media/upload			controllers.MediaController.upload()
+GET		/media/:id				controllers.MediaController.view(id:Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
