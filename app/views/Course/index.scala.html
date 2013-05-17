@@ -1,8 +1,8 @@
-@(courses: List[Course])
+@(courses: List[Course], user: Account)
 
 @import helper._
 
-@main("Todo list") {
+@main("Todo list", user) {
     
     <h1>@courses.size() course(s)</h1>
     

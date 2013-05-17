@@ -1,7 +1,7 @@
 @(form: Form[Application.Login])
 <html>
     <head>
-        <title>Zentasks</title>
+        <title>Awesome</title>
         
     </head>
     <body>
@@ -12,6 +12,11 @@
     		<p class="error">
         		@form.globalError.message
     		</p>
+		}
+		@if(flash.contains("success")) {
+		    <p class="success">
+		        @flash.get("success")
+		    </p>
 		}
    		<p>
        		<input type="email" name="email" placeholder="Email" value="@form("email").value">

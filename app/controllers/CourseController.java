@@ -16,7 +16,7 @@ public class CourseController extends Controller {
 	
     @Transactional(readOnly=true)
 	public static Result index() {
-		return ok(index.render(Course.all()));
+		return ok(index.render(Course.all(),Account.findByEmail(request().username())));
 	}
     
     public static Result add() {

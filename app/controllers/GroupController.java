@@ -3,6 +3,7 @@ package controllers;
 import play.*;
 import play.mvc.*;
 import play.data.*;
+import models.Account;
 import models.Group;
 import views.html.Group.*;
 import play.db.jpa.*;
@@ -14,7 +15,7 @@ public class GroupController extends Controller {
 
 	@Transactional(readOnly = true)
 	public static Result index() {
-		return ok(index.render(Group.all()));
+		return ok(index.render(Group.all(),Account.findByEmail(request().username())));
 	}
 
 	@Transactional(readOnly = true)

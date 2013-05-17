@@ -10,8 +10,9 @@ import play.db.jpa.*;
 public class Application extends Controller {
 
 	@Security.Authenticated(Secured.class)
+	@Transactional(readOnly = true)
 	public static Result index() {
-		return ok(views.html.index.render(session().get("email")));
+		return ok(views.html.index.render(Account.findByEmail(request().username())));
 	}
 
 	public static Result login() {

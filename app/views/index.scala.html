@@ -1,6 +1,6 @@
-@(username: String)
-@main("Mainpage") {
+@(user: Account)
+@main("Mainpage", user) {
     
-    <h1>Hello @username</h1>
+    <h1>Hello @user.firstname</h1>
     
 }

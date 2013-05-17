@@ -23,6 +23,9 @@ public class Group extends BaseModel {
 	
 	@OneToMany(mappedBy = "group")
 	public Set<GroupAccount> groupAccounts;
+	
+	@ManyToMany
+	public List<Account> members;
 
 	@Required
 	public Boolean isClosed;
@@ -43,10 +46,10 @@ public class Group extends BaseModel {
 		JPA.em().remove(this);
 	}
 
-//	public void addUserToGroup(Account user){
-//		this.members.add(user);
-//		JPA.em().merge(this);
-//	}
+	public void addUserToGroup(Account user){
+		this.members.add(user);
+		JPA.em().merge(this);
+	}
 
 	public static Group findById(Long id) {
 		return JPA.em().find(Group.class, id);

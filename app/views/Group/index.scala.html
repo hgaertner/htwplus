@@ -1,8 +1,8 @@
-@(groups: List[Group])
+@(groups: List[Group], user: Account)
 
 @import helper._
 
-@main("Group list") {
+@main("Group list", user) {
     
     <h1>@groups.size() group(s)</h1>
     

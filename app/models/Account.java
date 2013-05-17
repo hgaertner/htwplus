@@ -60,6 +60,15 @@ public class Account extends BaseModel {
 	public void delete() {
 		// TODO Auto-generated method stub
 	}
+	
+	/**
+     * Retrieve a User from email.
+     */
+    public static Account findByEmail(String email) {
+    	return (Account) JPA.em()
+				.createQuery("from Account a where a.email = :email")
+				.setParameter("email", email).getSingleResult();
+    }
 
 	public static Account authenticate(String email, String password) {
 		Account currentAcc = null;
