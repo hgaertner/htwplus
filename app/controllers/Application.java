@@ -6,6 +6,8 @@ import play.data.*;
 import models.*;
 import views.html.*;
 import play.db.jpa.*;
+import static play.data.Form.*;
+import controllers.Login;
 
 public class Application extends Controller {
 
@@ -15,13 +17,9 @@ public class Application extends Controller {
 		return ok(views.html.index.render(Account.findByEmail(request().username())));
 	}
 
-	public static Result login() {
-		return ok(login.render(Form.form(Login.class)));
-	}
-
 	@Transactional(readOnly = true)
 	public static Result authenticate() {
-		Form<Login> loginForm = Form.form(Login.class).bindFromRequest();
+		Form<Login> loginForm = form(Login.class).bindFromRequest();
 		if (loginForm.hasErrors()) {
 			return badRequest(login.render(loginForm));
 		} else {
@@ -30,7 +28,11 @@ public class Application extends Controller {
 			return redirect(routes.Application.index());
 		}
 	}
-
+	
+	public static Result login() {
+		return ok(login.render(form(Login.class)));
+	}
+	
 	/**
 	 * Logout and clean the session.
 	 */
@@ -40,17 +42,7 @@ public class Application extends Controller {
 		return redirect(routes.Application.login());
 	}
 
-	public static class Login {
+	
 
-		public String email;
-		public String password;
-
-		@Transactional(readOnly = true)
-		public String validate() {
-			if (Account.authenticate(email, password) == null) {
-				return "Invalid user or password";
-			}
-			return null;
-		}
-	}
+	
 }

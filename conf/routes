@@ -27,6 +27,9 @@ GET		/group/:id/edit			controllers.GroupController.edit(id:Long)
 POST	/group/:id/edit			controllers.GroupController.update(id:Long)
 GET		/group/:id/delete		controllers.GroupController.delete(id:Long)
 
+# Signup
+GET     /signup                	controllers.SignUp.blank()
+POST    /signup                 controllers.SignUp.submit()
 
 #User
 GET		/user/:name				controllers.AccountController.create(name:String)
