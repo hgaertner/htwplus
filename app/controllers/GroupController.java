@@ -9,56 +9,54 @@ import views.html.Group.*;
 import play.db.jpa.*;
 
 @Security.Authenticated(Secured.class)
+@Transactional
 public class GroupController extends Controller {
 
 	static Form<Group> groupForm = Form.form(Group.class);
+	static Account account = Account.findByEmail(request().username());
 
-	@Transactional(readOnly = true)
 	public static Result index() {
-		return ok(index.render(Group.all(),Account.findByEmail(request().username())));
+		return ok(index.render(Group.all(),account));
 	}
 
-	@Transactional(readOnly = true)
 	public static Result view(Long id) {
 		Group group = Group.findById(id);
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
-			return ok(view.render(group));
+			return ok(view.render(group, account));
 		}
 	}
 
-	@Transactional
 	public static Result create() {
 		Form<Group> filledForm = groupForm.bindFromRequest();
+		System.out.println(filledForm.errors());
 		if (filledForm.hasErrors()) {
 			flash("message", "Error in Form!");
-			return badRequest(add.render(filledForm));
+			return badRequest(add.render(filledForm, account));
 		} else {
 			Group g = filledForm.get();
 			g.create();
 			flash("message", "Created new Group!");
-			return redirect(routes.CourseController.index());
+			return redirect(routes.GroupController.index());
 		}
 	}
 
-	@Transactional
 	public static Result edit(Long id) {
 		Group group = Group.findById(id);
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
-			return ok(edit.render(group.id, groupForm.fill(group)));
+			return ok(edit.render(group.id, groupForm.fill(group), account));
 		}
 	}
-
-	@Transactional
+	
 	public static Result update(Long id) {
 		Group group = Group.findById(id);
 		Form<Group> filledForm = groupForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			flash("message", "Error in Form!");
-			return badRequest(edit.render(id, filledForm));
+			return badRequest(edit.render(id, filledForm, account));
 		} else {
 			filledForm.get().update(id);
 			flash("message", "Updated Group!");
@@ -67,10 +65,10 @@ public class GroupController extends Controller {
 	}
 
 	public static Result add() {
-		return ok(add.render(groupForm));
+		return ok(add.render(groupForm, account));
 	}
 
-	@Transactional
+
 	public static Result delete(Long id) {
 		Group group = Group.findById(id);
 		group.delete();

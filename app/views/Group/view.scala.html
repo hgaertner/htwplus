@@ -1,8 +1,8 @@
-@(group: Group)
+@(group: Group, user: Account)
 
 @import helper._
 
-@main("Group View", null) {
+@main("Group View", user) {
     
     <h1>@group.title</h1>
     

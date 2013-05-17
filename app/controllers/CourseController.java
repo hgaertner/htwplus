@@ -10,25 +10,25 @@ import play.db.jpa.*;
 import play.mvc.Security;
 
 @Security.Authenticated(Secured.class)
+@Transactional
 public class CourseController extends Controller {
   
-	static Form<Course> courseForm = Form.form(Course.class);	
+	static Form<Course> courseForm = Form.form(Course.class);
+	static Account account = Account.findByEmail(request().username());
 	
-    @Transactional(readOnly=true)
 	public static Result index() {
-		return ok(index.render(Course.all(),Account.findByEmail(request().username())));
+		return ok(index.render(Course.all(),account));
 	}
     
     public static Result add() {
-    	return ok(add.render(courseForm));
+    	return ok(add.render(courseForm,account));
     }
     
-    @Transactional
     public static Result create() {
     	Form<Course> filledForm = courseForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			flash("message", "Error in Form!");
-			return badRequest(add.render(filledForm));
+			return badRequest(add.render(filledForm, account));
 		} else {
 			Course c = filledForm.get();
 			c.create();
@@ -37,33 +37,30 @@ public class CourseController extends Controller {
 		}
     }
     
-    @Transactional(readOnly=true)	
     public static Result view(Long id) {
     	Course course = Course.findById(id);
     	if(course == null) {
     		return redirect(routes.CourseController.index());
     	} else {
-        	return ok(view.render(course));
+        	return ok(view.render(course, account));
     	}
     }
     
-    @Transactional
     public static Result edit(Long id) {
     	Course course = Course.findById(id);
     	if(course == null) {
     		return redirect(routes.CourseController.index());
     	} else {
-        	return ok(edit.render(course.id, courseForm.fill(course)));
+        	return ok(edit.render(course.id, courseForm.fill(course), account));
     	}
     }
     
-    @Transactional
     public static Result update(Long id) {
     	Course course = Course.findById(id);
     	Form<Course> filledForm = courseForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			flash("message", "Error in Form!");
-			return badRequest(edit.render(id ,filledForm));
+			return badRequest(edit.render(id ,filledForm, account));
 		} else {
 			filledForm.get().update(id);
 			flash("message", "Updated Course!");
@@ -71,7 +68,6 @@ public class CourseController extends Controller {
 		}		
     }
     
-    @Transactional
     public static Result delete(Long id) {
     	Course course = Course.findById(id);
     	course.delete();

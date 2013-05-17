@@ -112,7 +112,6 @@ public class Account extends BaseModel {
 
 	public static Account authenticate(String email, String password) {
 		Account currentAcc = null;
-		System.out.println(email+" "+password);
 		try{
 			final Account result = (Account) JPA.em()
 				.createQuery("from Account a where a.email = :email")

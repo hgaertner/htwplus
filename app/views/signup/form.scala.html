@@ -11,27 +11,23 @@
             @inputText(
                 signupForm("firstname"), 
                 '_label -> "Firstname", 
-                '_help -> "Please choose a valid username.",
                 '_error -> signupForm.globalError
             )
             
             @inputText(
                 signupForm("lastname"), 
-                '_label -> "Lastname", 
-                '_help -> "Please choose a valid username.",
+                '_label -> "Lastname",  
                 '_error -> signupForm.globalError
             )
             
             @inputText(
                 signupForm("loginname"), 
                 '_label -> "Username", 
-                '_help -> "Please choose a valid username.",
                 '_error -> signupForm.globalError
             )
             
             @inputText(
-                signupForm("email"), '_label -> "Email",
-                '_help -> "Enter a valid email address."
+                signupForm("email"), '_label -> "Email"
             )
             
             @inputPassword(
@@ -43,7 +39,6 @@
             @inputPassword(
                 signupForm("repeatPassword"), 
                 '_label -> "Repeat password",
-                '_help -> "Please repeat your password again.",
                 '_error -> signupForm.error("password")
             )
             

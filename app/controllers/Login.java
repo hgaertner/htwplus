@@ -24,9 +24,8 @@ public class Login {
 
 		public String password;
 
-		@Transactional(readOnly = true)
+		@Transactional
 		public String validate() {
-			System.out.println("email: "+email + " password: "+password);
 			if (Account.authenticate(email, password) == null) {
 				return "Invalid user or password";
 			}

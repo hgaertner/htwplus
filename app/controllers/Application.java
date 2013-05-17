@@ -9,15 +9,15 @@ import play.db.jpa.*;
 import static play.data.Form.*;
 import controllers.Login;
 
+@Transactional
 public class Application extends Controller {
+	
 
 	@Security.Authenticated(Secured.class)
-	@Transactional(readOnly = true)
 	public static Result index() {
 		return ok(views.html.index.render(Account.findByEmail(request().username())));
 	}
 
-	@Transactional(readOnly = true)
 	public static Result authenticate() {
 		Form<Login> loginForm = form(Login.class).bindFromRequest();
 		if (loginForm.hasErrors()) {
