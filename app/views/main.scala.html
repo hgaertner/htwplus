@@ -13,8 +13,8 @@
     </head>
     <body>
     	<a href="@routes.CourseController.index()" class="btn btn-primary">Liste Courses</a>
-    	<a href="@routes.CourseController.add()" class="btn btn-primary">Add Course</a>
-    	
+    	<!-- <a href="@routes.CourseController.add()" class="btn btn-primary">Add Course</a> -->
+    	<a href="@routes.GroupController.index()" class="btn btn-primary">List groups</a>
     	<br />
     	    @if(flash.containsKey("message")) {
         <div class="alert-message warning">

@@ -7,8 +7,9 @@ import play.data.*;
 import models.*;
 import views.html.Course.*;
 import play.db.jpa.*;
-import scala.reflect.internal.Trees.This;
+import play.mvc.Security;
 
+@Security.Authenticated(Secured.class)
 public class CourseController extends Controller {
   
 	static Form<Course> courseForm = Form.form(Course.class);	

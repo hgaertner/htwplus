@@ -1,0 +1,20 @@
+@(group: Group)
+
+@import helper._
+
+@main("Group View") {
+    
+    <h1>@group.title</h1>
+    
+    Description:<br />
+    @group.description
+    <br />
+    Created At:<br />
+    @group.createdAt.format("dd. MMM yyyy")
+    <br />
+    Updated At:<br />
+    @group.updatedAt.format("dd. MMM yyyy")
+    <br />
+    Is closed:<br />
+    <input id="groupIsClosed" type="checkbox" name="group.isClosed" ${group.isClosed ? 'checked':''}  />
+}

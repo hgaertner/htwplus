@@ -1,0 +1,18 @@
+@(groupForm: Form[Group])
+@import helper._
+
+@main("Add Group") {
+    
+    <h1>Add a new Group</h1>
+    <br />
+    @form(routes.GroupController.create()) {
+        
+        @inputText(groupForm("title"), '_label -> "Title: ") 
+     	@textarea(groupForm("description"), '_label -> "Description: ") 
+   		@inputText(groupForm("token"), '_label -> "Token: ") 
+   		
+        <input type="submit" value="Create" class="btn btn-success">
+        
+    }
+    
+}
