@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.File;
+import java.util.List;
 
 import play.*;
 import play.mvc.*;
@@ -13,9 +14,11 @@ import views.html.Media.*;
 import play.db.jpa.*;
 import scala.reflect.internal.Trees.This;
 
+
+@Security.Authenticated(Secured.class)
 public class MediaController extends Controller {
 	
-	static Form<Media> mediaForm = Form.form(Media.class);	
+	static Form<Media> mediaForm = Form.form(Media.class);
 	
     @Transactional(readOnly=true)	
     public static Result view(Long id) {
@@ -23,6 +26,7 @@ public class MediaController extends Controller {
     	if(media == null) {
     		return redirect(routes.MediaController.add());
     	} else {
+    		response().setHeader("Content-disposition","attachment; filename=" + media.fileName);
     		return ok(media.file);
     	}
     }
@@ -32,25 +36,29 @@ public class MediaController extends Controller {
     }
     
 	@Transactional
-    public static Result upload() {
+    public static Result upload() {				
 		MultipartFormData body = request().body().asMultipartFormData();
-		FilePart upload  = body.getFile("picture");
-							
-		Media med = new Media();
-		
-		if (upload != null) {
-			
-			med.title = upload.getFilename();
-			med.mimetype = upload.getContentType();
-			med.fileName = upload.getFilename();
-			med.file = upload.getFile();
-			med.create();
-			
+		List<Http.MultipartFormData.FilePart> uploads = body.getFiles();
+
+		if(!uploads.isEmpty()) {
+			for (FilePart upload : uploads) {
+				Media med = new Media();
+				med.title = upload.getFilename();
+				med.mimetype = upload.getContentType();
+				med.fileName = upload.getFilename();
+				med.file = upload.getFile();
+				try {
+					med.create(request().username());
+				} catch (Exception e) {
+					return internalServerError(e.getMessage());
+				}
+			}
 		    return ok("File uploaded");
 		} else {
 			flash("error", "Missing file");
 			return redirect(routes.MediaController.upload());    
 		}
+		
     }
 	
 }
