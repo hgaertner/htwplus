@@ -38,7 +38,6 @@ public class Course extends BaseModel {
 		return JPA.em().find(Course.class, id);
 	}
 
-	
 	@Override
 	public void create() {
 		JPA.em().persist(this);

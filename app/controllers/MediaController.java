@@ -35,7 +35,7 @@ public class MediaController extends Controller {
     public static Result upload() {
 		MultipartFormData body = request().body().asMultipartFormData();
 		FilePart upload  = body.getFile("picture");
-		
+							
 		Media med = new Media();
 		
 		if (upload != null) {
