@@ -1,7 +1,7 @@
-@(courseForm: Form[Course])
+@(courseForm: Form[Course], user: Account)
 @import helper._
 
-@main("Add Course") {
+@main("Add Course", user) {
     
     <h1>Add a new Course</h1>
     <br />

@@ -1,0 +1,21 @@
+@(groups: List[Group], user: Account)
+
+@import helper._
+
+@main("Group list", user) {
+    
+    <h1>@groups.size() group(s)</h1>
+    
+    <table class="table">
+         @for(group <- groups) {
+    	<tr>
+    	<td>@group.title                    
+    	<td><a href="@routes.GroupController.view(group.id)" class="btn">View</a> </td>
+    	<td><a href="@routes.GroupController.edit(group.id)" class="btn">Edit</a> </td>
+    	<td><a href="@routes.GroupController.delete(group.id)" class="btn">Delete</a> </td>
+    	</tr>
+    }
+    </table>
+    
+    
+}

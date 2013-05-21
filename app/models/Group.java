@@ -1,6 +1,7 @@
 package models;
 
 import java.util.*;
+
 import play.data.validation.Constraints.*;
 import play.data.format.Formats.*;
 import javax.persistence.*;
@@ -22,8 +23,10 @@ public class Group extends BaseModel {
 	
 	@OneToMany(mappedBy = "group")
 	public Set<GroupAccount> groupAccounts;
+	
+	@ManyToMany
+	public List<Account> members;
 
-	@Required
 	public Boolean isClosed;
 	
 	@Override
@@ -34,12 +37,29 @@ public class Group extends BaseModel {
 	@Override
 	public void update(Long id) {
 		this.id = id;
+		
+		// createdAt seems to be overwritten (null) - quickfix? (Iven)
+		this.createdAt = findById(id).createdAt;
 		JPA.em().merge(this);
 	}
 	
 	@Override
 	public void delete() {
 		JPA.em().remove(this);
+	}
+
+	public void addUserToGroup(Account user){
+		this.members.add(user);
+		JPA.em().merge(this);
+	}
+
+	public static Group findById(Long id) {
+		return JPA.em().find(Group.class, id);
+	}
+
+	public static List<Group> all() {
+		List<Group> groups = JPA.em().createQuery("FROM Group").getResultList();
+		return groups;
 	}
 	
 }

@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String, user: Account)(content: Html)
 
 <!DOCTYPE html>
 
@@ -8,19 +8,29 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("bootstrap/css/bootstrap.min.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        <script src="@routes.Assets.at("bootstrap/js/bootstrap.min.js") type="text/javascript"></script>
         <script src="http://code.jquery.com/jquery.js"></script>
+        <script src="@routes.Assets.at("bootstrap/js/bootstrap.js")" type="text/javascript"></script>
+        
     </head>
+    <header>
+    	<a href="@routes.Application.index" id="logo">Awesome</a>
+        <dl id="user">
+        	<dt>@user.firstname <span>(@user.email)</span></dt>
+            <dd>
+            	<a href="@routes.Application.logout">Logout</a>
+            </dd>
+        </dl>
+    </header>
     <body>
     	<a href="@routes.CourseController.index()" class="btn btn-primary">Liste Courses</a>
-    	<a href="@routes.CourseController.add()" class="btn btn-primary">Add Course</a>
-    	
+    	<!-- <a href="@routes.CourseController.add()" class="btn btn-primary">Add Course</a> -->
+    	<a href="@routes.GroupController.index()" class="btn btn-primary">List groups</a>
     	<br />
-    	    @if(flash.containsKey("message")) {
-        <div class="alert-message warning">
-            @flash.get("message")
-        </div>
-    } 
+    	@if(flash.containsKey("message")) {
+        	<div class="alert-message warning">
+            	@flash.get("message")
+        	</div>
+    	} 
         @content
     </body>
 </html>
