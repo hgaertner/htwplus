@@ -3,8 +3,10 @@
 # ~~~~
 
 # Home page
-GET     /                       controllers.CourseController.index()
-
+GET     /                       controllers.Application.index()
+GET 	/login					controllers.Application.login()
+POST    /login                  controllers.Application.authenticate()
+GET     /logout                 controllers.Application.logout()
 
 # Course
 GET     /courses                controllers.CourseController.index()
@@ -14,6 +16,20 @@ GET		/course/:id				controllers.CourseController.view(id:Long)
 GET		/course/:id/edit		controllers.CourseController.edit(id:Long)
 POST	/course/:id/edit		controllers.CourseController.update(id:Long)
 GET		/course/:id/delete		controllers.CourseController.delete(id:Long)
+
+
+#Group
+GET 	/groups					controllers.GroupController.index()
+GET 	/group/add				controllers.GroupController.add()
+POST	/group/add				controllers.GroupController.create()
+GET		/group/:id				controllers.GroupController.view(id:Long)
+GET		/group/:id/edit			controllers.GroupController.edit(id:Long)
+POST	/group/:id/edit			controllers.GroupController.update(id:Long)
+GET		/group/:id/delete		controllers.GroupController.delete(id:Long)
+
+# Signup
+GET     /signup                	controllers.SignUp.blank()
+POST    /signup                 controllers.SignUp.submit()
 
 #User
 GET		/user/:name				controllers.AccountController.create(name:String)
