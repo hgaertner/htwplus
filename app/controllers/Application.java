@@ -12,7 +12,6 @@ import controllers.Login;
 @Transactional
 public class Application extends Controller {
 	
-
 	@Security.Authenticated(Secured.class)
 	public static Result index() {
 		return ok(views.html.index.render(Account.findByEmail(request().username())));

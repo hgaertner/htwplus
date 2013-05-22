@@ -13,11 +13,14 @@
         
     </head>
     <header>
-    	<a href="@routes.Application.index" id="logo">Awesome</a>
+    	<a href="@routes.Application.index" id="logo">Awesome (Post)</a>
         <dl id="user">
         	<dt>@user.firstname <span>(@user.email)</span></dt>
             <dd>
             	<a href="@routes.Application.logout">Logout</a>
+            </dd>
+            <dd>
+            	<a class="btn btn-primary" href="@routes.MediaController.add">Media Upload</a>
             </dd>
         </dl>
     </header>
