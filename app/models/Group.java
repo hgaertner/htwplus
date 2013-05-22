@@ -24,9 +24,6 @@ public class Group extends BaseModel {
 	@OneToMany(mappedBy = "group")
 	public Set<GroupAccount> groupAccounts;
 	
-	@ManyToMany
-	public List<Account> members;
-
 	public Boolean isClosed;
 	
 	@Override
@@ -49,7 +46,7 @@ public class Group extends BaseModel {
 	}
 
 	public void addUserToGroup(Account user){
-		this.members.add(user);
+		//this.members.add(user);
 		JPA.em().merge(this);
 	}
 
