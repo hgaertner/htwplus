@@ -1,7 +1,5 @@
-@(user: Account)
-
-@main("Mainpage", user) {
+@main("Mainpage") {
     
-    <h1>Hello @user.firstname</h1>
+    <h1>Hello @session().get("firstname")</h1>
     
 }

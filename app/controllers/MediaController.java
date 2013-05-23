@@ -53,7 +53,8 @@ public class MediaController extends Controller {
 					return internalServerError(e.getMessage());
 				}
 			}
-		    return ok("File uploaded");
+			flash("message", "File uploaded!");
+		    return redirect(routes.Application.index());
 		} else {
 			flash("error", "Missing file");
 			return redirect(routes.MediaController.upload());    

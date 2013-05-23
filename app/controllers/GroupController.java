@@ -13,10 +13,9 @@ import play.db.jpa.*;
 public class GroupController extends Controller {
 
 	static Form<Group> groupForm = Form.form(Group.class);
-	static Account account = Account.findByEmail(request().username());
 
 	public static Result index() {
-		return ok(index.render(Group.all(),account));
+		return ok(index.render(Group.all()));
 	}
 
 	public static Result view(Long id) {
@@ -24,7 +23,7 @@ public class GroupController extends Controller {
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
-			return ok(view.render(group, account));
+			return ok(view.render(group));
 		}
 	}
 
@@ -33,7 +32,7 @@ public class GroupController extends Controller {
 		System.out.println(filledForm.errors());
 		if (filledForm.hasErrors()) {
 			flash("message", "Error in Form!");
-			return badRequest(add.render(filledForm, account));
+			return badRequest(add.render(filledForm));
 		} else {
 			Group g = filledForm.get();
 			g.create();
@@ -47,7 +46,7 @@ public class GroupController extends Controller {
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
-			return ok(edit.render(group.id, groupForm.fill(group), account));
+			return ok(edit.render(group.id, groupForm.fill(group)));
 		}
 	}
 	
@@ -56,7 +55,7 @@ public class GroupController extends Controller {
 		Form<Group> filledForm = groupForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			flash("message", "Error in Form!");
-			return badRequest(edit.render(id, filledForm, account));
+			return badRequest(edit.render(id, filledForm));
 		} else {
 			filledForm.get().update(id);
 			flash("message", "Updated Group!");
@@ -65,7 +64,7 @@ public class GroupController extends Controller {
 	}
 
 	public static Result add() {
-		return ok(add.render(groupForm, account));
+		return ok(add.render(groupForm));
 	}
 
 

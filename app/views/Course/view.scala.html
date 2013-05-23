@@ -1,10 +1,10 @@
-@(course: Course, user: Account)
+@(course: Course)
 
 @import helper._
 
-@main("Course View", user) {
+@main("Course View") {
     
-    <h1>@course.title</h1>
+    <h2>@course.title</h2>
     
     Description:<br />
     @course.description

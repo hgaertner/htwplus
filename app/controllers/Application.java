@@ -12,9 +12,10 @@ import controllers.Login;
 @Transactional
 public class Application extends Controller {
 	
+	
 	@Security.Authenticated(Secured.class)
 	public static Result index() {
-		return ok(views.html.index.render(Account.findByEmail(request().username())));
+		return ok(views.html.index.render());
 	}
 
 	public static Result authenticate() {
@@ -24,6 +25,7 @@ public class Application extends Controller {
 		} else {
 			session().clear();
 			session("email", loginForm.get().email);
+			session().put("firstname", Account.findByEmail(loginForm.get().email).firstname);
 			return redirect(routes.Application.index());
 		}
 	}
@@ -37,6 +39,7 @@ public class Application extends Controller {
 	 */
 	public static Result logout() {
 		session().clear();
+		session().get("email");
 		flash("success", "You've been logged out");
 		return redirect(routes.Application.login());
 	}

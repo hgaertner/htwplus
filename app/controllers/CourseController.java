@@ -14,21 +14,20 @@ import play.mvc.Security;
 public class CourseController extends Controller {
   
 	static Form<Course> courseForm = Form.form(Course.class);
-	static Account account = Account.findByEmail(request().username());
 	
 	public static Result index() {
-		return ok(index.render(Course.all(),account));
+		return ok(index.render(Course.all()));
 	}
     
     public static Result add() {
-    	return ok(add.render(courseForm,account));
+    	return ok(add.render(courseForm));
     }
     
     public static Result create() {
     	Form<Course> filledForm = courseForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			flash("message", "Error in Form!");
-			return badRequest(add.render(filledForm, account));
+			return badRequest(add.render(filledForm));
 		} else {
 			Course c = filledForm.get();
 			c.create();
@@ -42,7 +41,7 @@ public class CourseController extends Controller {
     	if(course == null) {
     		return redirect(routes.CourseController.index());
     	} else {
-        	return ok(view.render(course, account));
+        	return ok(view.render(course));
     	}
     }
     
@@ -51,7 +50,7 @@ public class CourseController extends Controller {
     	if(course == null) {
     		return redirect(routes.CourseController.index());
     	} else {
-        	return ok(edit.render(course.id, courseForm.fill(course), account));
+        	return ok(edit.render(course.id, courseForm.fill(course)));
     	}
     }
     
@@ -60,7 +59,7 @@ public class CourseController extends Controller {
     	Form<Course> filledForm = courseForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			flash("message", "Error in Form!");
-			return badRequest(edit.render(id ,filledForm, account));
+			return badRequest(edit.render(id ,filledForm));
 		} else {
 			filledForm.get().update(id);
 			flash("message", "Updated Course!");

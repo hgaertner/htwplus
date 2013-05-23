@@ -1,12 +1,15 @@
 @(mediaForm: Form[Media]) 
 @import helper._
 
-@form(action = routes.MediaController.upload(), 'enctype -> "multipart/form-data") {
-    
-    <input type="file" name="upload" multiple="multiple">
-    
-    <p>
-        <input type="submit">
-    </p>
-    
+
+@main("Upload Media") {
+	@form(action = routes.MediaController.upload(), 'enctype -> "multipart/form-data") {
+	    
+	    <input type="file" name="upload" multiple="multiple">
+	    
+	    <p>
+	        <input type="submit">
+	    </p>
+	    
+	}
 }
