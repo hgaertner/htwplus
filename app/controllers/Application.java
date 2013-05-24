@@ -1,6 +1,5 @@
 package controllers;
 
-import play.*;
 import play.mvc.*;
 import play.data.*;
 import models.*;
@@ -25,7 +24,8 @@ public class Application extends Controller {
 		} else {
 			session().clear();
 			session("email", loginForm.get().email);
-			session().put("firstname", Account.findByEmail(loginForm.get().email).firstname);
+			session("id", Account.findByEmail(loginForm.get().email).id.toString());
+			session("firstname", Account.findByEmail(loginForm.get().email).firstname);
 			return redirect(routes.Application.index());
 		}
 	}

@@ -5,6 +5,7 @@ import play.data.validation.Constraints.*;
 import javax.persistence.*;
 import models.base.BaseModel;
 import play.db.jpa.*;
+
 import java.util.Set;
 
 @Entity
@@ -52,8 +53,8 @@ public class Account extends BaseModel {
 
 	@Override
 	public void update(Long id) {
-		// TODO Auto-generated method stub
-
+		this.id = id;
+		JPA.em().merge(this);
 	}
 
 	@Override
@@ -65,9 +66,13 @@ public class Account extends BaseModel {
      * Retrieve a User from email.
      */
     public static Account findByEmail(String email) {
-    	return (Account) JPA.em()
-				.createQuery("from Account a where a.email = :email")
-				.setParameter("email", email).getSingleResult();
+    	try{
+	    	return (Account) JPA.em()
+					.createQuery("from Account a where a.email = :email")
+					.setParameter("email", email).getSingleResult();
+	    } catch (NoResultException exp) {
+	    	return null;
+		}
     }
 
 	public static Account authenticate(String email, String password) {

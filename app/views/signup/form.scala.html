@@ -27,7 +27,10 @@
             )
             
             @inputText(
-                signupForm("email"), '_label -> "Email"
+                signupForm("email"),
+                '_label -> "Email",
+                '_help -> "",
+                '_error -> signupForm.globalError
             )
             
             @inputPassword(

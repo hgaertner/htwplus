@@ -42,6 +42,10 @@ public class SignUp extends Controller {
         if(!"true".equals(filledForm.field("accept").value())) {
             filledForm.reject("accept", "You must accept the terms and conditions");
         }
+        // Check Mail
+        if(!(Account.findByEmail(filledForm.field("email").value()) == null)) {
+            filledForm.reject("email", "Mail is already taken!");
+        }
         // Check repeated password
         if(!filledForm.field("password").valueOr("").isEmpty()) {
             if(!filledForm.field("password").valueOr("").equals(filledForm.field("repeatPassword").value())) {

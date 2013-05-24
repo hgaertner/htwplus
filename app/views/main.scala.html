@@ -27,7 +27,7 @@
             </dd>
         </dl>
         <dl id="user">
-        	 <dt>@session.get("firstname") <span>(@session.get("email"))</span></dt>
+        	 <dt><a href="/user/@session.get("id")">@session.get("firstname")</a> <span>(@session.get("email"))</span></dt>
             <dd>
             	<a href="@routes.Application.logout">Logout</a>
             </dd>

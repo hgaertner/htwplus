@@ -31,7 +31,9 @@ GET     /signup                	controllers.SignUp.blank()
 POST    /signup                 controllers.SignUp.submit()
 
 #User
-GET		/user/:name				controllers.AccountController.create(name:String)
+GET		/user/:id				controllers.ProfileController.view(id:Long)
+GET		/user/:id/edit			controllers.ProfileController.edit(id:Long)
+POST	/user/:id/edit			controllers.ProfileController.update(id:Long)
 
 # Media
 GET		/media/upload			controllers.MediaController.add()
