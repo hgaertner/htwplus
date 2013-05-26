@@ -11,12 +11,12 @@ import models.ids.GroupAccountId;
 public class GroupAccount {
 	
 	@Id
-	@ManyToOne
+	@ManyToOne( optional = false )
 	@JoinColumn(name = "group_")		
 	public Group group;
 	
 	@Id
-	@ManyToOne
+	@ManyToOne( optional = false )
 	@JoinColumn(name = "account")
 	public Account account;
 
@@ -24,6 +24,10 @@ public class GroupAccount {
 	
 	public static GroupAccount findById(Long id) {
 		return JPA.em().find(GroupAccount.class, id);
+	}
+	
+	public void create() {
+		JPA.em().persist(this);
 	}
 	
 

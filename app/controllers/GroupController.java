@@ -28,6 +28,7 @@ public class GroupController extends Controller {
 	}
 
 	public static Result create() {
+		Account account = Account.findByEmail(session().get("email"));
 		Form<Group> filledForm = groupForm.bindFromRequest();
 		System.out.println(filledForm.errors());
 		if (filledForm.hasErrors()) {
@@ -35,7 +36,7 @@ public class GroupController extends Controller {
 			return badRequest(add.render(filledForm));
 		} else {
 			Group g = filledForm.get();
-			g.create();
+			g.create(account);
 			flash("message", "Created new Group!");
 			return redirect(routes.GroupController.index());
 		}
@@ -57,7 +58,11 @@ public class GroupController extends Controller {
 			flash("message", "Error in Form!");
 			return badRequest(edit.render(id, filledForm));
 		} else {
-			filledForm.get().update(id);
+			Logger.info(filledForm.get().description);
+			group.title = filledForm.get().title;
+			group.description = filledForm.get().description;
+			group.isClosed = filledForm.get().isClosed;
+			group.update(id);
 			flash("message", "Updated Group!");
 			return redirect(routes.GroupController.index());
 		}

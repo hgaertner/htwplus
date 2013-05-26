@@ -26,6 +26,16 @@ public class Group extends BaseModel {
 	
 	public Boolean isClosed;
 	
+	public void create(Account account) {
+		JPA.em().persist(this);
+		GroupAccount groupAccount = new GroupAccount();
+		groupAccount.account = account;
+		groupAccount.approved = true;
+		groupAccount.group = this;
+		groupAccount.create();
+		
+	}
+	
 	@Override
 	public void create() {
 		JPA.em().persist(this);
@@ -34,9 +44,8 @@ public class Group extends BaseModel {
 	@Override
 	public void update(Long id) {
 		this.id = id;
-		
 		// createdAt seems to be overwritten (null) - quickfix? (Iven)
-		this.createdAt = findById(id).createdAt;
+		//this.createdAt = findById(id).createdAt;
 		JPA.em().merge(this);
 	}
 	

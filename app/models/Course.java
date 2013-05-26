@@ -1,6 +1,8 @@
 package models;
 
 import java.util.*;
+
+import play.Logger;
 import play.data.validation.Constraints.*;
 import play.data.format.Formats.*;
 import javax.persistence.*;
@@ -46,7 +48,6 @@ public class Course extends BaseModel {
 	@Override
 	public void update(Long id) {
 		this.id = id;
-		
 		// createdAt seems to be overwritten (null) - quickfix? (Iven)
 		this.createdAt = findById(id).createdAt;
 		JPA.em().merge(this);

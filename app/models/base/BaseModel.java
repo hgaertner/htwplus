@@ -4,6 +4,7 @@ import java.util.*;
 import play.data.validation.Constraints.*;
 import play.data.format.Formats.*;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import models.Course;
 
@@ -32,7 +33,7 @@ public abstract class BaseModel {
 	void updatedAt() {
 		this.updatedAt = new Date();
 	}
-
+	
 	public abstract void create();
 		
 	public abstract void update(Long id);
