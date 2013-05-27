@@ -11,16 +11,28 @@ import models.ids.GroupAccountId;
 public class GroupAccount {
 	
 	@Id
+	private Long groupId;
+	@Id
+	private Long accountId;
+	
 	@ManyToOne( optional = false )
-	@JoinColumn(name = "group_")		
+	//@JoinColumn(name = "group_")		
+	@JoinColumn(name = "groupId", updatable = false, insertable = false)
 	public Group group;
 	
-	@Id
 	@ManyToOne( optional = false )
-	@JoinColumn(name = "account")
+	//@JoinColumn(name = "account")
+	@JoinColumn(name = "accountId", updatable = false, insertable = false)
 	public Account account;
 
 	public Boolean approved;
+	
+	public GroupAccount(Account account, Group group) {
+		this.account = account;
+		this.accountId = account.id;
+		this.group = group;
+		this.groupId = group.id;
+	}
 	
 	public static GroupAccount findById(Long id) {
 		return JPA.em().find(GroupAccount.class, id);

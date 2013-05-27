@@ -28,10 +28,8 @@ public class Group extends BaseModel {
 	
 	public void create(Account account) {
 		JPA.em().persist(this);
-		GroupAccount groupAccount = new GroupAccount();
-		groupAccount.account = account;
+		GroupAccount groupAccount = new GroupAccount(account, this);
 		groupAccount.approved = true;
-		groupAccount.group = this;
 		groupAccount.create();
 		
 	}

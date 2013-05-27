@@ -6,9 +6,9 @@ import javax.persistence.*;
 
 public class GroupAccountId implements Serializable {
 
-	@Column(name="group_")
-	private Long group;
-	private Long account;
+	//@Column(name="group_")
+	private Long groupId;
+	private Long accountId;
 	
 	public GroupAccountId() {
 		super();
@@ -16,14 +16,14 @@ public class GroupAccountId implements Serializable {
 
 	@Override
 	public int hashCode() {	
-		return (int)(group + account);
+		return (int)(groupId + accountId);
 	}
 	
 	@Override
 	public boolean equals(Object object) {
 	    if (object instanceof GroupAccountId) {
 	    	GroupAccountId otherId = (GroupAccountId) object;
-	        return (otherId.group == this.group) && (otherId.account == this.account);
+	        return (otherId.groupId == this.groupId) && (otherId.accountId == this.accountId);
 	      }
 	      return false;
 	}
