@@ -67,8 +67,8 @@ public class Group extends BaseModel {
 	}
 
 	public static List<Group> allByAccount(Account account) {
-		List<Group> groups = JPA.em().createQuery("FROM Group").getResultList();
-		
+		String query = "SELECT g.group FROM GroupAccount g WHERE g.account.id = " + account.id;
+		List<Group> groups = JPA.em().createQuery(query).getResultList();
 		return groups;
 	}
 	

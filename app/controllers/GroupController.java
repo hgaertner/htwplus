@@ -20,7 +20,7 @@ public class GroupController extends Controller {
 	}
 	
 	public static Result indexByAccount(Long accountId) {
-		Account account = Account.findByEmail(session().get("email"));
+		Account account = Account.findById(accountId);
 		return ok(index.render(Group.allByAccount(account)));
 	}
 	
