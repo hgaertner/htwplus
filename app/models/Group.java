@@ -21,7 +21,7 @@ public class Group extends BaseModel {
 	
 	public String description;
 	
-	@OneToMany(mappedBy = "group")
+	@OneToMany(mappedBy = "group", cascade=CascadeType.ALL)
 	public Set<GroupAccount> groupAccounts;
 	
 	public Boolean isClosed;
@@ -63,6 +63,12 @@ public class Group extends BaseModel {
 
 	public static List<Group> all() {
 		List<Group> groups = JPA.em().createQuery("FROM Group").getResultList();
+		return groups;
+	}
+
+	public static List<Group> allByAccount(Account account) {
+		List<Group> groups = JPA.em().createQuery("FROM Group").getResultList();
+		
 		return groups;
 	}
 	

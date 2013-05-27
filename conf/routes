@@ -19,6 +19,7 @@ GET		/course/:id/delete		controllers.CourseController.delete(id:Long)
 
 #Group
 GET 	/groups					controllers.GroupController.index()
+GET 	/groups/user/:id		controllers.GroupController.indexByAccount(id:Long)
 GET 	/group/add				controllers.GroupController.add()
 POST	/group/add				controllers.GroupController.create()
 GET		/group/:id				controllers.GroupController.view(id:Long)

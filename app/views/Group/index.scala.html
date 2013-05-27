@@ -3,11 +3,11 @@
 @import helper._
 
 @main("Group list") {
-    
+
     <h1>@groups.size() group(s)</h1>
     
     <a class="btn btn-primary" href="@routes.GroupController.add">Add</a>
-    
+    <a class="btn btn-primary" href=@routes.GroupController.indexByAccount(Common.currentAccount().id)>My Groups</a>
     <table class="table">
          @for(group <- groups) {
     	<tr>

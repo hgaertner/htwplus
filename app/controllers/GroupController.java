@@ -10,6 +10,7 @@ import play.db.jpa.*;
 
 @Security.Authenticated(Secured.class)
 @Transactional
+@With(Common.class)
 public class GroupController extends Controller {
 
 	static Form<Group> groupForm = Form.form(Group.class);
@@ -17,7 +18,12 @@ public class GroupController extends Controller {
 	public static Result index() {
 		return ok(index.render(Group.all()));
 	}
-
+	
+	public static Result indexByAccount(Long accountId) {
+		Account account = Account.findByEmail(session().get("email"));
+		return ok(index.render(Group.allByAccount(account)));
+	}
+	
 	public static Result view(Long id) {
 		Group group = Group.findById(id);
 		if (group == null) {

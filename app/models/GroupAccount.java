@@ -27,6 +27,10 @@ public class GroupAccount {
 
 	public Boolean approved;
 	
+	public GroupAccount() {
+
+	}
+	
 	public GroupAccount(Account account, Group group) {
 		this.account = account;
 		this.accountId = account.id;
