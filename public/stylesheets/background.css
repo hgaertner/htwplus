@@ -1,0 +1,259 @@
+body {
+	position: relative;
+}
+
+img {
+  vertical-align: top;
+}
+
+#logo {
+	height: 200px;
+	position: relative;
+	margin-bottom: -100px;
+	margin-left: 45px;
+	margin-top: 30px;
+	z-index: 1000;
+	background-image: url(../images/logo.png);
+	background-repeat: no-repeat;
+	background-position: center top;
+}
+
+#htw {
+	height: 46px;
+	margin-left: 45px;
+	background-image: url(../images/background.png);
+	background-repeat: no-repeat;
+	background-position: right -130px;
+}
+
+
+#htw img {
+  text-align: right;
+}
+
+#right  {
+	position: relative;
+	margin-right: -217px;
+	background-image: url(../images/repeatY.png);
+	background-repeat: repeat-y;
+	background-position: right 0px;
+}
+
+#topRight {
+	width: 197px;
+	height: 15px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-image: url(../images/background.png);
+	background-repeat: no-repeat;
+	background-position: -50px -15px;
+}
+
+#bottomRight {
+	width: 197px;
+	height: 22px;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	background-image: url(../images/background.png);
+	background-repeat: no-repeat;
+	background-position: -50px -30px;
+}
+
+#left  {
+	margin-right: 197px;
+	background-image: url(../images/repeatY.png);
+	background-repeat: repeat-y;
+	background-position: 0px 15px;
+}
+
+#topLeft {
+	width: 50px;
+	height: 15px;
+	vertical-align: top;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-image: url(../images/background.png);
+	background-repeat: no-repeat;
+	background-position: 0px -15px;
+}
+
+#bottomLeft {
+	width: 50px;
+	height: 22px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background-image: url(../images/background.png);
+	background-repeat: no-repeat;
+	background-position: 0px -30px;
+}
+
+#top {
+	margin-left: 50px;
+	padding-top: 15px;
+	background-image: url(../images/background.png);
+	background-repeat: repeat-x;
+	background-position: 0px top;
+}
+
+#bottom {
+	padding-bottom: 22px;
+	background-image: url(../images/background.png);
+	background-repeat: repeat-x;
+	background-position: 0px bottom;
+}
+
+#content  {
+	min-height: 300px;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 100px;
+	background-color: white;
+}
+
+.own-popover  {
+	font-size: 11px;
+    font-weight: normal;
+}
+
+.navi {
+	position: absolute;
+	width: 197px;
+}
+
+.navi.affix-top {
+	margin: 15px 0;
+	top: 145px;
+}
+
+.navi.affix {
+	position: fixed;
+	margin: 0;
+	top: 15px;
+}
+
+.navi.affix-bottom {
+	margin: 15px 0;
+	bottom: 68px;
+}
+
+.postit {
+	position: relative;
+	text-align: right;
+	padding: 0;
+	margin-bottom: 10px;
+	color: white;
+}
+
+.postitHeader {
+	width: 197px;
+	height: 11px;
+	background-repeat: no-repeat;
+	background-image: url(../images/background.png);
+}
+
+.postitHeader.active {
+	background-position: 0px -52px;
+}
+
+.postitHeader.deactive {
+	background-position: 0px -91px;
+}
+
+.postitBody {
+	padding-top: 7px;
+	background-repeat: repeat-y;
+	background-image: url(../images/repeatY.png);
+}
+
+.postitBody img {
+	margin: 5px 0;
+}
+
+.postitBody form {
+	margin-bottom: 0;
+}
+
+.postitBody.active {
+	padding-right: 34px;
+	padding-left: 15px;
+	background-position: -50px 0px;
+}
+
+.postitBody.deactive {
+	padding-right: 23px;
+	padding-left: 47px;
+	background-position: -247px 0px;
+}
+
+.postitFooter {
+	width: 197px;
+	height: 28px;
+	background-repeat: no-repeat;
+	background-image: url(../images/background.png);
+}
+
+.postitFooter.active {
+	background-position: 0px -63px;
+}
+
+.postitFooter.deactive {
+	background-position: 0px -102px;
+}
+
+.postitBody.deactive a {
+	color: white;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.postitBody.active a {
+	color: black;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.postitBodyFavs.active a {
+    font-size: x-small;
+    font-weight: normal;
+}
+
+.postitBodyFavs.deactive a {
+    color: white;
+    font-size: x-small;
+    font-weight: normal;
+}
+
+.postit a:hover, .postit a:active {
+	color: #5a5858;
+}
+
+.table th, .table td {
+	border-top: 0;
+}
+
+input, select, textarea {
+	width: 100%;
+	height: auto !important;
+    box-sizing: border-box;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing: border-box;
+  	resize: none;
+}
+
+.modal-body .btn-group {
+	margin-left: 0;
+	margin-bottom: 5px;
+}
+
+.register {
+	text-align: left;
+	margin-top: 15px;
+}
+
+.well {
+	margin-bottom: 0px;
+}

@@ -1,34 +1,141 @@
-@(form: Form[Login])
-<html>
-    <head>
-        <title>Awesome</title>
-        
-    </head>
-    <body>
-        
-    	@helper.form(routes.Application.authenticate) {
-    	<div style="text-align: center;">
-   		<h1>Sign in</h1><span>or <a href="@routes.SignUp.blank" class="btn">SignUp</a></span>
-		@if(form.hasGlobalErrors) {
-    		<p class="error">
-        		@form.globalError.message
-    		</p>
-		}
-		@if(flash.contains("success")) {
-		    <p class="success">
-		        @flash.get("success")
-		    </p>
-		}
-   		<p>
-       		<input type="email" name="email" placeholder="Email" value="@form("email").value">
-   		</p>
-   		<p>
-       		<input type="password" name="password" placeholder="Password">
-   		</p>
-   		<p>
-       		<button type="submit">Login</button>
-   		</p>
-   		</div>
-	}
-    </body>
+@(loginForm: Form[Login])
+
+@import helper._
+
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <title>Couchkeepa</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="@routes.Assets.at("bootstrap/css/bootstrap.css")">
+    <link rel="stylesheet" href="@routes.Assets.at("bootstrap/css/bootstrap-responsive.css")">
+	<!-- Own -->
+	<link rel="stylesheet" media="all" href="@routes.Assets.at("stylesheets/background.css")">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  
+  <body>
+  
+  <header><div class="container"><div class="span9">
+	<div id="logo"></div>
+  </div></div></header>
+  
+  <div class="container"><div class="row">
+	<div class="span9"><div id="right">
+		<div id="topRight"></div>
+		<div id="bottomRight"></div>
+		<div id="left">
+			<div id="topLeft"></div>
+			<div id="bottomLeft"></div>
+			<!-- Content -->
+			<div id="top"><div id="bottom"><div id="content">
+
+                                    <!-- impressumModal -->
+                                    <div id="impressumModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="impressumModalLabel" aria-hidden="true" remote="html/impressum.html">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                                            <h3 id="impressumModalLabel">Impressum</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">Schließen</button>
+                                        </div>
+                                    </div>
+                                    <!-- impressumModal -->
+
+                                    <!-- editModal -->
+                                    <div id="registerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                                            <h3 id="editModalLabel">Registrieren</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                                <table class="table">
+                                                    <tr>
+                                                        <th>Name, Vorname</th>
+                                                        <td colspan="2">
+                                                            <input type="text" placeholder="Mustermann">
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" placeholder="Max">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Email</th>
+                                                        <td colspan="3">
+                                                            <input type="text" placeholder="max.mustermann at muster.de">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Email wiederholen</th>
+                                                        <td colspan="3">
+                                                            <input type="text" placeholder="max.mustermann at muster.de">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Passwort</th>
+                                                        <td colspan="3">
+                                                            <input type="password" placeholder="">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Passwort wiederholen</th>
+                                                        <td colspan="3">
+                                                            <input type="password" placeholder="">
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">Abbrechen</button>
+                                            <button class="btn btn-warning">Senden</button>
+                                        </div>
+                                    </div>
+                                    <!-- Ende editModal -->
+			
+				<h1>Couchkeepa</h1>
+				<br />
+				Hier könnte eine Beschreibung stehen, in der in kurzen aber sehr prägnanten Worten dieses Projekt im Rahmen von Independent Coursework unter Aufsicht von Prof. Hendrik Gärtner im 2. Semesters des Studiengangs Angewandte Informatik Master an der HTW Berlin beschrieben und erläutert werden.
+				
+			</div></div></div>
+			<!-- Ende Content -->
+		</div>
+	</div></div>
+ 
+	<!-- Navigation -->
+	<div class="span3"><div class="navi" data-spy="affix" data-offset-bottom="83">
+		<div class="postit">
+			<div class="postitHeader active"></div>
+			<div class="postitBody active">
+				@helper.form(routes.Application.authenticate) {
+					<b>Email</b><br />
+					<input type="email" name="email" placeholder="Email" value="@loginForm("email").value">
+					<b>Passwort</b><br />
+					<input type="password" name="password" placeholder="Passwort">
+				    <button type="submit" class="btn btn-warning">Anmelden</button>
+				}
+				<div class="register">
+					<a href="#registerModal" data-toggle="modal"><i class="icon-plus-sign icon-white"></i><small> Registrieren</small></a>
+				</div>
+			</div>
+			<div class="postitFooter active"></div>
+		</div>
+	</div></div>
+	<!-- Ende Navigation -->
+
+  </div></div>
+  
+  <footer><div class="container"><div class="span9">
+	<div id="htw">
+		<a data-toggle="modal" href="html/impressum.html" data-target="#impressumModal">Impressum</a>
+	</div>
+  </div></div></footer>
+  
+  <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.10.0.js")"></script>
+  <script type="text/javascript" src="@routes.Assets.at("bootstrap/js/bootstrap.js")"></script>
+  <script type="text/javascript" src="@routes.Assets.at("javascripts/application.js")"></script>
+  
+  </body>
 </html>
