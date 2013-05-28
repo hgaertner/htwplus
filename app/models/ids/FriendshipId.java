@@ -5,8 +5,8 @@ import javax.persistence.*;
 
 public class FriendshipId implements Serializable {
 
-	private Long account;
-	private Long friend;
+	private Long accountId;
+	private Long friendId;
 	
 	public FriendshipId() {
 		super();
@@ -14,14 +14,14 @@ public class FriendshipId implements Serializable {
 
 	@Override
 	public int hashCode() {	
-		return (int)(account + friend);
+		return (int)(accountId + friendId);
 	}
 	
 	@Override
 	public boolean equals(Object object) {
 	    if (object instanceof FriendshipId) {
 	    	FriendshipId otherId = (FriendshipId) object;
-	        return (otherId.account == this.account) && (otherId.friend == this.friend);
+	        return (otherId.accountId == this.accountId) && (otherId.friendId == this.friendId);
 	      }
 	      return false;
 	}

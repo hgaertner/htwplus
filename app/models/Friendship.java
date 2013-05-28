@@ -1,6 +1,7 @@
 package models;
 
 import javax.persistence.*;
+
 import models.ids.FriendshipId;
 
 @Entity
@@ -8,13 +9,16 @@ import models.ids.FriendshipId;
 public class Friendship {
 	
 	@Id
+	private Long accountId;
+	@Id
+	private Long friendId;
+	
 	@ManyToOne
-	@JoinColumn(name="account")
+	@JoinColumn(name = "accountId", updatable = false, insertable = false)
 	public Account account;
 	
-	@Id
 	@ManyToOne
-	@JoinColumn(name="friend")
+	@JoinColumn(name = "friendId", updatable = false, insertable = false)
 	public Account friend;
 
 	public Boolean approved;

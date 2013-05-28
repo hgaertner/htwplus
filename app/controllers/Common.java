@@ -10,7 +10,6 @@ public class Common extends Action.Simple {
 	
 	@Override
     public Result call(Context ctx) throws Throwable {
-		Logger.info("Account Action called");
 		Account account = Account.findByEmail(ctx.session().get("email"));
         ctx.args.put("account", account);
         return delegate.call(ctx);

@@ -64,6 +64,7 @@ public class GroupController extends Controller {
 			flash("message", "Error in Form!");
 			return badRequest(edit.render(id, filledForm));
 		} else {
+			
 			Logger.info(filledForm.get().description);
 			group.title = filledForm.get().title;
 			group.description = filledForm.get().description;

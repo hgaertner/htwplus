@@ -15,45 +15,45 @@ import play.db.jpa.*;
 @SequenceGenerator(name = "default_seq", sequenceName = "group_seq")
 @Table(name = "Group_")
 public class Group extends BaseModel {
-	
+
 	@Required
 	public String title;
-	
+
 	public String description;
-	
-	@OneToMany(mappedBy = "group", cascade=CascadeType.ALL)
+
+	@OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
 	public Set<GroupAccount> groupAccounts;
-	
+
 	public Boolean isClosed;
-	
+
 	public void create(Account account) {
 		JPA.em().persist(this);
 		GroupAccount groupAccount = new GroupAccount(account, this);
 		groupAccount.approved = true;
 		groupAccount.create();
-		
+
 	}
-	
+
 	@Override
 	public void create() {
 		JPA.em().persist(this);
 	}
-	
+
 	@Override
 	public void update(Long id) {
 		this.id = id;
 		// createdAt seems to be overwritten (null) - quickfix? (Iven)
-		//this.createdAt = findById(id).createdAt;
+		// this.createdAt = findById(id).createdAt;
 		JPA.em().merge(this);
 	}
-	
+
 	@Override
 	public void delete() {
 		JPA.em().remove(this);
 	}
 
-	public void addUserToGroup(Account user){
-		//this.members.add(user);
+	public void addUserToGroup(Account user) {
+		// this.members.add(user);
 		JPA.em().merge(this);
 	}
 
@@ -67,9 +67,11 @@ public class Group extends BaseModel {
 	}
 
 	public static List<Group> allByAccount(Account account) {
-		String query = "SELECT g.group FROM GroupAccount g WHERE g.account.id = " + account.id;
-		List<Group> groups = JPA.em().createQuery(query).getResultList();
+		List<Group> groups = JPA
+				.em()
+				.createQuery("SELECT g.group FROM GroupAccount g WHERE g.account.id = ?1")
+				.setParameter(1, account.id).getResultList();
 		return groups;
 	}
-	
+
 }

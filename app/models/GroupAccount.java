@@ -15,13 +15,11 @@ public class GroupAccount {
 	@Id
 	private Long accountId;
 	
-	@ManyToOne( optional = false )
-	//@JoinColumn(name = "group_")		
+	@ManyToOne( optional = false )		
 	@JoinColumn(name = "groupId", updatable = false, insertable = false)
 	public Group group;
 	
 	@ManyToOne( optional = false )
-	//@JoinColumn(name = "account")
 	@JoinColumn(name = "accountId", updatable = false, insertable = false)
 	public Account account;
 
