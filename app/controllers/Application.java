@@ -1,5 +1,6 @@
 package controllers;
 
+import play.Routes;
 import play.mvc.*;
 import play.data.*;
 import models.*;
@@ -11,6 +12,11 @@ import controllers.Login;
 @Transactional
 public class Application extends Controller {
 	
+	public static Result javascriptRoutes() {
+		response().setContentType("text/javascript");
+		return ok(Routes.javascriptRouter("jsRoutes",
+				controllers.routes.javascript.GroupController.create()));
+	}
 	
 	@Security.Authenticated(Secured.class)
 	public static Result index() {

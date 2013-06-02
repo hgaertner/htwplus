@@ -6,6 +6,7 @@ import play.data.*;
 import models.Account;
 import models.Group;
 import views.html.Group.*;
+import views.html.Group.snippets.*;
 import play.db.jpa.*;
 
 @Security.Authenticated(Secured.class)
@@ -32,19 +33,18 @@ public class GroupController extends Controller {
 			return ok(view.render(group));
 		}
 	}
-
+	
 	public static Result create() {
 		Account account = Account.findByEmail(session().get("email"));
-		Form<Group> filledForm = groupForm.bindFromRequest();
-		System.out.println(filledForm.errors());
+		Form<Group> filledForm = groupForm.bindFromRequest();		
 		if (filledForm.hasErrors()) {
 			flash("message", "Error in Form!");
-			return badRequest(add.render(filledForm));
+			return ok(addModal.render(filledForm));
 		} else {
 			Group g = filledForm.get();
 			g.create(account);
 			flash("message", "Created new Group!");
-			return redirect(routes.GroupController.index());
+			return ok(addModalSuccess.render());
 		}
 	}
 
