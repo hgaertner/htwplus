@@ -58,4 +58,5 @@ public class Post extends BaseModel {
 			JPA.em().remove(this);
 		}
 	}
+
 }

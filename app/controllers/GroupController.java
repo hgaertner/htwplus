@@ -65,12 +65,6 @@ public class GroupController extends Controller {
 		}
 	}
 	
-	public static Result deletePost(Long id){
-		Post p = Post.findById(id);
-		p.delete(Long.parseLong(session().get("id")));
-		
-		return view(id);
-	}
 
 	public static Result create() {
 		Form<Group> filledForm = groupForm.bindFromRequest();
@@ -117,6 +111,20 @@ public class GroupController extends Controller {
 		Group group = Group.findById(id);
 		group.delete();
 		flash("message", "Group " + group.title + " deleted!");
+		return redirect(routes.GroupController.index());
+	}
+	
+	public static Result deletePost(Long id){
+		try{
+			Post p = Post.findById(id);
+			long currentUserId = Long.parseLong(session().get("id"));
+			p.delete(currentUserId);
+			flash("message", "Post deleted");
+		}catch (NumberFormatException exp){
+			//TODO Log exception
+			flash("message", "Couldn't delete post");
+		}
+			
 		return redirect(routes.GroupController.index());
 	}
 }

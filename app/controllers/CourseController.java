@@ -111,5 +111,17 @@ public class CourseController extends Controller {
 		flash("message", "Course " + course.title + " deleted!");
 		return redirect(routes.CourseController.index());
 	}
-
+	
+	public static Result deletePost(Long id){
+		try{
+			Post post = Post.findById(id);
+			long currentUser = Long.parseLong(session().get("id"));
+			post.delete(currentUser);
+			flash("message", "Post deleted!");
+		}catch (NumberFormatException exp){
+			//Log exception here
+			flash("message", "Could not delete post");
+		}
+		return redirect(routes.CourseController.index());
+	}
 }

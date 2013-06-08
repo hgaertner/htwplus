@@ -17,6 +17,7 @@ GET		/course/:id/edit		controllers.CourseController.edit(id:Long)
 POST	/course/:id/edit		controllers.CourseController.update(id:Long)
 GET		/course/:id/delete		controllers.CourseController.delete(id:Long)
 POST	/course/addPost			controllers.CourseController.addPost(id:Long)
+GET		/course/:id/deletePost	controllers.CourseController.deletePost(id:Long)
 
 #Group
 GET 	/groups					controllers.GroupController.index()
@@ -27,6 +28,7 @@ GET		/group/:id/edit			controllers.GroupController.edit(id:Long)
 POST	/group/:id/edit			controllers.GroupController.update(id:Long)
 GET		/group/:id/delete		controllers.GroupController.delete(id:Long)
 POST	/group/addPost			controllers.GroupController.addPost(id:Long)
+GET		/group/:id/deletePost	controllers.GroupController.deletePost(id:Long)
 
 # Signup
 GET     /signup                	controllers.SignUp.blank()

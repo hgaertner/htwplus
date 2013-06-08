@@ -33,7 +33,7 @@
     	<td>@post.content</td>
     	<td>@post.owner.loginname</td>
     	<td><a href="" class="btn">Edit</a> </td>
-    	<td><a href="" class="btn">Delete</a> </td>
+    	<td><a href="@routes.GroupController.deletePost(post.id)" class="btn" >Delete</a> </td>
     	</tr>
     	}
     	</table>
