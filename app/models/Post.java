@@ -49,4 +49,14 @@ public class Post extends BaseModel {
 		// TODO Auto-generated method stub		
 	}
 
+	public static Post findById(Long id) {
+		return JPA.em().find(Post.class, id);
+	}
+
+	public void delete(long userId) {
+		if(this.owner.id == userId){
+			JPA.em().remove(this);
+		}
+	}
+
 }
