@@ -1,8 +1,9 @@
 @(title: String)(content: Html)
 
 <!-- Top + Content -->
-@id(text: String) = @{"smallHead"}
-@views.html.snippets.top ("smallHead") (content)
+@views.html.snippets.top("smallHead") {
+@content
+}
 <!-- End Top + Content -->
 
 <!-- Navigation -->
