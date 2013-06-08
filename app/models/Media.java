@@ -123,5 +123,14 @@ public class Media extends BaseModel {
 		String format = new SimpleDateFormat("yyyy/MM/dd").format(now);
 		return format;
 	}
+
+	public static boolean isOwner(Long mediaId, String email) {
+		Media m = JPA.em().find(Media.class, mediaId);
+		if(m.owner.email.equals(email)){
+			return true;
+		}else {
+			return false;
+		}
+	}
 	
 }

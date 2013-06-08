@@ -59,4 +59,13 @@ public class Post extends BaseModel {
 		}
 	}
 
+	public static boolean isOwner(Long postId, String email) {
+		Post p = JPA.em().find(Post.class, postId);
+		if(p.owner.email.equals(email)){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }

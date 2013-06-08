@@ -134,4 +134,13 @@ public class Account extends BaseModel {
 		this.password = password;
 	}
 
+	public static boolean isOwner(Long accountId, String email) {
+		Account a = JPA.em().find(Account.class, accountId);
+		if(a.email.equals(email)){
+			return true;
+		} else { 
+			return false;
+		}
+	}
+
 }
