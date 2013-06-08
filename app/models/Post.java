@@ -71,5 +71,13 @@ public class Post extends BaseModel {
 				.createQuery("SELECT p FROM Post p WHERE p.group.id = ?1")
 				.setParameter(1, id).getResultList();
 	}
+	public static boolean isOwner(Long postId, String email) {
+		Post p = JPA.em().find(Post.class, postId);
+		if(p.owner.email.equals(email)){
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }

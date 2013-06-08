@@ -18,13 +18,13 @@ import play.db.jpa.*;
 public class GroupController extends Controller {
 
 	static Form<Group> groupForm = Form.form(Group.class);
-	
+
 	static Form<Post> postForm = Form.form(Post.class);
 
 	public static Result index() {
 		return ok(index.render(Group.all()));
 	}
-	
+
 	public static Result indexByAccount(Long accountId) {
 		Account account = Account.findById(accountId);
 		return ok(index.render(Group.allByAccount(account)));
@@ -32,27 +32,30 @@ public class GroupController extends Controller {
 	
 	@Transactional
 	public static Result addPost(long groupId) {
-		// try{
-		Form<Post> filledForm = postForm.bindFromRequest();
-		if (filledForm.hasErrors()) {
-			flash("message", "Error in Form!");
-			// return badRequest(view.render(arg0, arg1));
-		} else {
-			Post p = filledForm.get();
-			try{
-				final long accountId = Long.parseLong(session().get("id"));
-				Post p2 = new Post();
-				p2.content = p.content;
-				//if(currentCourse.members.contains(currentUser)){
+		if (Secured.isMemberOfGroup(groupId, ctx())) {
+			Form<Post> filledForm = postForm.bindFromRequest();
+			if (filledForm.hasErrors()) {
+				flash("message", "Error in Form!");
+				// return badRequest(view.render(arg0, arg1));
+			} else {
+				Post p = filledForm.get();
+				try {
+					final long accountId = Long.parseLong(session().get("id"));
+					Post p2 = new Post();
+					p2.content = p.content;
 					p2.owner = Account.findById(accountId);
 					p2.group = Group.findById(groupId);
 					p2.create();
-				//} else {
-					//TODO return error Message current user is not a member of the course...
-				//}
-			}catch(NumberFormatException exp){
-				//TODO log exception and handle it...
+					// } else {
+					// TODO return error Message current user is not a member of
+					// the course...
+					// }
+				} catch (NumberFormatException exp) {
+					// TODO log exception and handle it...
+				}
 			}
+		} else {
+			return forbidden();
 		}
 		return view(groupId);
 	}
@@ -64,15 +67,14 @@ public class GroupController extends Controller {
 			return redirect(routes.GroupController.index());
 		} else {
 			Form<Post> formPost = Form.form(Post.class);
-			
 			List<Post> posts = Post.getPostForGroup(id);
 			return ok(view.render(group, posts, postForm));
 		}
 	}
-	@Transactional
+
 	public static Result create() {
 		Account account = Account.findByEmail(session().get("email"));
-		Form<Group> filledForm = groupForm.bindFromRequest();		
+		Form<Group> filledForm = groupForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			flash("message", "Error in Form!");
 			return ok(addModal.render(filledForm));
@@ -102,7 +104,7 @@ public class GroupController extends Controller {
 			flash("message", "Error in Form!");
 			return badRequest(edit.render(id, filledForm));
 		} else {
-			
+
 			Logger.info(filledForm.get().description);
 			group.title = filledForm.get().title;
 			group.description = filledForm.get().description;
@@ -117,25 +119,28 @@ public class GroupController extends Controller {
 		return ok(add.render(groupForm));
 	}
 
-
 	public static Result delete(Long id) {
 		Group group = Group.findById(id);
 		group.delete();
 		flash("message", "Group " + group.title + " deleted!");
 		return redirect(routes.GroupController.index());
 	}
-	
-	public static Result deletePost(Long id){
-		try{
-			Post p = Post.findById(id);
-			long currentUserId = Long.parseLong(session().get("id"));
-			p.delete(currentUserId);
-			flash("message", "Post deleted");
-		}catch (NumberFormatException exp){
-			//TODO Log exception
+
+	public static Result deletePost(Long id) {
+		try {
+			if (Secured.isOwnerOfPost(id, ctx())) {
+				Post p = Post.findById(id);
+				long currentUserId = Long.parseLong(session().get("id"));
+				p.delete(currentUserId);
+				flash("message", "Post deleted");
+			} else {
+				return forbidden();
+			}
+		} catch (NumberFormatException exp) {
+			// TODO Log exception
 			flash("message", "Couldn't delete post");
 		}
-			
+
 		return redirect(routes.GroupController.index());
 	}
 }
