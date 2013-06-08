@@ -1,4 +1,4 @@
-@(group: Group)
+@(group: Group, posts:List[Post],postForm:  Form[Post] )
 
 @import helper._
 
@@ -17,4 +17,25 @@
     <br />
     Is closed:<br />
     <input id="groupIsClosed" type="checkbox" name="group.isClosed" ${group.isClosed ? 'checked':''}  />
+    
+    
+    @form(routes.GroupController.addPost(group.id)) {
+     	@textarea(postForm("Content"), '_label -> "Content: ") 	
+        <input type="submit" value="Add Post to Group" class="btn btn-success">    
+    }
+    
+    @if(posts != null){
+    	<h2>Posts</h2>
+    	<table class="table">
+    	@for(post <- posts){
+    	
+    	<tr>
+    	<td>@post.content</td>
+    	<td>@post.owner.loginname</td>
+    	<td><a href="" class="btn">Edit</a> </td>
+    	<td><a href="@routes.GroupController.deletePost(post.id)" class="btn" >Delete</a> </td>
+    	</tr>
+    	}
+    	</table>
+    }
 }

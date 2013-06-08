@@ -69,9 +69,28 @@ public class Group extends BaseModel {
 	public static List<Group> allByAccount(Account account) {
 		List<Group> groups = JPA
 				.em()
-				.createQuery("SELECT g.group FROM GroupAccount g WHERE g.account.id = ?1")
+				.createQuery(
+						"SELECT g.group FROM GroupAccount g WHERE g.account.id = ?1")
 				.setParameter(1, account.id).getResultList();
 		return groups;
+	}
+
+	public static boolean isMember(Long groupId, String email) {
+		Account user = (Account) JPA
+				.em()
+				.createQuery(
+						"SELECT a FROM Account a WHERE a.account.email = ?1")
+				.setParameter(1, email).getSingleResult();
+		List<Group> groups = JPA.em()
+				.createQuery(
+						"SELECT g.group FROM GroupAccount g WHERE g.account.id = ?1 and g.groupId= ?2")
+				.setParameter(1, user.id).setParameter(2, groupId).getResultList();
+		
+		if(groups != null && groups.size() > 0){
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

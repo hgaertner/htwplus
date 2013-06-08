@@ -1,4 +1,4 @@
-@(course: Course)
+@(course: Course, postForm:  Form[Post], posts : List[Post])
 
 @import helper._
 
@@ -18,6 +18,26 @@
     Updated At:<br />
     @course.updatedAt.format("dd. MMM yyyy")
     <br />
+   
+   @form(routes.CourseController.addPost(course.id)) {
+     	@textarea(postForm("Content"), '_label -> "Content: ") 	
+        <input type="submit" value="Add Post to Course" class="btn btn-success">    
+    }
+    
+    @if(posts != null){
+    	<h2>Posts</h2>
+    	<table class="table">
+    	@for(post <- posts){
+    	
+    	<tr>
+    	<td>@post.content
+    	<td><a href="" class="btn">View</a> </td>
+    	<td><a href="" class="btn">Edit</a> </td>
+    	<td><a href="@routes.CourseController.deletePost(post.id)" class="btn" >Delete</a> </td>
+    	</tr>
+    	}
+    	</table>
+    }
   
   
 }
