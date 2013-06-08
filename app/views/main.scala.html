@@ -1,48 +1,50 @@
 @(title: String)(content: Html)
 
-<!DOCTYPE html>
+<!-- Top + Content -->
+@id(text: String) = @{"smallHead"}
+@views.html.snippets.top ("smallHead") (content)
+<!-- End Top + Content -->
 
-<html>
-    <head>
-        <title>@title</title>
-        
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("bootstrap/css/bootstrap.min.css")">
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        <script src="http://code.jquery.com/jquery.js"></script>
-        <script src="@routes.Assets.at("bootstrap/js/bootstrap.js")" type="text/javascript"></script>
-        
-    </head>
-    <header>
-    	<a href="@routes.Application.index" id="logo">Awesome</a>
-    	<dl id="buttons">
-    		<dd>
-            	<a class="btn btn-primary" href="@routes.CourseController.index()">Courses</a>
-           </dd>
-           <dd>
-            	<a class="btn btn-primary" href="@routes.GroupController.index()">All Groups</a>
-           </dd>
-           <dd>
-            	<a class="btn btn-primary" href="@routes.MediaController.add">Upload Media</a>
-            </dd>
-        </dl>
-        <dl id="user">
-        	 <dt><a href="/user/@session.get("id")">@session.get("firstname")</a> <span>(@session.get("email"))</span></dt>
-            <dd>
-            	<a href="@routes.Application.logout">Logout</a>
-            </dd>
-        </dl>
-    </header>
-    <body>
-    	
-    	
-    	<div class="content"> 
-    	@if(flash.containsKey("message")) {
-        	<div class="alert-message warning">
-            	@flash.get("message")
-        	</div>
-    	}
-        @content
-        </div>
-    </body>
-</html>
+<!-- Navigation -->
+            <div class="span3">
+                <div class="navi" data-spy="affix" data-offset-top="65" data-offset-bottom="83">
+                    <div class="postit">
+                        <div class="postitHeader deactive"></div>
+                        <div class="postitBody deactive">
+                            <a href="profil.html">Profil</a><br />
+                            <img alt="avatar" src="../img/avatar.png" height="50" width="50" class="img-polaroid" /><br />
+                            <a href="profil.html">Max Mustermann</a><br />
+                            <br />
+                            <small><a href="../index.html">logout </a></small><i class="icon-remove-sign icon-white"></i>
+                        </div>
+                        <div class="postitFooter deactive"></div>
+                    </div>
+                    <div class="postit">
+                        <div class="postitHeader active"></div>
+                        <div class="postitBody active"><a href="newsstream.html">Newsstream</a></div>
+                        <div class="postitFooter active"></div>
+                    </div>
+                    <div class="postit">
+                        <div class="postitHeader deactive"></div>
+                        <div class="postitBody deactive"><a href="freunde.html">Freunde</a></div>
+                        <div class="postitFooter deactive"></div>
+                    </div>
+                    <div class="postit">
+                        <div class="postitHeader deactive"></div>
+                        <div class="postitBody deactive"><a href="gruppen.html">Gruppen</a><br />
+                        </div>
+                        <div class="postitFooter deactive"></div>
+                    </div>
+                    <div class="postit">
+                        <div class="postitHeader deactive"></div>
+                        <div class="postitBody deactive"><a href="kurse.html">Kurse</a><br />
+                        </div>
+                        <div class="postitFooter deactive"></div>
+                    </div>
+                </div>
+            </div>
+<!-- End Navigation -->
+
+<!-- Bottom -->
+@views.html.snippets.bottom()
+<!-- End Bottom -->        

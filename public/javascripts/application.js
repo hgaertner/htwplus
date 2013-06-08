@@ -10,6 +10,20 @@ function getCurrentStyle (element, cssPropertyName) {
    }
 }
 
+function editPostCom(id) {
+	var editBox = document.getElementById("editBox");
+	if (editBox != null)
+		//Post or Comment is already editing
+		editBox.focus();
+	else {
+		var elem = document.getElementById(id)
+		elem.innerHTML = "<textarea id='editBox' rows='3'>" +
+						 elem.innerHTML +
+						 "</textarea><br /><button class='btn btn-small btn-warning' type='submit'>Speichern</button>";
+		document.getElementById("editBox").focus();
+	}
+}
+
 function changeText(id, parent) {
 	var heightBefore = parseInt(getCurrentStyle(document.getElementById(id), "height").replace(/[a-z]/g, ""));
 	if (heightBefore > 0)
@@ -20,7 +34,9 @@ function changeText(id, parent) {
 }
 
 function resizeRings() {
-	var heightContent = getCurrentStyle(document.getElementById("content"), "height").replace(/[a-z]/g, "") - 15 + 115;
+	var heightContent = parseInt(getCurrentStyle(document.getElementById("content"), "height").replace(/[a-z]/g, ""));
+	if (document.getElementById("smallHead") == null)
+		heightContent += 52;
 	var offset = heightContent % 12;
 	if (offset != 0)
 		document.getElementById("content").style.paddingBottom = 12 - offset + "px";
@@ -44,3 +60,13 @@ $('[rel="tooltip"]').tooltip('toggle');
 $('[rel="tooltip"]').tooltip('hide');
 $('[rel="popover"]').popover('toggle');
 $('[rel="popover"]').popover('hide');
+
+/*
+$('#alert-btn').click(function () {
+    $('#le-alert').addClass('in'); // shows alert with Bootstrap CSS3 implem
+});
+
+$('.close').click(function () {
+    $(this).parent().removeClass('in'); // hides alert with Bootstrap CSS3 implem
+});
+*/

@@ -1,0 +1,48 @@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@title</title>
+        
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("bootstrap/css/bootstrap.min.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <script src="http://code.jquery.com/jquery.js"></script>
+        <script src="@routes.Assets.at("bootstrap/js/bootstrap.js")" type="text/javascript"></script>
+        
+    </head>
+    <header>
+    	<a href="@routes.Application.index" id="logo">Awesome</a>
+    	<dl id="buttons">
+    		<dd>
+            	<a class="btn btn-primary" href="@routes.CourseController.index()">Courses</a>
+           </dd>
+           <dd>
+            	<a class="btn btn-primary" href="@routes.GroupController.index()">All Groups</a>
+           </dd>
+           <dd>
+            	<a class="btn btn-primary" href="@routes.MediaController.add">Upload Media</a>
+            </dd>
+        </dl>
+        <dl id="user">
+        	 <dt><a href="/user/@session.get("id")">@session.get("firstname")</a> <span>(@session.get("email"))</span></dt>
+            <dd>
+            	<a href="@routes.Application.logout">Logout</a>
+            </dd>
+        </dl>
+    </header>
+    <body>
+    	
+    	
+    	<div class="content"> 
+    	@if(flash.containsKey("message")) {
+        	<div class="alert-message warning">
+            	@flash.get("message")
+        	</div>
+    	}
+        @content
+        </div>
+    </body>
+</html>
