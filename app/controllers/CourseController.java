@@ -42,8 +42,8 @@ public class CourseController extends Controller {
 				Post p2 = new Post();
 				p2.content = p.content;
 				//if(currentCourse.members.contains(currentUser)){
-					p2.owner = JPA.em().find(Account.class, accountId);
-					p2.course = JPA.em().find(Course.class, courseId);
+					p2.owner = Account.findById(accountId);
+					p2.course = Course.findById(courseId);
 					p2.create();
 				//} else {
 					//TODO return error Message current user is not a member of the course...
@@ -75,9 +75,7 @@ public class CourseController extends Controller {
 			return redirect(routes.CourseController.index());
 		} else {
 			
-			  List<Post> posts = JPA.em()
-			  .createQuery("SELECT p FROM Post p WHERE p.course.id = ?1")
-			 .setParameter(1, id).getResultList();
+			  List<Post> posts = Post.getPostForCourse(id);
 			 
 			return ok(view.render(course, postForm, posts));
 		}
@@ -105,6 +103,7 @@ public class CourseController extends Controller {
 		}
 	}
 
+	@Transactional
 	public static Result delete(Long id) {
 		Course course = Course.findById(id);
 		course.delete();
@@ -112,6 +111,7 @@ public class CourseController extends Controller {
 		return redirect(routes.CourseController.index());
 	}
 	
+	@Transactional
 	public static Result deletePost(Long id){
 		try{
 			Post post = Post.findById(id);

@@ -14,7 +14,6 @@ import views.html.Group.snippets.*;
 import play.db.jpa.*;
 
 @Security.Authenticated(Secured.class)
-@Transactional
 @With(Common.class)
 public class GroupController extends Controller {
 
@@ -31,6 +30,7 @@ public class GroupController extends Controller {
 		return ok(index.render(Group.allByAccount(account)));
 	}
 	
+	@Transactional
 	public static Result addPost(long groupId) {
 		// try{
 		Form<Post> filledForm = postForm.bindFromRequest();
@@ -44,8 +44,8 @@ public class GroupController extends Controller {
 				Post p2 = new Post();
 				p2.content = p.content;
 				//if(currentCourse.members.contains(currentUser)){
-					p2.owner = JPA.em().find(Account.class, accountId);
-					p2.group = JPA.em().find(Group.class, groupId);
+					p2.owner = Account.findById(accountId);
+					p2.group = Group.findById(groupId);
 					p2.create();
 				//} else {
 					//TODO return error Message current user is not a member of the course...
@@ -57,7 +57,7 @@ public class GroupController extends Controller {
 		return view(groupId);
 	}
 	
-
+	@Transactional(readOnly=true)
 	public static Result view(Long id) {
 		Group group = Group.findById(id);
 		if (group == null) {
@@ -65,13 +65,11 @@ public class GroupController extends Controller {
 		} else {
 			Form<Post> formPost = Form.form(Post.class);
 			
-			List<Post> posts = JPA.em()
-			  .createQuery("SELECT p FROM Post p WHERE p.group.id = ?1")
-			 .setParameter(1, id).getResultList();
-			return ok(view.render(group,posts,postForm));
+			List<Post> posts = Post.getPostForGroup(id);
+			return ok(view.render(group, posts, postForm));
 		}
 	}
-	
+	@Transactional
 	public static Result create() {
 		Account account = Account.findByEmail(session().get("email"));
 		Form<Group> filledForm = groupForm.bindFromRequest();		
@@ -86,6 +84,7 @@ public class GroupController extends Controller {
 		}
 	}
 
+	@Transactional
 	public static Result edit(Long id) {
 		Group group = Group.findById(id);
 		if (group == null) {
@@ -95,6 +94,7 @@ public class GroupController extends Controller {
 		}
 	}
 	
+	@Transactional
 	public static Result update(Long id) {
 		Group group = Group.findById(id);
 		Form<Group> filledForm = groupForm.bindFromRequest();
