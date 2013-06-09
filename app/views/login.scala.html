@@ -67,6 +67,11 @@ Hier könnte eine Beschreibung stehen, in der in kurzen aber sehr prägnanten Wo
 			<div class="postitHeader active"></div>
 			<div class="postitBody active">
 				@helper.form(routes.Application.authenticate) {
+					@if(flash.contains("success")) {
+					    <p class="success">
+					        @flash.get("success")
+					    </p>
+					}
 					<b>Email</b><br />
 					<input type="email" name="email" placeholder="Email" value="@loginForm("email").value">
 					<b>Passwort</b><br />
