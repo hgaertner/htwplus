@@ -1,92 +1,11 @@
-@(loginForm: Form[Login])
+@main("Welcome") {
 
-@import helper._
-
-
-<!-- Top + Content -->
-@views.html.snippets.top("") {
 <h1>HTWplus</h1>
 <br />
-Hier könnte eine Beschreibung stehen, in der in kurzen aber sehr prägnanten Worten dieses Projekt im Rahmen von Independent Coursework unter Aufsicht von Prof. Hendrik Gärtner im 2. Semesters des Studiengangs Angewandte Informatik Master an der HTW Berlin beschrieben und erläutert werden.
+Hier könnte eine Beschreibung stehen, in der in kurzen aber sehr
+prägnanten Worten dieses Projekt im Rahmen von Independent Coursework
+unter Aufsicht von Prof. Hendrik Gärtner im 2. Semesters des
+Studiengangs Angewandte Informatik Master an der HTW Berlin beschrieben
+und erläutert werden. 
+
 }
-<!-- End Top + Content -->
-
-<!-- editModal -->
-                                    <div id="registerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                                            <h3 id="editModalLabel">Registrieren</h3>
-                                        </div>
-                                        <div class="modal-body">
-                                                <table class="table">
-                                                    <tr>
-                                                        <th>Name, Vorname</th>
-                                                        <td colspan="2">
-                                                            <input type="text" placeholder="Mustermann">
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" placeholder="Max">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Email</th>
-                                                        <td colspan="3">
-                                                            <input type="text" placeholder="max.mustermann at muster.de">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Email wiederholen</th>
-                                                        <td colspan="3">
-                                                            <input type="text" placeholder="max.mustermann at muster.de">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Passwort</th>
-                                                        <td colspan="3">
-                                                            <input type="password" placeholder="">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Passwort wiederholen</th>
-                                                        <td colspan="3">
-                                                            <input type="password" placeholder="">
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button class="btn" data-dismiss="modal" aria-hidden="true">Abbrechen</button>
-                                            <button class="btn btn-warning">Senden</button>
-                                        </div>
-                                    </div>
-<!-- Ende editModal -->
-
-<!-- Navigation -->
-	<div class="span3"><div class="navi" data-spy="affix" data-offset-bottom="83">
-		<div class="postit">
-			<div class="postitHeader active"></div>
-			<div class="postitBody active">
-				@helper.form(routes.Application.authenticate) {
-					@if(flash.contains("success")) {
-					    <p class="success">
-					        @flash.get("success")
-					    </p>
-					}
-					<b>Email</b><br />
-					<input type="email" name="email" placeholder="Email" value="@loginForm("email").value">
-					<b>Passwort</b><br />
-					<input type="password" name="password" placeholder="Passwort">
-				    <button type="submit" class="btn btn-warning">Anmelden</button>
-				}
-				<div class="register">
-					<a href="#registerModal" data-toggle="modal"><i class="icon-plus-sign icon-white"></i><small> Registrieren</small></a>
-				</div>
-			</div>
-			<div class="postitFooter active"></div>
-		</div>
-	</div></div>
-<!-- End Navigation -->
-
-<!-- Bottom -->
-@views.html.snippets.bottom()
-<!-- End Bottom -->  

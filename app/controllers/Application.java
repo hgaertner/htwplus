@@ -1,5 +1,6 @@
 package controllers;
 
+import play.Logger;
 import play.Routes;
 import play.mvc.*;
 import play.data.*;
@@ -10,6 +11,7 @@ import static play.data.Form.*;
 import controllers.Login;
 
 @Transactional
+@With(Common.class)
 public class Application extends Controller {
 	
 	public static Result javascriptRoutes() {
@@ -26,7 +28,9 @@ public class Application extends Controller {
 	public static Result authenticate() {
 		Form<Login> loginForm = form(Login.class).bindFromRequest();
 		if (loginForm.hasErrors()) {
-			return badRequest(login.render(loginForm));
+			Common.setLoginForm(loginForm);
+			flash("success", "Error in Form");
+			return badRequest(login.render());
 		} else {
 			session().clear();
 			session("email", loginForm.get().email);
@@ -37,7 +41,7 @@ public class Application extends Controller {
 	}
 	
 	public static Result login() {
-		return ok(login.render(form(Login.class)));
+		return ok(login.render());
 	}
 	
 	/**

@@ -1,51 +1,84 @@
 @(title: String)(content: Html)
+@defining(Common.currentAccount()) { user =>
 
-<!-- Top + Content -->
-@views.html.snippets.top("smallHead") {
-@content
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<title>HTW.plus()</title>
+<!-- Bootstrap -->
+<link rel="stylesheet" href="@routes.Assets.at("bootstrap/css/bootstrap.css")">
+<link rel="stylesheet" href="@routes.Assets.at("bootstrap/css/bootstrap-responsive.css")">
+<!-- Own -->
+<link rel="stylesheet" media="all" href="@routes.Assets.at("stylesheets/background.css")">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+@if(user != null){
+<body id="smallHead">
+} else {
+<body>
 }
-<!-- End Top + Content -->
 
-<!-- Navigation -->
-            <div class="span3">
-                <div class="navi" data-spy="affix" data-offset-top="65" data-offset-bottom="83">
-                    <div class="postit">
-                        <div class="postitHeader deactive"></div>
-                        <div class="postitBody deactive">
-                            <a href="profil.html">Profil</a><br />
-                            <img alt="avatar" src="../img/avatar.png" height="50" width="50" class="img-polaroid" /><br />
-                            <a href="profil.html">Max Mustermann</a><br />
-                            <br />
-                            <small><a href="@routes.Application.logout">logout </a></small><i class="icon-remove-sign icon-white"></i>
-                        </div>
-                        <div class="postitFooter deactive"></div>
-                    </div>
-                    <div class="postit">
-                        <div class="postitHeader active"></div>
-                        <div class="postitBody active"><a href="newsstream.html">Newsstream</a></div>
-                        <div class="postitFooter active"></div>
-                    </div>
-                    <div class="postit">
-                        <div class="postitHeader deactive"></div>
-                        <div class="postitBody deactive"><a href="freunde.html">Freunde</a></div>
-                        <div class="postitFooter deactive"></div>
-                    </div>
-                    <div class="postit">
-                        <div class="postitHeader deactive"></div>
-                        <div class="postitBody deactive"><a href="gruppen.html">Gruppen</a><br />
-                        </div>
-                        <div class="postitFooter deactive"></div>
-                    </div>
-                    <div class="postit">
-                        <div class="postitHeader deactive"></div>
-                        <div class="postitBody deactive"><a href="kurse.html">Kurse</a><br />
-                        </div>
-                        <div class="postitFooter deactive"></div>
-                    </div>
-                </div>
-            </div>
-<!-- End Navigation -->
+	<header>
+		<div class="container">
+			<div class="span9">
+				<div id="logo"></div>
+			</div>
+		</div>
+	</header>
 
-<!-- Bottom -->
-@views.html.snippets.bottom()
-<!-- End Bottom -->        
+	<div class="container">
+		<div class="row">
+			<div class="span9">
+				<div id="right">
+					<div id="topRight"></div>
+					<div id="bottomRight"></div>
+					<div id="left">
+						<div id="topLeft"></div>
+						<div id="bottomLeft"></div>
+						<!-- Content -->
+						<div id="top">
+							<div id="bottom">
+								<div id="content">
+									@if(flash.containsKey("message")) {
+									<div class="alert-message warning">@flash.get("message")
+									</div>
+									} @content
+								</div>
+							</div>
+						</div>
+						<!-- Ende Content -->
+					</div>
+				</div>
+			</div>
+
+			<!-- Navigation -->
+			@if(user != null){
+					@views.html.snippets.navi()
+			} else {
+					@views.html.snippets.loginForm(Common.getLoginForm())
+			}
+			<!-- End Navigation -->
+
+		</div>
+	</div>
+
+	<footer>
+		<div class="container">
+			<div class="span9">
+				<div id="htw">
+					<a href="#">Impressum</a>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.10.0.js")"></script>
+	<script type="text/javascript" src="@routes.Assets.at("bootstrap/js/bootstrap.js")"></script>
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/application.js")"></script>
+
+</body>
+</html>
+
+}
