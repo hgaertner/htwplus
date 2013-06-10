@@ -50,7 +50,7 @@
 		<div class="postit">
 			<div class="postitHeader active"></div>
 			<div class="postitBody active">
-				@helper.form(routes.Application.authenticate) {
+				@helper.form(routes.AccountController.authenticate) {
 				@if(flash.contains("success")) {
 				<p class="success">@flash.get("success")</p>
 				} <b>Email</b><br /> <input type="email" name="email"

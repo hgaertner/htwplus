@@ -2,6 +2,7 @@ package models;
 
 import java.util.*;
 
+import play.Logger;
 import play.data.validation.Constraints.*;
 import play.data.format.Formats.*;
 import javax.persistence.*;

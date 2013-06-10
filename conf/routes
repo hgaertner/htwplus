@@ -5,8 +5,8 @@
 # Home page
 GET     /                       controllers.Application.index()
 GET 	/stream					controllers.Application.stream()
-POST    /login                  controllers.Application.authenticate()
-GET     /logout                 controllers.Application.logout()
+POST    /login                  controllers.AccountController.authenticate()
+GET     /logout                 controllers.AccountController.logout()
 
 # JavaScript Routes
 GET		/assets/javascripts/routes	controllers.Application.javascriptRoutes()
@@ -35,8 +35,8 @@ POST	/group/addPost			controllers.GroupController.addPost(id:Long)
 GET		/group/:id/deletePost	controllers.GroupController.deletePost(id:Long)
 
 # Signup
-GET     /signup                	controllers.SignUp.blank()
-POST    /signup                 controllers.SignUp.submit()
+GET     /signup                	controllers.AccountController.blank()
+POST    /signup                 controllers.AccountController.submit()
 
 #User
 GET		/user/:id				controllers.ProfileController.view(id:Long)

@@ -9,7 +9,7 @@ import play.mvc.Result;
 import views.html.Profile.*;
 
 @Transactional
-public class ProfileController extends Controller {
+public class ProfileController extends BaseController {
 
 	static Form<Account> accountForm = Form.form(Account.class);
 

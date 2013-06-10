@@ -16,7 +16,7 @@ import scala.reflect.internal.Trees.This;
 
 
 @Security.Authenticated(Secured.class)
-public class MediaController extends Controller {
+public class MediaController extends BaseController {
 	
 	static Form<Media> mediaForm = Form.form(Media.class);
 	

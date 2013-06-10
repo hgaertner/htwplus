@@ -1,5 +1,5 @@
 @(title: String)(content: Html)
-@defining(Common.currentAccount()) { user =>
+@defining(Component.currentAccount()) { user =>
 
 <!DOCTYPE html>
 <html lang="de">
@@ -57,7 +57,7 @@
 			@if(user != null){
 					@views.html.snippets.navi()
 			} else {
-					@controllers.Application.loginForm()
+					@controllers.Component.loginForm()
 			}
 			<!-- End Navigation -->
 

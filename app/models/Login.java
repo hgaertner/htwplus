@@ -1,6 +1,5 @@
-package controllers;
+package models;
 
-import models.Account;
 import play.db.jpa.Transactional;
 
 public class Login {

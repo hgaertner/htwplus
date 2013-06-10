@@ -14,8 +14,8 @@ import views.html.Group.snippets.*;
 import play.db.jpa.*;
 
 @Security.Authenticated(Secured.class)
-@With(Common.class)
-public class GroupController extends Controller {
+@Transactional
+public class GroupController extends BaseController {
 
 	static Form<Group> groupForm = Form.form(Group.class);
 
@@ -114,7 +114,8 @@ public class GroupController extends Controller {
 			return redirect(routes.GroupController.index());
 		}
 	}
-
+	
+	@Transactional
 	public static Result add() {
 		return ok(add.render(groupForm));
 	}

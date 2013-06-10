@@ -18,7 +18,7 @@ import views.html.Course.view;
 
 @Security.Authenticated(Secured.class)
 @Transactional
-public class CourseController extends Controller {
+public class CourseController extends BaseController {
 
 	static Form<Course> courseForm = Form.form(Course.class);
 
