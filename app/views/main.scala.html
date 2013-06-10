@@ -57,7 +57,7 @@
 			@if(user != null){
 					@views.html.snippets.navi()
 			} else {
-					@views.html.snippets.loginForm(Common.getLoginForm())
+					@controllers.Application.loginForm()
 			}
 			<!-- End Navigation -->
 

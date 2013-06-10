@@ -3,9 +3,11 @@ package controllers;
 import play.Logger;
 import play.Routes;
 import play.mvc.*;
+import play.api.templates.Html;
 import play.data.*;
 import models.*;
 import views.html.*;
+import views.html.snippets.*;
 import play.db.jpa.*;
 import static play.data.Form.*;
 import controllers.Login;
@@ -21,6 +23,10 @@ public class Application extends Controller {
 	}
 	
 	@Security.Authenticated(Secured.class)
+	public static Result stream() {
+		return ok(views.html.stream.render());
+	}
+	
 	public static Result index() {
 		return ok(views.html.index.render());
 	}
@@ -28,20 +34,20 @@ public class Application extends Controller {
 	public static Result authenticate() {
 		Form<Login> loginForm = form(Login.class).bindFromRequest();
 		if (loginForm.hasErrors()) {
-			Common.setLoginForm(loginForm);
 			flash("success", "Error in Form");
-			return badRequest(login.render());
+			return badRequest(index.render());
 		} else {
 			session().clear();
 			session("email", loginForm.get().email);
 			session("id", Account.findByEmail(loginForm.get().email).id.toString());
 			session("firstname", Account.findByEmail(loginForm.get().email).firstname);
-			return redirect(routes.Application.index());
+			return redirect(routes.Application.stream());
 		}
 	}
 	
-	public static Result login() {
-		return ok(login.render());
+	public static Html loginForm() {
+		Form<Login> loginForm = Form.form(Login.class).bindFromRequest();
+		return views.html.snippets.loginForm.render(loginForm);
 	}
 	
 	/**
@@ -50,10 +56,8 @@ public class Application extends Controller {
 	public static Result logout() {
 		session().clear();
 		flash("success", "You've been logged out");
-		return redirect(routes.Application.login());
+		return redirect(routes.Application.index());
 	}
 
-	
 
-	
 }
