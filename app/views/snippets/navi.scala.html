@@ -15,7 +15,7 @@
 		<div class="postit">
 			<div class="postitHeader active"></div>
 			<div class="postitBody active">
-				<a href="stream">Newsstream</a>
+				<a href="@routes.Application.stream()">Newsstream</a>
 			</div>
 			<div class="postitFooter active"></div>
 		</div>
@@ -29,14 +29,14 @@
 		<div class="postit">
 			<div class="postitHeader deactive"></div>
 			<div class="postitBody deactive">
-				<a href="groups">Gruppen</a><br />
+				<a href="@routes.GroupController.index()">Gruppen</a><br />
 			</div>
 			<div class="postitFooter deactive"></div>
 		</div>
 		<div class="postit">
 			<div class="postitHeader deactive"></div>
 			<div class="postitBody deactive">
-				<a href="courses">Kurse</a><br />
+				<a href="@routes.CourseController.index()">Kurse</a><br />
 			</div>
 			<div class="postitFooter deactive"></div>
 		</div>
