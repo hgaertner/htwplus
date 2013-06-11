@@ -32,7 +32,7 @@ public class GroupController extends BaseController {
 	
 	@Transactional
 	public static Result addPost(long groupId) {
-		if (Secured.isMemberOfGroup(groupId, ctx())) {
+		if (Secured.isMemberOfGroup(groupId)) {
 			Form<Post> filledForm = postForm.bindFromRequest();
 			if (filledForm.hasErrors()) {
 				flash("message", "Error in Form!");
