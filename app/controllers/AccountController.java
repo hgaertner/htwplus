@@ -7,8 +7,7 @@ import play.data.Form;
 import play.db.jpa.Transactional;
 import play.mvc.*;
 import views.html.index;
-import views.html.signup.form;
-import views.html.signup.summary;
+import views.html.snippets.*;
 
 @Transactional
 public class AccountController extends BaseController {
@@ -41,15 +40,7 @@ public class AccountController extends BaseController {
 		flash("success", "You've been logged out");
 		return redirect(routes.Application.index());
 	}
-	
-    /**
-     * Display a blank form.
-     */ 
-    public static Result blank() {
-        return ok(form.render(signupForm));
-    }
-  
-  
+	  
     /**
      * Handle the form submission.
      */
@@ -57,10 +48,6 @@ public class AccountController extends BaseController {
     public static Result submit() {
         Form<Account> filledForm = signupForm.bindFromRequest();
         System.out.println(filledForm.errors());
-        // Check accept conditions
-        if(!"true".equals(filledForm.field("accept").value())) {
-            filledForm.reject("accept", "You must accept the terms and conditions");
-        }
         // Check Mail
         if(!(Account.findByEmail(filledForm.field("email").value()) == null)) {
             filledForm.reject("email", "Mail is already taken!");
@@ -74,11 +61,11 @@ public class AccountController extends BaseController {
                 
         if(filledForm.hasErrors()) {
         	
-            return badRequest(form.render(filledForm));
+            return ok(signup.render(filledForm));
         } else {
             Account created = filledForm.get();
             created.create();
-            return ok(summary.render(created));
+            return ok(signupSuccess.render());
         }
     }
 	

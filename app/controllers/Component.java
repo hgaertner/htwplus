@@ -1,5 +1,6 @@
 package controllers;
 
+import static play.data.Form.form;
 import models.Account;
 import models.Group;
 import models.Login;
@@ -27,7 +28,8 @@ public class Component extends Action.Simple {
     
 	public static Html loginForm() {
 		Form<Login> loginForm = Form.form(Login.class).bindFromRequest();
-		return views.html.snippets.loginForm.render(loginForm);
+		Form<Account> signupForm = form(Account.class).bindFromRequest();
+		return views.html.snippets.loginForm.render(loginForm, signupForm);
 	}
     
 }

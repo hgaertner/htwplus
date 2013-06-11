@@ -12,7 +12,6 @@ import java.util.Set;
 @SequenceGenerator(name = "default_seq", sequenceName = "account_seq")
 public class Account extends BaseModel {
 
-	@Required
 	public String loginname;
 
 	@Required

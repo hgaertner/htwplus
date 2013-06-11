@@ -35,7 +35,6 @@ POST	/group/addPost			controllers.GroupController.addPost(id:Long)
 GET		/group/:id/deletePost	controllers.GroupController.deletePost(id:Long)
 
 # Signup
-GET     /signup                	controllers.AccountController.blank()
 POST    /signup                 controllers.AccountController.submit()
 
 #User

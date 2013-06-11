@@ -1,0 +1,76 @@
+@(signupForm: Form[Account])
+
+@import helper._
+
+
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">x</button>
+		<h3 id="editModalLabel">Registrieren</h3>
+	</div>
+	@helper.form(routes.AccountController.submit, 'id -> "newSignupForm") {
+	<div class="modal-body">
+	@inputText(
+                signupForm("firstname"), 
+                '_label -> "Firstname"
+            )
+            
+            @inputText(
+                signupForm("lastname"), 
+                '_label -> "Lastname",  
+                '_error -> signupForm.globalError
+            )
+            
+            @inputText(
+                signupForm("email"),
+                '_label -> "Email",
+                '_error -> signupForm.globalError
+            )
+            
+            @inputPassword(
+                signupForm("password"), 
+                '_label -> "Password",
+                '_help -> "A password must be at least 6 characters. "
+            )
+            
+            @inputPassword(
+                signupForm("repeatPassword"), 
+                '_label -> "Repeat password",
+                '_error -> signupForm.error("password")
+            )
+		<table class="table">
+			<tr>
+				<th>Name, Vorname</th>
+				<td colspan="2"><input type="text" placeholder="Mustermann">
+				</td>
+				<td><input type="text" placeholder="Max"></td>
+			</tr>
+			<tr>
+				<th>Email</th>
+				<td colspan="3"><input type="text"
+					placeholder="max.mustermann at muster.de"></td>
+			</tr>
+			<tr>
+				<th>Email wiederholen</th>
+				<td colspan="3"><input type="text"
+					placeholder="max.mustermann at muster.de"></td>
+			</tr>
+			<tr>
+				<th>Passwort</th>
+				<td colspan="3"><input type="password" placeholder="">
+				</td>
+			</tr>
+			<tr>
+				<th>Passwort wiederholen</th>
+				<td colspan="3"><input type="password" placeholder="">
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Abbrechen</button>
+		<button id="submitSignup" class="btn btn-warning">Senden</button>
+	</div>
+	}
+
+

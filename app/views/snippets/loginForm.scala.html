@@ -1,47 +1,9 @@
-@(loginForm: Form[Login])
+@(loginForm: Form[Login], signupForm: Form[Account])
 
 <!-- editModal -->
 <div id="registerModal" class="modal hide fade" tabindex="-1"
 	role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal"
-			aria-hidden="true">x</button>
-		<h3 id="editModalLabel">Registrieren</h3>
-	</div>
-	<div class="modal-body">
-		<table class="table">
-			<tr>
-				<th>Name, Vorname</th>
-				<td colspan="2"><input type="text" placeholder="Mustermann">
-				</td>
-				<td><input type="text" placeholder="Max"></td>
-			</tr>
-			<tr>
-				<th>Email</th>
-				<td colspan="3"><input type="text"
-					placeholder="max.mustermann at muster.de"></td>
-			</tr>
-			<tr>
-				<th>Email wiederholen</th>
-				<td colspan="3"><input type="text"
-					placeholder="max.mustermann at muster.de"></td>
-			</tr>
-			<tr>
-				<th>Passwort</th>
-				<td colspan="3"><input type="password" placeholder="">
-				</td>
-			</tr>
-			<tr>
-				<th>Passwort wiederholen</th>
-				<td colspan="3"><input type="password" placeholder="">
-				</td>
-			</tr>
-		</table>
-	</div>
-	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true">Abbrechen</button>
-		<button class="btn btn-warning">Senden</button>
-	</div>
+@views.html.snippets.signup(signupForm)
 </div>
 <!-- Ende editModal -->
 
