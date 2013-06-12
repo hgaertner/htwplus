@@ -10,59 +10,32 @@
 	</div>
 	@helper.form(routes.AccountController.submit, 'id -> "newSignupForm") {
 	<div class="modal-body">
-	@inputText(
-                signupForm("firstname"), 
-                '_label -> "Firstname"
-            )
-            
-            @inputText(
-                signupForm("lastname"), 
-                '_label -> "Lastname",  
-                '_error -> signupForm.globalError
-            )
-            
-            @inputText(
-                signupForm("email"),
-                '_label -> "Email",
-                '_error -> signupForm.globalError
-            )
-            
-            @inputPassword(
-                signupForm("password"), 
-                '_label -> "Password",
-                '_help -> "A password must be at least 6 characters. "
-            )
-            
-            @inputPassword(
-                signupForm("repeatPassword"), 
-                '_label -> "Repeat password",
-                '_error -> signupForm.error("password")
-            )
 		<table class="table">
 			<tr>
-				<th>Name, Vorname</th>
-				<td colspan="2"><input type="text" placeholder="Mustermann">
+				<th>Vorname, Name</th>
+				<td>
+					<input type="text" name="firstname" placeholder="Max" value="@signupForm("firstname").value">
 				</td>
-				<td><input type="text" placeholder="Max"></td>
+				<td>
+					<input type="text" name="lastname" placeholder="Mustermann" value="@signupForm("lastname").value">
+				</td>
 			</tr>
 			<tr>
 				<th>Email</th>
-				<td colspan="3"><input type="text"
-					placeholder="max.mustermann at muster.de"></td>
-			</tr>
-			<tr>
-				<th>Email wiederholen</th>
-				<td colspan="3"><input type="text"
-					placeholder="max.mustermann at muster.de"></td>
+				<td colspan="2">
+					<input type="email" name="email" placeholder="max.mustermann@@muster.de" value="@signupForm("email").value">
+				</td>
 			</tr>
 			<tr>
 				<th>Passwort</th>
-				<td colspan="3"><input type="password" placeholder="">
+				<td colspan="2">
+					<input type="password" name="password" placeholder="" value="@signupForm("password").value">
 				</td>
 			</tr>
 			<tr>
 				<th>Passwort wiederholen</th>
-				<td colspan="3"><input type="password" placeholder="">
+				<td colspan="2">
+					<input type="password" name="repeatPassword" placeholder="" value="@signupForm("repeatPassword").value">
 				</td>
 			</tr>
 		</table>
