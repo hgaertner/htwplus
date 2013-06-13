@@ -3,13 +3,9 @@ package controllers;
 import play.Logger;
 import play.Routes;
 import play.mvc.*;
-import play.api.templates.Html;
-import play.data.*;
-import models.*;
 import views.html.*;
-import views.html.snippets.*;
 import play.db.jpa.*;
-import static play.data.Form.*;
+
 
 @Transactional
 public class Application extends BaseController {
@@ -23,11 +19,17 @@ public class Application extends BaseController {
 	
 	@Security.Authenticated(Secured.class)
 	public static Result stream() {
-		return ok(views.html.stream.render());
+		return ok(stream.render());
 	}
 	
 	public static Result index() {
-		return ok(views.html.index.render());
+		return ok(index.render());
+	}
+	
+	@Security.Authenticated(Secured.class)
+	public static Result defaultRoute(String path) {
+		Logger.info(path+" nicht gefunden");
+		return ok(stream.render());
 	}
 
 }

@@ -6,7 +6,6 @@ import play.*;
 import play.mvc.*;
 import play.data.*;
 import models.Account;
-import models.Course;
 import models.Group;
 import models.Post;
 import views.html.Group.*;

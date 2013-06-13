@@ -2,9 +2,10 @@
 
 @import helper._
 
-@main("Group list") {
+@main("Gruppen") {
 
-    <h1>@groups.size() group(s)</h1>
+                  <h1>Gruppen (@groups.size())</h1>
+                  <br />
     
     <a class="btn btn-primary" href="@routes.GroupController.add">Add</a>
     <a class="btn btn-primary" href=@routes.GroupController.indexByAccount(Component.currentAccount().id)>My Groups</a>

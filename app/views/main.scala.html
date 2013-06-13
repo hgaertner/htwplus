@@ -44,7 +44,15 @@
 									@if(flash.containsKey("message")) {
 									<div class="alert-message warning">@flash.get("message")
 									</div>
-									} @content
+									} 
+									@if(user != null){
+									<br />
+					                  <ul class="breadcrumb">
+					                      <li><a href="@routes.Application.stream()">Home</a> <span class="divider">/</span></li>
+					                      <li class="active">@title</li>
+					                  </ul>
+									}
+                  					@content
 								</div>
 							</div>
 						</div>
@@ -55,7 +63,7 @@
 
 			<!-- Navigation -->
 			@if(user != null){
-					@views.html.snippets.navi()
+					@views.html.snippets.navi(title)
 			} else {
 					@controllers.Component.loginForm()
 			}

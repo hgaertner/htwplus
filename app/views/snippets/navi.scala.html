@@ -1,44 +1,45 @@
+@(title: String)
 <div class="span3">
 	<div class="navi" data-spy="affix" data-offset-top="65"
 		data-offset-bottom="83">
 		<div class="postit">
-			<div class="postitHeader deactive"></div>
-			<div class="postitBody deactive">
-				<a href="profil.html">Profil</a><br /> <img alt="avatar"
+			<div class="postitHeader @if(title.equals("Profil")){active} else {deactive}"></div>
+			<div class="postitBody @if(title.equals("Profil")){active} else {deactive}">
+				<a href="@routes.ProfileController.me()">Profil</a><br /> <img alt="avatar"
 					src="@routes.Assets.at("images/avatar.png")" height="50" width="50" class="img-polaroid" /><br />
 				<a href="profil.html">Max Mustermann</a><br /> <br /> <small><a
 					href="@routes.AccountController.logout">logout </a></small><i
 					class="icon-remove-sign icon-white"></i>
 			</div>
-			<div class="postitFooter deactive"></div>
+			<div class="postitFooter @if(title.equals("Profil")){active} else {deactive}"></div>
 		</div>
 		<div class="postit">
-			<div class="postitHeader active"></div>
-			<div class="postitBody active">
+			<div class="postitHeader @if(title.equals("Newsstream")){active} else {deactive}"></div>
+			<div class="postitBody @if(title.equals("Newsstream")){active} else {deactive}">
 				<a href="@routes.Application.stream()">Newsstream</a>
 			</div>
-			<div class="postitFooter active"></div>
+			<div class="postitFooter @if(title.equals("Newsstream")){active} else {deactive}"></div>
 		</div>
 		<div class="postit">
-			<div class="postitHeader deactive"></div>
-			<div class="postitBody deactive">
-				<a href="friends">Freunde</a>
+			<div class="postitHeader @if(title.equals("Freunde")){active} else {deactive}"></div>
+			<div class="postitBody @if(title.equals("Freunde")){active} else {deactive}">
+				<a href="@routes.FriendshipController.index()">Freunde</a>
 			</div>
-			<div class="postitFooter deactive"></div>
+			<div class="postitFooter @if(title.equals("Freunde")){active} else {deactive}"></div>
 		</div>
 		<div class="postit">
-			<div class="postitHeader deactive"></div>
-			<div class="postitBody deactive">
+			<div class="postitHeader @if(title.equals("Gruppen")){active} else {deactive}"></div>
+			<div class="postitBody @if(title.equals("Gruppen")){active} else {deactive}">
 				<a href="@routes.GroupController.index()">Gruppen</a><br />
 			</div>
-			<div class="postitFooter deactive"></div>
+			<div class="postitFooter @if(title.equals("Gruppen")){active} else {deactive}"></div>
 		</div>
 		<div class="postit">
-			<div class="postitHeader deactive"></div>
-			<div class="postitBody deactive">
+			<div class="postitHeader @if(title.equals("Kurse")){active} else {deactive}"></div>
+			<div class="postitBody @if(title.equals("Kurse")){active} else {deactive}">
 				<a href="@routes.CourseController.index()">Kurse</a><br />
 			</div>
-			<div class="postitFooter deactive"></div>
+			<div class="postitFooter @if(title.equals("Kurse")){active} else {deactive}"></div>
 		</div>
 	</div>
 </div>

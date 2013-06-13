@@ -12,6 +12,16 @@ import views.html.Profile.*;
 public class ProfileController extends BaseController {
 
 	static Form<Account> accountForm = Form.form(Account.class);
+	
+	public static Result me() {
+		Account account = Component.currentAccount();
+		if (account == null) {
+			flash("message", "Dieses Profil gibt es nicht.");
+			return redirect(routes.Application.index());
+		} else {
+			return ok(index.render(account));
+		}
+	}
 
 	public static Result view(Long id) {
 		Account account = Account.findById(id);
