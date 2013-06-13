@@ -23,9 +23,8 @@ POST	/course/addPost			controllers.CourseController.addPost(id:Long)
 GET		/course/:id/deletePost	controllers.CourseController.deletePost(id:Long)
 
 #Group
-GET 	/groups					controllers.GroupController.index()
-GET 	/groups/user/:id		controllers.GroupController.indexByAccount(id:Long)
-GET 	/group/add				controllers.GroupController.add()
+GET 	/gruppen				controllers.GroupController.index()
+#GET 	/groups/user/:id		controllers.GroupController.indexByAccount(id:Long)
 POST	/group/create			controllers.GroupController.create()
 GET		/group/:id				controllers.GroupController.view(id:Long)
 GET		/group/:id/edit			controllers.GroupController.edit(id:Long)

@@ -4,21 +4,7 @@
 
 @main("Group View") {
     
-    <h2>@group.title</h2>
-    
-    Description:<br />
-    @group.description
-    <br />
-    Created At:<br />
-    @group.createdAt.format("dd. MMM yyyy")
-    <br />
-    Updated At:<br />
-    @group.updatedAt.format("dd. MMM yyyy")
-    <br />
-    Is closed:<br />
-    <input id="groupIsClosed" type="checkbox" name="group.isClosed" ${group.isClosed ? 'checked':''}  />
-    
-    
+        
     @form(routes.GroupController.addPost(group.id)) {
      	@textarea(postForm("Content"), '_label -> "Content: ") 	
         <input type="submit" value="Add Post to Group" class="btn btn-success">    

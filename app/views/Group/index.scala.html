@@ -1,24 +1,94 @@
-@(groups: List[Group])
+@(groups: List[Group], groupForm: Form[Group])
 
 @import helper._
 
 @main("Gruppen") {
 
-                  <h1>Gruppen (@groups.size())</h1>
-                  <br />
+
     
-    <a class="btn btn-primary" href="@routes.GroupController.add">Add</a>
-    <a class="btn btn-primary" href=@routes.GroupController.indexByAccount(Component.currentAccount().id)>My Groups</a>
-    <table class="table">
-         @for(group <- groups) {
-    	<tr>
-    	<td>@group.title                    
-    	<td><a href="@routes.GroupController.view(group.id)" class="btn">View</a> </td>
-    	<td><a href="@routes.GroupController.edit(group.id)" class="btn">Edit</a> </td>
-    	<td><a href="@routes.GroupController.delete(group.id)" class="btn">Delete</a> </td>
-    	</tr>
-    }
-    </table>
+    <!-- Content -->
+            <!-- createNewGroupModal -->
+            <div id="createNewGroupModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="createNewGroupModalLabel" aria-hidden="true">
+            @views.html.Group.snippets.addModal(groupForm)
+            </div>
+            <!-- Ende createNewGroupModal -->
+            
+            <!-- searchModal -->
+            <div id="searchModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+            	@views.html.Group.snippets.searchModal()    
+            </div>
+            <!-- Ende searchModal -->
+            
+			<!-- Start infoModal 
+				Fuer alle Gruppen ein infoModal. Ein bisschen dirty, oder?
+			-->
+			@for(group <- groups) {	
+			<div aria-hidden="false" aria-labelledby="infoModalLabel" role="dialog" tabindex="-1" class="modal hide fade in" id="infoModal@group.id">
+	        	@views.html.Group.snippets.infoModal(group)    
+	        </div>
+	        }
+            <!-- Ende infoModal --> 
+                                   
+            <br />
+            
+            <h1>Offene Einladungen</h1>
+            <table class="table table-hover">
+                <colgroup>
+                    <col width="75%">
+                    <col width="25%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Gruppenname</th>
+                        <th>Verf&uuml;gbare Optionen</th>
+                    </tr>
+                </thead>
+                <!-- 
+                <tbody>
+                    <tr>
+                        <td><i class="icon-lock"></i><a href="#"> AT Projekt</a></td>
+                        <td><a href="#" rel="tooltip" title="Annehmen"><i class="icon-ok"></i></a> <a href="#" rel="tooltip" title="Ablehnen"><i class="icon-remove"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td><i class="icon-globe"></i><a href="#"> Weihnachtsfeier</a></td>
+                        <td><a href="#" rel="tooltip" title="Annehmen"><i class="icon-ok"></i></a> <a href="#" rel="tooltip" title="Ablehnen"><i class="icon-remove"></i></a></td>
+                    </tr>
+                </tbody>
+                 -->
+            </table>
+            <hr /><br />
+            <h1>Meine Gruppen
+                <div class="btn-group">
+                    <a href="#createNewGroupModal" role="button" class="btn" data-toggle="modal"><i class="icon-plus"></i></a>
+                    <a href="#searchModal" role="button" class="btn" data-toggle="modal"><i class="icon-search"></i></a>
+                </div>
+            </h1>
+            <table class="table table-hover">
+                <colgroup>
+                    <col width="75%">
+                    <col width="25%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Gruppenname</th>
+                        <th>Verf&uuml;gbare Optionen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @defining(Component.currentAccount()) { user =>
+                	@for(group <- groups) {
+                	                                                              
+                    <tr>
+                        <td><i class="icon-lock"></i><a href="@routes.GroupController.view(group.id)">@if(group.owner.id == user.id){<b> @group.title</b></a> <small>(gegr&uuml;ndet)</small>}else{ @group.title}</td>
+                        <td><a title="" rel="tooltip" data-toggle="modal" href="#infoModal@group.id" data-original-title="Info"><i class="icon-info-sign"></i></a> <a href="@routes.GroupController.edit(group.id)" rel="tooltip" title="Bearbeiten"><i class="icon-pencil"></i></a>@if(group.owner.id == user.id){ <a href="@routes.GroupController.delete(group.id)" rel="tooltip" title="Löschen"><i class="icon-trash"></i></a>}else{ <a href="#" rel="tooltip" title="Verlassen"><i class="icon-remove"></i></a>}</td>
+                    </tr>
+                    <!-- <i class="icon-globe"> -->
+                    
+                	}
+                }
+                </tbody>
+            </table>
+<!-- Ende Content -->
     
     
 }

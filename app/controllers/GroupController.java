@@ -20,13 +20,13 @@ public class GroupController extends BaseController {
 
 	static Form<Post> postForm = Form.form(Post.class);
 
-	public static Result index() {
-		return ok(index.render(Group.all()));
+	public static Result showAll() {
+		return ok(index.render(Group.all(),groupForm));
 	}
 
-	public static Result indexByAccount(Long accountId) {
-		Account account = Account.findById(accountId);
-		return ok(index.render(Group.allByAccount(account)));
+	public static Result index() {
+		Account account = Component.currentAccount();
+		return ok(index.render(Group.allByAccount(account),groupForm));
 	}
 	
 	@Transactional
@@ -114,11 +114,6 @@ public class GroupController extends BaseController {
 		}
 	}
 	
-	@Transactional
-	public static Result add() {
-		return ok(add.render(groupForm));
-	}
-
 	public static Result delete(Long id) {
 		Group group = Group.findById(id);
 		group.delete();

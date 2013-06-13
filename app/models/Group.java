@@ -27,7 +27,11 @@ public class Group extends BaseModel {
 
 	public Boolean isClosed;
 
+	@ManyToOne
+	public Account owner;
+
 	public void create(Account account) {
+		this.owner = account;
 		JPA.em().persist(this);
 		GroupAccount groupAccount = new GroupAccount(account, this);
 		groupAccount.approved = true;

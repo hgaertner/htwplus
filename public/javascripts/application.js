@@ -61,6 +61,11 @@ $('[rel="tooltip"]').tooltip('hide');
 $('[rel="popover"]').popover('toggle');
 $('[rel="popover"]').popover('hide');
 
+/* Reload Page after creating a new Group */
+$('#createNewGroupModal').on('hidden', function () {
+	location.reload();
+})
+
 /*
 $('#alert-btn').click(function () {
     $('#le-alert').addClass('in'); // shows alert with Bootstrap CSS3 implem

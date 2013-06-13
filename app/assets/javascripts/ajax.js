@@ -4,7 +4,7 @@ $(document).ready(function () {
 	 * Bind the action.
 	 * Using 'on' is critical, otherwise the binding would be lost after the request
 	 */
-	$('#newModal').on("click", "#submitGroup", createGroupRequest);
+	$('#createNewGroupModal').on("click", "#submitGroup", createGroupRequest);
 	$('#registerModal').on("click", "#submitSignup", sumitSignupRequest);
 	
 	
@@ -27,7 +27,7 @@ $(document).ready(function () {
 	}
 	
 	function createGroup(data) {
-		$('#newModal').html(data);
+		$('#createNewGroupModal').html(data);
 	}
 	
 	function submitSignup(data) {
