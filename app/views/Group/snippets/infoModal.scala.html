@@ -9,7 +9,7 @@
         <thead>
             <tr>
                 <th>Gruppengr&uuml;nder:</th>
-                <td><a data-placement="bottom" data-original-title="@group.owner.firstname @group.owner.lastname" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover" href="#">@group.owner.firstname @group.owner.lastname</a></td>
+                <td><a data-placement="bottom" data-original-title="@group.owner.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover" href="#">@group.owner.name</a></td>
             </tr>
         </thead>
         <tbody>
@@ -23,21 +23,18 @@
             </tr>
             <tr>
                 <th>Mitglieder:</th>
+              
                 <td>
                     <table class="table table-hover table-condensed">
                         <tbody>
+                        <!-- Fuer Fabi: In Ajax-Request umwandeln :) -->
+                        @defining(GroupAccount.findAccountsByGroup(group)) { accounts =>
+			             @for(account <- accounts) {              
                             <tr>
-                                <td><a data-placement="top" data-original-title="Daniel Pinkpank" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover" href="#">Daniel Pinkpank</a></td>
+                                <td><a data-placement="top" data-original-title="@account.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover" href="#">@account.name</a></td>
                             </tr>
-                            <tr>
-                                <td><a data-placement="top" data-original-title="Fabian Kirstein" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover" href="#">Fabian Kirstein</a></td>
-                            </tr>
-                            <tr>
-                                <td><a data-placement="top" data-original-title="Iven Zimmer" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover" href="#">Iven Zimmer</a></td>
-                            </tr>
-                            <tr>
-                                <td><a data-placement="top" data-original-title="Kevin van Bernum" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover" href="#">Kevin van Bernum</a></td>
-                            </tr>
+                         }
+              			}
                         </tbody>
                     </table>
                 </td>

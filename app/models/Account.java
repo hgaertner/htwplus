@@ -13,6 +13,8 @@ import java.util.Set;
 public class Account extends BaseModel {
 
 	public String loginname;
+	
+	public String name;
 
 	@Required
 	public String firstname;
@@ -47,6 +49,7 @@ public class Account extends BaseModel {
 
 	@Override
 	public void create() {
+		this.name = firstname+" "+lastname;
 		JPA.em().persist(this);
 	}
 
@@ -141,5 +144,9 @@ public class Account extends BaseModel {
 			return false;
 		}
 	}
-
+	
+    public static String test(){
+    	return "test";
+    }
+	
 }

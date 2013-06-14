@@ -1,15 +1,9 @@
 package models;
 
 import java.util.*;
-
-import play.Logger;
 import play.data.validation.Constraints.*;
-import play.data.format.Formats.*;
 import javax.persistence.*;
-
 import models.base.BaseModel;
-
-import org.hibernate.validator.constraints.Length;
 import play.db.jpa.*;
 
 @Entity
@@ -66,6 +60,7 @@ public class Group extends BaseModel {
 		return JPA.em().find(Group.class, id);
 	}
 
+	@SuppressWarnings("unchecked")	
 	public static List<Group> all() {
 		List<Group> groups = JPA.em().createQuery("FROM Group").getResultList();
 		return groups;

@@ -19,7 +19,7 @@ public class GroupController extends BaseController {
 	static Form<Group> groupForm = Form.form(Group.class);
 
 	static Form<Post> postForm = Form.form(Post.class);
-
+	
 	public static Result showAll() {
 		return ok(index.render(Group.all(),groupForm));
 	}

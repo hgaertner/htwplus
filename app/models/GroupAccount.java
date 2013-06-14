@@ -1,7 +1,9 @@
 package models;
 
 import javax.persistence.*;
+
 import play.db.jpa.*;
+import java.util.List;
 
 import models.ids.GroupAccountId;
 
@@ -43,6 +45,19 @@ public class GroupAccount {
 	public void create() {
 		JPA.em().persist(this);
 	}
+	
+	/**
+     * Retrieve Accounts from Group.
+     */
+    public static List<Account> findAccountsByGroup(Group group) {
+    	@SuppressWarnings("unchecked")
+    	List<Account> accounts = (List<Account>) JPA
+				.em()
+				.createQuery(
+						"SELECT g.account FROM GroupAccount g WHERE g.group.id = ?1")
+				.setParameter(1, group.id).getResultList();
+		return accounts;
+    }
 	
 
 }

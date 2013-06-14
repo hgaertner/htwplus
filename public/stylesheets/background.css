@@ -318,3 +318,7 @@ input, select, textarea::-moz-focus-inner {
 .well {
 	margin-bottom: 0px;
 }
+
+#searchModal .modal-body{
+	padding-bottom: 45px;
+}
