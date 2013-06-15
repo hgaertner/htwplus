@@ -6,6 +6,10 @@ img {
   vertical-align: top;
 }
 
+form {
+	margin: 0px;
+}
+
 #logo {
 	height: 89px;
 	position: relative;
@@ -262,12 +266,6 @@ input, select, textarea {
   	resize: none;
 }
 
-/*
-input, select, textarea::-moz-focus-inner {
-    border: inherit;
-    padding: 4px 6px;
-}*/
-
 .collapse {
 	position: static;
 }
@@ -319,6 +317,41 @@ input, select, textarea::-moz-focus-inner {
 	margin-bottom: 0px;
 }
 
-#searchModal .modal-body{
+#searchModal .modal-body {
 	padding-bottom: 45px;
+}
+
+.modal-body label {
+	font-weight: bold;
+}
+
+.modal-body input {
+	margin-bottom: 0px;
+}
+
+.modal-body dl dd:last-child {
+	padding-bottom: 8px;
+}
+
+.modal-body dt {
+   float:left;
+   clear: both;
+   width: 30%;
+}
+
+.modal-body dd {
+   float: right;
+   width: 68%;
+   margin-top: -5px;
+   margin-bottom: 8px;
+}
+
+.modal-body dd.error {
+	text-shadow: 1px 1px 1px rgba(185, 74, 72, 0.5);
+	color: #b94a48;
+}
+
+.modal-body dd.info {
+	text-shadow: 1px 1px 1px rgba(118, 185, 0, 0.5);
+	color: #76B900;
 }
