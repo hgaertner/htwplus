@@ -2,14 +2,14 @@
 
 <div class="modal-header">
 	<button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-	<h3 id="infoModalLabel">Info [@group.title]</h3>
+	<h3 id="infoModalLabel">@group.title</h3>
 </div>
 <div class="modal-body">
     <table class="table">
         <thead>
             <tr>
                 <th>Gruppengr&uuml;nder:</th>
-                <td><a data-placement="bottom" data-original-title="@group.owner.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover" href="#">@group.owner.name</a></td>
+                <td><a data-placement="bottom" data-original-title="@group.owner.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover" href="#">@group.owner.firstname @group.owner.lastname</a></td>
             </tr>
         </thead>
         <tbody>

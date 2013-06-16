@@ -1,0 +1,237 @@
+@(group: Group, groupForm: Form[Group])
+@import helper._
+
+<!-- 
+
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal"
+		aria-hidden="true">x</button>
+	<h3 id="createNewGroupModalLabel">Gruppe bearbeiten</h3>
+</div>
+<div class="modal-body" id="newGroup">
+
+	@form(routes.GroupController.create(), 'id -> "newGroupForm") {
+
+	@inputText(groupForm("title"), '_label -> "Title:")
+	@textarea(groupForm("description"), '_label -> "Description: ")
+	@checkbox(groupForm("isClosed"), '_label -> None, '_text -> "Geschlossene Gruppe") 
+	
+	}
+	
+</div>
+<div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">SchlieÃŸen</button>
+	<button class="btn btn-warning" aria-hidden="true" id="submitGroup">Gruppe erstellen</button>
+</div>
+
+ -->
+
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal"
+		aria-hidden="true">x</button>
+	<h3 id="editModalLabel">Gruppe bearbeiten</h3>
+</div>
+<div class="modal-body">
+
+	<dl>
+		<dt>Gruppengründer</dt>
+		<dd>@group.owner.firstname @group.owner.lastname</dd>
+	</dl>
+	<dl>
+		<dt>Erstellt am</dt>
+		<dd>@group.createdAt.format("dd. MMM yyyy")</dd>
+	</dl>
+	@textarea(groupForm("description"), '_label -> "Beschreibung", 'value -> group.description)
+	<dl>
+		<dt>Person einladen</dt>
+		<dd>
+			<div class="input-append">
+				<input id="appendedInputButton" type="text">
+				<button class="btn btn-warning" type="button">Hinzufügen</button>
+			</div>
+		</dd>
+	</dl>
+	<dl>
+		<dt>Mitglieder</dt>
+		<dd>
+			<table class="table table-hover table-condensed">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Verfügbare Optionen</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><a href="#" rel="popover" data-html="true"
+							data-trigger="hover" data-delay="500"
+							data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik"
+							data-original-title="Anne Hasenpusch" data-placement="top">Anne
+								Hasenpusch</a></td>
+						<td><a href="#" rel="tooltip" title="Löschen"><i
+								class="icon-remove"></i></a></td>
+					</tr>
+					<tr>
+						<td><a href="#" rel="popover" data-html="true"
+							data-trigger="hover" data-delay="500"
+							data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik"
+							data-original-title="Björn Ahlfeld" data-placement="top">Björn
+								Ahlfeld</a></td>
+						<td><a href="#" rel="tooltip" title="Löschen"><i
+								class="icon-remove"></i></a></td>
+					</tr>
+					<tr>
+						<td><a href="#" rel="popover" data-html="true"
+							data-trigger="hover" data-delay="500"
+							data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik"
+							data-original-title="Daniel Pinkpank" data-placement="top">Daniel
+								Pinkpank</a></td>
+						<td><a href="#" rel="tooltip" title="Löschen"><i
+								class="icon-remove"></i></a></td>
+					</tr>
+					<tr>
+						<td><a href="#" rel="popover" data-html="true"
+							data-trigger="hover" data-delay="500"
+							data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik"
+							data-original-title="Fabian Kirstein" data-placement="top">Fabian
+								Kirstein</a></td>
+						<td><a href="#" rel="tooltip" title="Löschen"><i
+								class="icon-remove"></i></a></td>
+					</tr>
+					<tr>
+						<td><a href="#" rel="popover" data-html="true"
+							data-trigger="hover" data-delay="500"
+							data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik"
+							data-original-title="Iven Zimmer" data-placement="top">Iven
+								Zimmer</a></td>
+						<td><a href="#" rel="tooltip" title="Löschen"><i
+								class="icon-remove"></i></a></td>
+					</tr>
+					<tr>
+						<td><a href="#" rel="popover" data-html="true"
+							data-trigger="hover" data-delay="500"
+							data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik"
+							data-original-title="Kevin van Bernum" data-placement="top">Kevin
+								van Bernum</a></td>
+						<td><a href="#" rel="tooltip" title="Löschen"><i
+								class="icon-remove"></i></a></td>
+					</tr>
+				</tbody>
+			</table>
+		</dd>
+	</dl>
+	
+	<!-- 
+	
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Gruppengründer:</th>
+				<td><a href="#" rel="popover" data-html="true"
+					data-trigger="hover" data-delay="500"
+					data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik "
+					data-original-title="Anne Hasenpusch" data-placement="bottom">Anne
+						Hasenpusch</a></td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>Erstellt am:</th>
+				<td>20.05.2013</td>
+			</tr>
+			<tr>
+				<th>Beschreibung:</th>
+				<td><textarea rows="4"
+						placeholder="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum."></textarea></td>
+			</tr>
+			<tr>
+				<th>Freunde einladen:</th>
+				<td>
+					<div class="input-append">
+						<input id="appendedInputButton" type="text">
+						<button class="btn btn-warning" type="button">Hinzufügen</button>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th>Mitglieder:</th>
+				<td>
+					<table class="table table-hover table-condensed">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Verfügbare Optionen</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="#" rel="popover" data-html="true"
+									data-trigger="hover" data-delay="500"
+									data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik"
+									data-original-title="Anne Hasenpusch" data-placement="top">Anne
+										Hasenpusch</a></td>
+								<td><a href="#" rel="tooltip" title="Löschen"><i
+										class="icon-remove"></i></a></td>
+							</tr>
+							<tr>
+								<td><a href="#" rel="popover" data-html="true"
+									data-trigger="hover" data-delay="500"
+									data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik"
+									data-original-title="Björn Ahlfeld" data-placement="top">Björn
+										Ahlfeld</a></td>
+								<td><a href="#" rel="tooltip" title="Löschen"><i
+										class="icon-remove"></i></a></td>
+							</tr>
+							<tr>
+								<td><a href="#" rel="popover" data-html="true"
+									data-trigger="hover" data-delay="500"
+									data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik"
+									data-original-title="Daniel Pinkpank" data-placement="top">Daniel
+										Pinkpank</a></td>
+								<td><a href="#" rel="tooltip" title="Löschen"><i
+										class="icon-remove"></i></a></td>
+							</tr>
+							<tr>
+								<td><a href="#" rel="popover" data-html="true"
+									data-trigger="hover" data-delay="500"
+									data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik"
+									data-original-title="Fabian Kirstein" data-placement="top">Fabian
+										Kirstein</a></td>
+								<td><a href="#" rel="tooltip" title="Löschen"><i
+										class="icon-remove"></i></a></td>
+							</tr>
+							<tr>
+								<td><a href="#" rel="popover" data-html="true"
+									data-trigger="hover" data-delay="500"
+									data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik"
+									data-original-title="Iven Zimmer" data-placement="top">Iven
+										Zimmer</a></td>
+								<td><a href="#" rel="tooltip" title="Löschen"><i
+										class="icon-remove"></i></a></td>
+							</tr>
+							<tr>
+								<td><a href="#" rel="popover" data-html="true"
+									data-trigger="hover" data-delay="500"
+									data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik"
+									data-original-title="Kevin van Bernum" data-placement="top">Kevin
+										van Bernum</a></td>
+								<td><a href="#" rel="tooltip" title="Löschen"><i
+										class="icon-remove"></i></a></td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<br />
+	
+	 -->
+	
+</div>
+<div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">Schließen</button>
+	<button class="btn btn-warning" aria-hidden="true" id="submitGroup">Übernehmen</button>
+</div>
+
+

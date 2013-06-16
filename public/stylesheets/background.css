@@ -329,6 +329,14 @@ input, select, textarea {
 	margin-bottom: 0px;
 }
 
+.modal-body dd input {
+   margin-top: -5px;
+}
+
+.modal-body dd button {
+   margin-top: -5px;
+}
+
 .modal-body dl dd:last-child {
 	padding-bottom: 8px;
 }
@@ -342,7 +350,6 @@ input, select, textarea {
 .modal-body dd {
    float: right;
    width: 68%;
-   margin-top: -5px;
    margin-bottom: 8px;
 }
 
