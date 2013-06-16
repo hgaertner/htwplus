@@ -41,17 +41,19 @@
 						<div id="top">
 							<div id="bottom">
 								<div id="content">
-									@if(flash.containsKey("message")) {
-									<div class="alert-message warning">@flash.get("message")
-									</div>
-									} 
 									@if(user != null){
-									<br />
-					                  <ul class="breadcrumb">
-					                      <li><a href="@routes.Application.stream()">Home</a> <span class="divider">/</span></li>
-					                      <li class="active">@title</li>
-					                  </ul>
+										<br />
+					                  	<ul class="breadcrumb">
+					                      	<li><a href="@routes.Application.stream()">Home</a><span class="divider">/</span></li>
+					                      	<li class="active">@title</li>
+					                  	</ul>
 									}
+									@if(flash.containsKey("message")) {
+										<div class="alert fade in">
+											<button type="button" class="close" data-dismiss="alert">×</button>
+											@flash.get("message")
+										</div>
+									} 
                   					@content
 								</div>
 							</div>
