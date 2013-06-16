@@ -79,8 +79,16 @@
                 	@for(group <- groups) {
                 	                                                              
                     <tr>
-                        <td><i class="icon-lock"></i><a href="@routes.GroupController.view(group.id)">@if(group.owner.id == user.id){<b> @group.title</b></a> <small>(gegr&uuml;ndet)</small>}else{ @group.title}</td>
-                        <td><a title="" rel="tooltip" data-toggle="modal" href="#infoModal@group.id" data-original-title="Info"><i class="icon-info-sign"></i></a> <a href="@routes.GroupController.edit(group.id)" rel="tooltip" title="Bearbeiten"><i class="icon-pencil"></i></a>@if(group.owner.id == user.id){ <a href="@routes.GroupController.delete(group.id)" rel="tooltip" title="Löschen"><i class="icon-trash"></i></a>}else{ <a href="#" rel="tooltip" title="Verlassen"><i class="icon-remove"></i></a>}</td>
+                        <td>
+                        
+                        @if(group.isClosed == true) {
+                           <i class="icon-lock"></i>
+                        } else {
+                           <i class="icon-globe"></i>
+                        }
+                        
+                        <a href="@routes.GroupController.view(group.id)">@if(group.owner.id == user.id){<b> @group.title</b></a> <small>(gegr&uuml;ndet)</small>}else{ @group.title}</td>
+                        <td><a title="" rel="tooltip" data-toggle="modal" href="#infoModal@group.id" data-original-title="Info"><i class="icon-info-sign"></i></a> <a href="@routes.GroupController.edit(group.id)" rel="tooltip" title="Bearbeiten"><i class="icon-pencil"></i></a>@if(group.owner.id == user.id){ <a href="@routes.GroupController.delete(group.id)" rel="tooltip" title="LÃ¶schen"><i class="icon-trash"></i></a>}else{ <a href="#" rel="tooltip" title="Verlassen"><i class="icon-remove"></i></a>}</td>
                     </tr>
                     <!-- <i class="icon-globe"> -->
                     
