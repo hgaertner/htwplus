@@ -72,10 +72,9 @@ public class GroupController extends BaseController {
 	}
 
 	public static Result create() {
-		Account account = Account.findByEmail(session().get("email"));
+		Account account = Component.currentAccount();
 		Form<Group> filledForm = groupForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
-			flash("message", "Error in Form!");
 			return ok(addModal.render(filledForm));
 		} else {
 			Group g = filledForm.get();
