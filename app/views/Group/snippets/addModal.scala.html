@@ -8,6 +8,12 @@
 </div>
 <div class="modal-body" id="newGroup">
 
+      @if(groupForm.hasGlobalErrors) {
+          <p class="error">
+              @groupForm.globalError.message
+          </p>
+      }
+
 	@form(routes.GroupController.create(), 'id -> "newGroupForm") {
 
 	@inputText(groupForm("title"), '_label -> "Title:")

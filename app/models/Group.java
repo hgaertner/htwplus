@@ -1,6 +1,9 @@
 package models;
 
 import java.util.*;
+
+import play.Logger;
+import play.api.data.validation.ValidationError;
 import play.data.validation.Constraints.*;
 import javax.persistence.*;
 import models.base.BaseModel;
@@ -12,6 +15,7 @@ import play.db.jpa.*;
 public class Group extends BaseModel {
 
 	@Required
+	@Column(unique=true)
 	public String title;
 
 	public String description;
@@ -23,6 +27,13 @@ public class Group extends BaseModel {
 
 	@ManyToOne
 	public Account owner;
+	
+	public String validate(){
+		if(Group.findByTitle(this.title) != null){
+			return "Der Titel ist bereits vergeben";
+		}
+		return null;
+	}
 
 	public void create(Account account) {
 		this.owner = account;
@@ -30,7 +41,6 @@ public class Group extends BaseModel {
 		GroupAccount groupAccount = new GroupAccount(account, this);
 		groupAccount.approved = true;
 		groupAccount.create();
-
 	}
 
 	@Override
@@ -58,6 +68,18 @@ public class Group extends BaseModel {
 
 	public static Group findById(Long id) {
 		return JPA.em().find(Group.class, id);
+	}
+	
+	public static Group findByTitle(String title) {
+		@SuppressWarnings("unchecked")
+		List<Group> groups =  (List<Group>) JPA.em().createQuery("FROM Group g WHERE g.title = ?1")
+				.setParameter(1, title).getResultList();
+		
+		if(groups.isEmpty()) {
+			return null;
+		} else  {
+			return groups.get(0);
+		}
 	}
 
 	@SuppressWarnings("unchecked")	
@@ -92,23 +114,7 @@ public class Group extends BaseModel {
 		}
 
 	}
-
-//	public static boolean isMember(Long groupId, String email) {
-//		Account user = (Account) JPA
-//				.em()
-//				.createQuery(
-//						"SELECT a FROM Account a WHERE a.account.email = ?1")
-//				.setParameter(1, email).getSingleResult();
-//		List<Group> groups = JPA.em()
-//				.createQuery(
-//						"SELECT g.group FROM GroupAccount g WHERE g.account.id = ?1 and g.groupId= ?2")
-//				.setParameter(1, user.id).setParameter(2, groupId).getResultList();
-//		
-//		if(groups != null && groups.size() > 0){
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
-
+	
+	
+	
 }
