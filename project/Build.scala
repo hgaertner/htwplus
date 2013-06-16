@@ -14,7 +14,8 @@ object ApplicationBuild extends Build {
     javaJpa,
     anorm,
     "postgresql" % "postgresql" % "9.1-901-1.jdbc4",
-    "org.hibernate" % "hibernate-entitymanager" % "4.1.5.Final"
+    "org.hibernate" % "hibernate-entitymanager" % "4.1.5.Final",
+    "org.seleniumhq.selenium" % "selenium-java" % "2.32.0" % "test"
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
