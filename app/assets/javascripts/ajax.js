@@ -1,6 +1,21 @@
 $(document).ready(function () {
 	
 	/*
+	 * AJAX loading indicator
+	 */
+	$.ajaxSetup({
+	    beforeSend:function(){
+	        // show gif here, eg:
+	        $("#loading").show();
+	    },
+	    complete:function(){
+	        // hide gif here, eg:
+	        $("#loading").hide();
+	    }
+	});
+	
+	
+	/*
 	 * Bind the action.
 	 * Using 'on' is critical, otherwise the binding would be lost after the request
 	 */

@@ -75,7 +75,6 @@ public class GroupController extends BaseController {
 		Account account = Component.currentAccount();
 		Form<Group> filledForm = groupForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
-			Logger.info("hallo" + filledForm.toString());
 			return ok(addModal.render(filledForm));
 		} else {
 			Group g = filledForm.get();
