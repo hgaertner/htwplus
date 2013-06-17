@@ -9,12 +9,12 @@
 <div class="modal-body" id="newGroup">
 
       @if(groupForm.hasGlobalErrors) {
-          <p class="error">
+		  <div class="alert alert-error fade in">
+			  <button type="button" class="close" data-dismiss="alert">x</button>
               @groupForm.globalError.message
-          </p>
+          </div>
       }
       
-    <div id="loading"></div>
 
 	@form(routes.GroupController.create(), 'id -> "newGroupForm") {
 
@@ -26,6 +26,7 @@
 	
 </div>
 <div class="modal-footer">
+    <div id="loading"></div>
 	<button class="btn" data-dismiss="modal" aria-hidden="true">Schließen</button>
 	<button class="btn btn-warning" aria-hidden="true" id="submitGroup">Gruppe erstellen</button>
 </div>
