@@ -90,7 +90,13 @@ public class GroupController extends BaseController {
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
-			return ok(edit.render(group.id, groupForm.fill(group)));
+			try {
+				Thread.currentThread().sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return ok(editModal.render(group, groupForm.fill(group)));
 		}
 	}
 	
@@ -99,17 +105,15 @@ public class GroupController extends BaseController {
 		Group group = Group.findById(id);
 		Form<Group> filledForm = groupForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
-			flash("message", "Error in Form!");
-			return badRequest(edit.render(id, filledForm));
+			//Logger.info(filledForm.get().description);
+			return ok(editModal.render(group, filledForm));
 		} else {
-
 			Logger.info(filledForm.get().description);
 			group.title = filledForm.get().title;
 			group.description = filledForm.get().description;
 			group.isClosed = filledForm.get().isClosed;
 			group.update(id);
-			flash("message", "Updated Group!");
-			return redirect(routes.GroupController.index());
+			return ok(addModalSuccess.render());
 		}
 	}
 	

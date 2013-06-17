@@ -14,7 +14,9 @@ public class Application extends BaseController {
 		response().setContentType("text/javascript");
 		return ok(Routes.javascriptRouter("jsRoutes",
 				controllers.routes.javascript.GroupController.create(),
-				controllers.routes.javascript.AccountController.submit()));
+				controllers.routes.javascript.GroupController.update(),
+				controllers.routes.javascript.AccountController.submit()
+				));
 	}
 	
 	@Security.Authenticated(Secured.class)

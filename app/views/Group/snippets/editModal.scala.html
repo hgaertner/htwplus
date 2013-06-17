@@ -1,6 +1,7 @@
 @(group: Group, groupForm: Form[Group])
 @import helper._
 
+<div class="actual-modal">
 <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal"
 		aria-hidden="true">x</button>
@@ -16,7 +17,11 @@
 		<dt>Erstellt am</dt>
 		<dd>@group.createdAt.format("dd. MMM yyyy")</dd>
 	</dl>
-	@textarea(groupForm("description"), '_label -> "Beschreibung", 'value -> group.description)
+	@form(routes.GroupController.update(group.id), 'id -> "editGroupForm") {
+	
+	@textarea(groupForm("description"), '_label -> "Beschreibung")
+	
+	}
 	<dl>
 		<dt>Person einladen</dt>
 		<dd>
@@ -55,6 +60,7 @@
 <div class="modal-footer">
 	<button class="btn" data-dismiss="modal" aria-hidden="true">Schließen</button>
 	<button class="btn btn-warning" aria-hidden="true" id="submitGroup">Übernehmen</button>
+</div>
 </div>
 
 
