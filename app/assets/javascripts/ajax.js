@@ -6,7 +6,7 @@ $(document).ready(function () {
 	$.ajaxSetup({
 	    beforeSend:function(){
 	        // show gif here, eg:
-	        $("#loading").show();
+	        $("#loading").css('display', 'inline-block');
 	    },
 	    complete:function(){
 	        // hide gif here, eg:
