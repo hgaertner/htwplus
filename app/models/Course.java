@@ -42,12 +42,8 @@ public class Course extends BaseModel {
 	}
 
 	
-	public void createByUser(final String email) {
-		Account a = (Account) JPA
-				.em()
-				.createQuery("SELECT a FROM Account a WHERE a.email = ?1")
-				.setParameter(1, email).getSingleResult();
-		this.owner = a;
+	public void createByUser(final Account account) {
+		this.owner = account;
 		JPA.em().persist(this);
 	}
 
@@ -64,21 +60,19 @@ public class Course extends BaseModel {
 		JPA.em().remove(this);
 	}
 
-	public static boolean isOwner(Long courseId, String email) {
+	public static boolean isOwner(Long courseId, Account account) {
 		Course course = JPA.em().find(Course.class, courseId);
-		if (course.owner.email.equals(email)) {
+		if (course.owner.equals(account)) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public static boolean isMember(Long courseId, String email) {
-		Account a = (Account) JPA.em()
-				.createQuery("SELECT a FROM ACCOUNT a WHERE a.email = ?1")
-				.setParameter(1, email).getSingleResult();
+	public static boolean isMember(Long courseId, Account account) {
+		
 		Course course = JPA.em().find(Course.class, courseId);
-		if (course.members.contains(a)) {
+		if (course.members.contains(account)) {
 			return true;
 		} else {
 			return false;
