@@ -40,7 +40,7 @@ public class Post extends BaseModel {
 	}
 
 	@Override
-	public void update(Long id) {
+	public void update() {
 		// TODO Auto-generated method stub
 
 	}

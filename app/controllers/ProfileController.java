@@ -52,7 +52,7 @@ public class ProfileController extends BaseController {
 				flash("message", "Error in Form!");
 				return badRequest(edit.render(id, filledForm));
 			} else {
-				filledForm.get().update(id);
+				filledForm.get().update();
 				flash("message", "Profile updated!");
 				return redirect(routes.Application.index());
 			}

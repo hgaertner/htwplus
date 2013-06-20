@@ -90,8 +90,7 @@ public class Media extends BaseModel {
 	}
 	
 	@Override
-	public void update(Long id) {
-		this.id = id;
+	public void update() {
 		JPA.em().merge(this);
 	}
 	

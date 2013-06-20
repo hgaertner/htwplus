@@ -52,8 +52,7 @@ public class Course extends BaseModel {
 	}
 
 	@Override
-	public void update(Long id) {
-		this.id = id;
+	public void update() {
 		// createdAt seems to be overwritten (null) - quickfix? (Iven)
 		this.createdAt = findById(id).createdAt;
 		JPA.em().merge(this);

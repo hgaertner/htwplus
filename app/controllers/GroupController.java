@@ -103,16 +103,13 @@ public class GroupController extends BaseController {
 	@Transactional
 	public static Result update(Long id) {
 		Group group = Group.findById(id);
-		Form<Group> filledForm = groupForm.bindFromRequest();
-		if (filledForm.hasErrors()) {
-			//Logger.info(filledForm.get().description);
-			return ok(editModal.render(group, filledForm));
+		String description = groupForm.bindFromRequest().data().get("description");
+		if(description.equals("") || description == null){
+			groupForm.reject("description", "Bitte wähle eine Beschreibung");
+			return ok(editModal.render(group, groupForm));
 		} else {
-			Logger.info(filledForm.get().description);
-			group.title = filledForm.get().title;
-			group.description = filledForm.get().description;
-			group.isClosed = filledForm.get().isClosed;
-			group.update(id);
+			group.description = description;
+			group.update();
 			return ok(addModalSuccess.render());
 		}
 	}

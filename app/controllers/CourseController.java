@@ -103,7 +103,7 @@ public class CourseController extends BaseController {
 				flash("message", "Error in Form!");
 				return badRequest(edit.render(id, filledForm));
 			} else {
-				filledForm.get().update(id);
+				filledForm.get().update();
 				flash("message", "Updated Course!");
 				return redirect(routes.CourseController.index());
 			}
