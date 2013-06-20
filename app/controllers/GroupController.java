@@ -123,7 +123,7 @@ public class GroupController extends BaseController {
 
 	public static Result deletePost(Long id) {
 		try {
-			if (Secured.isOwnerOfPost(id, ctx())) {
+			if (Secured.isOwnerOfPost(id)) {
 				Post p = Post.findById(id);
 				long currentUserId = Long.parseLong(session().get("id"));
 				p.delete(currentUserId);

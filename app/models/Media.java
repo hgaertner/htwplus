@@ -123,9 +123,9 @@ public class Media extends BaseModel {
 		return format;
 	}
 
-	public static boolean isOwner(Long mediaId, String email) {
+	public static boolean isOwner(Long mediaId, Account account) {
 		Media m = JPA.em().find(Media.class, mediaId);
-		if(m.owner.email.equals(email)){
+		if(m.owner.equals(account)){
 			return true;
 		}else {
 			return false;

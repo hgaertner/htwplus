@@ -26,20 +26,20 @@ public class Secured extends Security.Authenticator {
 	}
 	
 	
-	public static boolean isOwnerOfPost(final Long postId, final Context ctx){
-		return Post.isOwner(postId, ctx.session().get("email"));
+	public static boolean isOwnerOfPost(final Long postId){
+		return Post.isOwner(postId, Component.currentAccount());
 	}
 	
-	public static boolean isOwnerOfMedia(final Long mediaId, final Context ctx){
-		return Media.isOwner(mediaId, ctx.session().get("email"));
+	public static boolean isOwnerOfMedia(final Long mediaId){
+		return Media.isOwner(mediaId, Component.currentAccount());
 	}
 	
-	public static boolean isOwnerOfCourse(final Long courseId, final Context ctx){
-		return Course.isOwner(courseId, ctx.session().get("email"));
+	public static boolean isOwnerOfCourse(final Long courseId){
+		return Course.isOwner(courseId, Component.currentAccount());
 	}
 	
-	public static boolean isMemberOfCourse(final Long courseId, final Context ctx){
-		return Course.isMember(courseId, ctx.session().get("email"));
+	public static boolean isMemberOfCourse(final Long courseId){
+		return Course.isMember(courseId, Component.currentAccount());
 	}
 	
 	public static boolean isOwnerOfAccount(final Long accountId, final Context ctx){

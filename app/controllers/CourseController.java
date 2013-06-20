@@ -33,7 +33,7 @@ public class CourseController extends BaseController {
 	}
 
 	public static Result addPost(long courseId) {
-		if (Secured.isMemberOfCourse(courseId, ctx())) {
+		if (Secured.isMemberOfCourse(courseId)) {
 			Form<Post> filledForm = postForm.bindFromRequest();
 			if (filledForm.hasErrors()) {
 				flash("message", "Error in Form!");
@@ -69,7 +69,7 @@ public class CourseController extends BaseController {
 			return badRequest(add.render(filledForm));
 		} else {
 			Course c = filledForm.get();
-			c.createByUser(ctx().session().get("email"));
+			c.createByUser(Component.currentAccount());
 			flash("message", "Created new Course!");
 			return redirect(routes.CourseController.index());
 		}
@@ -96,7 +96,7 @@ public class CourseController extends BaseController {
 	}
 
 	public static Result update(Long id) {
-		if (Secured.isOwnerOfCourse(id, ctx())) {
+		if (Secured.isOwnerOfCourse(id)) {
 			Course course = Course.findById(id);
 			Form<Course> filledForm = courseForm.bindFromRequest();
 			if (filledForm.hasErrors()) {
@@ -114,7 +114,7 @@ public class CourseController extends BaseController {
 
 	@Transactional
 	public static Result delete(Long id) {
-		if (Secured.isOwnerOfCourse(id, ctx())) {
+		if (Secured.isOwnerOfCourse(id)) {
 			Course course = Course.findById(id);
 			course.delete();
 			flash("message", "Course " + course.title + " deleted!");
@@ -127,8 +127,8 @@ public class CourseController extends BaseController {
 	@Transactional
 	public static Result deletePost(Long id) {
 		try {
-			if (Secured.isOwnerOfPost(id, ctx())
-					|| Secured.isOwnerOfCourse(id, ctx())) {
+			if (Secured.isOwnerOfPost(id)
+					|| Secured.isOwnerOfCourse(id)) {
 				Post post = Post.findById(id);
 				long currentUser = Long.parseLong(session().get("id"));
 				post.delete(currentUser);
