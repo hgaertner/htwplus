@@ -1,6 +1,21 @@
 $(document).ready(function () {
 	
 	/*
+	 * AJAX loading indicator
+	 */
+	$.ajaxSetup({
+	    beforeSend:function(){
+	        $("#loading").show();
+	        // show gif here, eg:
+	        $("#loading").css('display', 'inline-block');
+	    },
+	    complete:function(){
+	        $("#loading").hide();
+	    }
+	});
+	
+	
+	/*
 	 * Bind the action.
 	 * Using 'on' is critical, otherwise the binding would be lost after the request
 	 */
@@ -33,5 +48,51 @@ $(document).ready(function () {
 	function submitSignup(data) {
 		$('#registerModal').html(data);
 	}
+	
+	/*
+	 * EDIT GROUP
+	 */
+	
+	$('.editGroup').each(function(){
+		$(this).click(function(){
+			$('#editModal > .actual-modal').remove();
+			$('#editModal > .loading-modal').show();
+			$('#editModal').modal('show'); 
+			$.ajax({
+				url: $(this).attr('href'),
+				type: "GET",
+				success: editGroup
+			});
+			
+			/* alert($(this).attr('href')); */
+			return false;
+		});
+	});
+	
+	function editGroup(data) {
+		$('#editModal > .loading-modal').hide();
+		$(data).insertAfter('#editModal > .loading-modal');
+	}
+	
+	$('#editModal').on("click", "#submitGroup", updateGroupRequest);
+	
+	function updateGroupRequest() {
+		$.ajax({
+			url: $('#editGroupForm').attr("action"),
+			type: "POST",
+			data: $('#editGroupForm').serialize(),
+			success: updateGroup
+		});
+		return false;
+	}
+	
+	function updateGroup(data) {
+		$('.actual-modal').replaceWith(data);
+	}
+	
+	/*
+	 * END EDIT GROUP
+	 */
+	
 	
 });

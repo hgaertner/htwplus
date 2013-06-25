@@ -3,47 +3,43 @@
 @import helper._
 
 
+@helper.form(routes.AccountController.submit, 'id -> "newSignupForm") {
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"
 			aria-hidden="true">x</button>
 		<h3 id="editModalLabel">Registrieren</h3>
 	</div>
-	@helper.form(routes.AccountController.submit, 'id -> "newSignupForm") {
 	<div class="modal-body">
-		<table class="table">
-			<tr>
-				<th>Vorname, Name</th>
-				<td>
-					<input type="text" name="firstname" placeholder="Max" value="@signupForm("firstname").value">
-				</td>
-				<td>
-					<input type="text" name="lastname" placeholder="Mustermann" value="@signupForm("lastname").value">
-				</td>
-			</tr>
-			<tr>
-				<th>Email</th>
-				<td colspan="2">
-					<input type="email" name="email" placeholder="max.mustermann@@muster.de" value="@signupForm("email").value">
-				</td>
-			</tr>
-			<tr>
-				<th>Passwort</th>
-				<td colspan="2">
-					<input type="password" name="password" placeholder="" value="@signupForm("password").value">
-				</td>
-			</tr>
-			<tr>
-				<th>Passwort wiederholen</th>
-				<td colspan="2">
-					<input type="password" name="repeatPassword" placeholder="" value="@signupForm("repeatPassword").value">
-				</td>
-			</tr>
-		</table>
+		@inputText(
+			signupForm("firstname"), 
+			'_label -> "Vorname",
+			'placeholder -> "Max"
+        )
+		@inputText(
+			signupForm("lastname"), 
+			'_label -> "Nachname",
+			'placeholder -> "Mustermann",
+			'_error -> signupForm.globalError
+		)
+		@inputText(
+			signupForm("email"),
+			'_label -> "Email",
+			'placeholder -> "max.mustermann@muster.de",
+			'_error -> signupForm.globalError
+		)
+		@inputPassword(
+			signupForm("password"), 
+			'_label -> "Passwort",
+			'_help -> "A password must be at least 6 characters."
+		)
+		@inputPassword(
+			signupForm("repeatPassword"), 
+			'_label -> "Passwort wiederholen",
+			'_error -> signupForm.error("password")
+		)
 	</div>
 	<div class="modal-footer">
 		<button class="btn" data-dismiss="modal" aria-hidden="true">Abbrechen</button>
 		<button id="submitSignup" class="btn btn-warning">Senden</button>
 	</div>
-	}
-
-
+}

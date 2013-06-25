@@ -72,10 +72,9 @@ public class GroupController extends BaseController {
 	}
 
 	public static Result create() {
-		Account account = Account.findByEmail(session().get("email"));
+		Account account = Component.currentAccount();
 		Form<Group> filledForm = groupForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
-			flash("message", "Error in Form!");
 			return ok(addModal.render(filledForm));
 		} else {
 			Group g = filledForm.get();
@@ -91,26 +90,27 @@ public class GroupController extends BaseController {
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
-			return ok(edit.render(group.id, groupForm.fill(group)));
+			try {
+				Thread.currentThread().sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return ok(editModal.render(group, groupForm.fill(group)));
 		}
 	}
 	
 	@Transactional
 	public static Result update(Long id) {
 		Group group = Group.findById(id);
-		Form<Group> filledForm = groupForm.bindFromRequest();
-		if (filledForm.hasErrors()) {
-			flash("message", "Error in Form!");
-			return badRequest(edit.render(id, filledForm));
+		String description = groupForm.bindFromRequest().data().get("description");
+		if(description.equals("") || description == null){
+			groupForm.reject("description", "Bitte wähle eine Beschreibung");
+			return ok(editModal.render(group, groupForm));
 		} else {
-
-			Logger.info(filledForm.get().description);
-			group.title = filledForm.get().title;
-			group.description = filledForm.get().description;
-			group.isClosed = filledForm.get().isClosed;
-			group.update(id);
-			flash("message", "Updated Group!");
-			return redirect(routes.GroupController.index());
+			group.description = description;
+			group.update();
+			return ok(addModalSuccess.render());
 		}
 	}
 	
@@ -123,7 +123,7 @@ public class GroupController extends BaseController {
 
 	public static Result deletePost(Long id) {
 		try {
-			if (Secured.isOwnerOfPost(id, ctx())) {
+			if (Secured.isOwnerOfPost(id)) {
 				Post p = Post.findById(id);
 				long currentUserId = Long.parseLong(session().get("id"));
 				p.delete(currentUserId);

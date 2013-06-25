@@ -1,0 +1,16 @@
+#loading {
+	background-image: url(../images/loading.gif);
+	width: 16px;
+	height: 16px;
+	margin-right: 8px;
+	vertical-align: middle;
+	background-size: 100%;
+	display: none;
+}
+
+#loading-active {
+	background-image: url(../images/loading.gif);
+	width: 16px;
+	height: 16px;
+	background-size: 100%;
+}

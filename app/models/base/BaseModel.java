@@ -36,7 +36,7 @@ public abstract class BaseModel {
 	
 	public abstract void create();
 		
-	public abstract void update(Long id);
+	public abstract void update();
 	
 	public abstract void delete();
 	

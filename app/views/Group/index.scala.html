@@ -23,11 +23,30 @@
 				Fuer alle Gruppen ein infoModal. Ein bisschen dirty, oder?
 			-->
 			@for(group <- groups) {	
-			<div aria-hidden="false" aria-labelledby="infoModalLabel" role="dialog" tabindex="-1" class="modal hide fade in" id="infoModal@group.id">
+			<div id="infoModal@group.id" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="false">
 	        	@views.html.Group.snippets.infoModal(group)    
 	        </div>
 	        }
             <!-- Ende infoModal --> 
+            
+			<!-- Start editModal -->
+
+			<div id="editModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
+
+			<div class="loading-modal">
+			<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">x</button>
+					<h3 id="editModalLabel">Gruppe bearbeiten</h3>
+				</div>
+				<div class="modal-body">Wird geladen ...</div>
+				<div class="modal-footer">
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Schließen</button>
+				</div>
+			</div>
+			</div>
+
+            <!-- Ende infoModal -->
                                    
             <br />
             
@@ -79,8 +98,23 @@
                 	@for(group <- groups) {
                 	                                                              
                     <tr>
-                        <td><i class="icon-lock"></i><a href="@routes.GroupController.view(group.id)">@if(group.owner.id == user.id){<b> @group.title</b></a> <small>(gegr&uuml;ndet)</small>}else{ @group.title}</td>
-                        <td><a title="" rel="tooltip" data-toggle="modal" href="#infoModal@group.id" data-original-title="Info"><i class="icon-info-sign"></i></a> <a href="@routes.GroupController.edit(group.id)" rel="tooltip" title="Bearbeiten"><i class="icon-pencil"></i></a>@if(group.owner.id == user.id){ <a href="@routes.GroupController.delete(group.id)" rel="tooltip" title="L�schen"><i class="icon-trash"></i></a>}else{ <a href="#" rel="tooltip" title="Verlassen"><i class="icon-remove"></i></a>}</td>
+                        <td>
+	                        @if(group.isClosed == true) {
+	                           <i class="icon-lock"></i>
+	                        } else {
+	                           <i class="icon-globe"></i>
+	                        }
+	                        <a href="@routes.GroupController.view(group.id)">@if(group.owner.id == user.id){<b> @group.title</b></a> <small>(gegr&uuml;ndet)</small>}else{ @group.title}
+	                    </td>
+                        <td>
+                        	<a href="#infoModal@group.id"  rel="tooltip" data-toggle="modal" data-original-title="Info"><i class="icon-info-sign"></i></a>
+                        	@if(group.owner.id == user.id){
+                        		<a href="@routes.GroupController.edit(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Bearbeiten" class="editGroup"><i class="icon-pencil"></i></a>
+                        	}
+                        	@if(group.owner.id == user.id){
+                        		<a href="@routes.GroupController.delete(group.id)" rel="tooltip" title="Löschen"><i class="icon-trash"></i></a>
+                        	}
+                        </td>
                     </tr>
                     <!-- <i class="icon-globe"> -->
                     

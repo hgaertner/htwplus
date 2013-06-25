@@ -7,7 +7,7 @@
 			<div class="postitBody @if(title.equals("Profil")){active} else {deactive}">
 				<a href="@routes.ProfileController.me()">Profil</a><br /> <img alt="avatar"
 					src="@routes.Assets.at("images/avatar.png")" height="50" width="50" class="img-polaroid" /><br />
-				<a href="profil.html">Max Mustermann</a><br /> <br /> <small><a
+				<a href="@routes.ProfileController.me()">@Component.currentAccount().firstname @Component.currentAccount().lastname</a><br /> <br /> <small><a
 					href="@routes.AccountController.logout">logout </a></small><i
 					class="icon-remove-sign icon-white"></i>
 			</div>

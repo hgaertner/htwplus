@@ -40,7 +40,7 @@ public class Post extends BaseModel {
 	}
 
 	@Override
-	public void update(Long id) {
+	public void update() {
 		// TODO Auto-generated method stub
 
 	}
@@ -71,9 +71,9 @@ public class Post extends BaseModel {
 				.createQuery("SELECT p FROM Post p WHERE p.group.id = ?1")
 				.setParameter(1, id).getResultList();
 	}
-	public static boolean isOwner(Long postId, String email) {
+	public static boolean isOwner(Long postId, Account account) {
 		Post p = JPA.em().find(Post.class, postId);
-		if(p.owner.email.equals(email)){
+		if(p.owner.equals(account)){
 			return true;
 		} else {
 			return false;
