@@ -4,7 +4,6 @@
 
 # Home page
 GET     /                       controllers.Application.index()
-GET 	/stream					controllers.Application.stream()
 POST    /login                  controllers.AccountController.authenticate()
 GET     /logout                 controllers.AccountController.logout()
 

@@ -20,14 +20,10 @@ public class Application extends BaseController {
 	}
 	
 	@Security.Authenticated(Secured.class)
-	public static Result stream() {
+	public static Result index() {
 		return ok(stream.render());
 	}
-	
-	public static Result index() {
-		return ok(index.render());
-	}
-	
+		
 	@Security.Authenticated(Secured.class)
 	public static Result defaultRoute(String path) {
 		Logger.info(path+" nicht gefunden");

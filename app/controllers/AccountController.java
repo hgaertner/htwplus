@@ -21,14 +21,14 @@ public class AccountController extends BaseController {
 	public static Result authenticate() {
 		Form<Login> loginForm = form(Login.class).bindFromRequest();
 		if (loginForm.hasErrors()) {
-			flash("success", "Error in Form");
+			flash("success", "Nutzer oder Passwort nicht korrekt");
 			return badRequest(index.render());
 		} else {
 			session().clear();
 			session("email", loginForm.get().email);
 			session("id", Account.findByEmail(loginForm.get().email).id.toString());
 			session("firstname", Account.findByEmail(loginForm.get().email).firstname);
-			return redirect(routes.Application.stream());
+			return redirect(routes.Application.index());
 		}
 	}
 
