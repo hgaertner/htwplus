@@ -10,7 +10,7 @@
 <div class="modal-body">
 
 	<dl>
-		<dt>Gruppengründer</dt>
+		<dt>GruppengrÃ¼nder</dt>
 		<dd>@group.owner.firstname @group.owner.lastname</dd>
 	</dl>
 	<dl>
@@ -19,7 +19,7 @@
 	</dl>
 	@form(routes.GroupController.update(group.id), 'id -> "editGroupForm") {
 	
-	@textarea(groupForm("description"), '_label -> "Beschreibung")
+	@textarea(groupForm("description"), '_label -> "Beschreibung", 'rows -> "5")
 	
 	}
 	<dl>
@@ -27,7 +27,7 @@
 		<dd>
 			<div class="input-append">
 				<input id="appendedInputButton" type="text">
-				<button class="btn btn-warning" type="button">Hinzufügen</button>
+				<button class="btn btn-warning" type="button">HinzufÃ¼gen</button>
 			</div>
 		</dd>
 	</dl>
@@ -38,19 +38,18 @@
 				<thead>
 					<tr>
 						<th>Name</th>
-						<th>Verfügbare Optionen</th>
+						<th>VerfÃ¼gbare Optionen</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td><a href="#" rel="popover" data-html="true"
-							data-trigger="hover" data-delay="500"
-							data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik"
-							data-original-title="Anne Hasenpusch" data-placement="top">Anne
-								Hasenpusch</a></td>
-						<td><a href="#" rel="tooltip" title="LÃ¶schen"><i
-								class="icon-remove"></i></a></td>
-					</tr>
+					@defining(GroupAccount.findAccountsByGroup(group)) { accounts =>
+			             @for(account <- accounts) {              
+                            <tr>
+                                <td><a data-placement="top" data-original-title="@account.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover" href="#">@account.name</a></td>
+                                <td><a href="#" rel="tooltip" title="LÃ¶schen"><i class="icon-remove"></i></a></td>
+                            </tr>
+                         }
+              		}
 				</tbody>
 			</table>
 		</dd>
@@ -58,8 +57,8 @@
 	
 </div>
 <div class="modal-footer">
-	<button class="btn" data-dismiss="modal" aria-hidden="true">Schließen</button>
-	<button class="btn btn-warning" aria-hidden="true" id="submitGroup">Übernehmen</button>
+	<button class="btn" data-dismiss="modal" aria-hidden="true">SchlieÃŸen</button>
+	<button class="btn btn-warning" aria-hidden="true" id="submitGroup">Ãœbernehmen</button>
 </div>
 </div>
 

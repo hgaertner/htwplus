@@ -1,10 +1,10 @@
-@(group: Group, posts:List[Post],postForm:  Form[Post] )
-
+@(group: Group, posts:List[Post], postForm: Form[Post] )
 @import helper._
 
 @main("Group View") {
-    
-        
+@defining(Component.currentAccount()) { user =>
+
+<!--
     @form(routes.GroupController.addPost(group.id)) {
      	@textarea(postForm("Content"), '_label -> "Content: ") 	
         <input type="submit" value="Add Post to Group" class="btn btn-success">    
@@ -15,7 +15,6 @@
     	<h2>Posts</h2>
     	<table class="table">
     	@for(post <- posts){
-    	<!-- confirmModal -->
         <div id="confirmModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
         	<div class="modal-header">
         		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
@@ -29,7 +28,6 @@
         		<button class="btn" data-dismiss="modal" aria-hidden="true">Nein</button>
         	</div>
         </div>
-        <!-- Ende confirmModal -->
     	<tr>
     	<td>@post.content</td>
     	<td>@post.owner.loginname</td>
@@ -39,4 +37,213 @@
     	}
     	</table>
     }
+-->
+
+<br />
+<h1>
+	@group.title@if(group.isClosed == true) {<i class="icon-lock"></i>} else {<i class="icon-globe"></i>}
+	<div class="btn-group">
+		<a href="#" role="button" class="btn" rel="tooltip" data-original-title="Gruppenmedien"><i class="icon-file"></i></a>
+		@if(group.owner.id == user.id){
+			<a href="@routes.GroupController.edit(group.id)" role="button" rel="tooltip" data-toggle="modal" data-original-title="Gruppe bearbeiten" class="btn editGroup"><i class="icon-pencil"></i></a>
+		}
+		<a href="#infoModal@group.id" role="button" class="btn last" data-toggle="modal" rel="tooltip" data-original-title="Gruppeninfo"><i class="icon-info-sign"></i></a>
+	</div>
+</h1>
+<br />
+
+<!-- Start editModal -->
+			<div id="editModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
+
+			<div class="loading-modal">
+			<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">x</button>
+					<h3 id="editModalLabel">Gruppe bearbeiten</h3>
+				</div>
+				<div class="modal-body"><div id="loading"></div>Wird geladen</div>
+				<div class="modal-footer">
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Schließen</button>
+				</div>
+			</div>
+			</div>
+<!-- Ende editModal -->
+
+<!-- Start infoModal -->
+<div id="infoModal@group.id" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="false">
+	@views.html.Group.snippets.infoModal(group)    
+</div>
+<!-- Ende infoModal --> 
+
+<!-- confirmModal -->
+<div id="confirmModal" class="modal hide fade" tabindex="-1"
+	role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">x</button>
+		<h3 id="confirmModalLabel">Aktion mit Bestätigung</h3>
+	</div>
+	<div class="modal-body">
+		Möchtest du diese Aktion wirklich durchführen?<br /> <br />
+		<button class="btn btn-warning">Ja</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Nein</button>
+	</div>
+	<div class="modal-footer"></div>
+</div>
+<!-- Ende confirmModal -->
+
+Erstellt von
+<a href="#" rel="popover" data-html="true" data-trigger="hover"
+	data-delay="500"
+	data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik"
+	data-original-title="Max Mustermann" data-placement="top">@group.owner.firstname
+	@group.owner.lastname</a>
+am @group.createdAt.format("dd. MMM yyyy")
+<br />
+<hr />
+<br />
+@form(routes.GroupController.addPost(group.id)) {
+	@textarea(postForm("Content"), 'rows -> "3", 'placeholder -> "Erstelle einen neuen Post...")
+	<button type="submit" class="btn btn-warning">Posten</button>  
+}
+
+<form>
+	<textarea rows="3" placeholder="Erstelle einen neuen Post..."></textarea>
+	<br />
+	<button class="btn btn-warning" type="button">Posten</button>
+</form>
+<hr />
+<br />
+<div class="media">
+	<a class="pull-left" href="#"> <img alt="avatar"
+		src="@routes.Assets.at("images/avatar.png")" height="80" width="80" class="img-polaroid" />
+	</a>
+	<div class="media-body">
+		<h4 class="media-heading">
+			<a href="#" rel="popover" data-html="true" data-trigger="hover"
+				data-delay="500"
+				data-content="<div class=&quot;own-popover&quot;>Rolle: Student <br /> Studiengang:  Angewandte Informatik </div>"
+				data-original-title="Name Nachname" data-placement="top">Name
+				Nachname</a>
+		</h4>
+		22.05.2012<br />
+	</div>
+</div>
+<br />
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
+rebum.
+<br />
+<br />
+<div class="well">
+	<a href="#collapse1" data-toggle="collapse"
+		onclick="changeText('collapse1', this)">ältere Kommentare
+		anzeigen...</a>
+	<div id="collapse1" class="collapse">
+		<br />
+		<div class="media">
+			<a class="pull-left" href="#"> <img alt="avatar"
+				src="@routes.Assets.at("images/avatar.png")" height="50" width="50" class="img-polaroid" />
+			</a>
+			<div class="media-body">
+				<h5 class="media-heading">
+					<a href="#" rel="popover" data-html="true" data-trigger="hover"
+						data-delay="500"
+						data-content="<div class=&quot;own-popover&quot;>Rolle: Student <br /> Studiengang:  Angewandte Informatik </div>"
+						data-original-title="Name Nachname" data-placement="top">Name
+						Nachname</a>
+				</h5>
+				<small>22.05.2012</small><br /> <br /> <small>Lorem ipsum
+					dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+					tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+					voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+					Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+					dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
+					elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+					magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+					justo duo dolores et ea rebum.</small>
+			</div>
+		</div>
+		<div class="media">
+			<a class="pull-left" href="#"> <img alt="avatar"
+				src="@routes.Assets.at("images/avatar.png")" height="50" width="50" class="img-polaroid" />
+			</a>
+			<div class="media-body">
+				<h5 class="media-heading">
+					<a href="#" rel="popover" data-html="true" data-trigger="hover"
+						data-delay="500"
+						data-content="<div class=&quot;own-popover&quot;>Rolle: Student <br /> Studiengang:  Angewandte Informatik </div>"
+						data-original-title="Name Nachname" data-placement="top">Name
+						Nachname</a>
+				</h5>
+				<small>22.05.2012</small><br /> <br /> <small>Lorem ipsum
+					dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+					tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+					voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+					Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+					dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
+					elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+					magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+					justo duo dolores et ea rebum.</small>
+			</div>
+		</div>
+	</div>
+	<div class="media">
+		<a class="pull-left" href="#"> <img alt="avatar"
+			src="@routes.Assets.at("images/avatar.png")" height="50" width="50" class="img-polaroid" />
+		</a>
+		<div class="media-body">
+			<h5 class="media-heading">
+				<a href="#" rel="popover" data-html="true" data-trigger="hover"
+					data-delay="500"
+					data-content="<div class=&quot;own-popover&quot;>Rolle: Student <br /> Studiengang:  Angewandte Informatik </div>"
+					data-original-title="Name Nachname" data-placement="top">Name
+					Nachname</a>
+			</h5>
+			<small>22.05.2012</small><br /> <br /> <small>Lorem ipsum
+				dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+				tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+				voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+				Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+				dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
+				elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+				magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+				justo duo dolores et ea rebum.</small>
+		</div>
+	</div>
+	<div class="media">
+		<a class="pull-left" href="#"> <img alt="avatar"
+			src="@routes.Assets.at("images/avatar.png")" height="50" width="50" class="img-polaroid" />
+		</a>
+		<div class="media-body">
+			<h5 class="media-heading">
+				<a href="#" rel="popover" data-html="true" data-trigger="hover"
+					data-delay="500"
+					data-content="<div class=&quot;own-popover&quot;>Rolle: Student <br /> Studiengang:  Angewandte Informatik </div>"
+					data-original-title="Name Nachname" data-placement="top">Name
+					Nachname</a>
+			</h5>
+			<small>22.05.2012</small><br /> <br /> <small>Lorem ipsum
+				dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+				tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+				voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+				Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+				dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
+				elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+				magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+				justo duo dolores et ea rebum.</small>
+		</div>
+	</div>
+	<br />
+	<textarea rows="2" placeholder="Schreibe einen Kommentar..."></textarea>
+	<br />
+	<button class="btn btn-small btn-warning" type="button">Kommentieren</button>
+</div>
+
+}
 }
