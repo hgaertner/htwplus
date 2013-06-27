@@ -337,6 +337,10 @@ input, select, textarea {
    margin-top: -5px;
 }
 
+.modal-body dl {
+	height: 20px;
+}
+
 .modal-body dl dd:last-child {
 	padding-bottom: 8px;
 }
@@ -359,6 +363,7 @@ input, select, textarea {
 }
 
 .modal-body dd.info {
+	display: none;
 	text-shadow: 1px 1px 1px rgba(118, 185, 0, 0.5);
 	color: #76B900;
 }
