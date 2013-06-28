@@ -85,10 +85,11 @@
 	</div>
 	<div class="modal-body">
 		Möchtest du diese Aktion wirklich durchführen?<br /> <br />
+	</div>
+	<div class="modal-footer">
 		<button class="btn btn-warning">Ja</button>
 		<button class="btn" data-dismiss="modal" aria-hidden="true">Nein</button>
 	</div>
-	<div class="modal-footer"></div>
 </div>
 <!-- Ende confirmModal -->
 
@@ -102,148 +103,16 @@ am @group.createdAt.format("dd. MMM yyyy")
 <br />
 <hr />
 <br />
-@form(routes.GroupController.addPost(group.id)) {
+@form(routes.GroupController.addPost(group.id), 'id -> "addPost") {
 	@textarea(postForm("Content"), 'rows -> "3", 'placeholder -> "Erstelle einen neuen Post...")
 	<button type="submit" class="btn btn-warning">Posten</button>  
 }
 
-<form>
-	<textarea rows="3" placeholder="Erstelle einen neuen Post..."></textarea>
-	<br />
-	<button class="btn btn-warning" type="button">Posten</button>
-</form>
-<hr />
-<br />
-<div class="media">
-	<a class="pull-left" href="#"> <img alt="avatar"
-		src="@routes.Assets.at("images/avatar.png")" height="80" width="80" class="img-polaroid" />
-	</a>
-	<div class="media-body">
-		<h4 class="media-heading">
-			<a href="#" rel="popover" data-html="true" data-trigger="hover"
-				data-delay="500"
-				data-content="<div class=&quot;own-popover&quot;>Rolle: Student <br /> Studiengang:  Angewandte Informatik </div>"
-				data-original-title="Name Nachname" data-placement="top">Name
-				Nachname</a>
-		</h4>
-		22.05.2012<br />
-	</div>
-</div>
-<br />
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
-amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-rebum.
-<br />
-<br />
-<div class="well">
-	<a href="#collapse1" data-toggle="collapse"
-		onclick="changeText('collapse1', this)">ältere Kommentare
-		anzeigen...</a>
-	<div id="collapse1" class="collapse">
-		<br />
-		<div class="media">
-			<a class="pull-left" href="#"> <img alt="avatar"
-				src="@routes.Assets.at("images/avatar.png")" height="50" width="50" class="img-polaroid" />
-			</a>
-			<div class="media-body">
-				<h5 class="media-heading">
-					<a href="#" rel="popover" data-html="true" data-trigger="hover"
-						data-delay="500"
-						data-content="<div class=&quot;own-popover&quot;>Rolle: Student <br /> Studiengang:  Angewandte Informatik </div>"
-						data-original-title="Name Nachname" data-placement="top">Name
-						Nachname</a>
-				</h5>
-				<small>22.05.2012</small><br /> <br /> <small>Lorem ipsum
-					dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-					tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-					voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-					Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
-					dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
-					elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
-					magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
-					justo duo dolores et ea rebum.</small>
-			</div>
-		</div>
-		<div class="media">
-			<a class="pull-left" href="#"> <img alt="avatar"
-				src="@routes.Assets.at("images/avatar.png")" height="50" width="50" class="img-polaroid" />
-			</a>
-			<div class="media-body">
-				<h5 class="media-heading">
-					<a href="#" rel="popover" data-html="true" data-trigger="hover"
-						data-delay="500"
-						data-content="<div class=&quot;own-popover&quot;>Rolle: Student <br /> Studiengang:  Angewandte Informatik </div>"
-						data-original-title="Name Nachname" data-placement="top">Name
-						Nachname</a>
-				</h5>
-				<small>22.05.2012</small><br /> <br /> <small>Lorem ipsum
-					dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-					tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-					voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-					Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
-					dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
-					elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
-					magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
-					justo duo dolores et ea rebum.</small>
-			</div>
-		</div>
-	</div>
-	<div class="media">
-		<a class="pull-left" href="#"> <img alt="avatar"
-			src="@routes.Assets.at("images/avatar.png")" height="50" width="50" class="img-polaroid" />
-		</a>
-		<div class="media-body">
-			<h5 class="media-heading">
-				<a href="#" rel="popover" data-html="true" data-trigger="hover"
-					data-delay="500"
-					data-content="<div class=&quot;own-popover&quot;>Rolle: Student <br /> Studiengang:  Angewandte Informatik </div>"
-					data-original-title="Name Nachname" data-placement="top">Name
-					Nachname</a>
-			</h5>
-			<small>22.05.2012</small><br /> <br /> <small>Lorem ipsum
-				dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-				tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-				voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-				Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
-				dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
-				elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
-				magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
-				justo duo dolores et ea rebum.</small>
-		</div>
-	</div>
-	<div class="media">
-		<a class="pull-left" href="#"> <img alt="avatar"
-			src="@routes.Assets.at("images/avatar.png")" height="50" width="50" class="img-polaroid" />
-		</a>
-		<div class="media-body">
-			<h5 class="media-heading">
-				<a href="#" rel="popover" data-html="true" data-trigger="hover"
-					data-delay="500"
-					data-content="<div class=&quot;own-popover&quot;>Rolle: Student <br /> Studiengang:  Angewandte Informatik </div>"
-					data-original-title="Name Nachname" data-placement="top">Name
-					Nachname</a>
-			</h5>
-			<small>22.05.2012</small><br /> <br /> <small>Lorem ipsum
-				dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-				tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-				voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-				Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
-				dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
-				elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
-				magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
-				justo duo dolores et ea rebum.</small>
-		</div>
-	</div>
-	<br />
-	<textarea rows="2" placeholder="Schreibe einen Kommentar..."></textarea>
-	<br />
-	<button class="btn btn-small btn-warning" type="button">Kommentieren</button>
-</div>
+@if(posts != null) {
+	@for(post <- posts) {
+		@views.html.Group.snippets.post(post)
+	}
+}
 
 }
 }
