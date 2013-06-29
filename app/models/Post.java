@@ -71,6 +71,13 @@ public class Post extends BaseModel {
 				.createQuery("SELECT p FROM Post p WHERE p.group.id = ?1")
 				.setParameter(1, id).getResultList();
 	}
+	
+	public static List<Post> getCommentsForPost(Long id) {
+		return (List<Post>) JPA.em()
+				.createQuery("SELECT p FROM Post p WHERE p.parent.id = ?1")
+				.setParameter(1, id).getResultList();
+	}
+	
 	public static boolean isOwner(Long postId, Account account) {
 		Post p = JPA.em().find(Post.class, postId);
 		if(p.owner.equals(account)){

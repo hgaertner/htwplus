@@ -1,4 +1,5 @@
-@(post: Post)
+@(post: Post, group: Group, postForm: Form[Post])
+@import helper._
 
 @defining(Component.currentAccount()) { user =>
 	<hr />
@@ -26,16 +27,25 @@
 	<br />
 	<br />
 	<div class="well">
+	<!-- 
 		<a href="#collapse@post.id" data-toggle="collapse" onclick="changeText('collapse@post.id', this)">ältere Kommentare anzeigen...</a>
 		<div id="collapse@post.id" class="collapse">
 			<br />
-			@views.html.Group.snippets.comment()
-			@views.html.Group.snippets.comment()
 		</div>
-		@views.html.Group.snippets.comment()
-		@views.html.Group.snippets.comment()
+
+	 -->
+	 @defining(Post.getCommentsForPost(post.id)) { comments =>
+	 
+	 @for(comment <- comments){
+	 	@views.html.Group.snippets.comment(comment)
+	 }
+	 
+	 
+	 }
 		<br />
-		<textarea rows="2" placeholder="Schreibe einen Kommentar..."></textarea>
-		<br />
-		<button class="btn btn-small btn-warning" type="button">Kommentieren</button>
+		
+		@form(routes.GroupController.addComment(post.id, group.id), 'id -> "addComment") {
+		@textarea(postForm("Content"),'id -> "postContent", 'rows -> "2", 'placeholder -> "Schreibe ein Kommentar...")
+		<button class="btn btn-small btn-warning" type="submit">Kommentieren</button>
+		}
 	</div>

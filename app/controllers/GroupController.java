@@ -59,6 +59,38 @@ public class GroupController extends BaseController {
 		return view(groupId);
 	}
 	
+	@Transactional
+	public static Result addComment(long postId, long groupId) {
+		if (Secured.isMemberOfGroup(groupId)) {
+			Form<Post> filledForm = postForm.bindFromRequest();
+			if (filledForm.hasErrors()) {
+				System.out.println(filledForm.errors());
+				flash("message", "Error in Form!");
+				// return badRequest(view.render(arg0, arg1));
+			} else {
+				Post p = filledForm.get();
+				try {
+					final long accountId = Long.parseLong(session().get("id"));
+					Post p2 = new Post();
+					p2.content = p.content;
+					p2.owner = Account.findById(accountId);
+					p2.group = Group.findById(groupId);
+					p2.parent = Post.findById(postId);
+					p2.create();
+					// } else {
+					// TODO return error Message current user is not a member of
+					// the course...
+					// }
+				} catch (NumberFormatException exp) {
+					// TODO log exception and handle it...
+				}
+			}
+		} else {
+			return forbidden();
+		}
+		return view(groupId);
+	}
+	
 	@Transactional(readOnly=true)
 	public static Result view(Long id) {
 		Group group = Group.findById(id);
