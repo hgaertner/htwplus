@@ -18,9 +18,7 @@
 		<dd>@group.createdAt.format("dd. MMM yyyy")</dd>
 	</dl>
 	@form(routes.GroupController.update(group.id), 'id -> "editGroupForm") {
-	
-	@textarea(groupForm("description"), '_label -> "Beschreibung", 'rows -> "5")
-	
+		@textarea(groupForm("description"), '_label -> "Beschreibung", 'rows -> "5")
 	}
 	<dl>
 		<dt>Person einladen</dt>

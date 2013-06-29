@@ -70,6 +70,16 @@ public class GroupController extends BaseController {
 			return ok(view.render(group, posts, postForm));
 		}
 	}
+	
+	@Transactional(readOnly=true)
+	public static Result media(Long id) {
+		Group group = Group.findById(id);
+		if (group == null) {
+			return redirect(routes.GroupController.index());
+		} else {
+			return ok(media.render(group));
+		}
+	}
 
 	public static Result create() {
 		Account account = Component.currentAccount();
