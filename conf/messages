@@ -25,5 +25,5 @@ error.max=Must be less or equal to {0}
 error.max.strict=Must be strictly less than {0}
 error.minLength=Minimum length is {0}
 error.maxLength=Maximum length is {0}
-error.email=Valid email required
+error.email=Bitte eine gültige Adresse eingeben
 error.pattern=Must satisfy {0}

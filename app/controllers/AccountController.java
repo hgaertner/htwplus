@@ -50,13 +50,16 @@ public class AccountController extends BaseController {
         System.out.println(filledForm.errors());
         // Check Mail
         if(!(Account.findByEmail(filledForm.field("email").value()) == null)) {
-            filledForm.reject("email", "Mail is already taken!");
+            filledForm.reject("email", "Diese Mail wird bereits verwendet!");
         }
         // Check repeated password
         if(!filledForm.field("password").valueOr("").isEmpty()) {
             if(!filledForm.field("password").valueOr("").equals(filledForm.field("repeatPassword").value())) {
-                filledForm.reject("repeatPassword", "Password don't match");
+                filledForm.reject("repeatPassword", "Passwörter stimmen nicht überein");
             }
+        }
+        if(filledForm.field("password").value().length() < 6){
+        	filledForm.reject("password", "Das Passwort muss mindestens 6 Zeichen haben.");
         }
                 
         if(filledForm.hasErrors()) {
