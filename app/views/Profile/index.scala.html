@@ -1,10 +1,127 @@
-@(user: Account)
-
+@(user: Account, profileForm: Form[Account])
 @import helper._
 
 @main("Profil") {
-	 <a class="btn btn-primary" href="@routes.ProfileController.edit(user.id)">Edit</a>
-	<h3>Vorname: @user.firstname</h3>
-	<h3>Nachname: @user.lastname</h3>
-	<h3>E-Mail: @user.email</h3>
+
+<br />
+<div class="media">
+	<a class="pull-left"> <img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="120" width="120" class="img-polaroid" /></a>
+	<div class="media-body">
+		<h1 class="media-heading">
+			@user.firstname @user.lastname
+			<div class="btn-group">
+				<a href="#editModal" class="btn" data-toggle="modal" rel="tooltip" title="Profil bearbeiten"><i class="icon-pencil"></i></a>
+				<a href="#editPwModal" class="btn last" data-toggle="modal" rel="tooltip" title="Passwort bearbeiten"><i class="icon-wrench"></i></a>
+			</div>
+		</h1>
+	</div>
+</div>
+
+<!-- editModal -->
+@views.html.Profile.snippets.edit(profileForm)
+<!-- Ende editModal -->
+
+<!-- editPwModal -->
+<div id="editPwModal" class="modal hide fade" tabindex="-1"
+	role="dialog" aria-labelledby="editPwModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">x</button>
+		<h3 id="editPwModalLabel">Passwort ändern</h3>
+	</div>
+	<div class="modal-body">
+		<table class="table">
+			<tr>
+				<th>Altes Passwort</th>
+				<td colspan="3"><input type="password" placeholder="">
+				</td>
+			</tr>
+			<tr>
+				<th>Neues Passwort</th>
+				<td colspan="3"><input type="password" placeholder="">
+				</td>
+			</tr>
+			<tr>
+				<th>Wiederholung</th>
+				<td colspan="3"><input type="password" placeholder="">
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Abbrechen</button>
+		<button class="btn btn-warning">Speichern</button>
+	</div>
+</div>
+<!-- Ende editPwModal -->
+<br />
+<table class="table">
+	<colgroup>
+		<col width="25%">
+		<col width="75%">
+	</colgroup>
+	<tr>
+		<th>Studiengang</th>
+		<td>Angewandte Informatik</td>
+	</tr>
+	<tr>
+		<th>Semester</th>
+		<td>2. Semester Master</td>
+	</tr>
+	<tr>
+		<th>Kurse</th>
+		<td>IT Security, Parallel Systems, LaTex</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<hr />
+		</td>
+	</tr>
+	<tr>
+		<th>E-Mail</th>
+		<td>@user.email</td>
+	</tr>
+	<tr>
+		<th>Geburtstag</th>
+		<td>01. Januar 1986</td>
+	</tr>
+	<tr>
+		<th>Wohnort</th>
+		<td>Berlin Charlottenburg</td>
+	</tr>
+	<tr>
+		<th>Sprache</th>
+		<td>deutsch</td>
+	</tr>
+	<tr>
+		<th>Webseite</th>
+		<td>www.max-mustermann.de</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<hr />
+		</td>
+	</tr>
+	<tr>
+		<th>Interessen</th>
+		<td>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+			diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+			erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+			et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+			Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
+			sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+			dolore magna aliquyam erat, sed diam voluptua.</td>
+	</tr>
+	<tr>
+		<th>Persönlicher Text</th>
+		<td>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+			diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+			erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+			et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+			Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
+			sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+			dolore magna aliquyam erat, sed diam voluptua.</td>
+	</tr>
+</table>
+
 }
