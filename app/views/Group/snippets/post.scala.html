@@ -42,10 +42,9 @@
 	 
 	 
 	 }
-		<br />
 		
-		@form(routes.GroupController.addComment(post.id, group.id), 'id -> "addComment") {
+		@form(routes.GroupController.addComment(post.id, group.id), 'class -> "addComment") {
 		@textarea(postForm("Content"),'id -> "postContent", 'rows -> "2", 'placeholder -> "Schreibe ein Kommentar...")
-		<button class="btn btn-small btn-warning" type="submit">Kommentieren</button>
+		<button class="btn btn-small btn-warning commentSubmit" type="submit">Kommentieren</button>
 		}
 	</div>

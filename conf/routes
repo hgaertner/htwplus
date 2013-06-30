@@ -30,8 +30,8 @@ GET		/gruppe/:id/media		controllers.GroupController.media(id:Long)
 GET		/gruppe/:id/edit			controllers.GroupController.edit(id:Long)
 POST	/gruppe/:id/update		controllers.GroupController.update(id:Long)
 GET		/gruppe/:id/delete		controllers.GroupController.delete(id:Long)
-POST	/gruppe/addPost			controllers.GroupController.addPost(id:Long)
-POST	/gruppe/addComment		controllers.GroupController.addComment(postId:Long, groupId:Long)
+POST	/gruppe/:id/addPost			controllers.GroupController.addPost(id:Long)
+POST	/gruppe/:groupId/addComment/:postId		controllers.GroupController.addComment(postId:Long, groupId:Long)
 GET		/gruppe/:id/deletePost	controllers.GroupController.deletePost(id:Long)
 
 # Signup
