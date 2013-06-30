@@ -44,7 +44,9 @@
 			             @for(account <- accounts) {              
                             <tr>
                                 <td><a data-placement="top" data-original-title="@account.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover" href="#">@account.name</a></td>
-                                <td><a href="#" rel="tooltip" title="Löschen"><i class="icon-remove"></i></a></td>
+                                @if(account.id != group.owner.id){
+                                	<td><a href="#" rel="tooltip" title="Löschen"><i class="icon-remove"></i></a></td>
+                                }
                             </tr>
                          }
               		}
