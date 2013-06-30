@@ -3,11 +3,9 @@
 	<a class="pull-left" href="#"> <img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="50" width="50" class="img-polaroid" /></a>
 	<div class="media-body">
 		<h5 class="media-heading">
-			<a href="#" rel="popover" data-html="true" data-trigger="hover" data-delay="500"
-			   data-content="<div class=&quot;own-popover&quot;>Rolle: Student <br /> Studiengang:  Angewandte Informatik </div>"
-			   data-original-title="Name Nachname" data-placement="top">Name Nachname</a>
+				<a data-placement="top" data-original-title="@comment.owner.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover" href="#">@comment.owner.name</a>
 		</h5>
-		<small>@comment.createdAt</small>
+		<small>@comment.createdAt.format("dd. MMM yyyy hh:mm")</small>
 		<br /><br />
 		<small>
 			@comment.content

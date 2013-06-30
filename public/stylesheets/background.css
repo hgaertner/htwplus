@@ -257,14 +257,21 @@ body#smallHead #content {
 	border-top: 0;
 }
 
+input, select {
+	height: auto !important;
+}
+
 input, select, textarea {
 	width: 100%;
-	height: auto !important;
 	line-height: 16px;
     box-sizing: border-box;
     -webkit-box-sizing:border-box;
     -moz-box-sizing: border-box;
   	resize: none;
+}
+
+textarea {
+  	resize: vertical;
 }
 
 .collapse {
@@ -369,10 +376,12 @@ input, select, textarea {
 	color: #76B900;
 }
 
-#addPost label {
+#addPost label,
+#addComment label {
 	display: none;
 }
 
-#addPost dl, dd {
+#addPost dl, dd,
+#addComment dl, dd {
 	margin: 0;
 }
