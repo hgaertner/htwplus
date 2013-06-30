@@ -19,6 +19,7 @@ import views.html.Group.view;
 public class Post extends BaseModel {
 
 	@Required
+	@Column(length=2000)
 	public String content;
 
 	@ManyToOne
