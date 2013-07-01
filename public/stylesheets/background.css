@@ -131,9 +131,10 @@ body#smallHead #content {
 	padding-top: 0px;
 }
 
-.own-popover  {
+.media-heading .popover  {
 	font-size: 11px;
     font-weight: normal;
+    line-height: 16px;
 }
 
 .navi {
@@ -256,14 +257,21 @@ body#smallHead #content {
 	border-top: 0;
 }
 
+input, select {
+	height: auto !important;
+}
+
 input, select, textarea {
 	width: 100%;
-	height: auto !important;
 	line-height: 16px;
     box-sizing: border-box;
     -webkit-box-sizing:border-box;
     -moz-box-sizing: border-box;
   	resize: none;
+}
+
+textarea {
+  	resize: vertical;
 }
 
 .collapse {
@@ -337,6 +345,10 @@ input, select, textarea {
    margin-top: -5px;
 }
 
+.modal-body dl {
+	height: 20px;
+}
+
 .modal-body dl dd:last-child {
 	padding-bottom: 8px;
 }
@@ -359,6 +371,17 @@ input, select, textarea {
 }
 
 .modal-body dd.info {
+	display: none;
 	text-shadow: 1px 1px 1px rgba(118, 185, 0, 0.5);
 	color: #76B900;
+}
+
+#addPost label,
+#addComment label {
+	display: none;
+}
+
+#addPost dl, dd,
+#addComment dl, dd {
+	margin: 0;
 }

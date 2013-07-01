@@ -1,4 +1,104 @@
 @main("Freunde") {
-	 <h1>Freunde</h1>
-     <br />
+@views.html.Friends.snippets.searchModal()
+<br />
+<h1>Offene Anfragen</h1>
+<table class="table table-hover">
+	<colgroup>
+		<col width="15%">
+		<col width="60%">
+		<col width="25%">
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Avatar</th>
+			<th>Name<br />(Studiengang)
+			</th>
+			<th>Verfügbare Optionen</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="25"
+				width="25" class="img-polaroid" /></td>
+			<td><a href="#">Stephan Bergemann</a><br />(Angewandte
+				Informatik)</td>
+			<td><a href="#" rel="tooltip" title="Annehmen"><i
+					class="icon-ok"></i></a> <a href="#confirmModal" data-toggle="modal"
+				rel="tooltip" title="Ablehnen"><i class="icon-remove"></i></a></td>
+		</tr>
+	</tbody>
+</table>
+<hr />
+<br />
+<div>
+	<h1>
+		Meine Freunde <a href="#searchModal" role="button" class="btn"
+			data-toggle="modal" rel="tooltip"
+			data-original-title="Freunde suchen"><i class="icon-search"></i></a>
+	</h1>
+</div>
+<table class="table table-hover">
+	<colgroup>
+		<col width="15%">
+		<col width="60%">
+		<col width="25%">
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Avatar</th>
+			<th>Name<br />(Studiengang)
+			</th>
+			<th>Verfügbare Optionen</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="25"
+				width="25" class="img-polaroid" /></td>
+			<td><a href="#">Anne Hasenpusch</a><br />(Angewandte
+				Informatik)</td>
+			<td><a href="#confirmModal" data-toggle="modal" rel="tooltip"
+				title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
+		</tr>
+		<tr>
+			<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="25"
+				width="25" class="img-polaroid" /></td>
+			<td><a href="freunde_newsstream.html">Björn Ahlfeld</a><br />(Angewandte
+				Informatik)</td>
+			<td><a href="#confirmModal" data-toggle="modal" rel="tooltip"
+				title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
+		</tr>
+		<tr>
+			<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="25"
+				width="25" class="img-polaroid" /></td>
+			<td><a href="#">Daniel Pinkpank</a><br />(Angewandte
+				Informatik)</td>
+			<td><a href="#confirmModal" data-toggle="modal" rel="tooltip"
+				title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
+		</tr>
+		<tr>
+			<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="25"
+				width="25" class="img-polaroid" /></td>
+			<td><a href="#">Fabian Kirstein</a><br />(Angewandte
+				Informatik)</td>
+			<td><a href="#confirmModal" data-toggle="modal" rel="tooltip"
+				title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
+		</tr>
+		<tr>
+			<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="25"
+				width="25" class="img-polaroid" /></td>
+			<td><a href="#">Iven Zimmer</a><br />(Angewandte Informatik)</td>
+			<td><a href="#confirmModal" data-toggle="modal" rel="tooltip"
+				title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
+		</tr>
+		<tr>
+			<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="25"
+				width="25" class="img-polaroid" /></td>
+			<td><a href="#">Kevin van Bernum</a><br />(Angewandte
+				Informatik)</td>
+			<td><a href="#confirmModal" data-toggle="modal" rel="tooltip"
+				title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
+		</tr>
+	</tbody>
+</table>
 }

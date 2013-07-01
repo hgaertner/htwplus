@@ -45,7 +45,7 @@
 									@if(user != null){
 										<br />
 					                  	<ul class="breadcrumb">
-					                      	<li><a href="@routes.Application.stream()">Home</a><span class="divider">/</span></li>
+					                      	<li><a href="@routes.Application.index()">Home</a><span class="divider">/</span></li>
 					                      	<li class="active">@title</li>
 					                  	</ul>
 									}
@@ -79,7 +79,8 @@
 		<div class="container">
 			<div class="span9">
 				<div id="htw">
-					<a href="#">Impressum</a>
+					@views.html.snippets.impressumModal()
+					<a href="#impressumModal" data-toggle="modal">Impressum</a>
 				</div>
 			</div>
 		</div>

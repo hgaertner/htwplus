@@ -17,7 +17,6 @@ import play.db.jpa.*;
 public class GroupController extends BaseController {
 
 	static Form<Group> groupForm = Form.form(Group.class);
-
 	static Form<Post> postForm = Form.form(Post.class);
 	
 	public static Result showAll() {
@@ -35,23 +34,13 @@ public class GroupController extends BaseController {
 			Form<Post> filledForm = postForm.bindFromRequest();
 			if (filledForm.hasErrors()) {
 				flash("message", "Error in Form!");
-				// return badRequest(view.render(arg0, arg1));
 			} else {
 				Post p = filledForm.get();
-				try {
-					final long accountId = Long.parseLong(session().get("id"));
-					Post p2 = new Post();
-					p2.content = p.content;
-					p2.owner = Account.findById(accountId);
-					p2.group = Group.findById(groupId);
-					p2.create();
-					// } else {
-					// TODO return error Message current user is not a member of
-					// the course...
-					// }
-				} catch (NumberFormatException exp) {
-					// TODO log exception and handle it...
-				}
+				Post p2 = new Post();
+				p2.content = p.content;
+				p2.owner = Component.currentAccount();
+				p2.group = Group.findById(groupId);
+				p2.create();
 			}
 		} else {
 			return forbidden();
@@ -68,6 +57,16 @@ public class GroupController extends BaseController {
 			Form<Post> formPost = Form.form(Post.class);
 			List<Post> posts = Post.getPostForGroup(id);
 			return ok(view.render(group, posts, postForm));
+		}
+	}
+	
+	@Transactional(readOnly=true)
+	public static Result media(Long id) {
+		Group group = Group.findById(id);
+		if (group == null) {
+			return redirect(routes.GroupController.index());
+		} else {
+			return ok(media.render(group));
 		}
 	}
 

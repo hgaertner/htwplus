@@ -27,8 +27,8 @@ public class Component extends Action.Simple {
     }
     
 	public static Html loginForm() {
-		Form<Login> loginForm = Form.form(Login.class).bindFromRequest();
-		Form<Account> signupForm = form(Account.class).bindFromRequest();
+		Form<Login> loginForm = form(Login.class);
+		Form<Account> signupForm = form(Account.class);
 		return views.html.snippets.loginForm.render(loginForm, signupForm);
 	}
     

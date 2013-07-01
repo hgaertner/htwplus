@@ -2,7 +2,6 @@
 
 @import helper._
 
-
 @helper.form(routes.AccountController.submit, 'id -> "newSignupForm") {
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"
@@ -12,32 +11,33 @@
 	<div class="modal-body">
 		@inputText(
 			signupForm("firstname"), 
-			'_label -> "Vorname",
-			'placeholder -> "Max"
+			'_label -> "Vorname *",
+			'placeholder -> "Max" 
         )
 		@inputText(
 			signupForm("lastname"), 
-			'_label -> "Nachname",
+			'_label -> "Nachname *",
 			'placeholder -> "Mustermann",
 			'_error -> signupForm.globalError
 		)
 		@inputText(
 			signupForm("email"),
-			'_label -> "Email",
+			'_label -> "Email *",
 			'placeholder -> "max.mustermann@muster.de",
 			'_error -> signupForm.globalError
 		)
 		@inputPassword(
 			signupForm("password"), 
-			'_label -> "Passwort",
+			'_label -> "Passwort *",
 			'_help -> "A password must be at least 6 characters."
 		)
 		@inputPassword(
 			signupForm("repeatPassword"), 
-			'_label -> "Passwort wiederholen",
+			'_label -> "Passwort wiederholen *",
 			'_error -> signupForm.error("password")
 		)
 	</div>
+	
 	<div class="modal-footer">
 		<button class="btn" data-dismiss="modal" aria-hidden="true">Abbrechen</button>
 		<button id="submitSignup" class="btn btn-warning">Senden</button>

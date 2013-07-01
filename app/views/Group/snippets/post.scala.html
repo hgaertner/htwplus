@@ -1,0 +1,49 @@
+@(post: Post, group: Group, postForm: Form[Post])
+@import helper._
+
+@defining(Component.currentAccount()) { user =>
+	<hr />
+	<br />
+	@views.html.Group.snippets.deletePostModal(post.id)
+	<div class="media">
+		<a class="pull-left" href="#"> <img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" class="img-polaroid" /></a>
+		<div class="media-body">
+			<h4 class="media-heading">
+				<a data-placement="top" data-original-title="@post.owner.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover" href="#">@post.owner.name</a>
+				@if(post.owner.id == user.id){
+                	<div class="btn-group">
+                		<a role="button" class="btn btn-small" onclick="editPostCom('@post.id')" rel="tooltip" data-original-title="Post bearbeiten"><i class="icon-pencil"></i></a>
+                		<a href="#confirmModalDeletePost@post.id" data-toggle="modal" role="button" class="btn btn-small last" rel="tooltip" data-original-title="Post löschen"><i class="icon-trash"></i></a>
+                	</div>
+                }
+			</h4>
+			@post.createdAt.format("dd. MMM yyyy hh:mm")
+			<br />
+		</div>
+	</div>
+	<br />
+	<div id="@post.id">@post.content</div>
+}
+	<br />
+	<br />
+	<div class="well">
+
+	<a href="#collapse-@post.id" class="olderComments" onclick="changeText('collapse@post.id', this)">ältere Kommentare anzeigen...</a>
+	<div id="collapse-@post.id" class="collapse">
+	
+	</div>
+
+	 @defining(PostController.getCommentsForPostInGroup(post.id)) { comments =>
+	 
+	 @for(comment <- comments){
+	 	@views.html.Group.snippets.comment(comment)
+	 }
+	 
+	 
+	 }
+		
+		@form(routes.PostController.addComment(post.id), 'class -> "addComment") {
+		@textarea(postForm("Content"),'id -> "postContent", 'rows -> "2", 'placeholder -> "Schreibe ein Kommentar...")
+		<button class="btn btn-small btn-warning commentSubmit" type="submit">Kommentieren</button>
+		}
+	</div>

@@ -5,42 +5,34 @@
 	<h3 id="infoModalLabel">@group.title</h3>
 </div>
 <div class="modal-body">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Gruppengr&uuml;nder:</th>
-                <td><a data-placement="bottom" data-original-title="@group.owner.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover" href="#">@group.owner.firstname @group.owner.lastname</a></td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th>Erstellt am:</th>
-                <td>@group.createdAt.format("dd. MMM yyyy")</td>
-            </tr>
-            <tr>
-                <th>Beschreibung:</th>
-                <td>@group.description</td>
-            </tr>
-            <tr>
-                <th>Mitglieder:</th>
-              
-                <td>
-                    <table class="table table-hover table-condensed">
-                        <tbody>
-                        <!-- Fuer Fabi: In Ajax-Request umwandeln :) -->
-                        @defining(GroupAccount.findAccountsByGroup(group)) { accounts =>
+    <dl>
+		<dt>Gruppengründer</dt>
+		<dd>@group.owner.firstname @group.owner.lastname</dd>
+	</dl>
+	<dl>
+		<dt>Erstellt am</dt>
+		<dd>@group.createdAt.format("dd. MMM yyyy")</dd>
+	</dl>
+	<dl>
+		<dt>Beschreibung</dt>
+		<dd>@group.description</dd>
+	</dl>
+	<dl>
+		<dt>Mitglieder</dt>
+		<dd>
+			<table class="table table-hover table-condensed">
+				<tbody>
+					@defining(GroupAccount.findAccountsByGroup(group)) { accounts =>
 			             @for(account <- accounts) {              
                             <tr>
                                 <td><a data-placement="top" data-original-title="@account.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover" href="#">@account.name</a></td>
                             </tr>
                          }
-              			}
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+              		}
+				</tbody>
+			</table>
+		</dd>
+	</dl>
 </div>
 <div class="modal-footer">
     <button aria-hidden="true" data-dismiss="modal" class="btn">Schlie&szlig;en</button>

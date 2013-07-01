@@ -1,0 +1,42 @@
+@(group: Group, posts:List[Post], postForm:  Form[Post] )
+
+@import helper._
+
+@main("Group View") {
+    
+        
+    @form(routes.GroupController.addPost(group.id)) {
+     	@textarea(postForm("Content"), '_label -> "Content: ") 	
+        <input type="submit" value="Add Post to Group" class="btn btn-success">    
+    }
+    
+    @if(posts != null){
+    
+    	<h2>Posts</h2>
+    	<table class="table">
+    	@for(post <- posts){
+    	<!-- confirmModal -->
+        <div id="confirmModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
+        	<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        		<h3 id="confirmModalLabel">Post l&ouml;schen</h3>
+        	</div>
+        	<div class="modal-body">
+        		M&ouml;chtest du diesen Post wirklich l&ouml;schen?<br />
+        	</div>
+        	<div class="modal-footer">
+        		<a href="@routes.GroupController.deletePost(post.id)" class="btn btn-warning">Ja</a>
+        		<button class="btn" data-dismiss="modal" aria-hidden="true">Nein</button>
+        	</div>
+        </div>
+        <!-- Ende confirmModal -->
+    	<tr>
+    	<td>@post.content</td>
+    	<td>@post.owner.loginname</td>
+    	<td><a href="" class="btn">Edit</a> </td>
+    	<td><a href="#confirmModal" data-toggle="modal" class="btn btn-warning" >Delete</a> </td>
+    	</tr>
+    	}
+    	</table>
+    }
+}

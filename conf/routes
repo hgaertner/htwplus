@@ -4,7 +4,6 @@
 
 # Home page
 GET     /                       controllers.Application.index()
-GET 	/stream					controllers.Application.stream()
 POST    /login                  controllers.AccountController.authenticate()
 GET     /logout                 controllers.AccountController.logout()
 
@@ -24,14 +23,19 @@ GET		/course/:id/deletePost	controllers.CourseController.deletePost(id:Long)
 
 #Group
 GET 	/gruppen				controllers.GroupController.index()
-#GET 	/groups/user/:id		controllers.GroupController.indexByAccount(id:Long)
-POST	/group/create			controllers.GroupController.create()
-GET		/group/:id				controllers.GroupController.view(id:Long)
-GET		/group/:id/edit			controllers.GroupController.edit(id:Long)
-POST	/group/:id/update		controllers.GroupController.update(id:Long)
-GET		/group/:id/delete		controllers.GroupController.delete(id:Long)
-POST	/group/addPost			controllers.GroupController.addPost(id:Long)
-GET		/group/:id/deletePost	controllers.GroupController.deletePost(id:Long)
+#GET 	/gruppen/user/:id		controllers.GroupController.indexByAccount(id:Long)
+POST	/gruppe/create			controllers.GroupController.create()
+GET		/gruppe/:id				controllers.GroupController.view(id:Long)
+GET		/gruppe/:id/media		controllers.GroupController.media(id:Long)
+GET		/gruppe/:id/edit			controllers.GroupController.edit(id:Long)
+POST	/gruppe/:id/update		controllers.GroupController.update(id:Long)
+GET		/gruppe/:id/delete		controllers.GroupController.delete(id:Long)
+POST	/gruppe/:id/addPost			controllers.GroupController.addPost(id:Long)
+GET		/gruppe/:id/deletePost	controllers.GroupController.deletePost(id:Long)
+
+#Post and Comments
+POST	/post/:id/addComment	controllers.PostController.addComment(id:Long)
+GET		/post/:id/olderComments controllers.PostController.getOlderComments(id:Long)
 
 # Signup
 POST    /signup                 controllers.AccountController.submit()

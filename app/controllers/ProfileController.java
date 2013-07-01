@@ -19,7 +19,8 @@ public class ProfileController extends BaseController {
 			flash("message", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());
 		} else {
-			return ok(index.render(account));
+			return ok(index.render(account, accountForm.fill(account)));
+			//return ok(index.render(account));
 		}
 	}
 
@@ -29,7 +30,8 @@ public class ProfileController extends BaseController {
 			flash("message", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());
 		} else {
-			return ok(index.render(account));
+			return ok(index.render(account, accountForm.fill(account)));
+			//return ok(index.render(account));
 		}
 	}
 
@@ -39,7 +41,8 @@ public class ProfileController extends BaseController {
 			flash("message", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());
 		} else {
-			return ok(edit.render(account.id, accountForm.fill(account)));
+			return ok(index.render(account, accountForm.fill(account)));
+			//return ok(edit.render(account.id, accountForm.fill(account)));
 		}
 	}
 
@@ -50,7 +53,8 @@ public class ProfileController extends BaseController {
 			System.out.println(filledForm.errors());
 			if (filledForm.hasErrors()) {
 				flash("message", "Error in Form!");
-				return badRequest(edit.render(id, filledForm));
+				return badRequest(index.render(account, filledForm));
+				//return badRequest(edit.render(id, filledForm));
 			} else {
 				filledForm.get().update();
 				flash("message", "Profile updated!");

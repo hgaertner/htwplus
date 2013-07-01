@@ -94,5 +94,48 @@ $(document).ready(function () {
 	 * END EDIT GROUP
 	 */
 	
+	/*
+	 * GROUP COMMENTS
+	 */
+	
+	$('.addComment').each(function(){
+		var context = $(this);
+		$(".commentSubmit", this).click(function(){
+			$.ajax({
+				url: context.attr('action'),
+				type: "POST",
+				data: context.serialize(),
+				success: function(data){
+					context.before(data);
+					context[0].reset();
+				}
+			});
+			return false;
+		});
+	});
+	
+	$('.olderComments').each(function(){
+		var id = $(this).attr('href').split('-')[1];
+		var context = this;
+		$(this).click(function(){
+			$.ajax({
+				url: "/post/"+id+"/olderComments",
+				type: "GET",
+				success: function(data){
+					$("#collapse-"+id).html(data);
+					$("#collapse-"+id).collapse();
+				
+				}
+			});
+		});
+	});
+
+		
+	
+	
+	/*
+	 * END GROUP COMMENTS
+	 */
+	
 	
 });
