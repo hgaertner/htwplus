@@ -114,7 +114,23 @@ $(document).ready(function () {
 		});
 	});
 	
-	
+	$('.olderComments').each(function(){
+		var id = $(this).attr('href').split('-')[1];
+		var context = this;
+		$(this).click(function(){
+			$.ajax({
+				url: "/post/"+id+"/olderComments",
+				type: "GET",
+				success: function(data){
+					$("#collapse-"+id).html(data);
+					$("#collapse-"+id).collapse();
+				
+				}
+			});
+		});
+	});
+
+		
 	
 	
 	/*

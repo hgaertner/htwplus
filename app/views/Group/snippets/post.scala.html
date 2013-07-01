@@ -27,14 +27,13 @@
 	<br />
 	<br />
 	<div class="well">
-	<!-- 
-		<a href="#collapse@post.id" data-toggle="collapse" onclick="changeText('collapse@post.id', this)">ältere Kommentare anzeigen...</a>
-		<div id="collapse@post.id" class="collapse">
-			<br />
-		</div>
 
-	 -->
-	 @defining(Post.getCommentsForPost(post.id)) { comments =>
+	<a href="#collapse-@post.id" class="olderComments" onclick="changeText('collapse@post.id', this)">ältere Kommentare anzeigen...</a>
+	<div id="collapse-@post.id" class="collapse">
+	
+	</div>
+
+	 @defining(PostController.getCommentsForPostInGroup(post.id)) { comments =>
 	 
 	 @for(comment <- comments){
 	 	@views.html.Group.snippets.comment(comment)
@@ -43,7 +42,7 @@
 	 
 	 }
 		
-		@form(routes.GroupController.addComment(post.id, group.id), 'class -> "addComment") {
+		@form(routes.PostController.addComment(post.id), 'class -> "addComment") {
 		@textarea(postForm("Content"),'id -> "postContent", 'rows -> "2", 'placeholder -> "Schreibe ein Kommentar...")
 		<button class="btn btn-small btn-warning commentSubmit" type="submit">Kommentieren</button>
 		}

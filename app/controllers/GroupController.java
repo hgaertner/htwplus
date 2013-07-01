@@ -48,29 +48,6 @@ public class GroupController extends BaseController {
 		return view(groupId);
 	}
 	
-	@Transactional
-	public static Result addComment(long postId, long groupId) {
-		if (Secured.isMemberOfGroup(groupId)) {
-			Form<Post> filledForm = postForm.bindFromRequest();
-			if (filledForm.hasErrors()) {
-				System.out.println(filledForm.errors());
-				flash("message", "Error in Form!");
-				return badRequest();
-			} else {
-				Post p = filledForm.get();
-				Post p2 = new Post();
-				p2.content = p.content;
-				p2.owner = Component.currentAccount();
-				p2.group = Group.findById(groupId);
-				p2.parent = Post.findById(postId);
-				p2.create();
-				return ok(comment.render(p2));
-			}
-		} else {
-			return forbidden();
-		}
-	}
-	
 	@Transactional(readOnly=true)
 	public static Result view(Long id) {
 		Group group = Group.findById(id);

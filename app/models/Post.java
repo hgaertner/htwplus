@@ -61,22 +61,33 @@ public class Post extends BaseModel {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static List<Post> getPostForCourse(Long courseId) {
 		return (List<Post>) JPA.em()
 				.createQuery("SELECT p FROM Post p WHERE p.course.id = ?1")
 				.setParameter(1, courseId).getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
 	public static List<Post> getPostForGroup(Long id) {
 		return (List<Post>) JPA.em()
-				.createQuery("SELECT p FROM Post p WHERE p.group.id = ?1")
-				.setParameter(1, id).getResultList();
+				.createQuery("SELECT p FROM Post p WHERE p.group.id = ?1 ORDER BY p.createdAt")
+				.setParameter(1, id)
+				.getResultList();
 	}
 	
-	public static List<Post> getCommentsForPost(Long id) {
+	@SuppressWarnings("unchecked")
+	public static List<Post> getCommentsForPost(Long id, int start, int max) {	
 		return (List<Post>) JPA.em()
-				.createQuery("SELECT p FROM Post p WHERE p.parent.id = ?1")
-				.setParameter(1, id).getResultList();
+				.createQuery("SELECT p FROM Post p WHERE p.parent.id = ?1 ORDER BY p.createdAt ASC")
+				.setParameter(1, id)
+				.setFirstResult(start)
+				.setMaxResults(max)
+				.getResultList();
+	}
+	
+	public static int countCommentsForPost(Long id) {
+		return ((Number)JPA.em().createQuery("SELECT COUNT(p.id) FROM Post p WHERE p.parent.id = ?1").setParameter(1, id).getSingleResult()).intValue();
 	}
 	
 	public static boolean isOwner(Long postId, Account account) {

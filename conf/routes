@@ -31,8 +31,11 @@ GET		/gruppe/:id/edit			controllers.GroupController.edit(id:Long)
 POST	/gruppe/:id/update		controllers.GroupController.update(id:Long)
 GET		/gruppe/:id/delete		controllers.GroupController.delete(id:Long)
 POST	/gruppe/:id/addPost			controllers.GroupController.addPost(id:Long)
-POST	/gruppe/:groupId/addComment/:postId		controllers.GroupController.addComment(postId:Long, groupId:Long)
 GET		/gruppe/:id/deletePost	controllers.GroupController.deletePost(id:Long)
+
+#Post and Comments
+POST	/post/:id/addComment	controllers.PostController.addComment(id:Long)
+GET		/post/:id/olderComments controllers.PostController.getOlderComments(id:Long)
 
 # Signup
 POST    /signup                 controllers.AccountController.submit()
