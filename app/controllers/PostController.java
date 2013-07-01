@@ -64,7 +64,6 @@ public class PostController extends BaseController {
 			comments = Post.getCommentsForPost(id, 0, count-max);
 		}
 		for (Post post : comments) {
-			Logger.info("hallo");
 			result = result.concat(views.html.Group.snippets.comment.render(post).toString());
 		}
 		return ok(result);	
