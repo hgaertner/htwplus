@@ -3,6 +3,7 @@ package test.selenium.pageobjects;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,13 +17,13 @@ import com.thoughtworks.selenium.Selenium;
 
 public class LoginPage extends BasePage {
 		
-	@FindBy(xpath="html/body/div[1]/div/div[3]/div/div/div[2]/form/input[1]")
+	@FindBy(xpath="//*[@id='loginForm']/input[1]")
 	WebElement emailField;
 	
-	@FindBy(xpath="html/body/div[1]/div/div[3]/div/div/div[2]/form/input[2]")
+	@FindBy(xpath="//*[@id='loginForm']/input[2]")
 	WebElement passwordField;
 	
-	@FindBy(xpath="html/body/div[1]/div/div[3]/div/div/div[2]/form/button")
+	@FindBy(xpath="//*[@id='loginForm']/button")
 	WebElement loginButton;
 	
 	@FindBy(id="loginForm")
@@ -42,9 +43,17 @@ public class LoginPage extends BasePage {
 		loginButton.click();
 		
 	}
-	
+
 	public String getFormContent() {
 		return loginForm.getText();
 	}
 	
+	public Boolean isLoggedIn(){
+		Cookie cookie = driver.manage().getCookieNamed("PLAY_SESSION");
+		if(cookie == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 }

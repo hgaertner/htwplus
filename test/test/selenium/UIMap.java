@@ -4,7 +4,7 @@ public class UIMap {
 	
 	private UIMap(){}
 	
-	public static String loginEmail = "email";
+	public static String submitSignupButtonID = "submitSignup";
 	
 	
 

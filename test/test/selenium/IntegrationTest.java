@@ -1,5 +1,6 @@
 package test.selenium;
 import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.spi.RegisterableService;
 
@@ -28,16 +29,81 @@ import static org.fest.assertions.Assertions.*;
 
 public class IntegrationTest extends BaseIntegrationTest {
 	
-//	@Test
-//	public void testRegistration(){
-//		driver.get("http://localhost:3333");
-//		WebElement registerLink = driver.findElement(By.id("registerLink"));
-//		registerLink.click();	
-//	}
-	private StringBuffer verificationErrors = new StringBuffer();
-
+	@Test
+	@Ignore
+	public void testRegistration() throws InterruptedException{
+		driver.get(baseUrl);
+		
+		// Implicit Wait
+		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+		
+		// Open Registration Modal
+		WebElement registerLink = driver.findElement(By.id("registerLink"));
+		registerLink.click();	
+		
+		// Get Fields 
+		// Wait for Expected Condition
+		WebElement firstnameField = (new WebDriverWait(driver, 10))
+				.until(ExpectedConditions.presenceOfElementLocated(By.id("firstname")));
+		
+		WebElement lastnameField = driver.findElement(By.id("lastname"));
+		WebElement emailField = driver.findElement(By.xpath("//*[@id='email']"));
+		WebElement passwordField = driver.findElement(By.name("password"));
+		WebElement repeatPasswordField = driver.findElement(By.cssSelector("#repeatPassword_field dd input"));
+	
+		// Fill Form
+		firstnameField.sendKeys("Bruce");
+		lastnameField.sendKeys("Wayne");
+		emailField.sendKeys("darkknight@gotham.com");
+		passwordField.sendKeys("robin");
+		repeatPasswordField.sendKeys("robin");
+		
+		// Submit
+		WebElement submit = driver.findElement(By.id(UIMap.submitSignupButtonID));
+		submit.click();	
+		
+		// To short Password
+		WebElement passwordError = (new WebDriverWait(driver, 10))
+			.until(ExpectedConditions.presenceOfElementLocated(By.className("error")));
+		assertThat(passwordError.getText()).contains("mindestens 6 Zeichen");
+		
+		// Correction
+		passwordField = driver.findElement(By.id("password"));
+		repeatPasswordField = driver.findElement(By.id("repeatPassword"));
+		passwordField.sendKeys("robin111");
+		repeatPasswordField.sendKeys("robin111");
+		submit = driver.findElement(By.id(UIMap.submitSignupButtonID));
+		submit.click();	
+		
+		// Wait for Expected Condition
+		(new WebDriverWait(driver, 10))
+				.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='registerModal']/div[3]/button")));
+						
+		// Successful Registration
+		WebElement successMessage = driver.findElement(By.id("registerModal"));
+		assertThat(successMessage.getText()).contains("Registrierung erfolgreich");
+	}
 	
 	@Test
+	public void testLoginPage() {
+		// Important, do get login form in the first place
+		driver.manage().deleteAllCookies();
+		driver.get(baseUrl);
+		
+		LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
+		loginPage.login("test@example.de", "1234");
+		
+		assertThat(loginPage.getFormContent()).contains(
+				"Nutzer oder Passwort nicht korrekt");
+		
+		loginPage.login("test@example.de", "test");	
+		assertThat(loginPage.isLoggedIn()).isTrue();
+	
+	}
+	
+	
+	@Test
+	@Ignore
 	public void testGroupRoundtrip() throws InterruptedException {
 		driver.get(baseUrl);
 		LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
@@ -94,19 +160,5 @@ public class IntegrationTest extends BaseIntegrationTest {
 		}
 	}
 	
-	
-	
-//    @Test
-//    public void test() {	
-//		String title = driver.getTitle();
-//        assertEquals(title, "HTW.plus()");
-//        LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
-//        
-//        //WebDriverWait wait = new WebDriverWait(driver, 10);
-//		//WebElement element = wait.until(loginPage.getPageLoadCondition());
-//        
-//        loginPage.login("test@example.de", "1234");
-//        assertThat(loginPage.getFormContent()).contains("Nutzer oder Passwort nicht korrekt");
-//    }
   
 }
