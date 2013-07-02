@@ -14,10 +14,8 @@ import play.Logger;
 
 import com.thoughtworks.selenium.Selenium;
 
-public class LoginPage {
-	
-	WebDriver driver;
-	
+public class LoginPage extends BasePage {
+		
 	@FindBy(xpath="html/body/div[1]/div/div[3]/div/div/div[2]/form/input[1]")
 	WebElement emailField;
 	
@@ -31,7 +29,7 @@ public class LoginPage {
 	WebElement loginForm;
 	
 	public LoginPage(WebDriver driver) {
-		this.driver = driver;
+		super(driver);
 	}
 	
 	public ExpectedCondition<WebElement> getPageLoadCondition() {

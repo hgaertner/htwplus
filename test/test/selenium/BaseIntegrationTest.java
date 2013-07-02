@@ -1,4 +1,9 @@
 package test.selenium;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.xml.bind.JAXBElement.GlobalScope;
+
 import org.junit.*;
 import static org.junit.Assert.assertEquals;
 import org.openqa.selenium.By;
@@ -11,32 +16,34 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import play.GlobalSettings;
 import play.Logger;
 import play.mvc.*;
 import play.test.*;
+import play.db.jpa.JPA;
 import play.libs.F.*;
 import test.selenium.pageobjects.LoginPage;
 
 import static play.test.Helpers.*;
 import static org.fest.assertions.Assertions.*;
 
+import static org.fluentlenium.core.filter.FilterConstructor.*;
 
-public class IntegrationTest extends BaseIntegrationTest {
+public abstract class BaseIntegrationTest {
 
-    @Test
-    public void test() {
-		WebDriver driver = new FirefoxDriver();
-		driver.get("http://localhost:3333");
-		String title = driver.getTitle();
-        assertEquals(title, "HTW.plus()");
-        LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
-        
-        //WebDriverWait wait = new WebDriverWait(driver, 10);
-		//WebElement element = wait.until(loginPage.getPageLoadCondition());
-        
-        loginPage.login("test@example.de", "1234");
-        assertThat(loginPage.getFormContent()).contains("Nutzer oder Passwort nicht korrekt");
-        driver.quit();
+	protected static TestServer server;
+	
+	@BeforeClass
+	public static void prepare() {
+		Map<String, String> settings = new HashMap<String, String>();
+		settings.put("db.default.url", "jdbc:postgresql://ubuntu/play_test");
+		server = new TestServer(3333, fakeApplication(settings));
+		server.start();
+	}
+    
+    @AfterClass
+    public static void tearDown() {
+    	server.stop();
     }
   
 }
