@@ -59,14 +59,14 @@ public class PostController extends BaseController {
 		int count = Post.countCommentsForPost(id);
 		List<Post> comments = null;
 		if(count <= max){
-			comments = Post.getCommentsForPost(id, 0, max);
+			return ok(result);	
 		} else {
 			comments = Post.getCommentsForPost(id, 0, count-max);
+			for (Post post : comments) {
+				result = result.concat(views.html.Group.snippets.comment.render(post).toString());
+			}
+			return ok(result);	
 		}
-		for (Post post : comments) {
-			result = result.concat(views.html.Group.snippets.comment.render(post).toString());
-		}
-		return ok(result);	
 	}
 	
 	
