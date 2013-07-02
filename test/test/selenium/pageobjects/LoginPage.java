@@ -40,6 +40,7 @@ public class LoginPage extends BasePage {
 		emailField.sendKeys(email);
 		passwordField.sendKeys(password);
 		loginButton.click();
+		
 	}
 	
 	public String getFormContent() {
