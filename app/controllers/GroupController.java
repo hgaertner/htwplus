@@ -119,22 +119,4 @@ public class GroupController extends BaseController {
 		flash("message", "Group " + group.title + " deleted!");
 		return redirect(routes.GroupController.index());
 	}
-
-	public static Result deletePost(Long id) {
-		try {
-			if (Secured.isOwnerOfPost(id)) {
-				Post p = Post.findById(id);
-				long currentUserId = Long.parseLong(session().get("id"));
-				p.delete(currentUserId);
-				flash("message", "Post deleted");
-			} else {
-				return forbidden();
-			}
-		} catch (NumberFormatException exp) {
-			// TODO Log exception
-			flash("message", "Couldn't delete post");
-		}
-
-		return redirect(routes.GroupController.index());
-	}
 }

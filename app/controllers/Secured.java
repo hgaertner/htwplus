@@ -27,8 +27,11 @@ public class Secured extends Security.Authenticator {
 	}
 	
 	
-	public static boolean isOwnerOfPost(final Long postId){
-		return Post.isOwner(postId, Component.currentAccount());
+	public static boolean isOwnerOfPost(Post post, Account account){
+		if(post != null){
+			return post.owner.equals(account);
+		}
+		return false;
 	}
 	
 	public static boolean isOwnerOfMedia(final Long mediaId){

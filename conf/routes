@@ -3,59 +3,59 @@
 # ~~~~
 
 # Home page
-GET     /                       controllers.Application.index()
-POST    /login                  controllers.AccountController.authenticate()
-GET     /logout                 controllers.AccountController.logout()
+GET     /                       			controllers.Application.index()
+POST    /login                  			controllers.AccountController.authenticate()
+GET     /logout                 			controllers.AccountController.logout()
 
 # JavaScript Routes
-GET		/assets/javascripts/routes	controllers.Application.javascriptRoutes()
+GET		/assets/javascripts/routes			controllers.Application.javascriptRoutes()
 
 # Course
-GET     /courses                controllers.CourseController.index()
-GET     /course/add             controllers.CourseController.add()
-POST    /course/add             controllers.CourseController.create()
-GET		/course/:id				controllers.CourseController.view(id:Long)
-GET		/course/:id/edit		controllers.CourseController.edit(id:Long)
-POST	/course/:id/edit		controllers.CourseController.update(id:Long)
-GET		/course/:id/delete		controllers.CourseController.delete(id:Long)
-POST	/course/addPost			controllers.CourseController.addPost(id:Long)
-GET		/course/:id/deletePost	controllers.CourseController.deletePost(id:Long)
+GET     /courses                			controllers.CourseController.index()
+GET     /course/add             			controllers.CourseController.add()
+POST    /course/add             			controllers.CourseController.create()
+GET		/course/:id							controllers.CourseController.view(id:Long)
+GET		/course/:id/edit					controllers.CourseController.edit(id:Long)
+POST	/course/:id/edit					controllers.CourseController.update(id:Long)
+GET		/course/:id/delete					controllers.CourseController.delete(id:Long)
+POST	/course/addPost						controllers.CourseController.addPost(id:Long)
 
 #Group
-GET 	/gruppen				controllers.GroupController.index()
-#GET 	/gruppen/user/:id		controllers.GroupController.indexByAccount(id:Long)
-POST	/gruppe/create			controllers.GroupController.create()
-GET		/gruppe/:id				controllers.GroupController.view(id:Long)
-GET		/gruppe/:id/media		controllers.GroupController.media(id:Long)
-GET		/gruppe/:id/edit			controllers.GroupController.edit(id:Long)
-POST	/gruppe/:id/update		controllers.GroupController.update(id:Long)
-GET		/gruppe/:id/delete		controllers.GroupController.delete(id:Long)
-POST	/gruppe/:id/addPost			controllers.GroupController.addPost(id:Long)
-GET		/gruppe/:id/deletePost	controllers.GroupController.deletePost(id:Long)
+GET 	/gruppen							controllers.GroupController.index()
+#GET 	/gruppen/user/:id					controllers.GroupController.indexByAccount(id:Long)
+POST	/gruppe/create						controllers.GroupController.create()
+GET		/gruppe/:id							controllers.GroupController.view(id:Long)
+GET		/gruppe/:id/media					controllers.GroupController.media(id:Long)
+GET		/gruppe/:id/edit					controllers.GroupController.edit(id:Long)
+POST	/gruppe/:id/update					controllers.GroupController.update(id:Long)
+GET		/gruppe/:id/delete					controllers.GroupController.delete(id:Long)
+POST	/gruppe/:id/addPost					controllers.GroupController.addPost(id:Long)
+GET		/gruppe/:anyId/deletePost/:postId	controllers.PostController.deletePost(postId:Long, anyId: Long)
 
 #Post and Comments
-POST	/post/:id/addComment	controllers.PostController.addComment(id:Long)
-GET		/post/:id/olderComments controllers.PostController.getOlderComments(id:Long)
+POST	/post/:id/addComment				controllers.PostController.addComment(id:Long)
+GET		/post/:id/olderComments				controllers.PostController.getOlderComments(id:Long)
 
 # Signup
-POST    /signup                 controllers.AccountController.submit()
+POST    /signup                 			controllers.AccountController.submit()
 
 #User
-GET		/profil					controllers.ProfileController.me()
-GET		/user/:id				controllers.ProfileController.view(id:Long)
-GET		/user/:id/edit			controllers.ProfileController.edit(id:Long)
-POST	/user/:id/edit			controllers.ProfileController.update(id:Long)
+GET		/profil								controllers.ProfileController.me()
+GET		/user/:id							controllers.ProfileController.view(id:Long)
+GET		/user/:id/edit						controllers.ProfileController.edit(id:Long)
+POST	/user/:id/edit						controllers.ProfileController.update(id:Long)
 
 
 #Friends
-GET		/freunde				controllers.FriendshipController.index()
+GET		/freunde							controllers.FriendshipController.index()
 
 # Media
-GET		/media/upload			controllers.MediaController.add()
-POST 	/media/upload			controllers.MediaController.upload()
-GET		/media/:id				controllers.MediaController.view(id:Long)
+GET		/media/upload						controllers.MediaController.add()
+POST 	/media/upload						controllers.MediaController.upload()
+GET		/media/:id							controllers.MediaController.view(id:Long)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file               		controllers.Assets.at(path="/public", file)
 
-GET     /*path                  controllers.Application.defaultRoute(path: String)
+# No route found? take this
+GET     /*path                  			controllers.Application.defaultRoute(path: String)

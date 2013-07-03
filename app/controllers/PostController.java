@@ -2,10 +2,13 @@ package controllers;
 
 import java.util.List;
 
+import models.Account;
+import models.Course;
 import models.Group;
 import models.Post;
 import play.Logger;
 import play.Play;
+import play.api.mvc.Call;
 import play.api.templates.Html;
 import play.data.Form;
 import play.db.jpa.Transactional;
@@ -67,6 +70,30 @@ public class PostController extends BaseController {
 			}
 			return ok(result);	
 		}
+	}
+	
+	@Transactional
+	public static Result deletePost(Long postId, Long anyId) {
+		
+		// verify redirect after deletion
+		Call routesTo = routes.Application.index();
+		if(Group.findById(anyId) != null){
+			routesTo = routes.GroupController.view(anyId);
+		}		
+		if(Course.findById(anyId) != null){
+			routesTo = routes.CourseController.view(anyId);
+		}
+		
+		Post post = Post.findById(postId);
+		Account account = Component.currentAccount();
+		if (Secured.isOwnerOfPost(post, account)) {
+			post.delete();
+			flash("message", "Post gelöscht");
+		} else {
+			flash("message", "Post konnte nicht gelöscht werden");
+		}
+
+		return redirect(routesTo);
 	}
 	
 	

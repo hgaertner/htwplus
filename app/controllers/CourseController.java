@@ -123,23 +123,4 @@ public class CourseController extends BaseController {
 			return forbidden();
 		}
 	}
-
-	@Transactional
-	public static Result deletePost(Long id) {
-		try {
-			if (Secured.isOwnerOfPost(id)
-					|| Secured.isOwnerOfCourse(id)) {
-				Post post = Post.findById(id);
-				long currentUser = Long.parseLong(session().get("id"));
-				post.delete(currentUser);
-				flash("message", "Post deleted!");
-			} else {
-				return forbidden();
-			}
-		} catch (NumberFormatException exp) {
-			// Log exception here
-			flash("message", "Could not delete post");
-		}
-		return redirect(routes.CourseController.index());
-	}
 }

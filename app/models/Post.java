@@ -48,17 +48,18 @@ public class Post extends BaseModel {
 
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
+		// delete all comments first
+		List<Post> comments = getCommentsForPost(this.id, 0, 0);
+		
+		for(Post comment : comments){
+			comment.delete();
+		}
+		
+		JPA.em().remove(this);
 	}
-
+	
 	public static Post findById(Long id) {
 		return JPA.em().find(Post.class, id);
-	}
-
-	public void delete(long userId) {
-		if (this.owner.id == userId) {
-			JPA.em().remove(this);
-		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -89,14 +90,4 @@ public class Post extends BaseModel {
 	public static int countCommentsForPost(Long id) {
 		return ((Number)JPA.em().createQuery("SELECT COUNT(p.id) FROM Post p WHERE p.parent.id = ?1").setParameter(1, id).getSingleResult()).intValue();
 	}
-	
-	public static boolean isOwner(Long postId, Account account) {
-		Post p = JPA.em().find(Post.class, postId);
-		if(p.owner.equals(account)){
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 }

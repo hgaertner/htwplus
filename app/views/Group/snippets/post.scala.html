@@ -4,7 +4,7 @@
 @defining(Component.currentAccount()) { user =>
 	<hr />
 	<br />
-	@views.html.Group.snippets.deletePostModal(post.id)
+	@views.html.snippets.deletePostModal(post.id, group.id)
 	<div class="media">
 		<a class="pull-left" href="#"> <img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" class="img-polaroid" /></a>
 		<div class="media-body">
