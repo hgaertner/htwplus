@@ -44,25 +44,24 @@ public abstract class BaseIntegrationTest {
 
 	protected static TestServer server;
 	protected static WebDriver driver;
-	protected static String baseUrl = "http://localhost:3333";
-	private static EntityManager em;
 	
 	@BeforeClass
 	public static void prepare() throws Throwable {
 		Map<String, String> settings = new HashMap<String, String>();
-		settings.put("db.default.url", "jdbc:postgresql://ubuntu/play_test");
+		settings.put("db.default.url", UIMap.testDatabaseUrl);
 		FakeApplication app = Helpers.fakeApplication(settings);
-
-		server = new TestServer(3333, app);
+		server = new TestServer(UIMap.port, app);
 		server.start();
-		driver = new FirefoxDriver();	
 		
-//		try {
-//			driver = new RemoteWebDriver(new URL("http://192.168.126.130:4444/wd/hub"), DesiredCapabilities.firefox());
-//		} catch (MalformedURLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		if(UIMap.activateRemote == true) {
+			try {
+				driver = new RemoteWebDriver(new URL(UIMap.remoteUrl), UIMap.desiredCapabilities);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			driver = new FirefoxDriver();
+		}
 	}
 	
 	@Before
@@ -82,6 +81,5 @@ public abstract class BaseIntegrationTest {
 	    });
     	server.stop();
         driver.quit();
-    }
-  
+    } 
 }

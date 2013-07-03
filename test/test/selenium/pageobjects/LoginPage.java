@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import play.Logger;
+import test.selenium.UIMap;
 
 import com.thoughtworks.selenium.Selenium;
 
@@ -31,6 +32,7 @@ public class LoginPage extends BasePage {
 	
 	public LoginPage(WebDriver driver) {
 		super(driver);
+		driver.get(UIMap.getFullUrl());
 	}
 	
 	public ExpectedCondition<WebElement> getPageLoadCondition() {
@@ -41,7 +43,6 @@ public class LoginPage extends BasePage {
 		emailField.sendKeys(email);
 		passwordField.sendKeys(password);
 		loginButton.click();
-		
 	}
 
 	public String getFormContent() {

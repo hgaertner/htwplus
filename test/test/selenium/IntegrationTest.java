@@ -21,6 +21,7 @@ import play.Logger;
 import play.mvc.*;
 import play.test.*;
 import play.libs.F.*;
+import test.selenium.pageobjects.GroupViewPage;
 import test.selenium.pageobjects.LoginPage;
 
 import static play.test.Helpers.*;
@@ -32,7 +33,7 @@ public class IntegrationTest extends BaseIntegrationTest {
 	@Test
 	@Ignore
 	public void testRegistration() throws InterruptedException{
-		driver.get(baseUrl);
+		driver.get(UIMap.getFullUrl());
 		
 		// Implicit Wait
 		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
@@ -85,10 +86,10 @@ public class IntegrationTest extends BaseIntegrationTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testLoginPage() {
 		// Important, do get login form in the first place
 		driver.manage().deleteAllCookies();
-		driver.get(baseUrl);
 		
 		LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
 		loginPage.login("test@example.de", "1234");
@@ -98,14 +99,13 @@ public class IntegrationTest extends BaseIntegrationTest {
 		
 		loginPage.login("test@example.de", "test");	
 		assertThat(loginPage.isLoggedIn()).isTrue();
-	
 	}
 	
 	
 	@Test
 	@Ignore
 	public void testGroupRoundtrip() throws InterruptedException {
-		driver.get(baseUrl);
+
 		LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
 		loginPage.login("test@example.de", "test");
 		
@@ -158,6 +158,16 @@ public class IntegrationTest extends BaseIntegrationTest {
 		} catch (NoSuchElementException e) {
 			return false;
 		}
+	}
+	
+	@Test
+	public void testGroupViewPage() {
+		GroupViewPage page = PageFactory.initElements(driver, GroupViewPage.class);
+		(new WebDriverWait(driver, 10))
+			.until(page.getPageLoadCondition());
+		
+		assertThat(page.getGroupTitle()).contains("test group");
+		
 	}
 	
   
