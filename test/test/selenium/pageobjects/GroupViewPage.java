@@ -34,7 +34,8 @@ public class GroupViewPage extends BasePage {
 
 	@Override
 	public ExpectedCondition<WebElement> getPageLoadCondition() {
-		return ExpectedConditions.visibilityOf(driver.findElement(By.id("content")));
+		return ExpectedConditions
+				.visibilityOf(driver.findElement(By.id("content")));
 	}
 	
 	public String getGroupTitle() {

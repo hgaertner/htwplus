@@ -20,12 +20,12 @@ import static org.fest.assertions.Assertions.*;
 public class IntegrationTest extends BaseIntegrationTest {
 	
 	@Test
-	@Ignore
+	//@Ignore
 	public void testRegistration() throws InterruptedException{
 		driver.get(UIMap.getFullUrl());
 		
 		// Implicit Wait
-		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		
 		// Open Registration Modal
 		WebElement registerLink = driver.findElement(By.id("registerLink"));
@@ -34,12 +34,14 @@ public class IntegrationTest extends BaseIntegrationTest {
 		// Get Fields 
 		// Wait for Expected Condition
 		WebElement firstnameField = (new WebDriverWait(driver, 10))
-				.until(ExpectedConditions.presenceOfElementLocated(By.id("firstname")));
+				.until(ExpectedConditions
+						.presenceOfElementLocated(By.id("firstname")));
 		
 		WebElement lastnameField = driver.findElement(By.id("lastname"));
 		WebElement emailField = driver.findElement(By.xpath("//*[@id='email']"));
 		WebElement passwordField = driver.findElement(By.name("password"));
-		WebElement repeatPasswordField = driver.findElement(By.cssSelector("#repeatPassword_field dd input"));
+		WebElement repeatPasswordField = driver
+				.findElement(By.cssSelector("#repeatPassword_field dd input"));
 	
 		// Fill Form
 		firstnameField.sendKeys("Bruce");
@@ -54,7 +56,8 @@ public class IntegrationTest extends BaseIntegrationTest {
 		
 		// To short Password
 		WebElement passwordError = (new WebDriverWait(driver, 10))
-			.until(ExpectedConditions.presenceOfElementLocated(By.className("error")));
+			.until(ExpectedConditions
+					.presenceOfElementLocated(By.className("error")));
 		assertThat(passwordError.getText()).contains("mindestens 6 Zeichen");
 		
 		// Correction
@@ -67,15 +70,19 @@ public class IntegrationTest extends BaseIntegrationTest {
 		
 		// Wait for Expected Condition
 		(new WebDriverWait(driver, 10))
-				.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='registerModal']/div[3]/button")));
+				.until(ExpectedConditions
+				.presenceOfElementLocated(
+						By.xpath("//*[@id='registerModal']/div[3]/button"))
+						);
 						
 		// Successful Registration
 		WebElement successMessage = driver.findElement(By.id("registerModal"));
-		assertThat(successMessage.getText()).contains("Registrierung erfolgreich");
+		assertThat(successMessage.getText())
+		.contains("Registrierung erfolgreich");
 	}
 	
 	@Test
-	@Ignore
+	//@Ignore
 	public void testLoginPage() {
 		// Important, do get login form in the first place
 		driver.manage().deleteAllCookies();
@@ -92,7 +99,7 @@ public class IntegrationTest extends BaseIntegrationTest {
 	
 	
 	@Test
-	@Ignore
+	//@Ignore
 	public void testGroupRoundtrip() throws InterruptedException {
 
 		LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
@@ -139,17 +146,9 @@ public class IntegrationTest extends BaseIntegrationTest {
 	    // Additional Line
 	    Thread.sleep(1000);
 	}
-	
-	private boolean isElementPresent(By by) {
-		try {
-			driver.findElement(by);
-			return true;
-		} catch (NoSuchElementException e) {
-			return false;
-		}
-	}
-	
+		
 	@Test
+	@Ignore
 	public void testGroupViewPage() {
 		GroupViewPage page = PageFactory.initElements(driver, GroupViewPage.class);
 		(new WebDriverWait(driver, 10))
@@ -158,5 +157,14 @@ public class IntegrationTest extends BaseIntegrationTest {
 		assertThat(page.getGroupTitle()).contains("test group");
 		page.createNewPost("test post");
 		assertThat(page.getPageContent()).contains("test post");
+	}
+	
+	private boolean isElementPresent(By by) {
+		try {
+			driver.findElement(by);
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
 	}
 }
