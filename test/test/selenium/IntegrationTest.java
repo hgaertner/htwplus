@@ -2,29 +2,18 @@ package test.selenium;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
-import javax.imageio.spi.RegisterableService;
-
 import org.junit.*;
 
 import static org.junit.Assert.*;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import play.Logger;
-import play.mvc.*;
-import play.test.*;
-import play.libs.F.*;
 import test.selenium.pageobjects.GroupViewPage;
 import test.selenium.pageobjects.LoginPage;
 
-import static play.test.Helpers.*;
 import static org.fest.assertions.Assertions.*;
 
 
@@ -167,8 +156,7 @@ public class IntegrationTest extends BaseIntegrationTest {
 			.until(page.getPageLoadCondition());
 		
 		assertThat(page.getGroupTitle()).contains("test group");
-		
+		page.createNewPost("test post");
+		assertThat(page.getPageContent()).contains("test post");
 	}
-	
-  
 }

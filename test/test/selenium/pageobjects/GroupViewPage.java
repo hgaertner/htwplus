@@ -17,7 +17,12 @@ public class GroupViewPage extends BasePage {
 	@FindBy(xpath="//*[@id='content']/h1")
 	WebElement groupTitle;
 	
-
+	@FindBy(id="postContent")
+	WebElement postInput;
+	
+	@FindBy(xpath="//*[@id='addPost']/button")
+	WebElement postButton;
+	
 	public GroupViewPage(WebDriver driver) {
 		super(driver);
 
@@ -36,12 +41,13 @@ public class GroupViewPage extends BasePage {
 		return groupTitle.getText();
 	}
 	
-	public void createNewPost() {
-		
+	public void createNewPost(String text) {
+		postInput.sendKeys(text);
+		postButton.click();
 	}
 	
-	public void getPost() {
-		
+	public String getPageContent(){
+		return driver.getPageSource();
 	}
 
 }

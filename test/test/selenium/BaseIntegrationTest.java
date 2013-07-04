@@ -74,7 +74,7 @@ public abstract class BaseIntegrationTest {
     public static void tearDown() throws Throwable {	
 		JPA.withTransaction(new Function0<Void>() {
 	        public Void apply() {
-	        	JPA.em().createQuery("DELETE FROM Post p").executeUpdate();
+	        	//JPA.em().createQuery("DELETE FROM Post p").executeUpdate();
 	        	JPA.em().createQuery("DELETE FROM Account a WHERE a.id != 1").executeUpdate();
 	    	    return null;
 	        }
