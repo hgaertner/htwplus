@@ -130,8 +130,10 @@ public class GroupController extends BaseController {
 	public static Result join(long id){
 		Account account = Component.currentAccount();
 		Group group = Group.findById(id);
-		GroupAccount groupAccount = new GroupAccount(account, group);
-		groupAccount.create();
+		if(GroupAccount.find(account, group) == null){
+			GroupAccount groupAccount = new GroupAccount(account, group);
+			groupAccount.create();
+		}
 		return redirect(routes.GroupController.view(id));
 	}
 	

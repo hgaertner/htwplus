@@ -64,13 +64,15 @@ public class GroupAccount {
     }
     
     public static GroupAccount find(Account account, Group group) {
-    	@SuppressWarnings("unchecked")
-    	GroupAccount groupAccount = (GroupAccount) JPA
+    	try {
+    	return (GroupAccount) JPA
 				.em()
 				.createQuery(
 						"SELECT g FROM GroupAccount g WHERE g.account.id = ?1 AND g.group.id = ?2")
 				.setParameter(1, account.id).setParameter(2, group.id).getSingleResult();
-		return groupAccount;
+    	}catch (NoResultException exp) {
+	    	return null;
+		}
     }
 }
 
