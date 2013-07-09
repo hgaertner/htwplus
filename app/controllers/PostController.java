@@ -23,7 +23,8 @@ public class PostController extends BaseController {
 	@Transactional
 	public static Result addComment(long postId) {
 		Post parent = Post.findById(postId);
-		if (Secured.isMemberOfGroup(parent.group.id)) {
+		Account account = Component.currentAccount();
+		if (Secured.isMemberOfGroup(parent.group, account)) {
 			Form<Post> filledForm = postForm.bindFromRequest();
 			if (filledForm.hasErrors()) {
 				System.out.println(filledForm.errors());

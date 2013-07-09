@@ -26,7 +26,9 @@ public class GroupController extends BaseController {
 	
 	@Transactional
 	public static Result addPost(long groupId) {
-		if (Secured.isMemberOfGroup(groupId)) {
+		Group group = Group.findById(groupId);
+		Account account = Component.currentAccount();
+		if (Secured.isMemberOfGroup(group, account)) {
 			Form<Post> filledForm = postForm.bindFromRequest();
 			if (filledForm.hasErrors()) {
 				flash("message", "Error in Form!");
@@ -39,7 +41,7 @@ public class GroupController extends BaseController {
 				p2.create();
 			}
 		} else {
-			return forbidden();
+			flash("message","Bitte tritt der Gruppe erst bei.");
 		}
 		return view(groupId);
 	}
@@ -47,12 +49,12 @@ public class GroupController extends BaseController {
 	@Transactional(readOnly=true)
 	public static Result view(Long id) {
 		Group group = Group.findById(id);
+		Account account = Component.currentAccount();
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
-			Form<Post> formPost = Form.form(Post.class);
 			List<Post> posts = Post.getPostForGroup(id);
-			return ok(view.render(group, posts, postForm));
+			return ok(view.render(group, posts, postForm, Secured.isMemberOfGroup(group, account)));
 		}
 	}
 	
@@ -74,7 +76,7 @@ public class GroupController extends BaseController {
 		} else {
 			Group g = filledForm.get();
 			g.create(account);
-			flash("message", "Created new Group!");
+			flash("message", "Neue Gruppe erstellt!");
 			return ok(addModalSuccess.render());
 		}
 	}

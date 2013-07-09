@@ -22,8 +22,8 @@ public class Secured extends Security.Authenticator {
 		
 	//Access rights
 	
-	public static boolean isMemberOfGroup(Long groupId){
-		return Group.isMember(groupId, Component.currentAccount());
+	public static boolean isMemberOfGroup(Group group, Account account){
+		return Group.isMember(group.id, account);
 	}
 	
 	public static boolean isOwnerOfGroup(Group group, Account account){
