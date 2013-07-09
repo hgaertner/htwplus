@@ -7,6 +7,7 @@ import play.mvc.*;
 import play.data.*;
 import models.Account;
 import models.Group;
+import models.GroupAccount;
 import models.Post;
 import views.html.Group.*;
 import views.html.Group.snippets.*;
@@ -129,7 +130,16 @@ public class GroupController extends BaseController {
 	public static Result join(long id){
 		Account account = Component.currentAccount();
 		Group group = Group.findById(id);
-		group.addUserToGroup(account);
+		GroupAccount groupAccount = new GroupAccount(account, group);
+		groupAccount.create();
 		return redirect(routes.GroupController.view(id));
+	}
+	
+	public static Result leave(long id){
+		Account account = Component.currentAccount();
+		Group group = Group.findById(id);
+		GroupAccount groupAccount = GroupAccount.find(account, group);
+		groupAccount.remove();
+		return redirect(routes.GroupController.index());
 	}
 }

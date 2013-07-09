@@ -107,11 +107,13 @@
                         <td>
                         	<a href="#infoModal@group.id"  rel="tooltip" data-toggle="modal" data-original-title="Info"><i class="icon-info-sign"></i></a>
                         	@if(group.owner.id == user.id){
-                        		<a href="@routes.GroupController.edit(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Gruppe bearbeiten" class="editGroup"><i class="icon-pencil"></i></a>
+                        	<a href="@routes.GroupController.edit(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Gruppe bearbeiten" class="editGroup"><i class="icon-pencil"></i></a>
+                        	<a href="@routes.GroupController.delete(group.id)" rel="tooltip" title="Gruppe löschen"><i class="icon-trash"></i></a>
                         	}
-                        	@if(group.owner.id == user.id){
-                        		<a href="@routes.GroupController.delete(group.id)" rel="tooltip" title="Gruppe löschen"><i class="icon-trash"></i></a>
+                        	@if(group.owner.id != user.id){
+                        	<a href="@routes.GroupController.leave(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Verlassen"><i class="icon-remove"></i></a>
                         	}
+                        	
                         </td>
                     </tr>
                     <!-- <i class="icon-globe"> -->

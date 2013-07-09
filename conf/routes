@@ -31,6 +31,7 @@ POST	/gruppe/:id/update					controllers.GroupController.update(id:Long)
 GET		/gruppe/:id/delete					controllers.GroupController.delete(id:Long)
 POST	/gruppe/:id/addPost					controllers.GroupController.addPost(id:Long)
 GET 	/gruppe/:id/join					controllers.GroupController.join(id:Long)
+GET 	/gruppe/:id/leave					controllers.GroupController.leave(id:Long)
 GET		/gruppe/:anyId/deletePost/:postId	controllers.PostController.deletePost(postId:Long, anyId: Long)
 
 #Post and Comments
