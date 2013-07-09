@@ -140,8 +140,10 @@ public class GroupController extends BaseController {
 	public static Result leave(long id){
 		Account account = Component.currentAccount();
 		Group group = Group.findById(id);
-		GroupAccount groupAccount = GroupAccount.find(account, group);
-		groupAccount.remove();
+		if(GroupAccount.find(account, group) != null){
+			GroupAccount groupAccount = GroupAccount.find(account, group);
+			groupAccount.remove();
+		}
 		return redirect(routes.GroupController.index());
 	}
 }
