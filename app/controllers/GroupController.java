@@ -118,8 +118,9 @@ public class GroupController extends BaseController {
 		if(Secured.isOwnerOfGroup(group, account)){
 			group.delete();
 			flash("message", "Group " + group.title + " deleted!");
+		} else {
+			flash("message", "Dazu hast du keine Berechtigung");
 		}
-		flash("message", "Dazu hast du keine Berechtigung");
 		return redirect(routes.GroupController.index());
 	}
 	
