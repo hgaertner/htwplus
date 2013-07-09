@@ -99,13 +99,6 @@ public class Media extends BaseModel {
 		JPA.em().remove(this);
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		Media media = (Media) obj;
-		if(media.id == this.id) return true;
-		return false;
-	}
-	
 	private String getUniqueFileName(String fileName) {
 		return UUID.randomUUID().toString() + '_' + fileName;
 	}

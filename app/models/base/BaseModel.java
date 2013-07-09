@@ -6,6 +6,7 @@ import play.data.format.Formats.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import models.Account;
 import models.Course;
 
 import org.hibernate.annotations.Columns;
@@ -39,7 +40,11 @@ public abstract class BaseModel {
 	public abstract void update();
 	
 	public abstract void delete();
-	
-	public abstract boolean equals(Object obj);
+		
+	public boolean equals(Object obj){
+		BaseModel baseModel = (BaseModel) obj;
+		if(baseModel.id == this.id) return true;
+		return false;
+	}
 	
 }

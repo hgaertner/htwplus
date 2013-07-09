@@ -62,14 +62,7 @@ public class Account extends BaseModel {
 	public void delete() {
 		// TODO Auto-generated method stub
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		Account account = (Account) obj;
-		if(account.id == this.id) return true;
-		return false;
-	}
-	
+		
 	/**
      * Retrieve a User from email.
      */

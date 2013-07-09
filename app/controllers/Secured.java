@@ -33,8 +33,7 @@ public class Secured extends Security.Authenticator {
 			return false;
 		}
 	}
-	
-	
+
 	public static boolean isOwnerOfPost(Post post, Account account){
 		if(post != null){
 			return post.owner.equals(account);

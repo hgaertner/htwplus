@@ -57,14 +57,7 @@ public class Post extends BaseModel {
 		
 		JPA.em().remove(this);
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		Post post = (Post) obj;
-		if(post.id == this.id) return true;
-		return false;
-	}
-	
+		
 	public static Post findById(Long id) {
 		return JPA.em().find(Post.class, id);
 	}

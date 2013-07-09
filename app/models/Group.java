@@ -65,14 +65,7 @@ public class Group extends BaseModel {
 		}
 		JPA.em().remove(this);
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		Group group = (Group) obj;
-		if(group.id == this.id) return true;
-		return false;
-	}
-	
+		
 	public static Group findById(Long id) {
 		return JPA.em().find(Group.class, id);
 	}

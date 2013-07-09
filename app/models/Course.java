@@ -58,13 +58,6 @@ public class Course extends BaseModel {
 	public void delete() {
 		JPA.em().remove(this);
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		Course course = (Course) obj;
-		if(course.id == this.id) return true;
-		return false;
-	}
 
 	public static boolean isOwner(Long courseId, Account account) {
 		Course course = JPA.em().find(Course.class, courseId);
