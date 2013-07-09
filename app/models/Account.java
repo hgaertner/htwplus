@@ -150,13 +150,4 @@ public class Account extends BaseModel {
 			return false;
 		}
 	}
-	
-    public static String test(){
-    	return "test";
-    }
-
-	public boolean equals2(Object obj) {
-		
-		return false;
-	}	
 }
