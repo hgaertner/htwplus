@@ -58,6 +58,11 @@ public class Group extends BaseModel {
 
 	@Override
 	public void delete() {
+		// delete all Posts
+		List<Post> posts = Post.getPostForGroup(this.id);
+		for(Post post : posts){
+			post.delete();
+		}
 		JPA.em().remove(this);
 	}
 

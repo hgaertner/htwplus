@@ -111,8 +111,12 @@ public class GroupController extends BaseController {
 	
 	public static Result delete(Long id) {
 		Group group = Group.findById(id);
-		group.delete();
-		flash("message", "Group " + group.title + " deleted!");
+		Account account = Component.currentAccount();
+		if(Secured.isOwnerOfGroup(group, account)){
+			group.delete();
+			flash("message", "Group " + group.title + " deleted!");
+		}
+		flash("message", "Dazu hast du keine Berechtigung");
 		return redirect(routes.GroupController.index());
 	}
 	

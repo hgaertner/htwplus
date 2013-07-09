@@ -26,6 +26,14 @@ public class Secured extends Security.Authenticator {
 		return Group.isMember(groupId, Component.currentAccount());
 	}
 	
+	public static boolean isOwnerOfGroup(Group group, Account account){
+		if(group != null){
+			return group.owner.equals(account);
+		} else {
+			return false;
+		}
+	}
+	
 	
 	public static boolean isOwnerOfPost(Post post, Account account){
 		if(post != null){
