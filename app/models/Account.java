@@ -63,6 +63,13 @@ public class Account extends BaseModel {
 		// TODO Auto-generated method stub
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		Account account = (Account) obj;
+		if(account.id == this.id) return true;
+		return false;
+	}
+	
 	/**
      * Retrieve a User from email.
      */
@@ -147,5 +154,9 @@ public class Account extends BaseModel {
     public static String test(){
     	return "test";
     }
-	
+
+	public boolean equals2(Object obj) {
+		
+		return false;
+	}	
 }

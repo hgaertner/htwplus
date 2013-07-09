@@ -40,5 +40,6 @@ public abstract class BaseModel {
 	
 	public abstract void delete();
 	
+	public abstract boolean equals(Object obj);
 	
 }
