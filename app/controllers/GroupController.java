@@ -19,10 +19,6 @@ public class GroupController extends BaseController {
 	static Form<Group> groupForm = Form.form(Group.class);
 	static Form<Post> postForm = Form.form(Post.class);
 	
-	public static Result showAll() {
-		return ok(index.render(Group.all(),groupForm));
-	}
-
 	public static Result index() {
 		Account account = Component.currentAccount();
 		return ok(index.render(Group.allByAccount(account),groupForm));
@@ -118,5 +114,16 @@ public class GroupController extends BaseController {
 		group.delete();
 		flash("message", "Group " + group.title + " deleted!");
 		return redirect(routes.GroupController.index());
+	}
+	
+	public static List<Group> showAll() {
+		return Group.all();
+	}
+	
+	public static Result join(long id){
+		Account account = Component.currentAccount();
+		Group group = Group.findById(id);
+		group.addUserToGroup(account);
+		return redirect(routes.GroupController.view(id));
 	}
 }

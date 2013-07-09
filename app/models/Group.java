@@ -61,8 +61,8 @@ public class Group extends BaseModel {
 		JPA.em().remove(this);
 	}
 
-	public void addUserToGroup(Account user) {
-		// this.members.add(user);
+	public void addUserToGroup(Account account) {
+		this.groupAccounts.add(new GroupAccount(account, this));
 		JPA.em().merge(this);
 	}
 

@@ -28,19 +28,20 @@
         <tbody>
         
 		<!-- Fuer Fabi: Ajax-Abfrage um alle Gruppen zu holen. -->
-        
-         @for(group <- groups) {
-         	<tr>
-                <td>@if(group.isClosed == true) {
-	                   <i class="icon-lock"></i>
-	                } else {
-	                   <i class="icon-globe"></i>
-	                }
-	                <a href="#" rel="popover" data-trigger="hover" data-content="@group.description" data-original-title="Beschreibung"> @group.title</a>
-	            </td>
-                <td><a href="#" rel="popover" data-html="true" data-trigger="hover" data-content="Rolle: Student <br /> Angewandte Informatik (Master)" data-original-title="@group.owner.name" data-placement="top">@group.owner.name</a></td>
-                <td><a href="#" rel="tooltip" title="Beitreten"><i class="icon-ok"></i></a></td>
-            </tr>
+        @defining(GroupController.showAll()) { groups =>
+	         @for(group <- groups) {
+	         	<tr>
+	                <td>@if(group.isClosed == true) {
+		                   <i class="icon-lock"></i>
+		                } else {
+		                   <i class="icon-globe"></i>
+		                }
+		                <a href="#" rel="popover" data-trigger="hover" data-content="@group.description" data-original-title="Beschreibung"> @group.title</a>
+		            </td>
+	                <td><a href="#" rel="popover" data-html="true" data-trigger="hover" data-content="Rolle: Student <br /> Angewandte Informatik (Master)" data-original-title="@group.owner.name" data-placement="top">@group.owner.name</a></td>
+	                <td><a href="@routes.GroupController.join(group.id)" rel="tooltip" title="Beitreten"><i class="icon-ok"></i></a></td>
+	            </tr>
+	         }
          }
         
         </tbody>
