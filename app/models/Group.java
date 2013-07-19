@@ -87,23 +87,13 @@ public class Group extends BaseModel {
 		List<Group> groups = JPA.em().createQuery("FROM Group").getResultList();
 		return groups;
 	}
-
-	public static List<Group> allByAccount(Account account) {
-		@SuppressWarnings("unchecked")
-		List<Group> groups = JPA
-				.em()
-				.createQuery(
-						"SELECT g.group FROM GroupAccount g WHERE g.account.id = ?1")
-				.setParameter(1, account.id).getResultList();
-		return groups;
-	}
 	
 	public static boolean isMember(Long groupId, Account account) {
 		@SuppressWarnings("unchecked")
 		List<GroupAccount> groupAccounts = (List<GroupAccount>) JPA
 				.em()
 				.createQuery(
-						"SELECT g FROM GroupAccount g WHERE g.account.id = ?1 and g.groupId= ?2")
+						"SELECT g FROM GroupAccount g WHERE g.account.id = ?1 and g.groupId= ?2 AND approved = TRUE")
 				.setParameter(1, account.id).setParameter(2, groupId)
 				.getResultList();
 		
@@ -114,7 +104,4 @@ public class Group extends BaseModel {
 		}
 
 	}
-	
-	
-	
 }

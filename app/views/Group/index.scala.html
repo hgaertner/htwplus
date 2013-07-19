@@ -1,4 +1,4 @@
-@(groups: List[Group], groupForm: Form[Group])
+@(approvedGroups: List[Group], unapprovedGroups: List[GroupAccount], groupForm: Form[Group])
 
 @import helper._
 
@@ -15,14 +15,14 @@
             
             <!-- searchModal -->
             <div id="searchModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
-            	@views.html.Group.snippets.searchModal(groups)    
+            	@views.html.Group.snippets.searchModal(approvedGroups)    
             </div>
             <!-- Ende searchModal -->
             
 			<!-- Start infoModal 
 				Fuer alle Gruppen ein infoModal. Ein bisschen dirty, oder?
 			-->
-			@for(group <- groups) {	
+			@for(group <- approvedGroups) {	
 			<div id="infoModal@group.id" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="false">
 	        	@views.html.Group.snippets.infoModal(group)    
 	        </div>
@@ -47,33 +47,49 @@
             <!-- Ende editModal -->
                                    
             <br />
-            
-            <h1>Offene Einladungen</h1>
+            @defining(Component.currentAccount()) { user =>
+			@if(!unapprovedGroups.isEmpty){
+            <h1>Offene Anfragen</h1>
             <table class="table table-hover">
                 <colgroup>
-                    <col width="75%">
-                    <col width="25%">
+                    <col width="20%">
+                    <col width="40%">
+                    <col width="20%">
+                    <col width="20%">
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>Gruppenname</th>
+                        <th>Wer?</th>
+                        <th>Welche Gruppe?</th>
+                        <th>Status</th>
                         <th>Verf&uuml;gbare Optionen</th>
                     </tr>
                 </thead>
-                <!-- 
+                 
                 <tbody>
-                    <tr>
-                        <td><i class="icon-lock"></i><a href="#"> AT Projekt</a></td>
-                        <td><a href="#" rel="tooltip" title="Annehmen"><i class="icon-ok"></i></a> <a href="#" rel="tooltip" title="Ablehnen"><i class="icon-remove"></i></a></td>
+					@for(accountGroup <- unapprovedGroups) {
+                	<tr>
+                		@if(accountGroup.account.equals(user)){
+	                		<td><a href="@routes.ProfileController.view(accountGroup.account.id)">Du</a></td>
+	                        <td><a href="@routes.GroupController.view(accountGroup.group.id)">@accountGroup.group.title</a></td>
+	                        <td>in Bearbeitung</td>
+	                        <td><a href="@routes.GroupController.leave(accountGroup.group.id)" rel="tooltip" title="zurückziehen"><i class="icon-remove"></i></a></td>	
+                		} else {
+	                		<td><a href="@routes.ProfileController.view(accountGroup.account.id)">@accountGroup.account.name</a></td>
+	                        <td><a href="@routes.GroupController.view(accountGroup.group.id)">@accountGroup.group.title</a></td>
+	                        <td>zu bearbeiten</td>
+	                        <td>
+	                        	<a href="@routes.GroupController.acceptRequest(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" title="akzeptieren"><i class="icon-ok"></i></a>
+	                        	<a href="@routes.GroupController.declineRequest(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" title="zurückweisen"><i class="icon-remove"></i></a>
+	                        </td>	
+                		}
+                        
                     </tr>
-                    <tr>
-                        <td><i class="icon-globe"></i><a href="#"> Weihnachtsfeier</a></td>
-                        <td><a href="#" rel="tooltip" title="Annehmen"><i class="icon-ok"></i></a> <a href="#" rel="tooltip" title="Ablehnen"><i class="icon-remove"></i></a></td>
-                    </tr>
+                	}
                 </tbody>
-                 -->
             </table>
             <hr /><br />
+            }
             <h1>Meine Gruppen
                 <div class="btn-group">
                     <a href="#createNewGroupModal" role="button" class="btn" data-toggle="modal"><i class="icon-plus"></i></a>
@@ -92,9 +108,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                @defining(Component.currentAccount()) { user =>
-                	@for(group <- groups) {
-                	                                                              
+                
+                	@for(group <- approvedGroups) {
+                                                                 
                     <tr>
                         <td>
 	                        @if(group.isClosed == true) {
@@ -119,9 +135,10 @@
                     <!-- <i class="icon-globe"> -->
                     
                 	}
-                }
+                
                 </tbody>
             </table>
+            }
 <!-- Ende Content -->
     
     

@@ -3,6 +3,8 @@ package models;
 import javax.persistence.*;
 
 import play.db.jpa.*;
+
+import java.util.Arrays;
 import java.util.List;
 
 import models.ids.GroupAccountId;
@@ -50,6 +52,23 @@ public class GroupAccount {
 		JPA.em().remove(this);
 	}
 	
+	public void update() {
+		JPA.em().merge(this);
+	}
+	
+	/**
+	 * Find all GroupAccounts where the given Account is Owner or Member
+	 */
+	public static List<GroupAccount> allByAccount(Account account) {
+		@SuppressWarnings("unchecked")
+		List<GroupAccount> groupAccounts = JPA
+				.em()
+				.createQuery(
+						"SELECT g FROM GroupAccount g WHERE g.account.id = ?1 OR group.owner.id = ?1")
+				.setParameter(1, account.id).getResultList();
+		return groupAccounts;
+	}
+	
 	/**
      * Retrieve Accounts from Group.
      */
@@ -74,5 +93,7 @@ public class GroupAccount {
 	    	return null;
 		}
     }
+    
+   
 }
 

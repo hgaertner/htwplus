@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import play.*;
@@ -22,7 +23,28 @@ public class GroupController extends BaseController {
 	
 	public static Result index() {
 		Account account = Component.currentAccount();
-		return ok(index.render(Group.allByAccount(account),groupForm));
+		List<GroupAccount> groupAccounts = GroupAccount.allByAccount(account);
+		List<Group> approvedGroups = new ArrayList<Group>();
+		List<GroupAccount> unapprovedGroups = new ArrayList<GroupAccount>();
+		
+		// split Groups (approved/unapproved)
+		if(!groupAccounts.isEmpty()){
+			for(GroupAccount groupAccount : groupAccounts){
+				
+				if(groupAccount.approved){
+					approvedGroups.add(groupAccount.group);
+				} else {
+					unapprovedGroups.add(groupAccount);
+				}
+				// aus der approved-Liste noch alle Gruppen loeschen die nicht mir gehoeren
+				// ansonsten sind sie doppelt drin
+				if(!groupAccount.account.equals(account)){
+					approvedGroups.remove(groupAccount.group);
+				}
+			}
+		}
+				
+		return ok(index.render(approvedGroups,unapprovedGroups,groupForm));
 	}
 	
 	@Transactional
@@ -76,6 +98,9 @@ public class GroupController extends BaseController {
 			return ok(addModal.render(filledForm));
 		} else {
 			Group g = filledForm.get();
+			if(filledForm.bindFromRequest().data().get("isClosed") == null){
+				g.isClosed = false;
+			}
 			g.create(account);
 			flash("message", "Neue Gruppe erstellt!");
 			return ok(addModalSuccess.render());
@@ -117,9 +142,9 @@ public class GroupController extends BaseController {
 		Account account = Component.currentAccount();
 		if(Secured.isOwnerOfGroup(group, account)){
 			group.delete();
-			flash("message", "Group " + group.title + " deleted!");
+			flash("message", "Gruppe " + group.title + " erfolgreich gelöscht!");
 		} else {
-			flash("message", "Dazu hast du keine Berechtigung");
+			flash("message", "Dazu hast du keine Berechtigung!");
 		}
 		return redirect(routes.GroupController.index());
 	}
@@ -133,17 +158,51 @@ public class GroupController extends BaseController {
 		Group group = Group.findById(id);
 		if(GroupAccount.find(account, group) == null){
 			GroupAccount groupAccount = new GroupAccount(account, group);
+			if(!group.isClosed){
+				groupAccount.approved = true;
+			} else {
+				groupAccount.approved = false;
+			}
 			groupAccount.create();
 		}
-		return redirect(routes.GroupController.view(id));
+		flash("message", "Deine Anfrage wurde erfolgreich übermittelt");
+		return redirect(routes.GroupController.index());
 	}
 	
 	public static Result leave(long id){
 		Account account = Component.currentAccount();
 		Group group = Group.findById(id);
-		if(GroupAccount.find(account, group) != null){
+		if(GroupAccount.find(account, group) != null && !Secured.isOwnerOfGroup(group, account)){
 			GroupAccount groupAccount = GroupAccount.find(account, group);
 			groupAccount.remove();
+			flash("message", "Gruppe erfolgreich verlassen!");
+		} else {
+			flash("message", "Diese Gruppe kannst du nicht verlassen!");
+		}
+		return redirect(routes.GroupController.index());
+	}
+	
+	public static Result acceptRequest(long groupId, long accountId){
+		Account account = Account.findById(accountId);
+		Group group = Group.findById(groupId);
+		if(account != null && group != null && Secured.isOwnerOfGroup(group, Component.currentAccount())){
+			GroupAccount groupAccount = GroupAccount.find(account, group);
+			if(groupAccount != null){
+				groupAccount.approved = true;
+				groupAccount.update();
+			}
+		}
+		return redirect(routes.GroupController.index());
+	}
+	
+	public static Result declineRequest(long groupId, long accountId){
+		Account account = Account.findById(accountId);
+		Group group = Group.findById(groupId);
+		if(account != null && group != null && Secured.isOwnerOfGroup(group, Component.currentAccount())){
+			GroupAccount groupAccount = GroupAccount.find(account, group);
+			if(groupAccount != null){
+				groupAccount.remove();
+			}
 		}
 		return redirect(routes.GroupController.index());
 	}
