@@ -30,7 +30,6 @@ public class GroupController extends BaseController {
 		// split Groups (approved/unapproved)
 		if(!groupAccounts.isEmpty()){
 			for(GroupAccount groupAccount : groupAccounts){
-				
 				if(groupAccount.approved){
 					approvedGroups.add(groupAccount.group);
 				} else {

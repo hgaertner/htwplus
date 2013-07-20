@@ -1,6 +1,8 @@
 package models.base;
 
 import java.util.*;
+
+import play.Logger;
 import play.data.validation.Constraints.*;
 import play.data.format.Formats.*;
 import javax.persistence.*;
@@ -9,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import models.Account;
 import models.Course;
 
+import org.apache.commons.logging.Log;
 import org.hibernate.annotations.Columns;
 import org.hibernate.validator.constraints.Length;
 import play.db.jpa.*;
@@ -43,8 +46,11 @@ public abstract class BaseModel {
 		
 	public boolean equals(Object obj){
 		BaseModel baseModel = (BaseModel) obj;
-		if(baseModel.id == this.id) return true;
-		return false;
+		if(baseModel.id.equals(this.id)) {
+			return true; 
+		} else {
+			return false;
+		}
 	}
 	
 }
