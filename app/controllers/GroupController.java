@@ -30,15 +30,16 @@ public class GroupController extends BaseController {
 		// split Groups (approved/unapproved)
 		if(!groupAccounts.isEmpty()){
 			for(GroupAccount groupAccount : groupAccounts){
-				if(groupAccount.approved){
-					approvedGroups.add(groupAccount.group);
-				} else {
+				if(groupAccount.approved == null){
 					unapprovedGroups.add(groupAccount);
-				}
-				// aus der approved-Liste noch alle Gruppen loeschen die nicht mir gehoeren
-				// ansonsten sind sie doppelt drin
-				if(!groupAccount.account.equals(account)){
-					approvedGroups.remove(groupAccount.group);
+				} else {
+					if(groupAccount.approved == true && groupAccount.account.equals(account)){
+						approvedGroups.add(groupAccount.group);
+					} 
+
+					if(groupAccount.approved == false && groupAccount.account.equals(account)){
+						unapprovedGroups.add(groupAccount);
+					}
 				}
 			}
 		}
@@ -159,8 +160,6 @@ public class GroupController extends BaseController {
 			GroupAccount groupAccount = new GroupAccount(account, group);
 			if(!group.isClosed){
 				groupAccount.approved = true;
-			} else {
-				groupAccount.approved = false;
 			}
 			groupAccount.create();
 		}
@@ -200,7 +199,7 @@ public class GroupController extends BaseController {
 		if(account != null && group != null && Secured.isOwnerOfGroup(group, Component.currentAccount())){
 			GroupAccount groupAccount = GroupAccount.find(account, group);
 			if(groupAccount != null){
-				groupAccount.remove();
+				groupAccount.approved = false;
 			}
 		}
 		return redirect(routes.GroupController.index());

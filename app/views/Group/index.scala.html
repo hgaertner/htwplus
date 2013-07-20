@@ -72,8 +72,8 @@
                 		@if(accountGroup.account.equals(user)){
 	                		<td><a href="@routes.ProfileController.view(accountGroup.account.id)">Du</a></td>
 	                        <td><a href="@routes.GroupController.view(accountGroup.group.id)">@accountGroup.group.title</a></td>
-	                        <td>in Bearbeitung</td>
-	                        <td><a href="@routes.GroupController.leave(accountGroup.group.id)" rel="tooltip" title="zurückziehen"><i class="icon-remove"></i></a></td>	
+	                        <td>@if(accountGroup.approved == false) { abgelehnt } else { in Bearabeitung }</td>
+	                        <td><a href="@routes.GroupController.leave(accountGroup.group.id)" rel="tooltip" title="löschen"><i class="icon-remove"></i></a></td>	
                 		} else {
 	                		<td><a href="@routes.ProfileController.view(accountGroup.account.id)">@accountGroup.account.name</a></td>
 	                        <td><a href="@routes.GroupController.view(accountGroup.group.id)">@accountGroup.group.title</a></td>
