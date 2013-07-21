@@ -166,16 +166,20 @@ public class GroupController extends BaseController {
 		flash("message", "Deine Anfrage wurde erfolgreich übermittelt");
 		return redirect(routes.GroupController.index());
 	}
-	
-	public static Result leave(long id){
-		Account account = Component.currentAccount();
-		Group group = Group.findById(id);
-		if(GroupAccount.find(account, group) != null && !Secured.isOwnerOfGroup(group, account)){
-			GroupAccount groupAccount = GroupAccount.find(account, group);
+		
+	public static Result removeMember(long groupId, long accountId){
+		Account account = Account.findById(accountId);
+		Group group = Group.findById(groupId);
+		GroupAccount groupAccount = GroupAccount.find(Account.findById(accountId), group);
+		if(groupAccount != null && !Secured.isOwnerOfGroup(group, account)){
 			groupAccount.remove();
-			flash("message", "Gruppe erfolgreich verlassen!");
+			if(account.equals(Component.currentAccount())){
+				flash("message", "Gruppe erfolgreich verlassen!");
+			} else {
+				flash("message", "Mitglied erfolgreich entfernt!");
+			}
 		} else {
-			flash("message", "Diese Gruppe kannst du nicht verlassen!");
+			flash("message", "Das geht leider nicht :(");
 		}
 		return redirect(routes.GroupController.index());
 	}

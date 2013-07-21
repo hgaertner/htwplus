@@ -73,7 +73,7 @@
 	                		<td><a href="@routes.ProfileController.view(accountGroup.account.id)">Du</a></td>
 	                        <td><a href="@routes.GroupController.view(accountGroup.group.id)">@accountGroup.group.title</a></td>
 	                        <td>@if(accountGroup.approved == false) { abgelehnt } else { in Bearabeitung }</td>
-	                        <td><a href="@routes.GroupController.leave(accountGroup.group.id)" rel="tooltip" title="löschen"><i class="icon-remove"></i></a></td>	
+	                        <td><a href="@routes.GroupController.removeMember(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" title="löschen"><i class="icon-remove"></i></a></td>	
                 		} else {
 	                		<td><a href="@routes.ProfileController.view(accountGroup.account.id)">@accountGroup.account.name</a></td>
 	                        <td><a href="@routes.GroupController.view(accountGroup.group.id)">@accountGroup.group.title</a></td>
@@ -127,7 +127,7 @@
                         	<a href="@routes.GroupController.delete(group.id)" rel="tooltip" title="Gruppe löschen"><i class="icon-trash"></i></a>
                         	}
                         	@if(group.owner.id != user.id){
-                        	<a href="@routes.GroupController.leave(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Verlassen"><i class="icon-remove"></i></a>
+                        	<a href="@routes.GroupController.removeMember(group.id, user.id)" rel="tooltip" data-toggle="modal" data-original-title="Verlassen"><i class="icon-remove"></i></a>
                         	}
                         	
                         </td>
