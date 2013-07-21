@@ -1,0 +1,13 @@
+@(group: Group)
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+	<h3 id="confirmModalLabel">@group.title l&ouml;schen</h3>
+</div>
+<div class="modal-body">
+	M&ouml;chtest du <b>@group.title</b> wirklich l&ouml;schen?<br />
+	Alle dazugeh&ouml;rigen Post, Kommentare, Mitglieder, Medien werden ebenfalls gel&ouml;scht!
+</div>
+<div class="modal-footer">
+	<a href="@routes.GroupController.delete(group.id)" class="btn btn-warning">Ja</a>
+	<button class="btn" data-dismiss="modal" aria-hidden="true">Nein</button>
+</div>

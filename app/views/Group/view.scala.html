@@ -3,14 +3,15 @@
 
 @main("Group View") {
 	<br />
-	@if(group.isClosed != true || isMember) {
+	@if(!group.isClosed || isMember) {
 	<h1>
 		@group.title
-		@if(group.isClosed == true) {<i class="icon-lock"></i>} else {<i class="icon-globe"></i>}
+		@if(group.isClosed) {<i class="icon-lock"></i>} else {<i class="icon-globe"></i>}
 		<div class="btn-group">
 			<a href="@routes.GroupController.media(group.id)" role="button" class="btn" rel="tooltip" data-original-title="Gruppenmedien"><i class="icon-file"></i></a>
 			@defining(Component.currentAccount()) { user => @if(group.owner.id == user.id){
 				<a href="@routes.GroupController.edit(group.id)" role="button" rel="tooltip" data-toggle="modal" data-original-title="Gruppe bearbeiten" class="btn editGroup"><i class="icon-pencil"></i></a>
+				<a href="#confirmDeleteGroup" role="button" class="btn" rel="tooltip" data-toggle="modal" data-original-title="Gruppe löschen" class="btn deleteGroup"><i class="icon-trash"></i></a>
 				}@if(!isMember){
 				<a href="@routes.GroupController.join(group.id)" role="button" class="btn" rel="tooltip" data-original-title="Beitreten"><i class="icon-ok"></i></a>
 				}
@@ -36,13 +37,7 @@
 				</div>
 				</div>
 	<!-- Ende editModal -->
-	
-	<!-- Start infoModal -->
-	<div id="infoModal@group.id" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="false">
-		@views.html.Group.snippets.infoModal(group)    
-	</div>
-	<!-- Ende infoModal -->
-	
+		
 	Erstellt von
 	<a href="#" rel="popover" data-html="true" data-trigger="hover"
 		data-delay="500"
@@ -70,11 +65,24 @@
 		@group.title
 		<i class="icon-lock"></i>
 		<div class="btn-group">
-			<a href="@routes.GroupController.join(group.id)" role="button" class="btn" rel="tooltip" data-original-title="Beitreten"><i class="icon-ok"></i></a>
+			<a href="#infoModal@group.id" role="button" class="btn" data-toggle="modal" rel="tooltip" data-original-title="Gruppeninfo"><i class="icon-info-sign"></i></a>
+			<a href="@routes.GroupController.join(group.id)" role="button" class="btn last" rel="tooltip" data-original-title="Beitreten"><i class="icon-ok"></i></a>
 		</div>
 		</h1>
 		<br />
 		<h4>Diese Gruppe ist leider geschlossen.</h4>
 
 		}
+		
+	<!-- Start infoModal -->
+	<div id="infoModal@group.id" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="false">
+		@views.html.Group.snippets.infoModal(group)    
+	</div>
+	<!-- Ende infoModal -->
+	
+	<!-- Start confirmDeleteGroupModal -->
+	<div id="confirmDeleteGroup" class="modal hide fade" tabindex="-1" role="dialog">
+		@views.html.Group.snippets.deleteGroupModal(group)   
+	</div>
+	<!-- End confirmDeleteGroupModal -->
 }

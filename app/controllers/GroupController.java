@@ -84,6 +84,10 @@ public class GroupController extends BaseController {
 	@Transactional(readOnly=true)
 	public static Result media(Long id) {
 		Group group = Group.findById(id);
+		if(!Secured.isMemberOfGroup(group, Component.currentAccount())){
+			flash("message","Bitte tritt der Gruppe erst bei.");
+			return view(id);
+		}
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
@@ -174,6 +178,7 @@ public class GroupController extends BaseController {
 				flash("message", "Deine Anfrage wurde erfolgreich übermittelt!");
 			}
 			groupAccount.create();
+			return redirect(routes.GroupController.view(id));
 		}
 		
 		return redirect(routes.GroupController.index());
