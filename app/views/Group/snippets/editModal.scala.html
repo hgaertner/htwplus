@@ -19,6 +19,7 @@
 	</dl>
 	@form(routes.GroupController.update(group.id), 'id -> "editGroupForm") {
 		@textarea(groupForm("description"), '_label -> "Beschreibung", 'rows -> "5")
+		@checkbox(groupForm("isClosed"), '_label -> None, '_text -> "Geschlossene Gruppe")
 	}
 	<dl>
 		<dt>Person einladen</dt>

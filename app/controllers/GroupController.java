@@ -131,6 +131,11 @@ public class GroupController extends BaseController {
 			groupForm.reject("description", "Bitte wähle eine Beschreibung");
 			return ok(editModal.render(group, groupForm));
 		} else {
+			if(groupForm.bindFromRequest().data().get("isClosed") == null){
+				group.isClosed = false;
+			} else {
+				group.isClosed = true;
+			}
 			group.description = description;
 			group.update();
 			return ok(addModalSuccess.render());
@@ -156,14 +161,21 @@ public class GroupController extends BaseController {
 	public static Result join(long id){
 		Account account = Component.currentAccount();
 		Group group = Group.findById(id);
+		if(Secured.isMemberOfGroup(group, account)){
+			flash("message", "Du bist bereits Mitglied dieser Gruppe!");
+			return redirect(routes.GroupController.view(id));
+		}
 		if(GroupAccount.find(account, group) == null){
 			GroupAccount groupAccount = new GroupAccount(account, group);
 			if(!group.isClosed){
 				groupAccount.approved = true;
+				flash("message", "Gruppe erfolgreich beigetreten!");
+			} else {
+				flash("message", "Deine Anfrage wurde erfolgreich übermittelt!");
 			}
 			groupAccount.create();
 		}
-		flash("message", "Deine Anfrage wurde erfolgreich übermittelt");
+		
 		return redirect(routes.GroupController.index());
 	}
 		
