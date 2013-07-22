@@ -28,6 +28,9 @@ public class Group extends BaseModel {
 	@ManyToOne
 	public Account owner;
 	
+	@OneToMany(mappedBy="group")
+	public Set<Media> media;
+	
 	public String validate(){
 		if(Group.findByTitle(this.title) != null){
 			return "Der Titel ist bereits vergeben";

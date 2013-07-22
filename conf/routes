@@ -54,8 +54,7 @@ POST	/user/:id/edit						controllers.ProfileController.update(id:Long)
 GET		/freunde							controllers.FriendshipController.index()
 
 # Media
-GET		/media/upload						controllers.MediaController.add()
-POST 	/media/upload						controllers.MediaController.upload()
+POST 	/media/:target/upload/:id			controllers.MediaController.upload(target:String,id:Long)
 GET		/media/:id							controllers.MediaController.view(id:Long)
 
 # Map static resources from the /public folder to the /assets URL path

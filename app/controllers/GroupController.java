@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import play.*;
 import play.mvc.*;
@@ -9,6 +10,7 @@ import play.data.*;
 import models.Account;
 import models.Group;
 import models.GroupAccount;
+import models.Media;
 import models.Post;
 import views.html.Group.*;
 import views.html.Group.snippets.*;
@@ -83,6 +85,7 @@ public class GroupController extends BaseController {
 	
 	@Transactional(readOnly=true)
 	public static Result media(Long id) {
+		Form<Media> mediaForm = Form.form(Media.class);
 		Group group = Group.findById(id);
 		if(!Secured.isMemberOfGroup(group, Component.currentAccount())){
 			flash("message","Bitte tritt der Gruppe erst bei.");
@@ -91,7 +94,11 @@ public class GroupController extends BaseController {
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
-			return ok(media.render(group));
+			Set<Media> mediaSet = group.media; 
+			for (Media media : mediaSet) {
+				Logger.info(media.title);
+			}
+			return ok(media.render(group, mediaForm, mediaSet));
 		}
 	}
 

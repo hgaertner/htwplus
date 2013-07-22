@@ -1,0 +1,34 @@
+@(mediaList:Set[Media]) 
+
+<table class="table table-hover">
+   <thead>
+       <tr>
+           <th>Dateiname</th>
+           <th>Hochgeladen von</th>
+           <th>Datum</th>
+           <th>Auswahl</th>
+       </tr>
+   </thead>
+    <tbody>
+
+
+@for(m <- mediaList) {
+ 	 <tr>
+         <td><a href="@routes.MediaController.view(m.id)">@m.title</a></td>
+         <td><a href="#" rel="popover" data-html="true" data-trigger="hover" data-delay="500" data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik " data-original-title="Anne Hasenpusch" data-placement="right">@m.owner.name</a></td>
+         <td>@m.createdAt.format("dd. MMM yyyy")</td>
+         <td><label class="checkbox"><input type="checkbox"></label></td>
+     </tr>
+                                        	
+}
+
+    </tbody>
+    <tfoot>
+        <tr>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td><button class="btn btn-warning btn-small">Auswahl herunterladen</button></td>
+        </tr>
+    </tfoot>
+</table>

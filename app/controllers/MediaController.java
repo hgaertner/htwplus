@@ -24,29 +24,46 @@ public class MediaController extends BaseController {
     public static Result view(Long id) {
     	Media media = Media.findById(id);
     	if(media == null) {
-    		return redirect(routes.MediaController.add());
+    		  return redirect(routes.Application.index());
     	} else {
     		response().setHeader("Content-disposition","attachment; filename=" + media.fileName);
     		return ok(media.file);
     	}
     }
-    
-    public static Result add() {
-    	return ok(upload.render(mediaForm));
-    }
-    
+        
 	@Transactional
-    public static Result upload() {				
+    public static Result upload(String target, Long id) {				
 		MultipartFormData body = request().body().asMultipartFormData();
 		List<Http.MultipartFormData.FilePart> uploads = body.getFiles();
-
+		Call ret = routes.Application.index();
+		Group group = null;
+		Course course = null;
+				
+		if(target.equals("group")) {
+			group = Group.findById(id);
+			ret = routes.GroupController.media(id);
+		} else if (target.equals("course")) {
+			course = Course.findById(id);
+			ret = routes.CourseController.index();
+		} else {
+			return redirect(ret);
+		}
+		
 		if(!uploads.isEmpty()) {
 			for (FilePart upload : uploads) {
 				Media med = new Media();
+				
+				if(target.equals("group")) {
+					med.group = group;
+				} else if (target.equals("course")) {
+					med.course = course;
+				}
+				
 				med.title = upload.getFilename();
 				med.mimetype = upload.getContentType();
 				med.fileName = upload.getFilename();
 				med.file = upload.getFile();
+				med.owner = Component.currentAccount();
 				try {
 					med.create(request().username());
 				} catch (Exception e) {
@@ -54,10 +71,10 @@ public class MediaController extends BaseController {
 				}
 			}
 			flash("message", "File uploaded!");
-		    return redirect(routes.Application.index());
+		    return redirect(ret);
 		} else {
 			flash("error", "Missing file");
-			return redirect(routes.MediaController.upload());    
+		    return redirect(ret);  
 		}
 		
     }

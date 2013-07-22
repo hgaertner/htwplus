@@ -77,8 +77,6 @@ public class Media extends BaseModel {
 	}
 	
 	public void create(String user) {
-		Account account = Account.findByEmail(user);
-		this.owner = account;
 		this.size = file.length();
 		this.url = this.createRelativeURL() + "/" + this.getUniqueFileName(this.fileName);
 		try {
