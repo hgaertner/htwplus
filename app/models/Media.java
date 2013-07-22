@@ -58,6 +58,9 @@ public class Media extends BaseModel {
 	@Transient
 	public File file;
 	
+	public static String GROUP = "group";
+	public static String COURSE = "course";
+	
 	public static Media findById(Long id) {
 		Media media = JPA.em().find(Media.class, id);
 		// TODO check access

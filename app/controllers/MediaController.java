@@ -14,7 +14,6 @@ import views.html.Media.*;
 import play.db.jpa.*;
 import scala.reflect.internal.Trees.This;
 
-
 @Security.Authenticated(Secured.class)
 public class MediaController extends BaseController {
 	
@@ -38,11 +37,11 @@ public class MediaController extends BaseController {
 		Call ret = routes.Application.index();
 		Group group = null;
 		Course course = null;
-				
-		if(target.equals("group")) {
+		
+		if(target.equals(Media.GROUP)) {
 			group = Group.findById(id);
 			ret = routes.GroupController.media(id);
-		} else if (target.equals("course")) {
+		} else if (target.equals(Media.COURSE)) {
 			course = Course.findById(id);
 			ret = routes.CourseController.index();
 		} else {
@@ -53,9 +52,9 @@ public class MediaController extends BaseController {
 			for (FilePart upload : uploads) {
 				Media med = new Media();
 				
-				if(target.equals("group")) {
+				if(target.equals(Media.GROUP)) {
 					med.group = group;
-				} else if (target.equals("course")) {
+				} else if (target.equals(Media.COURSE)) {
 					med.course = course;
 				}
 				
