@@ -29,7 +29,6 @@ GET		/gruppe/:id/media					controllers.GroupController.media(id:Long)
 GET		/gruppe/:id/edit					controllers.GroupController.edit(id:Long)
 POST	/gruppe/:id/update					controllers.GroupController.update(id:Long)
 GET		/gruppe/:id/delete					controllers.GroupController.delete(id:Long)
-POST	/gruppe/:id/addPost					controllers.GroupController.addPost(id:Long)
 GET 	/gruppe/:id/join					controllers.GroupController.join(id:Long)
 GET 	/gruppe/:groupId/remove/:accountId	controllers.GroupController.removeMember(groupId:Long, accountId: Long)
 GET 	/gruppe/:groupId/accept/:accountId	controllers.GroupController.acceptRequest(groupId:Long, accountId: Long)
@@ -39,6 +38,7 @@ GET		/gruppe/:anyId/deletePost/:postId	controllers.PostController.deletePost(pos
 #Post and Comments
 POST	/post/:id/addComment				controllers.PostController.addComment(id:Long)
 GET		/post/:id/olderComments				controllers.PostController.getOlderComments(id:Long)
+POST	/:target/:id/addPost				controllers.PostController.addPost(id:Long, target:String)
 
 # Signup
 POST    /signup                 			controllers.AccountController.submit()

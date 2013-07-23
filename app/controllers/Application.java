@@ -1,14 +1,21 @@
 package controllers;
 
+import java.util.List;
+
+import models.Account;
+import models.Post;
 import play.Logger;
 import play.Routes;
 import play.mvc.*;
 import views.html.*;
+import play.data.Form;
 import play.db.jpa.*;
 
 
 @Transactional
 public class Application extends BaseController {
+	
+	static Form<Post> postForm = Form.form(Post.class);
 	
 	public static Result javascriptRoutes() {
 		response().setContentType("text/javascript");
@@ -21,13 +28,17 @@ public class Application extends BaseController {
 	
 	@Security.Authenticated(Secured.class)
 	public static Result index() {
-		return ok(stream.render());
+		Account account = Component.currentAccount();
+		List<Post> posts = Post.getPostForAccount(account.id);
+		return ok(stream.render(account,posts,postForm));
 	}
 		
 	@Security.Authenticated(Secured.class)
 	public static Result defaultRoute(String path) {
 		Logger.info(path+" nicht gefunden");
-		return ok(stream.render());
+		Account account = Component.currentAccount();
+		List<Post> posts = Post.getPostForAccount(account.id);
+		return ok(stream.render(account,posts,postForm));
 	}
 
 }

@@ -47,15 +47,13 @@
 	<br />
 	<hr />
 	<br />
-	@form(routes.GroupController.addPost(group.id), 'id -> "addPost") {
-		@textarea(postForm("Content"),'id -> "postContent", 'rows -> "3", 'placeholder -> "Erstelle einen neuen Post...")
-		<button type="submit" class="btn btn-warning">Posten</button>  
-	}
 	
+	@views.html.snippets.postForm(group.id, "group", postForm) 
+		
 	@if(posts != null) {
 		@for(post <- posts) {
 			@if(post.parent == null){
-				@views.html.Group.snippets.post(post, group, postForm)
+				@views.html.snippets.postView(post, group.id, postForm)
 			}
 		}
 	}
