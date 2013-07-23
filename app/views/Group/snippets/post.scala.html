@@ -39,7 +39,7 @@
 
 	 }
 		@form(routes.PostController.addComment(post.id), 'class -> "addComment") {
-		@textarea(postForm("Content"),'id -> "postContent", 'rows -> "1", 'placeholder -> "Schreibe ein Kommentar...")
+		@textarea(postForm("Content"),'id -> "commentContent", 'rows -> "1", 'placeholder -> "Schreibe ein Kommentar...")
 		<button class="btn btn-small btn-warning commentSubmit" type="submit">Kommentieren</button>
 		}
 	</div>

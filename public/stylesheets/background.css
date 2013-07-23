@@ -389,3 +389,9 @@ textarea {
 #addComment dl, dd {
 	margin: 0;
 }
+
+#commentContent{
+	margin-right: 10px;
+	width: 80%;
+	float: left;
+}
