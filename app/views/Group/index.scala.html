@@ -62,7 +62,7 @@
                         <th>Wer?</th>
                         <th>Welche Gruppe?</th>
                         <th>Status</th>
-                        <th>Verf&uuml;gbare Optionen</th>
+                        <th>Verfügbare Optionen</th>
                     </tr>
                 </thead>
                  
@@ -104,7 +104,7 @@
                 <thead>
                     <tr>
                         <th>Gruppenname</th>
-                        <th>Verf&uuml;gbare Optionen</th>
+                        <th>Verfügbare Optionen</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -118,7 +118,7 @@
 	                        } else {
 	                           <i class="icon-globe"></i>
 	                        }
-	                        <a href="@routes.GroupController.view(group.id)">@if(group.owner.id == user.id){<b> @group.title</b></a> <small>(gegr&uuml;ndet)</small>}else{ @group.title}
+	                        <a href="@routes.GroupController.view(group.id)">@if(group.owner.id == user.id){<b> @group.title</b></a> <small>(gegründet)</small>}else{ @group.title}
 	                    </td>
                         <td>
                         	<a href="#infoModal@group.id"  rel="tooltip" data-toggle="modal" data-original-title="Info"><i class="icon-info-sign"></i></a>
