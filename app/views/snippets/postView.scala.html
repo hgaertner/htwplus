@@ -1,9 +1,10 @@
-@(post: Post, group: Group, postForm: Form[Post])
+@(post: Post, anyId: Long, postForm: Form[Post])
 @import helper._
 
 @defining(Component.currentAccount()) { user =>
 	<br />
-	@views.html.snippets.deletePostModal(post.id, group.id)
+	
+	@views.html.snippets.deletePostModal(post.id, anyId)
 	<div class="well">
 	<div class="media">
 		<a class="pull-left" href="#"> <img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="30" width="30" class="img-polaroid" /></a>
@@ -32,11 +33,10 @@
 	
 	</div>
 
-	 @defining(PostController.getCommentsForPostInGroup(post.id)) { comments =>
-	 	 @for(comment <- comments){
-	 	@views.html.Group.snippets.comment(comment)
-	 }
-
+	 @defining(PostController.getCommentsForPostInGroup(post.id)) { comments => 
+	 	@for(comment <- comments){
+	 		@views.html.snippets.postComment(comment)
+	 	}
 	 }
 		@form(routes.PostController.addComment(post.id), 'class -> "addComment") {
 		@textarea(postForm("Content"),'id -> "commentContent", 'rows -> "1", 'placeholder -> "Schreibe ein Kommentar...")

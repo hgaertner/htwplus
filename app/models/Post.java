@@ -17,6 +17,10 @@ import views.html.Group.view;
 @Entity
 @SequenceGenerator(name = "default_seq", sequenceName = "post_seq")
 public class Post extends BaseModel {
+	
+	public static String GROUP = "group";
+	public static String COURSE = "course";
+	public static String STREAM = "stream";
 
 	@Required
 	@Column(length=2000)
@@ -74,6 +78,14 @@ public class Post extends BaseModel {
 		return (List<Post>) JPA.em()
 				.createQuery("SELECT p FROM Post p WHERE p.group.id = ?1 ORDER BY p.createdAt")
 				.setParameter(1, id)
+				.getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Post> getPostForAccount(Long accountId) {
+		return (List<Post>) JPA.em()
+				.createQuery("SELECT p FROM Post p WHERE p.account.id = ?1 ORDER BY p.createdAt")
+				.setParameter(1, accountId)
 				.getResultList();
 	}
 	

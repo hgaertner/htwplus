@@ -48,29 +48,7 @@ public class GroupController extends BaseController {
 				
 		return ok(index.render(approvedGroups,unapprovedGroups,groupForm));
 	}
-	
-	@Transactional
-	public static Result addPost(long groupId) {
-		Group group = Group.findById(groupId);
-		Account account = Component.currentAccount();
-		if (Secured.isMemberOfGroup(group, account)) {
-			Form<Post> filledForm = postForm.bindFromRequest();
-			if (filledForm.hasErrors()) {
-				flash("message", "Error in Form!");
-			} else {
-				Post p = filledForm.get();
-				Post p2 = new Post();
-				p2.content = p.content;
-				p2.owner = Component.currentAccount();
-				p2.group = Group.findById(groupId);
-				p2.create();
-			}
-		} else {
-			flash("message","Bitte tritt der Gruppe erst bei.");
-		}
-		return view(groupId);
-	}
-	
+		
 	@Transactional(readOnly=true)
 	public static Result view(Long id) {
 		Group group = Group.findById(id);
