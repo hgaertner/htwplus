@@ -16,7 +16,10 @@ object ApplicationBuild extends Build {
     "postgresql" % "postgresql" % "9.1-901-1.jdbc4",
     "org.hibernate" % "hibernate-entitymanager" % "4.1.5.Final",
     //elastic search module
-    "com.clever-age" % "play2-elasticsearch" % "0.6-SNAPSHOT")
+    //"com.clever-age" % "play2-elasticsearch" % "0.6-SNAPSHOT",
+    "org.hibernate" % "hibernate-search" % "4.3.0.Final",
+    "org.hibernate" % "hibernate-annotations" % "3.5.6-Final",
+    "org.hibernate" % "hibernate-core" % "4.2.3.Final")
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here 

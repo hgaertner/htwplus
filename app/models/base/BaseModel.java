@@ -1,23 +1,17 @@
 package models.base;
 
-import java.util.*;
+import java.util.Date;
 
-import play.Logger;
-import play.data.validation.Constraints.*;
-import play.data.format.Formats.*;
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
-import models.Account;
-import models.Course;
-
-import org.apache.commons.logging.Log;
-import org.hibernate.annotations.Columns;
-import org.hibernate.validator.constraints.Length;
-import play.db.jpa.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 @MappedSuperclass
-public abstract class BaseModel {
+public abstract class BaseModel{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_seq")

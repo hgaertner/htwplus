@@ -4,17 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import play.*;
-import play.mvc.*;
-import play.data.*;
 import models.Account;
 import models.Group;
 import models.GroupAccount;
 import models.Media;
 import models.Post;
-import views.html.Group.*;
-import views.html.Group.snippets.*;
-import play.db.jpa.*;
+
+import play.Logger;
+import play.data.Form;
+import play.db.jpa.Transactional;
+import play.mvc.Result;
+import play.mvc.Security;
+import views.html.Group.index;
+import views.html.Group.media;
+import views.html.Group.view;
+import views.html.Group.snippets.addModal;
+import views.html.Group.snippets.addModalSuccess;
+import views.html.Group.snippets.editModal;
 
 @Security.Authenticated(Secured.class)
 @Transactional
@@ -170,8 +176,9 @@ public class GroupController extends BaseController {
 	}
 	
 	
-	public static List<Group> searchForGroupByKeyword(final String keyword){
-		return Group.searchForGroupByKeyword(keyword);
+	public static Result searchForGroupByKeyword(final String keyword){
+		List<Group> result = Group.searchForGroupByKeyword("Test");
+		return redirect(routes.GroupController.view(result.get(0).id));
 	}
 	
 	

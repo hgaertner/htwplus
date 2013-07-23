@@ -1,8 +1,6 @@
 package models;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,17 +12,22 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import models.base.BaseModel;
+
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.impl.FullTextEntityManagerImpl;
+
 import play.data.validation.Constraints.Required;
 import play.db.jpa.JPA;
 
-
-import com.github.cleverage.elasticsearch.Indexable;
-
+@Indexed
 @Entity
 @SequenceGenerator(name = "default_seq", sequenceName = "group_seq")
 @Table(name = "Group_")
-public class Group extends BaseModel implements Indexable {
+public class Group extends BaseModel {
 
+	@DocumentId // the equivalent of @Id for the Hibernate Search indexes
 	@Required
 	@Column(unique = true)
 	public String title;
@@ -120,20 +123,14 @@ public class Group extends BaseModel implements Indexable {
 
 	}
 
-	@Override
-	public Indexable fromIndex(Map map) {
-		if (map == null) {
-			return this;
-		}
-		this.title = (String) map.get("title");
-		return this;
-	}
-
-	@Override
-	public Map toIndex() {
-		HashMap map = new HashMap();
-		map.put("title", this.title);
-		return map;
+	@SuppressWarnings("unchecked")
+	public static List<Group> searchForGroupByKeyword(String keyword) {
+		//String selectString = "SELECT * FROM Group WHERE to_tsvector(group_.title) @@ to_tsquery('Closed')";
+		//List<Group> result = JPA.em().createQuery(selectString).setParameter(1,keyword).getResultList();
+		//return result;
+		org.apache.lucene.search.Query luceneQuery = getLuceneQuery();
+		FullTextEntityManager ftEm = new FullTextEntityManagerImpl(JPA.em());
+		Query query = ftEm.createFullTextQuery(luceneQuery, Group.class);
 	}
 
 }
