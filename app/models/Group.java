@@ -11,10 +11,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import models.GroupAccount;
 import models.base.BaseModel;
 
-import org.apache.lucene.document.Field.Index;
-import org.hibernate.search.FullTextSession;
+import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -24,6 +24,7 @@ import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
 
+import play.Logger;
 import play.data.validation.Constraints.Required;
 import play.db.jpa.JPA;
 
@@ -136,7 +137,7 @@ public class Group extends BaseModel {
 		// List<Group> result =
 		// JPA.em().createQuery(selectString).setParameter(1,keyword).getResultList();
 		// return result;
-		
+		Logger.info("Group model searchForGroupByKeyWord: " + keyword);
 		FullTextEntityManager fullTextSession = Search.getFullTextEntityManager(JPA.em());
 		QueryBuilder queryBuilder = fullTextSession.getSearchFactory()
 				.buildQueryBuilder().forEntity(Group.class).get();
@@ -148,7 +149,7 @@ public class Group extends BaseModel {
 				.createFullTextQuery(luceneQuery, Group.class);
 
 		List<Group> result = fullTextQuery.getResultList();
-
+		Logger.info("Found " +result.size() +" groups with keyword: " +keyword);
 		fullTextSession.close();
 
 		return result;

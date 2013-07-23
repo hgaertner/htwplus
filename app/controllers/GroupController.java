@@ -177,7 +177,8 @@ public class GroupController extends BaseController {
 	
 	
 	public static Result searchForGroupByKeyword(final String keyword){
-		List<Group> result = Group.searchForGroupByKeyword("Test");
+		Logger.info("Search for group with keyword: " +keyword);
+		List<Group> result = Group.searchForGroupByKeyword(keyword);
 		return redirect(routes.GroupController.view(result.get(0).id));
 	}
 	
