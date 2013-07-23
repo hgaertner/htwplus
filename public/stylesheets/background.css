@@ -120,7 +120,7 @@ body#smallHead #logo {
 
 #content  {
 	min-height: 300px;
-	padding-left: 15px;
+	padding-left: 30px;
 	padding-right: 15px;
 	padding-top: 52px;
 	background-color: white;
@@ -374,6 +374,10 @@ textarea {
 	display: none;
 	text-shadow: 1px 1px 1px rgba(118, 185, 0, 0.5);
 	color: #76B900;
+}
+
+.comment {
+	margin-left: 50px;
 }
 
 #addPost label,

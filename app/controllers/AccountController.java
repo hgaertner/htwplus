@@ -1,13 +1,19 @@
 package controllers;
 
 import static play.data.Form.form;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import models.Account;
 import models.Login;
 import play.data.Form;
 import play.db.jpa.Transactional;
-import play.mvc.*;
+import play.mvc.Result;
 import views.html.index;
-import views.html.snippets.*;
+import views.html.snippets.signup;
+import views.html.snippets.signupSuccess;
 
 @Transactional
 public class AccountController extends BaseController {
@@ -67,9 +73,12 @@ public class AccountController extends BaseController {
             return ok(signup.render(filledForm));
         } else {
             Account created = filledForm.get();
+            created.password = Component.md5(created.password);
             created.create();
             return ok(signupSuccess.render());
         }
     }
+    
+
 	
 }

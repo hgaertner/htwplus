@@ -3,7 +3,7 @@
 
 @main("Group Media") {
 	<br />
-	<h1>
+	<h2>
 		@group.title@if(group.isClosed == true) {<i class="icon-lock"></i>} else {<i class="icon-globe"></i>}
 		<div class="btn-group">
 			<a href="@routes.GroupController.view(group.id)" role="button" class="btn" rel="tooltip" data-original-title="Gruppennewsstream"><i class="icon-comment"></i></a>
@@ -12,7 +12,7 @@
 			}}
 			<a href="#infoModal@group.id" role="button" class="btn last" data-toggle="modal" rel="tooltip" data-original-title="Gruppeninfo"><i class="icon-info-sign"></i></a>
 		</div>
-	</h1>
+	</h2>
 	<br />
 	
 	<!-- Start editModal -->

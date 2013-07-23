@@ -46,10 +46,9 @@
 			</div>
             <!-- Ende editModal -->
                                    
-            <br />
             @defining(Component.currentAccount()) { user =>
 			@if(!unapprovedGroups.isEmpty){
-            <h1>Offene Anfragen</h1>
+            <h2>Offene Anfragen</h2>
             <table class="table table-hover">
                 <colgroup>
                     <col width="20%">
@@ -90,12 +89,12 @@
             </table>
             <hr /><br />
             }
-            <h1>Meine Gruppen
+            <h2>Meine Gruppen
                 <div class="btn-group">
                     <a href="#createNewGroupModal" role="button" class="btn" data-toggle="modal"><i class="icon-plus"></i></a>
                     <a href="#searchModal" role="button" class="btn" data-toggle="modal"><i class="icon-search"></i></a>
                 </div>
-            </h1>
+            </h2>
             <table class="table table-hover">
                 <colgroup>
                     <col width="75%">
@@ -123,7 +122,6 @@
                         <td>
                         	<a href="#infoModal@group.id"  rel="tooltip" data-toggle="modal" data-original-title="Info"><i class="icon-info-sign"></i></a>
                         	@if(group.owner.id == user.id){
-                        	<a href="@routes.GroupController.edit(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Gruppe bearbeiten" class="editGroup"><i class="icon-pencil"></i></a>
                         	<a href="@routes.GroupController.delete(group.id)" rel="tooltip" title="Gruppe löschen"><i class="icon-trash"></i></a>
                         	}
                         	@if(group.owner.id != user.id){

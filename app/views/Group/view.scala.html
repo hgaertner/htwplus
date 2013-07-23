@@ -2,23 +2,22 @@
 @import helper._
 
 @main("Group View") {
-	<br />
 	@if(!group.isClosed || isMember) {
-	<h1>
+	<h2>
 		@group.title
 		@if(group.isClosed) {<i class="icon-lock"></i>} else {<i class="icon-globe"></i>}
 		<div class="btn-group">
 			<a href="@routes.GroupController.media(group.id)" role="button" class="btn" rel="tooltip" data-original-title="Gruppenmedien"><i class="icon-file"></i></a>
 			@defining(Component.currentAccount()) { user => @if(group.owner.id == user.id){
 				<a href="@routes.GroupController.edit(group.id)" role="button" rel="tooltip" data-toggle="modal" data-original-title="Gruppe bearbeiten" class="btn editGroup"><i class="icon-pencil"></i></a>
-				<a href="#confirmDeleteGroup" role="button" class="btn" rel="tooltip" data-toggle="modal" data-original-title="Gruppe löschen" class="btn deleteGroup"><i class="icon-trash"></i></a>
+				<a href="#confirmDeleteGroup" role="button" class="btn" rel="tooltip" data-toggle="modal" data-original-title="Gruppe lÃ¶schen" class="btn deleteGroup"><i class="icon-trash"></i></a>
 				}@if(!isMember){
 				<a href="@routes.GroupController.join(group.id)" role="button" class="btn" rel="tooltip" data-original-title="Beitreten"><i class="icon-ok"></i></a>
 				}
 			}
 			<a href="#infoModal@group.id" role="button" class="btn last" data-toggle="modal" rel="tooltip" data-original-title="Gruppeninfo"><i class="icon-info-sign"></i></a>
 		</div>
-	</h1>
+	</h2>
 	<br />
 	
 	<!-- Start editModal -->
@@ -38,19 +37,11 @@
 				</div>
 	<!-- Ende editModal -->
 		
-	Erstellt von
-	<a href="#" rel="popover" data-html="true" data-trigger="hover"
-		data-delay="500"
-		data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik"
-		data-original-title="Max Mustermann" data-placement="top">@group.owner.firstname @group.owner.lastname</a>
-	am @group.createdAt.format("dd. MMM yyyy")
-	<br />
-	<hr />
-	<br />
 	@form(routes.GroupController.addPost(group.id), 'id -> "addPost") {
-		@textarea(postForm("Content"),'id -> "postContent", 'rows -> "3", 'placeholder -> "Erstelle einen neuen Post...")
+		@textarea(postForm("Content"),'id -> "postContent", 'rows -> "2", 'placeholder -> "Erstelle einen neuen Post...")
 		<button type="submit" class="btn btn-warning">Posten</button>  
 	}
+	<br />
 	
 	@if(posts != null) {
 		@for(post <- posts) {
@@ -61,14 +52,14 @@
 	}
 	
 	} else {
-		<h1>
+		<h2>
 		@group.title
 		<i class="icon-lock"></i>
 		<div class="btn-group">
 			<a href="#infoModal@group.id" role="button" class="btn" data-toggle="modal" rel="tooltip" data-original-title="Gruppeninfo"><i class="icon-info-sign"></i></a>
 			<a href="@routes.GroupController.join(group.id)" role="button" class="btn last" rel="tooltip" data-original-title="Beitreten"><i class="icon-ok"></i></a>
 		</div>
-		</h1>
+		</h2>
 		<br />
 		<h4>Diese Gruppe ist leider geschlossen.</h4>
 
