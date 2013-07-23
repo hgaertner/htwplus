@@ -3,6 +3,8 @@ package models;
 import java.util.*;
 import play.data.validation.Constraints.*;
 import javax.persistence.*;
+
+import controllers.Component;
 import models.base.BaseModel;
 import play.db.jpa.*;
 
@@ -76,13 +78,19 @@ public class Account extends BaseModel {
 		}
     }
 
+    /**
+     * Autehnticates a user by email and password.
+     * @param email of the user who wants to be authenticate
+     * @param password of the user should match to the email ;) 
+     * @return Returns the current account or Null
+     */
 	public static Account authenticate(String email, String password) {
 		Account currentAcc = null;
 		try{
 			final Account result = (Account) JPA.em()
 				.createQuery("from Account a where a.email = :email")
 				.setParameter("email", email).getSingleResult();
-			if (result != null && password.equals(result.password)) {
+			if (result != null && Component.md5(password).equals(result.password)) {
 				currentAcc = result;
 			}
 			return currentAcc;
