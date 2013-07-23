@@ -46,6 +46,9 @@ public abstract class BaseModel {
 		
 	public boolean equals(Object obj){
 		BaseModel baseModel = (BaseModel) obj;
+		if(baseModel.id == null){
+			return false;
+		}
 		if(baseModel.id.equals(this.id)) {
 			return true; 
 		} else {

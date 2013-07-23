@@ -120,7 +120,7 @@ body#smallHead #logo {
 
 #content  {
 	min-height: 300px;
-	padding-left: 15px;
+	padding-left: 30px;
 	padding-right: 15px;
 	padding-top: 52px;
 	background-color: white;
@@ -376,6 +376,10 @@ textarea {
 	color: #76B900;
 }
 
+.comment {
+	margin-left: 50px;
+}
+
 #addPost label,
 #addComment label {
 	display: none;
@@ -400,4 +404,10 @@ textarea {
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 95, 0, .6);
   -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 95, 0, .6);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 95, 0, .6);
+}
+
+#commentContent{
+	margin-right: 10px;
+	width: 80%;
+	float: left;
 }
