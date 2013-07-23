@@ -94,10 +94,7 @@ public class GroupController extends BaseController {
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
-			Set<Media> mediaSet = group.media; 
-			for (Media media : mediaSet) {
-				Logger.info(media.title);
-			}
+			List<Media> mediaSet = group.media; 
 			return ok(media.render(group, mediaForm, mediaSet));
 		}
 	}
@@ -124,12 +121,6 @@ public class GroupController extends BaseController {
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
-			try {
-				Thread.currentThread().sleep(2000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			return ok(editModal.render(group, groupForm.fill(group)));
 		}
 	}

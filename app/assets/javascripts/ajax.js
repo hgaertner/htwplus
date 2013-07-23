@@ -131,10 +131,23 @@ $(document).ready(function () {
 	});
 
 		
+	/*
+	 * END GROUP COMMENTS
+	 */
 	
 	
 	/*
-	 * END GROUP COMMENTS
+	 * MEDIA UPLOAD
+	 */
+	
+	$('#fileuploadSubmit').click(function(){
+		$('#fileupload-input').hide();
+		$('#fileupload-status').show();
+	});
+	
+	
+	/*
+	 * END MEDIA UPLOAD
 	 */
 	
 	
