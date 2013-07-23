@@ -1,21 +1,20 @@
-@(user: Account, profileForm: Form[Account])
-@import helper._
+@(user: Account, profileForm: Form[Account]) @import helper._
 
 @main("Profil") {
 
 <br />
-<div class="media">
-	<a class="pull-left"> <img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="120" width="120" class="img-polaroid" /></a>
-	<div class="media-body">
-		<h1 class="media-heading">
-			@user.firstname @user.lastname
-			<div class="btn-group">
-				<a href="#editModal" class="btn" data-toggle="modal" rel="tooltip" title="Profil bearbeiten"><i class="icon-pencil"></i></a>
-				<a href="#editPwModal" class="btn last" data-toggle="modal" rel="tooltip" title="Passwort bearbeiten"><i class="icon-wrench"></i></a>
-			</div>
-		</h1>
+<h2 class="media-heading">
+	@user.firstname @user.lastname
+	<div class="btn-group">
+		<a href="#editModal" class="btn" data-toggle="modal" rel="tooltip"
+			title="Profil bearbeiten"><i class="icon-pencil"></i></a> <a
+			href="#editPwModal" class="btn last" data-toggle="modal"
+			rel="tooltip" title="Passwort bearbeiten"><i class="icon-wrench"></i></a>
 	</div>
-</div>
+</h2>
+<br />
+<img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="120" width="120" class="img-polaroid" />
+<br />
 
 <!-- editModal -->
 @views.html.Profile.snippets.edit(profileForm)
@@ -61,66 +60,16 @@
 		<col width="75%">
 	</colgroup>
 	<tr>
+		<th>E-Mail</th>
+		<td>@user.email</td>
+	</tr>
+	<tr>
 		<th>Studiengang</th>
 		<td>Angewandte Informatik</td>
 	</tr>
 	<tr>
 		<th>Semester</th>
 		<td>2. Semester Master</td>
-	</tr>
-	<tr>
-		<th>Kurse</th>
-		<td>IT Security, Parallel Systems, LaTex</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<hr />
-		</td>
-	</tr>
-	<tr>
-		<th>E-Mail</th>
-		<td>@user.email</td>
-	</tr>
-	<tr>
-		<th>Geburtstag</th>
-		<td>01. Januar 1986</td>
-	</tr>
-	<tr>
-		<th>Wohnort</th>
-		<td>Berlin Charlottenburg</td>
-	</tr>
-	<tr>
-		<th>Sprache</th>
-		<td>deutsch</td>
-	</tr>
-	<tr>
-		<th>Webseite</th>
-		<td>www.max-mustermann.de</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<hr />
-		</td>
-	</tr>
-	<tr>
-		<th>Interessen</th>
-		<td>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-			diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-			erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-			et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-			Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-			sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-			dolore magna aliquyam erat, sed diam voluptua.</td>
-	</tr>
-	<tr>
-		<th>Persönlicher Text</th>
-		<td>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-			diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-			erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-			et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-			Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-			sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-			dolore magna aliquyam erat, sed diam voluptua.</td>
 	</tr>
 </table>
 
