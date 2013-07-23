@@ -169,6 +169,12 @@ public class GroupController extends BaseController {
 		return Group.all();
 	}
 	
+	
+	public static List<Group> searchForGroupByKeyword(final String keyword){
+		return Group.searchForGroupByKeyword(keyword);
+	}
+	
+	
 	public static Result join(long id){
 		Account account = Component.currentAccount();
 		Group group = Group.findById(id);

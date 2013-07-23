@@ -1,21 +1,32 @@
 package models;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import play.Logger;
-import play.api.data.validation.ValidationError;
-import play.data.validation.Constraints.*;
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 import models.base.BaseModel;
-import play.db.jpa.*;
+import play.data.validation.Constraints.Required;
+import play.db.jpa.JPA;
+
+
+import com.github.cleverage.elasticsearch.Indexable;
 
 @Entity
 @SequenceGenerator(name = "default_seq", sequenceName = "group_seq")
 @Table(name = "Group_")
-public class Group extends BaseModel {
+public class Group extends BaseModel implements Indexable {
 
 	@Required
-	@Column(unique=true)
+	@Column(unique = true)
 	public String title;
 
 	public String description;
@@ -27,12 +38,12 @@ public class Group extends BaseModel {
 
 	@ManyToOne
 	public Account owner;
-	
-	@OneToMany(mappedBy="group")
+
+	@OneToMany(mappedBy = "group")
 	public Set<Media> media;
-	
-	public String validate(){
-		if(Group.findByTitle(this.title) != null){
+
+	public String validate() {
+		if (Group.findByTitle(this.title) != null) {
 			return "Der Titel ist bereits vergeben";
 		}
 		return null;
@@ -53,7 +64,7 @@ public class Group extends BaseModel {
 
 	@Override
 	public void update() {
-		//this.id = id;
+		// this.id = id;
 		// createdAt seems to be overwritten (null) - quickfix? (Iven)
 		// this.createdAt = findById(id).createdAt;
 		JPA.em().merge(this);
@@ -63,34 +74,35 @@ public class Group extends BaseModel {
 	public void delete() {
 		// delete all Posts
 		List<Post> posts = Post.getPostForGroup(this.id);
-		for(Post post : posts){
+		for (Post post : posts) {
 			post.delete();
 		}
 		JPA.em().remove(this);
 	}
-		
+
 	public static Group findById(Long id) {
 		return JPA.em().find(Group.class, id);
 	}
-	
+
 	public static Group findByTitle(String title) {
 		@SuppressWarnings("unchecked")
-		List<Group> groups =  (List<Group>) JPA.em().createQuery("FROM Group g WHERE g.title = ?1")
+		List<Group> groups = (List<Group>) JPA.em()
+				.createQuery("FROM Group g WHERE g.title = ?1")
 				.setParameter(1, title).getResultList();
-		
-		if(groups.isEmpty()) {
+
+		if (groups.isEmpty()) {
 			return null;
-		} else  {
+		} else {
 			return groups.get(0);
 		}
 	}
 
-	@SuppressWarnings("unchecked")	
+	@SuppressWarnings("unchecked")
 	public static List<Group> all() {
 		List<Group> groups = JPA.em().createQuery("FROM Group").getResultList();
 		return groups;
 	}
-	
+
 	public static boolean isMember(Long groupId, Account account) {
 		@SuppressWarnings("unchecked")
 		List<GroupAccount> groupAccounts = (List<GroupAccount>) JPA
@@ -99,12 +111,29 @@ public class Group extends BaseModel {
 						"SELECT g FROM GroupAccount g WHERE g.account.id = ?1 and g.groupId= ?2 AND approved = TRUE")
 				.setParameter(1, account.id).setParameter(2, groupId)
 				.getResultList();
-		
-		if(groupAccounts.isEmpty()) {
+
+		if (groupAccounts.isEmpty()) {
 			return false;
-		} else  {
+		} else {
 			return true;
 		}
 
 	}
+
+	@Override
+	public Indexable fromIndex(Map map) {
+		if (map == null) {
+			return this;
+		}
+		this.title = (String) map.get("title");
+		return this;
+	}
+
+	@Override
+	public Map toIndex() {
+		HashMap map = new HashMap();
+		map.put("title", this.title);
+		return map;
+	}
+
 }
