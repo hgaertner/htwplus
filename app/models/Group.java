@@ -13,10 +13,16 @@ import javax.persistence.Table;
 
 import models.base.BaseModel;
 
-import org.hibernate.search.annotations.DocumentId;
+import org.apache.lucene.document.Field.Index;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
 import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.impl.FullTextEntityManagerImpl;
+import org.hibernate.search.jpa.FullTextQuery;
+import org.hibernate.search.jpa.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 
 import play.data.validation.Constraints.Required;
 import play.db.jpa.JPA;
@@ -27,9 +33,9 @@ import play.db.jpa.JPA;
 @Table(name = "Group_")
 public class Group extends BaseModel {
 
-	@DocumentId // the equivalent of @Id for the Hibernate Search indexes
 	@Required
 	@Column(unique = true)
+	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	public String title;
 
 	public String description;
@@ -125,12 +131,27 @@ public class Group extends BaseModel {
 
 	@SuppressWarnings("unchecked")
 	public static List<Group> searchForGroupByKeyword(String keyword) {
-		//String selectString = "SELECT * FROM Group WHERE to_tsvector(group_.title) @@ to_tsquery('Closed')";
-		//List<Group> result = JPA.em().createQuery(selectString).setParameter(1,keyword).getResultList();
-		//return result;
-		org.apache.lucene.search.Query luceneQuery = getLuceneQuery();
-		FullTextEntityManager ftEm = new FullTextEntityManagerImpl(JPA.em());
-		Query query = ftEm.createFullTextQuery(luceneQuery, Group.class);
+		// String selectString =
+		// "SELECT * FROM Group WHERE to_tsvector(group_.title) @@ to_tsquery('Closed')";
+		// List<Group> result =
+		// JPA.em().createQuery(selectString).setParameter(1,keyword).getResultList();
+		// return result;
+		
+		FullTextEntityManager fullTextSession = Search.getFullTextEntityManager(JPA.em());
+		QueryBuilder queryBuilder = fullTextSession.getSearchFactory()
+				.buildQueryBuilder().forEntity(Group.class).get();
+		org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword()
+				.onFields("title").matching(keyword).createQuery();
+		// wrap Lucene query in a javax.persistence.Query
+		
+		FullTextQuery fullTextQuery = fullTextSession
+				.createFullTextQuery(luceneQuery, Group.class);
+
+		List<Group> result = fullTextQuery.getResultList();
+
+		fullTextSession.close();
+
+		return result;
 	}
 
 }
