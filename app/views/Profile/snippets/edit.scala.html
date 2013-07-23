@@ -52,10 +52,21 @@
 		</dl>
 		<dl>
 			<dt>Avatar</dt>
-			<dd>
-				<img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" class="img-polaroid" />
+			<dd id="avatars">
+				<img id="a0" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+				<img id="a1" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+				<img id="a2" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+				<img id="a3" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+				<img id="a4" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+				<img id="a5" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+				<img id="a6" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+				<img id="a7" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+				<img id="a8" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+				<img id="a9" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
 			</dd>
 		</dl>
+		<input id="avatar" name="avatar" type="hidden" value="">
+		<script type="text/javascript">setAvatar("a0");</script>
 	</div>
 	<div class="modal-footer">
 		<button class="btn" data-dismiss="modal" aria-hidden="true">Abbrechen</button>

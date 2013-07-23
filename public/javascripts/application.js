@@ -56,6 +56,20 @@ if (matchMedia) {
 	resizeRings(mq3);
 }
 
+function updateAvatar(parent) {
+	var childs = document.getElementById("avatars").getElementsByClassName("img-polaroid");
+	for (i = 0; i < childs.length; i++) {
+		childs[i].className = "img-polaroid";
+	}
+	parent.className = "img-polaroid active";
+	document.getElementById("avatar").value = parent.id;
+}
+
+function setAvatar(id) {
+	document.getElementById(id).className = "img-polaroid active";
+	document.getElementById("avatar").value = id;
+}
+
 $('[rel="tooltip"]').tooltip('toggle');
 $('[rel="tooltip"]').tooltip('hide');
 $('[rel="popover"]').popover('toggle');
