@@ -2,7 +2,6 @@
 @import helper._
 
 @main("Group Media") {
-	<br />
 	<h2>
 		@group.title@if(group.isClosed == true) {<i class="icon-lock"></i>} else {<i class="icon-globe"></i>}
 		<div class="btn-group">
@@ -37,15 +36,7 @@
 		@views.html.Group.snippets.infoModal(group)    
 	</div>
 	<!-- Ende infoModal -->
-	
-	Erstellt von
-	<a href="#" rel="popover" data-html="true" data-trigger="hover"
-		data-delay="500"
-		data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik"
-		data-original-title="Max Mustermann" data-placement="top">@group.owner.firstname @group.owner.lastname</a>
-	am @group.createdAt.format("dd. MMM yyyy")
-	<br />
-	<hr />
+
 	<br />
 
                                         
