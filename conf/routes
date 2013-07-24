@@ -55,6 +55,7 @@ GET		/freunde							controllers.FriendshipController.index()
 
 # Media
 POST 	/media/:target/upload/:id			controllers.MediaController.upload(target:String,id:Long)
+POST	/media/multiple/:target/:id		controllers.MediaController.multiView(target:String,id:Long)
 GET		/media/:id							controllers.MediaController.view(id:Long)
 
 # Map static resources from the /public folder to the /assets URL path

@@ -1,4 +1,5 @@
-@(mediaList:Set[Media]) 
+@(mediaList:List[Media],target:String,id:Long) 
+@import helper._
 
 <table class="table table-hover">
    <thead>
@@ -12,12 +13,14 @@
     <tbody>
 
 
+@form(action = routes.MediaController.multiView(target,id)) {
+
 @for(m <- mediaList) {
  	 <tr>
          <td><a href="@routes.MediaController.view(m.id)">@m.title</a></td>
          <td><a href="#" rel="popover" data-html="true" data-trigger="hover" data-delay="500" data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik " data-original-title="Anne Hasenpusch" data-placement="right">@m.owner.name</a></td>
          <td>@m.createdAt.format("dd. MMM yyyy")</td>
-         <td><label class="checkbox"><input type="checkbox"></label></td>
+         <td><label class="checkbox"><input name="selection" value="@m.id" type="checkbox"></label></td>
      </tr>
                                         	
 }
@@ -31,4 +34,6 @@
             <td><button class="btn btn-warning btn-small">Auswahl herunterladen</button></td>
         </tr>
     </tfoot>
+    
+ }
 </table>

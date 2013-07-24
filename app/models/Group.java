@@ -29,7 +29,8 @@ public class Group extends BaseModel {
 	public Account owner;
 	
 	@OneToMany(mappedBy="group")
-	public Set<Media> media;
+	@OrderBy("createdAt DESC")
+	public List<Media> media;
 	
 	public String validate(){
 		if(Group.findByTitle(this.title) != null){

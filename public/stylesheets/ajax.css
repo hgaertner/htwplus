@@ -14,3 +14,7 @@
 	height: 16px;
 	background-size: 100%;
 }
+
+#fileupload-status {
+	display: none;
+}

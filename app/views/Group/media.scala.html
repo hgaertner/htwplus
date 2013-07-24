@@ -1,4 +1,4 @@
-@(group: Group, mediaForm: Form[Media], mediaList: Set[Media])
+@(group: Group, mediaForm: Form[Media], mediaList: List[Media])
 @import helper._
 
 @main("Group Media") {
@@ -49,7 +49,7 @@
 	<br />
 
                                         
-  @views.html.Media.list(mediaList)
+  @views.html.Media.list(mediaList,models.Media.GROUP,group.id)
      
  <hr />
  <br />

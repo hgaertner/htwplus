@@ -74,12 +74,28 @@ public class Media extends BaseModel {
 		}
 	}
 	
-	@Override
-	public void create() {
-		
+	public boolean existsInGroup(Group group) {
+		List<Media> media = group.media;
+		for (Media m : media) {
+			if(m.title.equals(this.title)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
-	public void create(String user) {
+	public boolean existsInCourse(Course course) {
+		List<Media> media = course.media;
+		for (Media m : media) {
+			if(m.title.equals(this.title)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public void create() {
 		this.size = file.length();
 		this.url = this.createRelativeURL() + "/" + this.getUniqueFileName(this.fileName);
 		try {

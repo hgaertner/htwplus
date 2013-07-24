@@ -30,6 +30,10 @@ public class Course extends BaseModel {
 	@Required
 	@Length(min = 4, max = 45)
 	public String token;
+	
+	@OneToMany(mappedBy="course")
+	@OrderBy("createdAt DESC")
+	public List<Media> media;
 
 	public static List<Course> all() {
 		List<Course> courses = JPA.em().createQuery("SELECT t FROM Course t")
