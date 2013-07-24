@@ -182,7 +182,7 @@ public class MediaController extends BaseController {
 					return internalServerError(e.getMessage());
 				}
 			}
-			flash("message", "Datei(en) erfolgreich hinzugefügt.");
+			flash("success", "Datei(en) erfolgreich hinzugefügt.");
 		    return redirect(ret);
 		} else {
 			flash("error", "Missing file");

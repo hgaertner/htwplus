@@ -15,7 +15,6 @@ import play.db.jpa.*;
 import views.html.Group.view;
 
 @Entity
-@SequenceGenerator(name = "default_seq", sequenceName = "post_seq")
 public class Post extends BaseModel {
 	
 	public static String GROUP = "group";
@@ -82,10 +81,10 @@ public class Post extends BaseModel {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Post> getPostForAccount(Long accountId) {
+	public static List<Post> getPostForAccount(Account account) {
 		return (List<Post>) JPA.em()
 				.createQuery("SELECT p FROM Post p WHERE p.account.id = ?1 ORDER BY p.createdAt")
-				.setParameter(1, accountId)
+				.setParameter(1, account.id)
 				.getResultList();
 	}
 	
