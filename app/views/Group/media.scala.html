@@ -6,8 +6,10 @@
 		@group.title@if(group.isClosed == true) {<i class="icon-lock"></i>} else {<i class="icon-globe"></i>}
 		<div class="btn-group">
 			<a href="@routes.GroupController.view(group.id)" role="button" class="btn" rel="tooltip" data-original-title="Gruppennewsstream"><i class="icon-comment"></i></a>
+			<a href="@routes.GroupController.media(group.id)" role="button" class="btn active" rel="tooltip" data-original-title="Gruppenmedien"><i class="icon-file"></i></a>
 			@defining(Component.currentAccount()) { user => @if(group.owner.id == user.id){
 				<a href="@routes.GroupController.edit(group.id)" role="button" rel="tooltip" data-toggle="modal" data-original-title="Gruppe bearbeiten" class="btn editGroup"><i class="icon-pencil"></i></a>
+				<a href="#confirmDeleteGroup" role="button" class="btn" rel="tooltip" data-toggle="modal" data-original-title="Gruppe löschen" class="btn deleteGroup"><i class="icon-trash"></i></a>
 			}}
 			<a href="#infoModal@group.id" role="button" class="btn last" data-toggle="modal" rel="tooltip" data-original-title="Gruppeninfo"><i class="icon-info-sign"></i></a>
 		</div>
