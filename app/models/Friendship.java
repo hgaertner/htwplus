@@ -17,15 +17,15 @@ public class Friendship extends BaseModel {
 	
 	@ManyToOne
 	@NotNull
-	private Account account;
+	public Account account;
 	
 	@ManyToOne
 	@NotNull
-	private Account friend;
+	public Account friend;
 
 	@Enumerated(EnumType.STRING)
 	@NotNull
-	private LinkType linkType;
+	public LinkType linkType;
 	
 	public Friendship(){
 		
@@ -35,6 +35,10 @@ public class Friendship extends BaseModel {
 		this.account = account;
 		this.friend = friend;
 		this.linkType = type;
+	}
+	
+	public static Friendship findById(Long id) {
+		return JPA.em().find(Friendship.class, id);
 	}
 
 	@Override
@@ -64,6 +68,15 @@ public class Friendship extends BaseModel {
 		}
 	}
 	
+	public static Friendship findFriendLink(Account account, Account target) {
+		try{
+			return (Friendship) JPA.em().createQuery("SELECT fs FROM Friendship fs WHERE fs.account.id = ?1 and fs.friend.id = ?2 AND fs.linkType = ?3")
+			.setParameter(1, account.id).setParameter(2, target.id).setParameter(3, LinkType.friend).getSingleResult();
+		} catch (NoResultException exp) {
+			return null;
+		}
+	}
+	
 	public static boolean alreadyFriendly(Account me, Account potentialFriend) {
 		try {
 			JPA.em().createQuery("SELECT fs FROM Friendship fs WHERE fs.account.id = ?1 and fs.friend.id = ?2 AND fs.linkType = ?3")
@@ -82,40 +95,15 @@ public class Friendship extends BaseModel {
 	
 	@SuppressWarnings("unchecked")
 	public static List<Friendship> findRequests(Account account) {
-		return (List<Friendship>) JPA.em().createQuery("SELECT fs FROM Friendship fs WHERE fs.linkType = ?2 AND (fs.friend.id = ?1 OR fs.account.id = ?1)")
+		return (List<Friendship>) JPA.em().createQuery("SELECT fs FROM Friendship fs WHERE (fs.friend.id = ?1 OR fs.account.id = ?1) AND fs.linkType = ?2")
 				.setParameter(1, account.id).setParameter(2, LinkType.request).getResultList();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static List<Friendship> findRejects(Account account) {
+		return (List<Friendship>) JPA.em().createQuery("SELECT fs FROM Friendship fs WHERE fs.account.id = ?1 AND fs.linkType = ?2")
+				.setParameter(1, account.id).setParameter(2, LinkType.reject).getResultList();
+	}
 	
-	//
-	// GETTER & SETTER
-	//
-	
-	public Account getAccount() {
-		return account;
-	}
-
-	public void setAccount(Account account) {
-		this.account = account;
-	}
-
-	public Account getFriend() {
-		return friend;
-	}
-
-	public void setFriend(Account friend) {
-		this.friend = friend;
-	}
-
-	public LinkType getLinkType() {
-		return linkType;
-	}
-
-	public void setLinkType(LinkType linkType) {
-		this.linkType = linkType;
-	}
-
-
-
 	
 }

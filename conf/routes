@@ -53,7 +53,11 @@ POST	/user/:id/edit						controllers.ProfileController.update(id:Long)
 #Friends
 GET		/friends							controllers.FriendshipController.index()
 GET		/friend/:friendId/add				controllers.FriendshipController.requestFriend(friendId:Long)
+GET		/friend/:friendId/delete			controllers.FriendshipController.deleteFriend(friendId:Long)
 GET		/friend/:friendId/accept			controllers.FriendshipController.acceptFriendRequest(friendId:Long)
+GET		/friend/:friendshipId/decline		controllers.FriendshipController.declineFriendRequest(friendshipId:Long)
+GET		/friend/:friendshipId/cancel		controllers.FriendshipController.cancelFriendRequest(friendshipId:Long)
+
 
 # Media
 POST 	/media/:target/upload/:id			controllers.MediaController.upload(target:String,id:Long)

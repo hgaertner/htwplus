@@ -2,5 +2,6 @@ package models.enums;
 
 public enum LinkType {	
 	request,
-	friend
+	friend,
+	reject
 }
