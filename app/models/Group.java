@@ -108,6 +108,11 @@ public class Group extends BaseModel {
 		for(Post post : posts){
 			post.delete();
 		}
+		
+		// delete media
+		for(Media media : this.media){
+			media.delete();
+		}
 		JPA.em().remove(this);
 	}
 	
