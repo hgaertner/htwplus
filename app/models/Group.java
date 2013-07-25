@@ -16,7 +16,7 @@ public class Group extends BaseModel {
 	@Required
 	@Column(unique=true)
 	public String title;
-
+	
 	public String description;
 
 	@OneToMany(mappedBy = "group", cascade = CascadeType.ALL)

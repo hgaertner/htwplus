@@ -70,8 +70,11 @@ function setAvatar(id) {
 	document.getElementById("avatar").value = id;
 }
 
-/* Reload Page after creating a new Group */
+/* Reload Page after creating or edit a new Group */
 $('#createNewGroupModal').on('hidden', function () {
+	location.reload();
+});
+$('#editModal').on('hidden', function () {
 	location.reload();
 });
 

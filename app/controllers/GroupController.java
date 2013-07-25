@@ -104,19 +104,15 @@ public class GroupController extends BaseController {
 	public static Result update(Long groupId) {
 		Group group = Group.findById(groupId);
 		String description = groupForm.bindFromRequest().data().get("description");
-		if(description.equals("") || description == null){
-			groupForm.reject("description", "Bitte wähle eine Beschreibung");
-			return ok(editModal.render(group, groupForm));
+		if(groupForm.bindFromRequest().data().get("isClosed") == null){
+			group.isClosed = false;
 		} else {
-			if(groupForm.bindFromRequest().data().get("isClosed") == null){
-				group.isClosed = false;
-			} else {
-				group.isClosed = true;
-			}
-			group.description = description;
-			group.update();
-			return ok(addModalSuccess.render());
+			group.isClosed = true;
 		}
+		group.description = description;
+		group.update();
+		return ok(editModalSuccess.render());
+		
 	}
 	
 	public static Result delete(Long id) {
