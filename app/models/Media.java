@@ -26,7 +26,6 @@ import views.html.Course.view;
 import java.util.UUID;
 
 @Entity
-@SequenceGenerator(name = "default_seq", sequenceName = "media_seq")
 public class Media extends BaseModel {
 	
 	@Required

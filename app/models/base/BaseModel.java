@@ -20,7 +20,7 @@ import play.db.jpa.*;
 public abstract class BaseModel {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_seq")
+	@GeneratedValue
 	public Long id;
 	
 	@Column(name = "created_at")

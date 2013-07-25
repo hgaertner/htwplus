@@ -23,7 +23,7 @@ public class Secured extends Security.Authenticator {
 	//Access rights
 	
 	public static boolean isMemberOfGroup(Group group, Account account){
-		return Group.isMember(group.id, account);
+		return Group.isMember(group, account);
 	}
 	
 	public static boolean isOwnerOfGroup(Group group, Account account){

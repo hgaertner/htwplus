@@ -1,41 +1,86 @@
+@(friends: List[Account], requests: List[Friendship], accounts: List[Account])
+
 @main("Freunde") {
-@views.html.Friends.snippets.searchModal()
-<br />
-<h1>Offene Anfragen</h1>
+<!-- searchModal -->
+<div id="searchModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+	@views.html.Friends.snippets.searchModal(accounts)   
+</div>
+<!-- Ende searchModal -->
+
+@if(!requests.isEmpty){
+
+<h2>Offene Anfragen</h2>
 <table class="table table-hover">
 	<colgroup>
-		<col width="15%">
-		<col width="60%">
 		<col width="25%">
+		<col width="40%">
+		<col width="15%">
+		<col width="20%">
 	</colgroup>
 	<thead>
 		<tr>
-			<th>Avatar</th>
-			<th>Name<br />(Studiengang)
-			</th>
-			<th>Verfügbare Optionen</th>
+			<th>Von:</th>
+			<th>An:</th>
+			<th>Status:</th>
+			<th>Verfügbare Optionen:</th>
 		</tr>
 	</thead>
 	<tbody>
+	@for(request <- requests){
 		<tr>
-			<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="25"
-				width="25" class="img-polaroid" /></td>
-			<td><a href="#">Stephan Bergemann</a><br />(Angewandte
-				Informatik)</td>
-			<td><a href="#" rel="tooltip" title="Annehmen"><i
-					class="icon-ok"></i></a> <a href="#confirmModal" data-toggle="modal"
-				rel="tooltip" title="Ablehnen"><i class="icon-remove"></i></a></td>
+		@if(request.account.equals(Component.currentAccount())){
+			<td>
+				<a href="@routes.ProfileController.view(request.account.id)">Mir</a>
+			</td>
+			<td>
+				<a href="@routes.ProfileController.view(request.friend.id)">@request.friend.name</a>
+				<br />
+				(Angewandte Informatik)
+			</td>
+			<td>
+				@if(request.linkType.equals(models.enums.LinkType.reject)){ abgelehnt } 
+				@if(request.linkType.equals(models.enums.LinkType.request)){ in Bearbeitung } 
+			</td>
+			<td>
+				<a href="@routes.FriendshipController.cancelFriendRequest(request.id)" data-toggle="modal" rel="tooltip" title="zurückziehen">
+					<i class="icon-remove"></i>
+				</a>
+			</td>
+		} else {
+			<td>
+				<a href="@routes.ProfileController.view(request.friend.id)">@request.friend.name</a>
+				<br />
+				(Angewandte Informatik)
+			</td>
+			<td>
+				<a href="@routes.ProfileController.view(request.account.id)">Mich</a>
+			</td>
+			<td>
+				zu bearbeiten
+			</td>
+			<td>
+				<a href="@routes.FriendshipController.acceptFriendRequest(request.account.id)" rel="tooltip" title="Annehmen">
+					<i class="icon-ok"></i>
+				</a> 
+				<a href="@routes.FriendshipController.declineFriendRequest(request.id)" data-toggle="modal" rel="tooltip" title="Ablehnen">
+					<i class="icon-remove"></i>
+				</a>
+			</td>
+		}
 		</tr>
+	}
 	</tbody>
 </table>
 <hr />
 <br />
+}
+
 <div>
-	<h1>
+	<h2>
 		Meine Freunde <a href="#searchModal" role="button" class="btn"
 			data-toggle="modal" rel="tooltip"
 			data-original-title="Freunde suchen"><i class="icon-search"></i></a>
-	</h1>
+	</h2>
 </div>
 <table class="table table-hover">
 	<colgroup>
@@ -52,53 +97,23 @@
 		</tr>
 	</thead>
 	<tbody>
+	@for(friend <- friends){
 		<tr>
 			<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="25"
 				width="25" class="img-polaroid" /></td>
-			<td><a href="#">Anne Hasenpusch</a><br />(Angewandte
+			<td><a href="@routes.ProfileController.view(friend.id)">@friend.name</a><br />(Angewandte
 				Informatik)</td>
-			<td><a href="#confirmModal" data-toggle="modal" rel="tooltip"
+			<td><a href="@routes.FriendshipController.deleteFriend(friend.id)" data-toggle="modal" rel="tooltip"
 				title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
 		</tr>
+	}
+	@if(friends.isEmpty()){
 		<tr>
-			<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="25"
-				width="25" class="img-polaroid" /></td>
-			<td><a href="freunde_newsstream.html">Björn Ahlfeld</a><br />(Angewandte
-				Informatik)</td>
-			<td><a href="#confirmModal" data-toggle="modal" rel="tooltip"
-				title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
+			<td><img src="@routes.Assets.at("images/foreverAlone.png")"></img>
+			<td> - keine Freunde -</td>
 		</tr>
-		<tr>
-			<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="25"
-				width="25" class="img-polaroid" /></td>
-			<td><a href="#">Daniel Pinkpank</a><br />(Angewandte
-				Informatik)</td>
-			<td><a href="#confirmModal" data-toggle="modal" rel="tooltip"
-				title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
-		</tr>
-		<tr>
-			<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="25"
-				width="25" class="img-polaroid" /></td>
-			<td><a href="#">Fabian Kirstein</a><br />(Angewandte
-				Informatik)</td>
-			<td><a href="#confirmModal" data-toggle="modal" rel="tooltip"
-				title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
-		</tr>
-		<tr>
-			<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="25"
-				width="25" class="img-polaroid" /></td>
-			<td><a href="#">Iven Zimmer</a><br />(Angewandte Informatik)</td>
-			<td><a href="#confirmModal" data-toggle="modal" rel="tooltip"
-				title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
-		</tr>
-		<tr>
-			<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="25"
-				width="25" class="img-polaroid" /></td>
-			<td><a href="#">Kevin van Bernum</a><br />(Angewandte
-				Informatik)</td>
-			<td><a href="#confirmModal" data-toggle="modal" rel="tooltip"
-				title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
-		</tr>
+	}
 	</tbody>
 </table>
+
 }

@@ -29,7 +29,7 @@ public class Application extends BaseController {
 	@Security.Authenticated(Secured.class)
 	public static Result index() {
 		Account account = Component.currentAccount();
-		List<Post> posts = Post.getPostForAccount(account.id);
+		List<Post> posts = Post.getPostForAccount(account);
 		return ok(stream.render(account,posts,postForm));
 	}
 		
@@ -37,7 +37,7 @@ public class Application extends BaseController {
 	public static Result defaultRoute(String path) {
 		Logger.info(path+" nicht gefunden");
 		Account account = Component.currentAccount();
-		List<Post> posts = Post.getPostForAccount(account.id);
+		List<Post> posts = Post.getPostForAccount(account);
 		return ok(stream.render(account,posts,postForm));
 	}
 

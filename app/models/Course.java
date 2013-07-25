@@ -13,7 +13,6 @@ import org.hibernate.validator.constraints.Length;
 import play.db.jpa.*;
 
 @Entity
-@SequenceGenerator(name = "default_seq", sequenceName = "course_seq")
 public class Course extends BaseModel {
 
 	@Required

@@ -49,10 +49,16 @@
 					                      	<li class="active">@title</li>
 					                  	</ul>
 									}
-									@if(flash.containsKey("message")) {
+									@if(flash.containsKey("success")) {
 										<div class="alert alert-success fade in">
 											<button type="button" class="close" data-dismiss="alert">x</button>
-											@flash.get("message")
+											@flash.get("success")
+										</div>
+									} 
+									@if(flash.containsKey("info")) {
+										<div class="alert alert-info fade in">
+											<button type="button" class="close" data-dismiss="alert">x</button>
+											@flash.get("info")
 										</div>
 									} 
 									@if(flash.containsKey("error")) {
