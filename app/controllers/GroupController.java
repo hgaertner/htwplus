@@ -22,7 +22,7 @@ import views.html.Group.snippets.addModal;
 import views.html.Group.snippets.addModalSuccess;
 import views.html.Group.snippets.editModal;
 
-@Security.Authenticated(Secured.class)
+//@Security.Authenticated(Secured.class)
 @Transactional
 public class GroupController extends BaseController {
 
@@ -79,11 +79,14 @@ public class GroupController extends BaseController {
 	
 	@Transactional(readOnly=true)
 	public static Result view(Long id) {
+		Logger.info("Show group with id: " +id);
 		Group group = Group.findById(id);
 		Account account = Component.currentAccount();
 		if (group == null) {
+			Logger.error("No group found with id: " +id);
 			return redirect(routes.GroupController.index());
 		} else {
+			Logger.info("Found group with id: " +id);
 			List<Post> posts = Post.getPostForGroup(id);
 			return ok(view.render(group, posts, postForm, Secured.isMemberOfGroup(group, account)));
 		}
@@ -179,7 +182,11 @@ public class GroupController extends BaseController {
 	public static Result searchForGroupByKeyword(final String keyword){
 		Logger.info("Search for group with keyword: " +keyword);
 		List<Group> result = Group.searchForGroupByKeyword(keyword);
-		return redirect(routes.GroupController.view(result.get(0).id));
+		if(result.size() > 0){
+			return redirect(routes.GroupController.view(result.get(0).id));
+		} else {
+			return redirect(routes.GroupController.view(0));
+		}
 	}
 	
 	

@@ -138,19 +138,25 @@ public class Group extends BaseModel {
 		// JPA.em().createQuery(selectString).setParameter(1,keyword).getResultList();
 		// return result;
 		Logger.info("Group model searchForGroupByKeyWord: " + keyword);
-		FullTextEntityManager fullTextSession = Search.getFullTextEntityManager(JPA.em());
-		QueryBuilder queryBuilder = fullTextSession.getSearchFactory()
+		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
+		try {
+			fullTextEntityManager.createIndexer(Group.class).startAndWait();
+		} catch (InterruptedException e) {
+			
+			Logger.error(e.getMessage());
+		}
+		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
 				.buildQueryBuilder().forEntity(Group.class).get();
 		org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword()
 				.onFields("title").matching(keyword).createQuery();
 		// wrap Lucene query in a javax.persistence.Query
 		
-		FullTextQuery fullTextQuery = fullTextSession
+		FullTextQuery fullTextQuery = fullTextEntityManager
 				.createFullTextQuery(luceneQuery, Group.class);
 
 		List<Group> result = fullTextQuery.getResultList();
 		Logger.info("Found " +result.size() +" groups with keyword: " +keyword);
-		fullTextSession.close();
+		
 
 		return result;
 	}
