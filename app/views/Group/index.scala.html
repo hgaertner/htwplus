@@ -45,23 +45,23 @@
 			</div>
 			</div>
             <!-- Ende editModal -->
-                                   
+            
             @defining(Component.currentAccount()) { user =>
-			@if(!unapprovedGroups.isEmpty){
-            <h2>Offene Anfragen</h2>
+            @if(!unapprovedGroups.isEmpty){
+            <h2 title="Hier findest du den aktuellen Status deiner offenen Anfragen.">Offene Anfragen</h2>
             <table class="table table-hover">
                 <colgroup>
-                    <col width="20%">
                     <col width="40%">
+                    <col width="20%">
                     <col width="20%">
                     <col width="20%">
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>Wer?</th>
-                        <th>Welche Gruppe?</th>
+                        <th>Gruppenname</th>
+                        <th>Von wem?</th>
                         <th>Status</th>
-                        <th>Verf&uuml;gbare Optionen</th>
+                        <th>Verfügbare Optionen</th>
                     </tr>
                 </thead>
                  
@@ -69,17 +69,17 @@
 					@for(accountGroup <- unapprovedGroups) {
                 	<tr>
                 		@if(accountGroup.account.equals(user)){
+	                		<td><a href="@routes.GroupController.view(accountGroup.group.id)">@accountGroup.group.title</a></td>
 	                		<td><a href="@routes.ProfileController.view(accountGroup.account.id)">Du</a></td>
-	                        <td><a href="@routes.GroupController.view(accountGroup.group.id)">@accountGroup.group.title</a></td>
 	                        <td>@if(accountGroup.approved == false) { abgelehnt } else { in Bearabeitung }</td>
-	                        <td><a href="@routes.GroupController.removeMember(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" title="löschen"><i class="icon-remove"></i></a></td>	
+	                        <td><a href="@routes.GroupController.removeMember(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" data-original-title="Anfrage zurückziehen"><i class="icon-remove"></i></a></td>	
                 		} else {
-	                		<td><a href="@routes.ProfileController.view(accountGroup.account.id)">@accountGroup.account.name</a></td>
 	                        <td><a href="@routes.GroupController.view(accountGroup.group.id)">@accountGroup.group.title</a></td>
+	                        <td><a href="@routes.ProfileController.view(accountGroup.account.id)">@accountGroup.account.name</a></td>
 	                        <td>zu bearbeiten</td>
 	                        <td>
-	                        	<a href="@routes.GroupController.acceptRequest(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" title="akzeptieren"><i class="icon-ok"></i></a>
-	                        	<a href="@routes.GroupController.declineRequest(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" title="zurückweisen"><i class="icon-remove"></i></a>
+	                        	<a href="@routes.GroupController.acceptRequest(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" data-original-title="Anfrage akzeptieren"><i class="icon-ok"></i></a>
+	                        	<a href="@routes.GroupController.declineRequest(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" data-original-title="Anfrage zurückweisen"><i class="icon-remove"></i></a>
 	                        </td>	
                 		}
                         
@@ -89,7 +89,8 @@
             </table>
             <hr /><br />
             }
-            <h2>Meine Gruppen
+            
+            <h2><span  title="Hier findest du alle Gruppen die du gegründet hast und denen du beigetreten bist.">Meine Gruppen</span>
                 <div class="btn-group">
                     <a href="#createNewGroupModal" role="button" class="btn" data-toggle="modal"><i class="icon-plus"></i></a>
                     <a href="#searchModal" role="button" class="btn" data-toggle="modal"><i class="icon-search"></i></a>
@@ -120,11 +121,11 @@
 	                        <a href="@routes.GroupController.view(group.id)">@if(group.owner.id == user.id){<b> @group.title</b></a> <small>(gegr&uuml;ndet)</small>}else{ @group.title}
 	                    </td>
                         <td>
-                        	<a href="#infoModal@group.id"  rel="tooltip" data-toggle="modal" data-original-title="Info"><i class="icon-info-sign"></i></a>
+                        	<a href="#infoModal@group.id" rel="tooltip" data-original-title="Gruppeninfo" data-toggle="modal"><i class="icon-info-sign"></i></a>
                         	@if(Secured.isOwnerOfGroup(group, user)){
-                        	<a href="@routes.GroupController.delete(group.id)" rel="tooltip" title="Gruppe löschen"><i class="icon-trash"></i></a>
+                        	<a href="@routes.GroupController.delete(group.id)" rel="tooltip" data-original-title="Gruppe löschen"><i class="icon-trash"></i></a>
                         	} else {
-                        	<a href="@routes.GroupController.removeMember(group.id, user.id)" rel="tooltip" data-toggle="modal" data-original-title="Verlassen"><i class="icon-remove"></i></a>
+                        	<a href="@routes.GroupController.removeMember(group.id, user.id)" rel="tooltip" data-toggle="modal" data-original-title="Gruppe verlassen"><i class="icon-remove"></i></a>
                         	}
                         	
                         </td>

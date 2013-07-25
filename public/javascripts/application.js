@@ -70,22 +70,17 @@ function setAvatar(id) {
 	document.getElementById("avatar").value = id;
 }
 
+/* Reload Page after creating a new Group */
+$('#createNewGroupModal').on('hidden', function () {
+	location.reload();
+});
+
+/* select current avatar when profile edit modal is shown */
+$('#editProfileModal').on('show', function () {
+	setAvatar(aID);
+});
+
 $('[rel="tooltip"]').tooltip('toggle');
 $('[rel="tooltip"]').tooltip('hide');
 $('[rel="popover"]').popover('toggle');
 $('[rel="popover"]').popover('hide');
-
-/* Reload Page after creating a new Group */
-$('#createNewGroupModal').on('hidden', function () {
-	location.reload();
-})
-
-/*
-$('#alert-btn').click(function () {
-    $('#le-alert').addClass('in'); // shows alert with Bootstrap CSS3 implem
-});
-
-$('.close').click(function () {
-    $(this).parent().removeClass('in'); // hides alert with Bootstrap CSS3 implem
-});
-*/
