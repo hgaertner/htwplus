@@ -11,7 +11,7 @@
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.search.default.directory_provider"
-				value="org.hibernate.search.store.FSDirectoryProvider" />
+				value="org.hibernate.search.store.impl.FSDirectoryProvider" />
 			<property name="hibernate.search.indexing_strategy" value="manual" />
 			<property name="hibernate.search.default.indexBase" value="/var/searchindex" />
 		</properties>
