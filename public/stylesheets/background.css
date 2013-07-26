@@ -412,3 +412,20 @@ textarea {
 	width: 80%;
 	float: left;
 }
+
+#fileupload {
+	position: relative;
+	margin-bottom: 5px:
+}
+
+#fileupload .input-append {
+	position: absolute;
+	z-index: 1;
+	left: 0px;
+}
+
+#fileupload #fileupload-input {
+	position: relative;
+	z-index: 2;
+	opacity: 0;
+}
