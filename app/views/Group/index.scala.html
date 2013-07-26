@@ -42,7 +42,8 @@
 <!-- End confirmDeleteGroupModal -->
 
 @defining(Component.currentAccount()) { user =>
-<h2 title="Hier findest du den aktuellen Status deiner Gruppen-Anfragen.">Offene Anfragen</h2>
+<h2><span rel="tooltip" data-original-title="Hier findest du den aktuellen Status deiner Gruppen-Anfragen." data-delay="500">
+Offene Anfragen</span></h2>
 @if(!unapprovedGroups.isEmpty){
 <table class="table table-hover">
 	<colgroup>
@@ -86,10 +87,10 @@
 <br />
 
 <h2>
-	<span title="Hier findest du alle Gruppen die du gegründet hast oder denen du beigetreten bist.">Meine Gruppen</span>
+	<span rel="tooltip" data-original-title="Hier findest du alle Gruppen die du gegründet hast oder denen du beigetreten bist." data-delay="500">Meine Gruppen</span>
 	<div class="btn-group">
-		<a href="#createNewGroupModal" role="button" class="btn" data-toggle="modal"><i class="icon-plus"></i></a>
-		<a href="#searchModal" role="button" class="btn" data-toggle="modal"><i class="icon-search"></i></a>
+		<a href="#createNewGroupModal" role="button" class="btn" data-toggle="modal" rel="tooltip" data-original-title="neue Gruppe erstellen"><i class="icon-plus"></i></a>
+		<a href="#searchModal" role="button" class="btn" data-toggle="modal" rel="tooltip" data-original-title="Gruppe suchen"><i class="icon-search"></i></a>
 	</div>
 </h2>
 @if(!approvedGroups.isEmpty){
