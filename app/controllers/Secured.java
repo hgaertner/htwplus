@@ -41,6 +41,15 @@ public class Secured extends Security.Authenticator {
 		return false;
 	}
 	
+	public static boolean viewMedia(Media media) {
+		if(media.group != null) {
+			if(Group.isMember(media.group, Component.currentAccount())){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public static boolean isOwnerOfMedia(final Long mediaId){
 		return Media.isOwner(mediaId, Component.currentAccount());
 	}

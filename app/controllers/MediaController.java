@@ -5,7 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.zip.Deflater;
@@ -30,32 +32,39 @@ import scala.reflect.internal.Trees.This;
 public class MediaController extends BaseController {
 	
 	static Form<Media> mediaForm = Form.form(Media.class);
+	final static String tempPrefix = "htwplus_temp";
 	
     @Transactional(readOnly=true)	
     public static Result view(Long id) {
     	Media media = Media.findById(id);
-    	if(media == null) {
-    		  return redirect(routes.Application.index());
+    	if(Secured.viewMedia(media)) {
+			if (media == null) {
+				return redirect(routes.Application.index());
+			} else {
+				response().setHeader("Content-disposition","attachment; filename=\"" + media.fileName + "\"");
+				return ok(media.file);
+			}
     	} else {
-    		response().setHeader("Content-disposition","attachment; filename=\"" + media.fileName + "\"");
-    		return ok(media.file);
-    	}
+    		flash("error", "Dazu hast du keine Berechtigung!");
+    		return redirect(routes.Application.index());
+     	}
     }
     
     @Transactional(readOnly=true)	
     public static Result multiView(String target, Long id) {
-
+    	
 		Call ret = routes.Application.index();
 		Group group = null;
 		Course course = null;
 		String filename = "result.zip";
+		
 		if(target.equals(Media.GROUP)) {
 			group = Group.findById(id);
-			filename = group.title + ".zip";
+			filename = createFileName(group.title);
 			ret = routes.GroupController.media(id);
 		} else if (target.equals(Media.COURSE)) {
 			course = Course.findById(id);
-			filename = course.title + ".zip";
+			filename = createFileName(course.title);
 			ret = routes.CourseController.index();
 		} else {
 			return redirect(ret);
@@ -64,27 +73,42 @@ public class MediaController extends BaseController {
     	String[] selection = request().body().asFormUrlEncoded().get("selection");
     	List<Media> mediaList = new ArrayList<Media>();
     	
-       	for (String s : selection) {
-    		Media media = Media.findById(Long.parseLong(s));
-    		mediaList.add(media);
-       	}
-       
+    	if(selection != null) {
+           	for (String s : selection) {
+        		Media media = Media.findById(Long.parseLong(s));
+        		if(Secured.viewMedia(media)) {
+            		mediaList.add(media);	
+        		} else {
+        			flash("error", "Dazu hast du keine Berechtigung!");
+        			return redirect(routes.Application.index());
+        		}
+           	}
+    	} else {
+    		flash("error", "Bitte wähle mindestens eine Datei aus.");
+    		return redirect(ret);
+    	}
+
 		try {
 			File file = createZIP(mediaList, filename);
 			response().setHeader("Content-disposition","attachment; filename=\"" + filename + "\"");
 	    	return ok(file);
 		} catch (IOException e) {
+			flash("error", "Etwas ist schiefgegangen. Bitte probiere es noch einmal!");
 			return redirect(ret);
 		}
-
+    }
+    
+    private static String createFileName(String prefix) {
+    	return prefix + "-" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + ".zip";
     }
     
     
     private static File createZIP(List<Media> media, String fileName) throws IOException {
     	
+    	cleanUpTemp();
 	    String path = Play.application().path().toString();
-	    String relPath = Play.application().configuration().getString("media.relativePath");
-    	File file = File.createTempFile("htwplus_temp", ".tmp", new File(path + "/" + relPath + "/tmp"));
+	    String tmpPath = Play.application().configuration().getString("media.tempPath");
+    	File file = File.createTempFile(tempPrefix, ".tmp", new File(path + "/" + tmpPath));
     	
     	ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(file));
     	zipOut.setLevel(Deflater.NO_COMPRESSION);
@@ -107,13 +131,30 @@ public class MediaController extends BaseController {
     	return file;
     }
     
+    public static void cleanUpTemp() {
+	    String path = Play.application().path().toString();
+	    String tmpPath = Play.application().configuration().getString("media.tempPath");
+	    File dir = new File(tmpPath);
+	    
+	    File[] files = dir.listFiles();
+	    for (File file : files) {
+			if(file.getName().startsWith(tempPrefix)) {
+				file.delete();
+			}
+		}
+    }
+    
 	@Transactional
     public static Result upload(String target, Long id) {	
 		
+	    final int maxTotalSize = Play.application().configuration().getInt("media.maxSize.total");
+	    final int maxFileSize = Play.application().configuration().getInt("media.maxSize.file");
+	    
 		Call ret = routes.Application.index();
 		Group group = null;
 		Course course = null;
 		
+		// Where to put the media
 		if(target.equals(Media.GROUP)) {
 			group = Group.findById(id);
 			ret = routes.GroupController.media(id);
@@ -124,50 +165,54 @@ public class MediaController extends BaseController {
 			return redirect(ret);
 		}
 		
+		// Is it to big in total?
 		String[] contentLength = request().headers().get("Content-Length");
-		double size = 0.0;
 		if(contentLength != null){
-			size = Double.parseDouble(contentLength[0]);
-			size = size / 1042 / 1042;
+			int size = Integer.parseInt(contentLength[0]);
+			if(Media.byteAsMB(size) > maxTotalSize) {
+				flash("error", "Du darfst auf einmal nur " + maxTotalSize + " MB hochladen.");
+				return redirect(ret);
+			}
+		} else {
+			flash("error", "Etwas ist schiefgegangen. Bitte probiere es noch einmal!");
+		    return redirect(ret);  	
 		}
 		
-		if(size >= 20.0) {
-			flash("error", "Du darfst maximal nur 20MB hochladen.");
-			return redirect(ret);
-		}
-		
+		// Get the data
 		MultipartFormData body = request().body().asMultipartFormData();
 		List<Http.MultipartFormData.FilePart> uploads = body.getFiles();
-
 
 		List<Media> mediaList = new ArrayList<Media>();
 		
 		if(!uploads.isEmpty()) {
+			
+			// Create the Media models and perform some checks
 			for (FilePart upload : uploads) {
+				
 				Media med = new Media();
-
 				med.title = upload.getFilename();
 				med.mimetype = upload.getContentType();
 				med.fileName = upload.getFilename();
 				med.file = upload.getFile();				
 				med.owner = Component.currentAccount();
 				
-				if (med.file.length() / 1024.0 / 1024.0 >= 5.0) {
-					flash("error", "Maximale Dateigröße beträgt 5MB.");
+				if (Media.byteAsMB(med.file.length()) > maxFileSize) {
+					flash("error", "Die Datei " + med.title + " ist größer als " + maxFileSize + " MB!");
 					return redirect(ret);
 				}
 				
+				String error = "Eine Datei mit dem Namen " + med.title + " existiert bereits";
 				if(target.equals(Media.GROUP)) {
 					med.group = group;
 					if(med.existsInGroup(group)){
-						flash("error", "Eine Datei mit diesem Namen existiert bereits.");
+						flash("error", error);
 						return redirect(ret);
 					}
 					
 				} else if (target.equals(Media.COURSE)) {
 					med.course = course;
 					if(med.existsInCourse(course)){
-						flash("error", "Eine Datei mit diesem Namen existiert bereits.");
+						flash("error", error);
 						return redirect(ret);
 					}
 				}
@@ -185,7 +230,7 @@ public class MediaController extends BaseController {
 			flash("success", "Datei(en) erfolgreich hinzugefügt.");
 		    return redirect(ret);
 		} else {
-			flash("error", "Missing file");
+			flash("error", "Etwas ist schiefgegangen. Bitte probiere es noch einmal!");
 		    return redirect(ret);  
 		}
 		

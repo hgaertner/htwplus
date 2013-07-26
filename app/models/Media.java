@@ -148,4 +148,8 @@ public class Media extends BaseModel {
 		}
 	}
 	
+	public static int byteAsMB(long size) {
+		return (int)(size / 1024 / 1024);
+	}
+	
 }
