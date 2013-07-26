@@ -5,9 +5,9 @@
                
 
 	<div id="fileupload">
-    	<input class="span6" id="fileupload-input" type="file" name="upload" multiple="multiple" onchange="setFileNames()">
+    	<input class="span6" id="fileupload-input" type="file" name="upload" multiple="multiple" onchange="setFileNames()" rel="tooltip" data-original-title="Hier klicken, um Dateien auszuwählen!" data-delay="500">
     	<div class="input-append">
-    		<input class="span6" id="files" type="text">
+    		<input class="span6" id="files" type="text" placeholder="Dateien zum Hochladen">
 		    <input class="btn btn-warning" type="submit" id="fileuploadSubmit">
 		</div>
 	</div>
