@@ -26,7 +26,7 @@
          <td><a href="@routes.MediaController.view(m.id)">@m.title</a></td>
          <td><a href="@routes.ProfileController.view(m.owner.id)" rel="popover" data-html="true" data-trigger="hover" data-delay="500" data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik " data-original-title="Anne Hasenpusch" data-placement="right">@m.owner.name</a></td>
          <td>@m.createdAt.format("dd. MMM yyyy")</td>
-         <td><label class="checkbox"><input name="mediaList" value="@m.id" type="checkbox"></label></td>
+         <td><label class="checkbox"><input name="selection" value="@m.id" type="checkbox"></label></td>
      </tr>
                                         	
 }
