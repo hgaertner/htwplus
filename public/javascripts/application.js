@@ -56,6 +56,13 @@ if (matchMedia) {
 	resizeRings(mq3);
 }
 
+function toggleMediaSelection(parent) {
+	var childs = document.getElementById("mediaList").getElementsByTagName("input");
+	for (i = 0; i < childs.length; i++) {
+		childs[i].checked = parent.checked;
+	}
+}
+
 function updateAvatar(parent) {
 	var childs = document.getElementById("avatars").getElementsByClassName("img-polaroid");
 	for (i = 0; i < childs.length; i++) {

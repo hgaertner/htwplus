@@ -255,6 +255,7 @@ body#smallHead #content {
 
 .table th, .table td {
 	border-top: 0;
+	vertical-align: middle;
 }
 
 input, select {

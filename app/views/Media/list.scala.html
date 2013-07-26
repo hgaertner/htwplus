@@ -2,7 +2,7 @@
 @import helper._
 @import models._
 
-<table class="table table-hover" style="table-layout: fixed">
+<table class="table table-hover table-condensed">
 	<colgroup>
        <col width="40%">
        <col width="20%">
@@ -14,10 +14,10 @@
            <th>Dateiname</th>
            <th>Hochgeladen von</th>
            <th>Datum</th>
-           <th>Auswahl</th>
+           <th><input type="checkbox" rel="tooltip" data-original-title="alles aus-, abwählen" onclick="toggleMediaSelection(this)"> Auswahl</th>
        </tr>
 	</thead>
-    <tbody>
+    <tbody id="mediaList" >
 
 
 @form(action = routes.MediaController.multiView(target,id)) {
@@ -27,16 +27,10 @@
          <td><a href="@routes.MediaController.view(m.id)">@m.title</a></td>
          <td><a href="@routes.ProfileController.view(m.owner.id)" rel="popover" data-html="true" data-trigger="hover" data-delay="500" data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik " data-original-title="Anne Hasenpusch" data-placement="right">@m.owner.name</a></td>
          <td>@m.createdAt.format("dd. MMM yyyy")</td>
-         <td><label class="checkbox"><input name="selection" value="@m.id" type="checkbox"></label></td>
+         <td><label class="checkbox"><input name="selection" value="@m.id" type="checkbox"> @m.size</label></td>
      </tr>
                                         	
 }
-	<tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td><input type="checkbox"> alles auswählen</td>
-    </tr>
     </tbody>
     <tfoot>
         <tr>
