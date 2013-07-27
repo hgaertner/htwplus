@@ -4,17 +4,19 @@
 
 <table class="table table-hover table-condensed">
 	<colgroup>
+		<col width="3%">
        <col width="40%">
        <col width="20%">
        <col width="20%">
-       <col width="20%">
+       <col width="17%">
 	</colgroup>
 	<thead>
        <tr>
+       		<th><input type="checkbox" rel="tooltip" data-original-title="alles aus-, abwählen" onclick="toggleMediaSelection(this)"></th>
            <th>Dateiname</th>
            <th>Hochgeladen von</th>
            <th>Datum</th>
-           <th><input type="checkbox" rel="tooltip" data-original-title="alles aus-, abwählen" onclick="toggleMediaSelection(this)"> Auswahl</th>
+           <th>Dateigröße</th>
        </tr>
 	</thead>
     <tbody id="mediaList" >
@@ -24,10 +26,11 @@
 
 @for(m <- mediaList) {
  	 <tr>
+ 	 	 <td><input name="selection" value="@m.id" type="checkbox"></td>
          <td><a href="@routes.MediaController.view(m.id)">@m.title</a></td>
          <td><a href="@routes.ProfileController.view(m.owner.id)" rel="popover" data-html="true" data-trigger="hover" data-delay="500" data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik " data-original-title="Anne Hasenpusch" data-placement="right">@m.owner.name</a></td>
          <td>@m.createdAt.format("dd. MMM yyyy")</td>
-         <td><label class="checkbox"><input name="selection" value="@m.id" type="checkbox"> (@m.size Bytes)</label></td>
+         <td>@m.size Bytes</td>
      </tr>
                                         	
 }
@@ -35,11 +38,13 @@
     <tfoot>
         <tr>
             <td> </td>
+            <td></td>
             <td> </td>
-            <td> </td>
-            <td><button class="btn btn-warning btn-small">Auswahl herunterladen</button></td>
+            <td></td>
+            <td></td>
         </tr>
     </tfoot>
     
  }
 </table>
+<button class="btn btn-warning btn-small">Auswahl herunterladen</button>
