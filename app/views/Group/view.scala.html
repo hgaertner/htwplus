@@ -36,7 +36,7 @@
 				</div>
 	<!-- Ende editModal -->
 		
-	@views.html.snippets.postForm(group.id, "group", postForm) 
+	@views.html.snippets.postForm(group.id, models.Post.GROUP, postForm) 
 		
 	@if(posts != null) {
 		@for(post <- posts) {

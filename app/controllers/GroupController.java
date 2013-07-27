@@ -66,16 +66,13 @@ public class GroupController extends BaseController {
 		Form<Media> mediaForm = Form.form(Media.class);
 		Group group = Group.findById(id);
 		if(!Secured.isMemberOfGroup(group, Component.currentAccount())){
-			flash("message","Bitte tritt der Gruppe erst bei.");
+			flash("info","Bitte tritt der Gruppe erst bei.");
 			return view(id);
 		}
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
-			Set<Media> mediaSet = group.media; 
-			for (Media media : mediaSet) {
-				Logger.info(media.title);
-			}
+			List<Media> mediaSet = group.media; 
 			return ok(media.render(group, mediaForm, mediaSet));
 		}
 	}
@@ -86,12 +83,9 @@ public class GroupController extends BaseController {
 		if (filledForm.hasErrors()) {
 			return ok(addModal.render(filledForm));
 		} else {
-			Group g = filledForm.get();
-			if(filledForm.bindFromRequest().data().get("isClosed") == null){
-				g.isClosed = false;
-			}
-			g.create(account);
-			flash("message", "Neue Gruppe erstellt!");
+			Group group = filledForm.get();
+			group.create(account);
+			flash("success", "Neue Gruppe erstellt!");
 			return ok(addModalSuccess.render());
 		}
 	}
@@ -102,33 +96,23 @@ public class GroupController extends BaseController {
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
-			try {
-				Thread.currentThread().sleep(2000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			return ok(editModal.render(group, groupForm.fill(group)));
 		}
 	}
 	
 	@Transactional
-	public static Result update(Long id) {
-		Group group = Group.findById(id);
+	public static Result update(Long groupId) {
+		Group group = Group.findById(groupId);
 		String description = groupForm.bindFromRequest().data().get("description");
-		if(description.equals("") || description == null){
-			groupForm.reject("description", "Bitte wähle eine Beschreibung");
-			return ok(editModal.render(group, groupForm));
+		if(groupForm.bindFromRequest().data().get("isClosed") == null){
+			group.isClosed = false;
 		} else {
-			if(groupForm.bindFromRequest().data().get("isClosed") == null){
-				group.isClosed = false;
-			} else {
-				group.isClosed = true;
-			}
-			group.description = description;
-			group.update();
-			return ok(addModalSuccess.render());
+			group.isClosed = true;
 		}
+		group.description = description;
+		group.update();
+		return ok(editModalSuccess.render());
+		
 	}
 	
 	public static Result delete(Long id) {
@@ -136,9 +120,9 @@ public class GroupController extends BaseController {
 		Account account = Component.currentAccount();
 		if(Secured.isOwnerOfGroup(group, account)){
 			group.delete();
-			flash("message", "Gruppe " + group.title + " erfolgreich gelöscht!");
+			flash("info", "Gruppe " + group.title + " erfolgreich gelöscht!");
 		} else {
-			flash("message", "Dazu hast du keine Berechtigung!");
+			flash("error", "Dazu hast du keine Berechtigung!");
 		}
 		return redirect(routes.GroupController.index());
 	}
@@ -151,16 +135,16 @@ public class GroupController extends BaseController {
 		Account account = Component.currentAccount();
 		Group group = Group.findById(id);
 		if(Secured.isMemberOfGroup(group, account)){
-			flash("message", "Du bist bereits Mitglied dieser Gruppe!");
+			flash("info", "Du bist bereits Mitglied dieser Gruppe!");
 			return redirect(routes.GroupController.view(id));
 		}
 		if(GroupAccount.find(account, group) == null){
 			GroupAccount groupAccount = new GroupAccount(account, group);
 			if(!group.isClosed){
 				groupAccount.approved = true;
-				flash("message", "Gruppe erfolgreich beigetreten!");
+				flash("success", "Gruppe erfolgreich beigetreten!");
 			} else {
-				flash("message", "Deine Anfrage wurde erfolgreich übermittelt!");
+				flash("success", "Deine Anfrage wurde erfolgreich übermittelt!");
 			}
 			groupAccount.create();
 			return redirect(routes.GroupController.view(id));
@@ -174,14 +158,14 @@ public class GroupController extends BaseController {
 		Group group = Group.findById(groupId);
 		GroupAccount groupAccount = GroupAccount.find(Account.findById(accountId), group);
 		if(groupAccount != null && !Secured.isOwnerOfGroup(group, account)){
-			groupAccount.remove();
+			groupAccount.delete();
 			if(account.equals(Component.currentAccount())){
-				flash("message", "Gruppe erfolgreich verlassen!");
+				flash("info", "Gruppe erfolgreich verlassen!");
 			} else {
-				flash("message", "Mitglied erfolgreich entfernt!");
+				flash("info", "Mitglied erfolgreich entfernt!");
 			}
 		} else {
-			flash("message", "Das geht leider nicht :(");
+			flash("info", "Das geht leider nicht :(");
 		}
 		return redirect(routes.GroupController.index());
 	}

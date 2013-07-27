@@ -10,26 +10,68 @@ import models.base.BaseModel;
 import play.db.jpa.*;
 
 @Entity
-@SequenceGenerator(name = "default_seq", sequenceName = "group_seq")
 @Table(name = "Group_")
 public class Group extends BaseModel {
 
 	@Required
 	@Column(unique=true)
 	public String title;
-
+	
 	public String description;
 
 	@OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
 	public Set<GroupAccount> groupAccounts;
 
-	public Boolean isClosed;
+	public Boolean isClosed = false;
 
 	@ManyToOne
 	public Account owner;
 	
 	@OneToMany(mappedBy="group")
-	public Set<Media> media;
+	@OrderBy("createdAt DESC")
+	public List<Media> media;
+		
+	// GETTER & SETTER
+	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public Boolean getIsClosed() {
+		return isClosed;
+	}
+
+	public void setIsClosed(Boolean isClosed) {
+		this.isClosed = isClosed;
+	}
+
+	public Account getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Account owner) {
+		this.owner = owner;
+	}
+
+	public List<Media> getMedia() {
+		return media;
+	}
+
+	public void setMedia(List<Media> media) {
+		this.media = media;
+	}
 	
 	public String validate(){
 		if(Group.findByTitle(this.title) != null){
@@ -66,8 +108,15 @@ public class Group extends BaseModel {
 		for(Post post : posts){
 			post.delete();
 		}
+		
+		// delete media
+		for(Media media : this.media){
+			media.delete();
+		}
 		JPA.em().remove(this);
 	}
+	
+	
 		
 	public static Group findById(Long id) {
 		return JPA.em().find(Group.class, id);
@@ -91,13 +140,13 @@ public class Group extends BaseModel {
 		return groups;
 	}
 	
-	public static boolean isMember(Long groupId, Account account) {
+	public static boolean isMember(Group group, Account account) {
 		@SuppressWarnings("unchecked")
 		List<GroupAccount> groupAccounts = (List<GroupAccount>) JPA
 				.em()
 				.createQuery(
-						"SELECT g FROM GroupAccount g WHERE g.account.id = ?1 and g.groupId= ?2 AND approved = TRUE")
-				.setParameter(1, account.id).setParameter(2, groupId)
+						"SELECT g FROM GroupAccount g WHERE g.account.id = ?1 and g.group.id = ?2 AND approved = TRUE")
+				.setParameter(1, account.id).setParameter(2, group.id)
 				.getResultList();
 		
 		if(groupAccounts.isEmpty()) {

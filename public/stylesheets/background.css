@@ -255,6 +255,7 @@ body#smallHead #content {
 
 .table th, .table td {
 	border-top: 0;
+	vertical-align: middle;
 }
 
 input, select {
@@ -410,4 +411,21 @@ textarea {
 	margin-right: 10px;
 	width: 80%;
 	float: left;
+}
+
+#fileupload {
+	position: relative;
+	margin-bottom: 5px:
+}
+
+#fileupload .input-append {
+	position: absolute;
+	z-index: 1;
+	left: 0px;
+}
+
+#fileupload #fileupload-input {
+	position: relative;
+	z-index: 2;
+	opacity: 0;
 }

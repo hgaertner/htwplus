@@ -36,7 +36,7 @@ public class CourseController extends BaseController {
 		if (Secured.isMemberOfCourse(courseId)) {
 			Form<Post> filledForm = postForm.bindFromRequest();
 			if (filledForm.hasErrors()) {
-				flash("message", "Error in Form!");
+				flash("error", "Error in Form!");
 				// return badRequest(view.render(arg0, arg1));
 			} else {
 				Post p = filledForm.get();
@@ -65,12 +65,12 @@ public class CourseController extends BaseController {
 	public static Result create() {
 		Form<Course> filledForm = courseForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
-			flash("message", "Error in Form!");
+			flash("error", "Error in Form!");
 			return badRequest(add.render(filledForm));
 		} else {
 			Course c = filledForm.get();
 			c.createByUser(Component.currentAccount());
-			flash("message", "Created new Course!");
+			flash("success", "Created new Course!");
 			return redirect(routes.CourseController.index());
 		}
 	}
@@ -100,11 +100,11 @@ public class CourseController extends BaseController {
 			Course course = Course.findById(id);
 			Form<Course> filledForm = courseForm.bindFromRequest();
 			if (filledForm.hasErrors()) {
-				flash("message", "Error in Form!");
+				flash("error", "Error in Form!");
 				return badRequest(edit.render(id, filledForm));
 			} else {
 				filledForm.get().update();
-				flash("message", "Updated Course!");
+				flash("success", "Updated Course!");
 				return redirect(routes.CourseController.index());
 			}
 		} else {
@@ -117,7 +117,7 @@ public class CourseController extends BaseController {
 		if (Secured.isOwnerOfCourse(id)) {
 			Course course = Course.findById(id);
 			course.delete();
-			flash("message", "Course " + course.title + " deleted!");
+			flash("info", "Course " + course.title + " deleted!");
 			return redirect(routes.CourseController.index());
 		} else {
 			return forbidden();

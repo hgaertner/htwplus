@@ -29,7 +29,7 @@ public class PostController extends BaseController {
 			Group group = Group.findById(anyId);
 			if (Secured.isMemberOfGroup(group, account)) {
 				if (filledForm.hasErrors()) {
-					flash("message", "Error in Form!");
+					flash("error", "Error in Form!");
 				} else {
 					Post p = filledForm.get();
 					p.owner = Component.currentAccount();
@@ -37,7 +37,7 @@ public class PostController extends BaseController {
 					p.create();
 				}
 			} else {
-				flash("message","Bitte tritt der Gruppe erst bei.");
+				flash("info","Bitte tritt der Gruppe erst bei.");
 			}
 			return redirect(routes.GroupController.view(group.id));
 		}
@@ -48,7 +48,7 @@ public class PostController extends BaseController {
 		if(target.equals(Post.STREAM)) {
 
 			if (filledForm.hasErrors()) {
-				flash("message", "Error in Form!");
+				flash("error", "Error in Form!");
 			} else {
 				Post p = filledForm.get();
 				p.account = account;
@@ -67,7 +67,7 @@ public class PostController extends BaseController {
 		Form<Post> filledForm = postForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			System.out.println(filledForm.errors());
-			flash("message", "Error in Form!");
+			flash("error", "Error in Form!");
 			return badRequest();
 		} else {
 			Post post = filledForm.get();
@@ -124,9 +124,9 @@ public class PostController extends BaseController {
 		Account account = Component.currentAccount();
 		if (Secured.isOwnerOfPost(post, account)) {
 			post.delete();
-			flash("message", "Post gelöscht");
+			flash("info", "Post gelöscht");
 		} else {
-			flash("message", "Post konnte nicht gelöscht werden");
+			flash("info", "Post konnte nicht gelöscht werden");
 		}
 
 		return redirect(routesTo);

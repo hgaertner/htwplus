@@ -23,7 +23,7 @@ public class Secured extends Security.Authenticator {
 	//Access rights
 	
 	public static boolean isMemberOfGroup(Group group, Account account){
-		return Group.isMember(group.id, account);
+		return Group.isMember(group, account);
 	}
 	
 	public static boolean isOwnerOfGroup(Group group, Account account){
@@ -37,6 +37,15 @@ public class Secured extends Security.Authenticator {
 	public static boolean isOwnerOfPost(Post post, Account account){
 		if(post != null){
 			return post.owner.equals(account);
+		}
+		return false;
+	}
+	
+	public static boolean viewMedia(Media media) {
+		if(media.group != null) {
+			if(Group.isMember(media.group, Component.currentAccount())){
+				return true;
+			}
 		}
 		return false;
 	}

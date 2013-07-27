@@ -3,6 +3,7 @@ package controllers;
 import java.util.List;
 
 import models.Account;
+import models.Friendship;
 import models.Post;
 import play.Logger;
 import play.Routes;
@@ -29,16 +30,16 @@ public class Application extends BaseController {
 	@Security.Authenticated(Secured.class)
 	public static Result index() {
 		Account account = Component.currentAccount();
-		List<Post> posts = Post.getPostForAccount(account.id);
+		List<Post> posts = Post.getPostForAccount(account);
+		for(Account friend : Friendship.findFriends(account)){
+			posts.addAll(Post.getPostForAccount(friend));
+		}
 		return ok(stream.render(account,posts,postForm));
 	}
 		
-	@Security.Authenticated(Secured.class)
 	public static Result defaultRoute(String path) {
 		Logger.info(path+" nicht gefunden");
-		Account account = Component.currentAccount();
-		List<Post> posts = Post.getPostForAccount(account.id);
-		return ok(stream.render(account,posts,postForm));
+		return redirect(routes.Application.index());
 	}
 
 }

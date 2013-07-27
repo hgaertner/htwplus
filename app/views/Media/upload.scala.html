@@ -3,9 +3,14 @@
 
 @form(action = routes.MediaController.upload(target, id), 'enctype -> "multipart/form-data") {
                
-<div class="input-append">
-    <input class="span5" type="file" name="upload" multiple="multiple">
-    <input class="btn btn-warning" type="submit">
-</div>
+
+	<div id="fileupload">
+    	<input class="span6" id="fileupload-input" type="file" name="upload" multiple="multiple" onchange="setFileNames()" rel="tooltip" data-original-title="Hier klicken, um Dateien auszuwählen!" data-delay="500">
+    	<div class="input-append">
+    		<input class="span6" id="files" type="text" placeholder="Dateien zum Hochladen">
+		    <input class="btn btn-warning" type="submit" id="fileuploadSubmit">
+		</div>
+	</div>
+
                                                   
 }

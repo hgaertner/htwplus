@@ -1,9 +1,9 @@
 @(comment: Post)
 <div class="media">
-	<a class="pull-left" href="#"> <img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="30" width="30" class="img-polaroid" /></a>
+	<a class="pull-left" href="@routes.ProfileController.view(comment.owner.id)"> <img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="30" width="30" class="img-polaroid" /></a>
 	<div class="media-body">
 		<h5 class="media-heading">
-				<a data-placement="top" data-original-title="@comment.owner.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover" href="#">@comment.owner.name</a>
+				<a href="@routes.ProfileController.view(comment.owner.id)" data-placement="top" data-original-title="@comment.owner.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover">@comment.owner.name</a>
 				<small>(@comment.createdAt.format("dd. MMM yyyy hh:mm"))</small>
 		</h5>
 			<b>@comment.content</b>

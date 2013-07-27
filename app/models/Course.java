@@ -13,7 +13,6 @@ import org.hibernate.validator.constraints.Length;
 import play.db.jpa.*;
 
 @Entity
-@SequenceGenerator(name = "default_seq", sequenceName = "course_seq")
 public class Course extends BaseModel {
 
 	@Required
@@ -30,6 +29,10 @@ public class Course extends BaseModel {
 	@Required
 	@Length(min = 4, max = 45)
 	public String token;
+	
+	@OneToMany(mappedBy="course")
+	@OrderBy("createdAt DESC")
+	public List<Media> media;
 
 	public static List<Course> all() {
 		List<Course> courses = JPA.em().createQuery("SELECT t FROM Course t")

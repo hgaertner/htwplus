@@ -15,7 +15,6 @@ import play.db.jpa.*;
 import views.html.Group.view;
 
 @Entity
-@SequenceGenerator(name = "default_seq", sequenceName = "post_seq")
 public class Post extends BaseModel {
 	
 	public static String GROUP = "group";
@@ -69,23 +68,23 @@ public class Post extends BaseModel {
 	@SuppressWarnings("unchecked")
 	public static List<Post> getPostForCourse(Long courseId) {
 		return (List<Post>) JPA.em()
-				.createQuery("SELECT p FROM Post p WHERE p.course.id = ?1")
+				.createQuery("SELECT p FROM Post p WHERE p.course.id = ?1 ORDER BY p.createdAt DESC")
 				.setParameter(1, courseId).getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	public static List<Post> getPostForGroup(Long id) {
 		return (List<Post>) JPA.em()
-				.createQuery("SELECT p FROM Post p WHERE p.group.id = ?1 ORDER BY p.createdAt")
+				.createQuery("SELECT p FROM Post p WHERE p.group.id = ?1 ORDER BY p.createdAt DESC")
 				.setParameter(1, id)
 				.getResultList();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Post> getPostForAccount(Long accountId) {
+	public static List<Post> getPostForAccount(Account account) {
 		return (List<Post>) JPA.em()
-				.createQuery("SELECT p FROM Post p WHERE p.account.id = ?1 ORDER BY p.createdAt")
-				.setParameter(1, accountId)
+				.createQuery("SELECT p FROM Post p WHERE p.account.id = ?1 ORDER BY p.createdAt DESC")
+				.setParameter(1, account.id)
 				.getResultList();
 	}
 	

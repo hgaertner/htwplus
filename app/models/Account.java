@@ -11,7 +11,6 @@ import play.db.jpa.*;
 import java.util.Set;
 
 @Entity
-@SequenceGenerator(name = "default_seq", sequenceName = "account_seq")
 public class Account extends BaseModel {
 
 	public String loginname;
@@ -47,6 +46,11 @@ public class Account extends BaseModel {
 
 	public static Account findById(Long id) {
 		return JPA.em().find(Account.class, id);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Account> findAll(){
+		return JPA.em().createQuery("SELECT a FROM Account a ORDER BY a.name").getResultList();
 	}
 
 	@Override

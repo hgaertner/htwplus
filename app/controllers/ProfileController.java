@@ -16,7 +16,7 @@ public class ProfileController extends BaseController {
 	public static Result me() {
 		Account account = Component.currentAccount();
 		if (account == null) {
-			flash("message", "Dieses Profil gibt es nicht.");
+			flash("info", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());
 		} else {
 			return ok(index.render(account, accountForm.fill(account)));
@@ -27,7 +27,7 @@ public class ProfileController extends BaseController {
 	public static Result view(Long id) {
 		Account account = Account.findById(id);
 		if (account == null) {
-			flash("message", "Dieses Profil gibt es nicht.");
+			flash("info", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());
 		} else {
 			return ok(index.render(account, accountForm.fill(account)));
@@ -38,7 +38,7 @@ public class ProfileController extends BaseController {
 	public static Result edit(Long id) {
 		Account account = Account.findById(id);
 		if (account == null) {
-			flash("message", "Dieses Profil gibt es nicht.");
+			flash("info", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());
 		} else {
 			return ok(index.render(account, accountForm.fill(account)));
@@ -52,12 +52,12 @@ public class ProfileController extends BaseController {
 			Form<Account> filledForm = accountForm.bindFromRequest();
 			System.out.println(filledForm.errors());
 			if (filledForm.hasErrors()) {
-				flash("message", "Error in Form!");
+				flash("error", "Error in Form!");
 				return badRequest(index.render(account, filledForm));
 				//return badRequest(edit.render(id, filledForm));
 			} else {
 				filledForm.get().update();
-				flash("message", "Profile updated!");
+				flash("info", "Profile updated!");
 				return redirect(routes.Application.index());
 			}
 		} else {

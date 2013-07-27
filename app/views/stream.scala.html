@@ -4,7 +4,7 @@
 	<h1>Mein Newsstream</h1>
   	<br />
   
-	@views.html.snippets.postForm(account.id, "stream", postForm)
+	@views.html.snippets.postForm(account.id, models.Post.STREAM, postForm)
 	
 	@if(posts != null) {
 		@for(post <- posts) {
