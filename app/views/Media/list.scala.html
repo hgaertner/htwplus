@@ -4,17 +4,15 @@
 
 <table class="table table-hover table-condensed">
 	<colgroup>
-		<col width="3%">
-       <col width="40%">
+       <col width="5%">
+       <col width="50%">
        <col width="20%">
        <col width="20%">
-       <col width="17%">
 	</colgroup>
 	<thead>
        <tr>
-       		<th><input type="checkbox" rel="tooltip" data-original-title="alles aus-, abwählen" onclick="toggleMediaSelection(this)"></th>
+		   <th><input type="checkbox" rel="tooltip" data-original-title="alles aus-, abwählen" onclick="toggleMediaSelection(this)"></th>
            <th>Dateiname</th>
-           <th>Hochgeladen von</th>
            <th>Datum</th>
            <th>Dateigröße</th>
        </tr>
@@ -23,13 +21,10 @@
 
 @form(action = routes.MediaController.multiView(target,id)) {
 
-@form(action = routes.MediaController.multiView(target,id)) {
-
 @for(m <- mediaList) {
  	 <tr>
  	 	 <td><input name="selection" value="@m.id" type="checkbox"></td>
-         <td><a href="@routes.MediaController.view(m.id)">@m.title</a></td>
-         <td><a href="@routes.ProfileController.view(m.owner.id)" rel="popover" data-html="true" data-trigger="hover" data-delay="500" data-content="Rolle: Student <br /> Studiengang: Angewandte Informatik " data-original-title="Anne Hasenpusch" data-placement="right">@m.owner.name</a></td>
+         <td><a href="@routes.MediaController.view(m.id)" rel="tooltip" data-delay="500" data-original-title="von @m.owner.name">@m.title</a></td>
          <td>@m.createdAt.format("dd. MMM yyyy")</td>
          <td>@m.size Bytes</td>
      </tr>
@@ -38,14 +33,12 @@
     </tbody>
     <tfoot>
         <tr>
-            <td> </td>
-            <td></td>
-            <td> </td>
-            <td></td>
-            <td></td>
+            <td colspan="4">
+            	<button class="btn btn-warning btn-small">Auswahl herunterladen</button>
+            </td>
         </tr>
     </tfoot>
     
  }
 </table>
-<button class="btn btn-warning btn-small">Auswahl herunterladen</button>
+

@@ -258,17 +258,16 @@ body#smallHead #content {
 	vertical-align: middle;
 }
 
-input, select {
+#register input, select {
 	height: auto !important;
 }
 
-input, select, textarea {
+#register input, select, textarea {
 	width: 100%;
 	line-height: 16px;
-    box-sizing: border-box;
-    -webkit-box-sizing:border-box;
-    -moz-box-sizing: border-box;
-  	resize: none;
+	box-sizing: border-box;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing: border-box;
 }
 
 textarea {
@@ -332,6 +331,18 @@ textarea {
 
 .modal-body label {
 	font-weight: bold;
+}
+
+.modal-body input, select {
+	height: auto !important;
+}
+
+.modal-body input, select, textarea {
+	width: 100%;
+	line-height: 16px;
+	box-sizing: border-box;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing: border-box;
 }
 
 .modal-body input {
@@ -420,12 +431,17 @@ textarea {
 
 #fileupload .input-append {
 	position: absolute;
-	z-index: 1;
+	z-index: 2;
 	left: 0px;
 }
 
 #fileupload #fileupload-input {
 	position: relative;
-	z-index: 2;
+	z-index: 1;
 	opacity: 0;
+}
+
+#fileupload input[readonly] {
+	cursor: default;
+	background-color: white;
 }
