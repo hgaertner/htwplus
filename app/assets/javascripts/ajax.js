@@ -141,8 +141,8 @@ $(document).ready(function () {
 	 */
 	
 	$('#fileuploadSubmit').click(function(){
-		$('#fileupload-input').hide();
-		$('#fileupload-status').show();
+		$('#loadingMedia').show();
+        /*$("#loadingMedia").css('display', 'inline-block');*/
 	});
 	
 	

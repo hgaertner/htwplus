@@ -14,7 +14,6 @@
 			<a href="#infoModal@group.id" role="button" class="btn last" data-toggle="modal" rel="tooltip" data-original-title="Gruppeninfo"><i class="icon-info-sign"></i></a>
 		</div>
 	</h2>
-	<br />
 	
 	<!-- Start editModal -->
 		<div id="editModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
@@ -44,16 +43,17 @@
 		@views.html.Group.snippets.deleteGroupModal(group)   
 	</div>
 	<!-- End confirmDeleteGroupModal -->
-
 	<br />
-
-                                        
-  @views.html.Media.list(mediaList,models.Media.GROUP,group.id)
-     
+	
+ @if(!mediaList.isEmpty) {
+ 	@views.html.Media.list(mediaList,models.Media.GROUP,group.id)
+ } else {
+ 	<p><i>Es wurden noch keine Dateien hochgeladen.</i></p>
+ }
  <hr />
  <br />
 
- <h3>Neue Dateien hochladen</h3>
+ <h4>Neue Dateien hochladen<span id="loadingMedia"></span></h4>
  @views.html.Media.upload(mediaForm,models.Media.GROUP,group.id)                      
                                    
 }

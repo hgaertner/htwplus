@@ -7,9 +7,9 @@
 </div>
 <!-- Ende searchModal -->
 
-@if(!requests.isEmpty){
-
-<h2>Offene Anfragen</h2>
+<h2><span rel="tooltip" data-original-title="Hier findest du den aktuellen Status deiner Freundschafts-Anfragen." data-delay="500">
+	Offene Anfragen</span></h2>
+@if(!requests.isEmpty) {
 <table class="table table-hover">
 	<colgroup>
 		<col width="25%">
@@ -71,17 +71,17 @@
 	}
 	</tbody>
 </table>
+} else {
+<p><i>Keine Anfragen vorhanden.</i></p>
+}
 <hr />
 <br />
-}
 
-<div>
-	<h2>
-		Meine Freunde <a href="#searchModal" role="button" class="btn"
-			data-toggle="modal" rel="tooltip"
-			data-original-title="Freunde suchen"><i class="icon-search"></i></a>
-	</h2>
-</div>
+<h2>
+	<span rel="tooltip" data-original-title="Hier findest du alle Personen, mit denen du befreundet bist." data-delay="500">Meine Freunde</span>
+	<a href="#searchModal" role="button" class="btn" data-toggle="modal" rel="tooltip" data-original-title="Freunde suchen"><i class="icon-search"></i></a>
+</h2>
+@if(!friends.isEmpty()) {
 <table class="table table-hover">
 	<colgroup>
 		<col width="15%">
@@ -107,13 +107,10 @@
 				title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
 		</tr>
 	}
-	@if(friends.isEmpty()){
-		<tr>
-			<td><img src="@routes.Assets.at("images/foreverAlone.png")"></img>
-			<td> - keine Freunde -</td>
-		</tr>
-	}
 	</tbody>
 </table>
+} else {
+<p><img src="@routes.Assets.at("images/foreverAlone.png")"><i> Noch keine befreundeten Personen vorhanden.</i></p>
+}
 
 }

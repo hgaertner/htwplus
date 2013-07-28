@@ -56,6 +56,29 @@ if (matchMedia) {
 	resizeRings(mq3);
 }
 
+function toggleMediaSelection(parent) {
+	var childs = document.getElementById("mediaList").getElementsByTagName("input");
+	for (i = 0; i < childs.length; i++) {
+		childs[i].checked = parent.checked;
+	}
+}
+
+function setFileNames() {
+	var names = "";
+	var fileList = document.getElementById("fileupload-input").files;
+	for (var i = 0; i < fileList.length; i++) {
+        if ('name' in fileList[i]) {
+            names += fileList[i].name;
+        } else {
+            names += fileList[i].fileName;
+        }
+        if (i != fileList.length - 1) {
+        	names += ", ";
+        }
+	}
+	document.getElementById("files").value = names;
+}
+
 function updateAvatar(parent) {
 	var childs = document.getElementById("avatars").getElementsByClassName("img-polaroid");
 	for (i = 0; i < childs.length; i++) {
