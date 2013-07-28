@@ -23,8 +23,6 @@
 
 @form(action = routes.MediaController.multiView(target,id)) {
 
-@form(action = routes.MediaController.multiView(target,id)) {
-
 @for(m <- mediaList) {
  	 <tr>
  	 	 <td><input name="selection" value="@m.id" type="checkbox"></td>
@@ -46,6 +44,7 @@
         </tr>
     </tfoot>
     
- }
+
 </table>
 <button class="btn btn-warning btn-small">Auswahl herunterladen</button>
+ }
