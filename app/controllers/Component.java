@@ -37,8 +37,6 @@ public class Component extends Action.Simple {
 		return views.html.snippets.loginForm.render(loginForm, signupForm);
 	}
 	
-	
-    
     /**
      * Generates an md5 hash of a String.
      * @param input String value

@@ -44,10 +44,7 @@
 								<div id="content">
 									@if(user != null){
 										<br />
-					                  	<ul class="breadcrumb">
-					                      	<li><a href="@routes.Application.index()">Home</a><span class="divider">/</span></li>
-					                      	<li class="active">@title</li>
-					                  	</ul>
+										@views.html.snippets.breadcrumb()
 									}
 									@if(flash.containsKey("success")) {
 										<div class="alert alert-success fade in">

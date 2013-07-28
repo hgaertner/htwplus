@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.List;
 
+import controllers.Navigation.Level;
+
 import models.Account;
 import models.Friendship;
 import models.Post;
@@ -29,6 +31,7 @@ public class Application extends BaseController {
 	
 	@Security.Authenticated(Secured.class)
 	public static Result index() {
+		Navigation.set(Level.STREAM);
 		Account account = Component.currentAccount();
 		List<Post> posts = Post.getPostForAccount(account);
 		for(Account friend : Friendship.findFriends(account)){

@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.List;
 
+import controllers.Navigation.Level;
+
 import models.Account;
 import models.Friendship;
 import models.enums.LinkType;
@@ -15,6 +17,7 @@ import views.html.Friends.*;
 public class FriendshipController extends BaseController {
 	
 	public static Result index() {
+		Navigation.set(Level.FRIENDS);
 		List<Account> allAccounts = Account.findAll();
 		Account currentUser = Component.currentAccount();
 		List<Account> friends = Friendship.findFriends(currentUser);

@@ -1,0 +1,18 @@
+
+<ul class="breadcrumb">
+	<li><a href="@routes.Application.index()">Home</a></li>
+	@if(Navigation.getLevel() != null && Navigation.getTitle() == null){
+	<li><span class="divider">/</span>@Navigation.getLevelTitle(Navigation.getLevel())</li>
+	}
+	@if(Navigation.getLevel() != null && Navigation.getTitle() != null){
+	<li><span class="divider">/</span><a href="@Navigation.getLevelRoute(Navigation.getLevel())">@Navigation.getLevelTitle(Navigation.getLevel())</a></li>
+	}
+
+	@if(Navigation.getParentTitle() != null){
+	<li><span class="divider">/</span><a href="@Navigation.getParentCall()">@Navigation.getParentTitle()</a></li>
+	}
+	@if(Navigation.getTitle() != null){
+	<li><span class="divider">/</span>@Navigation.getTitle()</li>
+	}
+
+</ul>
