@@ -56,7 +56,7 @@ public class GroupController extends BaseController {
 	@Transactional(readOnly=true)
 	public static Result view(Long id) {
 		Group group = Group.findById(id);
-		Navigation.set(Level.GROUPS, group.title);
+		Navigation.set(Level.GROUPS, "Newsstream", group.title, routes.GroupController.view(group.id));
 		Account account = Component.currentAccount();
 		if (group == null) {
 			return redirect(routes.GroupController.index());
