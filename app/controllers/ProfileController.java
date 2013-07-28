@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.Navigation.Level;
 import models.Account;
 import play.cache.Cache;
 import play.data.Form;
@@ -14,6 +15,7 @@ public class ProfileController extends BaseController {
 	static Form<Account> accountForm = Form.form(Account.class);
 	
 	public static Result me() {
+		Navigation.set(Level.PROFILE);
 		Account account = Component.currentAccount();
 		if (account == null) {
 			flash("info", "Dieses Profil gibt es nicht.");
@@ -26,6 +28,7 @@ public class ProfileController extends BaseController {
 
 	public static Result view(Long id) {
 		Account account = Account.findById(id);
+		Navigation.set(Level.PROFILE, account.name);
 		if (account == null) {
 			flash("info", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());

@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.List;
 
+import controllers.Navigation.Level;
+
 import models.Account;
 import models.Course;
 import models.Post;
@@ -25,6 +27,7 @@ public class CourseController extends BaseController {
 	static Form<Post> postForm = Form.form(Post.class);
 
 	public static Result index() {
+		Navigation.set(Level.COURSES);
 		return ok(index.render(Course.all()));
 	}
 

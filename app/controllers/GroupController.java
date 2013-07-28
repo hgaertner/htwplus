@@ -1,8 +1,11 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+
+import controllers.Navigation.Level;
 
 import play.*;
 import play.mvc.*;
@@ -24,6 +27,7 @@ public class GroupController extends BaseController {
 	static Form<Post> postForm = Form.form(Post.class);
 	
 	public static Result index() {
+		Navigation.set(Level.GROUPS);
 		Account account = Component.currentAccount();
 		List<GroupAccount> groupAccounts = GroupAccount.allByAccount(account);
 		List<Group> approvedGroups = new ArrayList<Group>();
@@ -52,6 +56,7 @@ public class GroupController extends BaseController {
 	@Transactional(readOnly=true)
 	public static Result view(Long id) {
 		Group group = Group.findById(id);
+		Navigation.set(Level.GROUPS, group.title);
 		Account account = Component.currentAccount();
 		if (group == null) {
 			return redirect(routes.GroupController.index());
@@ -65,6 +70,7 @@ public class GroupController extends BaseController {
 	public static Result media(Long id) {
 		Form<Media> mediaForm = Form.form(Media.class);
 		Group group = Group.findById(id);
+		Navigation.set(Level.GROUPS, "Media", group.title, routes.GroupController.view(group.id));
 		if(!Secured.isMemberOfGroup(group, Component.currentAccount())){
 			flash("info","Bitte tritt der Gruppe erst bei.");
 			return view(id);
