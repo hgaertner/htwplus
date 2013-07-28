@@ -2,12 +2,21 @@
 @import helper._
 @import models._
 
+<!-- Start confirmDeleteMediaModal -->
+@for(m <- mediaList) {
+	<div id="confirmDeleteMedia@m.id" class="modal hide fade" tabindex="-1" role="dialog">
+		@views.html.Media.snippets.deleteMediaModal(m)
+	</div>
+}
+<!-- End confirmDeleteMediaModal -->
+
 <table class="table table-hover table-condensed">
 	<colgroup>
        <col width="5%">
        <col width="50%">
+       <col width="15%">
        <col width="20%">
-       <col width="20%">
+       <col width="5%">
 	</colgroup>
 	<thead>
        <tr>
@@ -15,6 +24,7 @@
            <th>Dateiname</th>
            <th>Datum</th>
            <th>Dateigröße</th>
+           <th></th>
        </tr>
 	</thead>
     <tbody id="mediaList" >
@@ -27,6 +37,7 @@
          <td><a href="@routes.MediaController.view(m.id)" rel="tooltip" data-delay="500" data-original-title="von @m.owner.name">@m.title</a></td>
          <td>@m.createdAt.format("dd. MMM yyyy")</td>
          <td>@m.size Bytes</td>
+         <td><a href="#confirmDeleteMedia@m.id" rel="tooltip" data-toggle="modal" data-original-title="Datei entfernen"><i class="icon-trash"></i></a></td>
      </tr>
                                         	
 }
