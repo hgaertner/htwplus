@@ -33,6 +33,7 @@ GET 	/gruppe/:id/join					controllers.GroupController.join(id:Long)
 GET 	/gruppe/:groupId/remove/:accountId	controllers.GroupController.removeMember(groupId:Long, accountId: Long)
 GET 	/gruppe/:groupId/accept/:accountId	controllers.GroupController.acceptRequest(groupId:Long, accountId: Long)
 GET 	/gruppe/:groupId/decline/:accountId	controllers.GroupController.declineRequest(groupId:Long, accountId: Long)
+GET		/gruppe/searchForGroup/:keyword		controllers.GroupController.searchForGroupByKeyword(keyword:String)
 
 #Post and Comments
 POST	/post/:id/addComment				controllers.PostController.addComment(id:Long)
