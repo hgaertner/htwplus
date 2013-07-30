@@ -72,10 +72,10 @@ public class Post extends BaseModel {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<Post> getPostForGroup(Long id) {
+	public static List<Post> getPostForGroup(Group group) {
 		return (List<Post>) JPA.em()
 				.createQuery("SELECT p FROM Post p WHERE p.group.id = ?1 ORDER BY p.createdAt DESC")
-				.setParameter(1, id)
+				.setParameter(1, group.id)
 				.getResultList();
 	}
 	
@@ -127,6 +127,12 @@ public class Post extends BaseModel {
 		for(Account friend : Friendship.findFriends(account)){
 			posts.addAll(getPostForAccount(friend));
 		}
+		
+		// Add posts from all groups of this account
+		for(GroupAccount groupAccount : GroupAccount.allByAccount(account)){
+			posts.addAll(getPostForGroup(groupAccount.group));
+		}
+		
 		return posts;
 	}
 }

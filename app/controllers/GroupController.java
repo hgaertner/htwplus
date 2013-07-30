@@ -61,7 +61,7 @@ public class GroupController extends BaseController {
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
-			List<Post> posts = Post.getPostForGroup(id);
+			List<Post> posts = Post.getPostForGroup(group);
 			return ok(view.render(group, posts, postForm, Secured.isMemberOfGroup(group, account)));
 		}
 	}

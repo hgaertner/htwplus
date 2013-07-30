@@ -33,12 +33,12 @@ GET 	/gruppe/:id/join					controllers.GroupController.join(id:Long)
 GET 	/gruppe/:groupId/remove/:accountId	controllers.GroupController.removeMember(groupId:Long, accountId: Long)
 GET 	/gruppe/:groupId/accept/:accountId	controllers.GroupController.acceptRequest(groupId:Long, accountId: Long)
 GET 	/gruppe/:groupId/decline/:accountId	controllers.GroupController.declineRequest(groupId:Long, accountId: Long)
-GET		/gruppe/:anyId/deletePost/:postId	controllers.PostController.deletePost(postId:Long, anyId: Long)
 
 #Post and Comments
 POST	/post/:id/addComment				controllers.PostController.addComment(id:Long)
 GET		/post/:id/olderComments				controllers.PostController.getOlderComments(id:Long)
 POST	/:target/:id/addPost				controllers.PostController.addPost(id:Long, target:String)
+GET		/post/:postId/deletePost			controllers.PostController.deletePost(postId:Long)
 
 # Signup
 POST    /signup                 			controllers.AccountController.submit()

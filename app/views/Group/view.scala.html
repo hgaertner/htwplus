@@ -41,7 +41,7 @@
 	@if(posts != null) {
 		@for(post <- posts) {
 			@if(post.parent == null){
-				@views.html.snippets.postView(post, group.id, postForm,  models.Post.GROUP)
+				@views.html.snippets.postView(post, postForm,  models.Post.GROUP)
 			}
 		}
 	}

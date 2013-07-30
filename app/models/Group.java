@@ -104,7 +104,7 @@ public class Group extends BaseModel {
 	@Override
 	public void delete() {
 		// delete all Posts
-		List<Post> posts = Post.getPostForGroup(this.id);
+		List<Post> posts = Post.getPostForGroup(this);
 		for(Post post : posts){
 			post.delete();
 		}

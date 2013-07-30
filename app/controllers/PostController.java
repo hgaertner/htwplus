@@ -109,16 +109,10 @@ public class PostController extends BaseController {
 	}
 	
 	@Transactional
-	public static Result deletePost(Long postId, Long anyId) {
+	public static Result deletePost(Long postId) {
 		
 		// verify redirect after deletion
 		Call routesTo = routes.Application.index();
-		if(Group.findById(anyId) != null){
-			routesTo = routes.GroupController.view(anyId);
-		}		
-		if(Course.findById(anyId) != null){
-			routesTo = routes.CourseController.view(anyId);
-		}
 		
 		Post post = Post.findById(postId);
 		Account account = Component.currentAccount();
