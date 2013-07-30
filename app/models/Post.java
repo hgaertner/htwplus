@@ -115,4 +115,18 @@ public class Post extends BaseModel {
 		if(this.account != null) return true;
 		return false;
 	}
+
+	public static List<Post> getStream(Account account) {
+		// Create empty ArrayList
+		List<Post> posts = new ArrayList<Post>();
+		
+		// Add posts for given Account
+		posts.addAll(getPostForAccount(account));
+		
+		// Add posts from all friend of this account
+		for(Account friend : Friendship.findFriends(account)){
+			posts.addAll(getPostForAccount(friend));
+		}
+		return posts;
+	}
 }

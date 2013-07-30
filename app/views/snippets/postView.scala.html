@@ -1,9 +1,8 @@
-@(post: Post, anyId: Long, postForm: Form[Post])
+@(post: Post, anyId: Long, postForm: Form[Post], currentView: String)
 @import helper._
 
 @defining(Component.currentAccount()) { user =>
 	<br />
-	
 	@views.html.snippets.deletePostModal(post.id, anyId)
 	<div class="well">
 	<div class="media">

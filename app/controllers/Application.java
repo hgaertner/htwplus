@@ -33,11 +33,7 @@ public class Application extends BaseController {
 	public static Result index() {
 		Navigation.set(Level.STREAM);
 		Account account = Component.currentAccount();
-		List<Post> posts = Post.getPostForAccount(account);
-		for(Account friend : Friendship.findFriends(account)){
-			posts.addAll(Post.getPostForAccount(friend));
-		}
-		return ok(stream.render(account,posts,postForm));
+		return ok(stream.render(account,Post.getStream(account),postForm));
 	}
 		
 	public static Result defaultRoute(String path) {

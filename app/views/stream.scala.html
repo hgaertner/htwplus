@@ -8,7 +8,7 @@
 	
 	@if(posts != null) {
 		@for(post <- posts) {
-			@views.html.snippets.postView(post, account.id, postForm)
+			@views.html.snippets.postView(post, post.account.id, postForm, models.Post.STREAM)
 		}
 	}
 }
