@@ -95,9 +95,10 @@ public class PostController extends BaseController {
 	}
 	
 	@Transactional
-	public static Result getOlderComments(Long id) {
+	public static Result getOlderComments(Long id, Integer current) {
 		String result = "";
-		int max = Integer.parseInt(Play.application().configuration().getString("htwplus.comments.init"));
+		//int max = Integer.parseInt(Play.application().configuration().getString("htwplus.comments.init"));
+		int max = current;
 		int count = Post.countCommentsForPost(id);
 		List<Post> comments = null;
 		if(count <= max){
