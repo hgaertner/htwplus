@@ -118,8 +118,9 @@ $(document).ready(function () {
 		var id = $(this).attr('href').split('-')[1];
 		var context = this;
 		$(this).click(function(){
+			var currentComments = $('#comments-' + id + ' > .media').length;
 			$.ajax({
-				url: "/post/"+id+"/olderComments",
+				url: "/post/olderComments?id=" + id + "&current=" + currentComments,
 				type: "GET",
 				success: function(data){
 					$("#collapse-"+id).html(data);

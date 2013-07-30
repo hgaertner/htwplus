@@ -37,7 +37,7 @@ GET		/gruppe/:anyId/deletePost/:postId	controllers.PostController.deletePost(pos
 
 #Post and Comments
 POST	/post/:id/addComment				controllers.PostController.addComment(id:Long)
-GET		/post/:id/olderComments				controllers.PostController.getOlderComments(id:Long)
+GET		/post/olderComments				    controllers.PostController.getOlderComments(id:Long,current:Integer)
 POST	/:target/:id/addPost				controllers.PostController.addPost(id:Long, target:String)
 
 # Signup
