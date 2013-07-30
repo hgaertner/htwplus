@@ -1,6 +1,7 @@
 package models;
 
 import java.util.*;
+
 import play.data.validation.Constraints.*;
 import javax.persistence.*;
 
@@ -154,5 +155,16 @@ public class Account extends BaseModel {
 		} else { 
 			return false;
 		}
+	}
+	
+	
+	/**
+	 * Try to get all accounts...
+	 * @return List of accounts.
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<Account> all() {
+		List<Account> accounts = JPA.em().createQuery("FROM Account").getResultList();
+		return accounts;
 	}
 }

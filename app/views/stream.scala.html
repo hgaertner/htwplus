@@ -1,14 +1,14 @@
-@(account: Account, posts:List[Post], postForm: Form[Post])
+@(posts:List[Post], postForm: Form[Post])
 @main("Newsstream") {
     
 	<h1>Mein Newsstream</h1>
   	<br />
   
-	@views.html.snippets.postForm(account.id, models.Post.STREAM, postForm)
-	
+	@views.html.snippets.postForm(0, models.Post.STREAM, postForm)
+		
 	@if(posts != null) {
 		@for(post <- posts) {
-			@views.html.snippets.postView(post, account.id, postForm)
+			@views.html.snippets.postView(post, postForm, models.Post.STREAM)
 		}
 	}
 }

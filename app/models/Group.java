@@ -1,6 +1,29 @@
 package models;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import models.GroupAccount;
+import models.base.BaseModel;
+
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.FullTextQuery;
+import org.hibernate.search.jpa.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 
 import play.Logger;
 import play.api.data.validation.ValidationError;
@@ -9,12 +32,14 @@ import javax.persistence.*;
 import models.base.BaseModel;
 import play.db.jpa.*;
 
+@Indexed
 @Entity
 @Table(name = "Group_")
 public class Group extends BaseModel {
 
 	@Required
 	@Column(unique=true)
+	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	public String title;
 	
 	public String description;
@@ -104,7 +129,7 @@ public class Group extends BaseModel {
 	@Override
 	public void delete() {
 		// delete all Posts
-		List<Post> posts = Post.getPostForGroup(this.id);
+		List<Post> posts = Post.getPostForGroup(this);
 		for(Post post : posts){
 			post.delete();
 		}
@@ -155,5 +180,40 @@ public class Group extends BaseModel {
 			return true;
 		}
 
+	}
+	
+	/**
+	 * Search for a group with a given keyword.
+	 * 
+	 * @param keyword
+	 * @return List of groups wich matches with the keyword
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<Group> searchForGroupByKeyword(String keyword) {
+		Logger.info("Group model searchForGroupByKeyWord: " + keyword);
+		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
+		/*try {
+		 This part takes care to create indexes of persistent data, which is not inserted via hibernate/ JPA this block
+		 is now in the onStart in Global.java
+			fullTextEntityManager.createIndexer(Group.class).startAndWait();
+		} catch (InterruptedException e) {
+			
+			Logger.error(e.getMessage());
+		}*/
+		//Create a querybuilder for the group entity 
+		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
+				.buildQueryBuilder().forEntity(Group.class).get();
+		//Sets the field we want to search on and tries to match with the given keyword
+		org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword()
+				.onFields("title").matching(keyword).createQuery();
+		// wrap Lucene query in a javax.persistence.Query
+		FullTextQuery fullTextQuery = fullTextEntityManager
+				.createFullTextQuery(luceneQuery, Group.class);
+
+		List<Group> result = fullTextQuery.getResultList(); //The result...
+		Logger.info("Found " +result.size() +" groups with keyword: " +keyword);
+
+
+		return result;
 	}
 }

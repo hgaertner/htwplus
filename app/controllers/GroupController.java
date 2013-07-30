@@ -5,19 +5,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+
 import controllers.Navigation.Level;
 
 import play.*;
 import play.mvc.*;
 import play.data.*;
+
 import models.Account;
 import models.Group;
 import models.GroupAccount;
 import models.Media;
 import models.Post;
-import views.html.Group.*;
-import views.html.Group.snippets.*;
-import play.db.jpa.*;
+
+import play.Logger;
+import play.data.Form;
+import play.db.jpa.Transactional;
+import play.mvc.Result;
+import play.mvc.Security;
+import views.html.Group.index;
+import views.html.Group.media;
+import views.html.Group.view;
+import views.html.Group.snippets.addModal;
+import views.html.Group.snippets.addModalSuccess;
+import views.html.Group.snippets.editModal;
+import views.html.Group.snippets.editModalSuccess;
+import views.html.Group.snippets.searchModalResult;
 
 @Security.Authenticated(Secured.class)
 @Transactional
@@ -55,13 +68,16 @@ public class GroupController extends BaseController {
 		
 	@Transactional(readOnly=true)
 	public static Result view(Long id) {
+		Logger.info("Show group with id: " +id);
 		Group group = Group.findById(id);
 		Account account = Component.currentAccount();
 		if (group == null) {
+			Logger.error("No group found with id: " +id);
 			return redirect(routes.GroupController.index());
 		} else {
 			Navigation.set(Level.GROUPS, "Newsstream", group.title, routes.GroupController.view(group.id));
-			List<Post> posts = Post.getPostForGroup(id);
+			Logger.info("Found group with id: " +id);
+			List<Post> posts = Post.getPostForGroup(group);
 			return ok(view.render(group, posts, postForm, Secured.isMemberOfGroup(group, account)));
 		}
 	}
@@ -136,6 +152,14 @@ public class GroupController extends BaseController {
 	public static List<Group> showAll() {
 		return Group.all();
 	}
+	
+	
+	public static Result searchForGroupByKeyword(final String keyword){
+		Logger.info("Search for group with keyword: " +keyword);
+		List<Group> result = Group.searchForGroupByKeyword(keyword);
+		return ok(searchModalResult.render(result));
+	}
+	
 	
 	public static Result join(long id){
 		Account account = Component.currentAccount();
