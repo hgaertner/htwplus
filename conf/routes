@@ -61,8 +61,9 @@ GET		/friend/:friendshipId/cancel		controllers.FriendshipController.cancelFriend
 
 # Media
 POST 	/media/:target/upload/:id			controllers.MediaController.upload(target:String,id:Long)
-POST	/media/multiple/:target/:id		controllers.MediaController.multiView(target:String,id:Long)
+POST	/media/multiple/:target/:id			controllers.MediaController.multiView(target:String,id:Long)
 GET		/media/:id							controllers.MediaController.view(id:Long)
+GET 	/media/:id/delete					controllers.MediaController.delete(id:Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               		controllers.Assets.at(path="/public", file)

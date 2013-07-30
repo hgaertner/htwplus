@@ -4,12 +4,14 @@
 @defining(Component.currentAccount()) { user =>
 	<br />
 	@views.html.snippets.deletePostModal(post.id, anyId)
+	
 	<div class="well">
 	<div class="media">
 		<a class="pull-left" href="@routes.ProfileController.view(post.owner.id)"> <img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="30" width="30" class="img-polaroid" /></a>
 		<div class="media-body">
 			<h4 class="media-heading">
 				<a href="@routes.ProfileController.view(post.owner.id)" data-placement="top" data-original-title="@post.owner.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover">@post.owner.name</a>
+				@if(post.belongsToGroup){schrieb in <a href="#">@post.group.title</a>} @if(post.belongsToCourse){schrieb in <a href="#">@post.course.title</a>} @if(post.belongsToAccount){schrieb in <a href="#">@post.account.name</a>} 
 				@if(post.owner.id == user.id){
                 	<div class="btn-group">
                 		<a role="button" class="btn btn-small" onclick="editPostCom('@post.id')" rel="tooltip" data-original-title="Post bearbeiten"><i class="icon-pencil"></i></a>
