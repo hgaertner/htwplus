@@ -1,20 +1,42 @@
 package models;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import models.GroupAccount;
+import models.base.BaseModel;
+
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.FullTextQuery;
+import org.hibernate.search.jpa.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 
 import play.Logger;
-import play.api.data.validation.ValidationError;
-import play.data.validation.Constraints.*;
-import javax.persistence.*;
-import models.base.BaseModel;
-import play.db.jpa.*;
+import play.data.validation.Constraints.Required;
+import play.db.jpa.JPA;
 
+@Indexed
 @Entity
 @Table(name = "Group_")
 public class Group extends BaseModel {
 
 	@Required
-	@Column(unique=true)
+	@Column(unique = true)
+	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	public String title;
 	
 	public String description;
@@ -95,7 +117,7 @@ public class Group extends BaseModel {
 
 	@Override
 	public void update() {
-		//this.id = id;
+		// this.id = id;
 		// createdAt seems to be overwritten (null) - quickfix? (Iven)
 		// this.createdAt = findById(id).createdAt;
 		JPA.em().merge(this);
@@ -105,7 +127,7 @@ public class Group extends BaseModel {
 	public void delete() {
 		// delete all Posts
 		List<Post> posts = Post.getPostForGroup(this.id);
-		for(Post post : posts){
+		for (Post post : posts) {
 			post.delete();
 		}
 		
@@ -115,31 +137,30 @@ public class Group extends BaseModel {
 		}
 		JPA.em().remove(this);
 	}
-	
-	
-		
+
 	public static Group findById(Long id) {
 		return JPA.em().find(Group.class, id);
 	}
-	
+
 	public static Group findByTitle(String title) {
 		@SuppressWarnings("unchecked")
-		List<Group> groups =  (List<Group>) JPA.em().createQuery("FROM Group g WHERE g.title = ?1")
+		List<Group> groups = (List<Group>) JPA.em()
+				.createQuery("FROM Group g WHERE g.title = ?1")
 				.setParameter(1, title).getResultList();
-		
-		if(groups.isEmpty()) {
+
+		if (groups.isEmpty()) {
 			return null;
-		} else  {
+		} else {
 			return groups.get(0);
 		}
 	}
 
-	@SuppressWarnings("unchecked")	
+	@SuppressWarnings("unchecked")
 	public static List<Group> all() {
 		List<Group> groups = JPA.em().createQuery("FROM Group").getResultList();
 		return groups;
 	}
-	
+
 	public static boolean isMember(Group group, Account account) {
 		@SuppressWarnings("unchecked")
 		List<GroupAccount> groupAccounts = (List<GroupAccount>) JPA
@@ -148,12 +169,47 @@ public class Group extends BaseModel {
 						"SELECT g FROM GroupAccount g WHERE g.account.id = ?1 and g.group.id = ?2 AND approved = TRUE")
 				.setParameter(1, account.id).setParameter(2, group.id)
 				.getResultList();
-		
-		if(groupAccounts.isEmpty()) {
+
+		if (groupAccounts.isEmpty()) {
 			return false;
-		} else  {
+		} else {
 			return true;
 		}
 
+	}
+
+	/**
+	 * Search for a group with a given keyword.
+	 * 
+	 * @param keyword
+	 * @return List of groups wich matches with the keyword
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<Group> searchForGroupByKeyword(String keyword) {
+		Logger.info("Group model searchForGroupByKeyWord: " + keyword);
+		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
+		/*try {
+		 This part takes care to create indexes of persistent data, which is not inserted via hibernate/ JPA this block
+		 is now in the onStart in Global.java
+			fullTextEntityManager.createIndexer(Group.class).startAndWait();
+		} catch (InterruptedException e) {
+			
+			Logger.error(e.getMessage());
+		}*/
+		//Create a querybuilder for the group entity 
+		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
+				.buildQueryBuilder().forEntity(Group.class).get();
+		//Sets the field we want to search on and tries to match with the given keyword
+		org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword()
+				.onFields("title").matching(keyword).createQuery();
+		// wrap Lucene query in a javax.persistence.Query
+		FullTextQuery fullTextQuery = fullTextEntityManager
+				.createFullTextQuery(luceneQuery, Group.class);
+
+		List<Group> result = fullTextQuery.getResultList(); //The result...
+		Logger.info("Found " +result.size() +" groups with keyword: " +keyword);
+		
+
+		return result;
 	}
 }
