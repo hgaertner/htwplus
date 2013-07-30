@@ -392,35 +392,6 @@ textarea {
 	margin-left: 50px;
 }
 
-.well.friend{
-  border: 1px solid #76B900;
-}
-
-.well.group{
-  border: 1px solid #5a5858;
-}
-
-.post-heading{
-	width: 100% + 38px;
-	margin-top: -19px;
-	margin-left: -19px;
-	margin-right: -19px;
-	padding-left: 10px;
-	padding-bottom: 3px;
-}
-
-.post-heading.friend{
-	background-color: #76B900;
-}
-
-.post-heading.group{
-	background-color: #5a5858;
-}
-
-.post-heading a, .post-heading a:hover, .post-heading a:active {
-	color: #FFF;
-}
-
 #addPost label,
 #addComment label {
 	display: none;
