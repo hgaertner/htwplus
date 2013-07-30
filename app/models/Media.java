@@ -62,7 +62,6 @@ public class Media extends BaseModel {
 	
 	public static Media findById(Long id) {
 		Media media = JPA.em().find(Media.class, id);
-		// TODO check access
 	    String path = Play.application().path().toString();
 	    String relPath = Play.application().configuration().getString("media.relativePath");
 		media.file = new File(path + "/" + relPath + "/" + media.url);
@@ -112,11 +111,27 @@ public class Media extends BaseModel {
 	
 	@Override
 	public void delete() {
-		JPA.em().remove(this);
+		try {
+			this.deleteFile();
+			JPA.em().remove(this);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private String getUniqueFileName(String fileName) {
 		return UUID.randomUUID().toString() + '_' + fileName;
+	}
+	
+	private void deleteFile() throws FileNotFoundException{
+		String path = Play.application().path().toString();
+		String relPath = Play.application().configuration().getString("media.relativePath");
+		File file = new File(path + "/" + relPath + "/" + this.url);
+		if (file.exists()) {
+			file.delete();
+		} else {
+			throw new FileNotFoundException("File does not exist.");
+		}
 	}
 		
 	private void createFile() throws FileOperationException {

@@ -50,6 +50,16 @@ public class MediaController extends BaseController {
      	}
     }
     
+    @Transactional
+    public static Result delete(Long id) {
+    	Media media = Media.findById(id);
+    	media.delete();
+    	
+    	
+    	
+    	
+    }	
+    
     @Transactional(readOnly=true)	
     public static Result multiView(String target, Long id) {
     	
