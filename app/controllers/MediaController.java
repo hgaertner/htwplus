@@ -53,11 +53,20 @@ public class MediaController extends BaseController {
     @Transactional
     public static Result delete(Long id) {
     	Media media = Media.findById(id);
+    	
+    	Call ret = routes.Application.index();
+    	if(media.belongsToGroup()){
+    		Group group = media.group;
+    		ret = routes.GroupController.media(group.id);
+    	} 
+    	if(media.belongsToCourse()){
+    		Course course = media.course;
+    		ret = routes.GroupController.media(course.id);
+    	} 
+    	
     	media.delete();
-    	
-    	
-    	
-    	
+		flash("success", "Datei " + media.title + " erfolgreich gelöscht!");
+    	return redirect(ret);
     }	
     
     @Transactional(readOnly=true)	

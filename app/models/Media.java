@@ -167,4 +167,14 @@ public class Media extends BaseModel {
 		return (int)(size / 1024 / 1024);
 	}
 	
+	public boolean belongsToGroup(){
+		if(this.group != null) return true;
+		return false;
+	}
+	
+	public boolean belongsToCourse(){
+		if(this.course != null) return true;
+		return false;
+	}
+	
 }
