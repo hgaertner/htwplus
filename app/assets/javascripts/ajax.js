@@ -118,16 +118,38 @@ $(document).ready(function () {
 		var id = $(this).attr('href').split('-')[1];
 		var context = this;
 		$(this).click(function(){
-			var currentComments = $('#comments-' + id + ' > .media').length;
-			$.ajax({
-				url: "/post/olderComments?id=" + id + "&current=" + currentComments,
-				type: "GET",
-				success: function(data){
-					$("#collapse-"+id).html(data);
-					$("#collapse-"+id).collapse();
-				
-				}
-			});
+			
+			if($(context).hasClass('open')){
+				$("#collapse-"+id).collapse('toggle');
+				$(context).html("Ältere Kommentare anzeigen...");
+				$(context).removeClass('open');
+				$(context).addClass('closed');
+			}
+			
+			else if($(context).hasClass('closed')){
+				$("#collapse-"+id).collapse('toggle');
+				$(context).html("Ältere Kommentare ausblenden...");
+				$(context).removeClass('closed');
+				$(context).addClass('open');
+			}
+			
+			else if($(context).hasClass('unloaded')){
+				var currentComments = $('#comments-' + id + ' > .media').length;
+				$(context).html("Ältere Kommentare ausblenden...");
+				$.ajax({
+					url: "/post/olderComments?id=" + id + "&current=" + currentComments,
+					type: "GET",
+					success: function(data){
+						$("#collapse-"+id).html(data);
+						$("#collapse-"+id).collapse('toggle');
+					
+					}
+				});
+				$(context).addClass('open');
+				$(context).removeClass('unloaded');
+			}
+			
+			return false;
 		});
 	});
 

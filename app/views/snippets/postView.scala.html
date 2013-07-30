@@ -31,10 +31,11 @@
 	<hr />
 	<div class="comment" id="comments-@post.id">
 
-	<a href="#collapse-@post.id" class="olderComments" onclick="changeText('collapse@post.id', this)">ältere Kommentare anzeigen...</a>
-	<div id="collapse-@post.id" class="collapse">
-	
+	@if(post.getCountComments() > 2) {
+	<a href="#collapse-@post.id" class="olderComments unloaded">Alle Kommentare anzeigen...</a>
+	<div id="collapse-@post.id" class="collapse">	
 	</div>
+	}
 
 	 @defining(PostController.getCommentsForPostInGroup(post.id)) { comments => 
 	 	@for(comment <- comments){

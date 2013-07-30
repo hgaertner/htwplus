@@ -101,6 +101,10 @@ public class Post extends BaseModel {
 		return ((Number)JPA.em().createQuery("SELECT COUNT(p.id) FROM Post p WHERE p.parent.id = ?1").setParameter(1, id).getSingleResult()).intValue();
 	}
 	
+	public int getCountComments() {
+		return Post.countCommentsForPost(this.id);
+	}
+	
 	public boolean belongsToGroup(){
 		if(this.group != null) return true;
 		return false;
