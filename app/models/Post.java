@@ -37,8 +37,7 @@ public class Post extends BaseModel {
 
 	@ManyToOne
 	public Account owner;
-
-	@Override
+		
 	public void create() {
 		JPA.em().persist(this);
 	}
@@ -100,5 +99,20 @@ public class Post extends BaseModel {
 	
 	public static int countCommentsForPost(Long id) {
 		return ((Number)JPA.em().createQuery("SELECT COUNT(p.id) FROM Post p WHERE p.parent.id = ?1").setParameter(1, id).getSingleResult()).intValue();
+	}
+	
+	public boolean belongsToGroup(){
+		if(this.group != null) return true;
+		return false;
+	}
+	
+	public boolean belongsToCourse(){
+		if(this.course != null) return true;
+		return false;
+	}
+	
+	public boolean belongsToAccount(){
+		if(this.account != null) return true;
+		return false;
 	}
 }
