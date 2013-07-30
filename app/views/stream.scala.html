@@ -1,10 +1,10 @@
-@(posts:List[Post], postForm: Form[Post])
+@(currentUser: Account, posts:List[Post], postForm: Form[Post])
 @main("Newsstream") {
     
 	<h1>Mein Newsstream</h1>
   	<br />
   
-	@views.html.snippets.postForm(0, models.Post.STREAM, postForm)
+	@views.html.snippets.postForm(currentUser.id, models.Post.STREAM, postForm)
 		
 	@if(posts != null) {
 		@for(post <- posts) {

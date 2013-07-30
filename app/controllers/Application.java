@@ -32,7 +32,8 @@ public class Application extends BaseController {
 	@Security.Authenticated(Secured.class)
 	public static Result index() {
 		Navigation.set(Level.STREAM);
-		return ok(stream.render(Post.getStream(Component.currentAccount()),postForm));
+		Account currentAccount = Component.currentAccount();
+		return ok(stream.render(currentAccount,Post.getStream(currentAccount),postForm));
 	}
 		
 	public static Result defaultRoute(String path) {

@@ -2,6 +2,7 @@ package controllers;
 
 import controllers.Navigation.Level;
 import models.Account;
+import models.Post;
 import play.cache.Cache;
 import play.data.Form;
 import play.db.jpa.Transactional;
@@ -13,6 +14,7 @@ import views.html.Profile.*;
 public class ProfileController extends BaseController {
 
 	static Form<Account> accountForm = Form.form(Account.class);
+	static Form<Post> postForm = Form.form(Post.class);
 	
 	public static Result me() {
 		Navigation.set(Level.PROFILE);
@@ -21,7 +23,7 @@ public class ProfileController extends BaseController {
 			flash("info", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());
 		} else {
-			return ok(index.render(account, accountForm.fill(account)));
+			return ok(index.render(account, accountForm.fill(account), postForm));
 			//return ok(index.render(account));
 		}
 	}
@@ -33,7 +35,7 @@ public class ProfileController extends BaseController {
 			flash("info", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());
 		} else {
-			return ok(index.render(account, accountForm.fill(account)));
+			return ok(index.render(account, accountForm.fill(account), postForm));
 			//return ok(index.render(account));
 		}
 	}
@@ -44,7 +46,7 @@ public class ProfileController extends BaseController {
 			flash("info", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());
 		} else {
-			return ok(index.render(account, accountForm.fill(account)));
+			return ok(index.render(account, accountForm.fill(account), postForm));
 			//return ok(edit.render(account.id, accountForm.fill(account)));
 		}
 	}
@@ -56,7 +58,7 @@ public class ProfileController extends BaseController {
 			System.out.println(filledForm.errors());
 			if (filledForm.hasErrors()) {
 				flash("error", "Error in Form!");
-				return badRequest(index.render(account, filledForm));
+				return badRequest(index.render(account, filledForm, postForm));
 				//return badRequest(edit.render(id, filledForm));
 			} else {
 				filledForm.get().update();

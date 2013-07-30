@@ -65,4 +65,7 @@ public class Secured extends Security.Authenticator {
 	public static boolean isOwnerOfAccount(final Long accountId, final Context ctx){
 		return Account.isOwner(accountId, ctx.session().get("email"));
 	}
+	public static boolean isFriend(Account account){
+		return Friendship.alreadyFriendly(Component.currentAccount(), account);
+	}
 }

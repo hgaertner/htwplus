@@ -46,16 +46,19 @@ public class PostController extends BaseController {
 			Logger.info("Ich poste in den Course");		
 		}
 		if(target.equals(Post.STREAM)) {
-
-			if (filledForm.hasErrors()) {
-				flash("error", "Error in Form!");
-			} else {
-				Post p = filledForm.get();
-				p.account = account;
-				p.owner = account;
-				p.create();
+			Account profile = Account.findById(anyId);
+			if(Secured.isFriend(profile) || profile.equals(account)){
+				if (filledForm.hasErrors()) {
+					flash("error", "Error in Form!");
+				} else {
+					Post p = filledForm.get();
+					p.account = profile;
+					p.owner = account;
+					p.create();
+				}
+				return redirect(routes.Application.index());
 			}
-			return redirect(routes.Application.index());
+			
 		}
 		return redirect(routes.Application.index());
 	}

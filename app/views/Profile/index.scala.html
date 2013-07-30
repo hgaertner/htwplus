@@ -1,4 +1,5 @@
-@(user: Account, profileForm: Form[Account]) @import helper._
+@(user: Account, profileForm: Form[Account], postForm: Form[Post])
+@import helper._
 
 @main("Profil") {
 
@@ -74,5 +75,7 @@ var aID = "a0";
 		<td>2. Semester Master</td>
 	</tr>
 </table>
+
+@views.html.snippets.postForm(user.id, models.Post.STREAM, postForm)
 
 }
