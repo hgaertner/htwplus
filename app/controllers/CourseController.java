@@ -6,6 +6,7 @@ import controllers.Navigation.Level;
 
 import models.Account;
 import models.Course;
+import models.Group;
 import models.Post;
 import play.data.Form;
 import play.db.jpa.JPA;
@@ -17,6 +18,7 @@ import views.html.Course.add;
 import views.html.Course.edit;
 import views.html.Course.index;
 import views.html.Course.view;
+import views.html.Course.snippets.searchModalResult;
 
 @Security.Authenticated(Secured.class)
 @Transactional
@@ -114,6 +116,13 @@ public class CourseController extends BaseController {
 			return forbidden();
 		}
 	}
+	
+	public static Result join(long id){
+		Account account = Component.currentAccount();
+		Course course = Course.findById(id);
+		
+		return null;
+	}
 
 	@Transactional
 	public static Result delete(Long id) {
@@ -125,5 +134,10 @@ public class CourseController extends BaseController {
 		} else {
 			return forbidden();
 		}
+	}
+	
+	public static Result searchByKeyword(final String keyword){
+		List<Course> result = Course.searchByKeyword(keyword);
+		return ok(searchModalResult.render(result));
 	}
 }

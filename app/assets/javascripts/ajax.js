@@ -172,4 +172,20 @@ $(document).ready(function () {
 	/*
 	 * END GROUP SEARCH
 	 */
+	
+	/*
+	 * COURSE SEARCH
+	 */
+	$('#courseSearchSubmit').click(function(){
+		var keyword = $('#courseSearchQuery').val();
+		$.ajax({
+			url: "/gruppe/searchForGroup/" + keyword,
+			type: "GET",
+			success: function(data){
+				$('#searchCourseResults').replaceWith(data)
+			
+			}
+		});
+		
+	});
 });
