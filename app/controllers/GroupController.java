@@ -21,6 +21,7 @@ import views.html.Group.view;
 import views.html.Group.snippets.addModal;
 import views.html.Group.snippets.addModalSuccess;
 import views.html.Group.snippets.editModal;
+import views.html.Group.snippets.searchModalResult;
 
 //@Security.Authenticated(Secured.class)
 @Transactional
@@ -182,11 +183,7 @@ public class GroupController extends BaseController {
 	public static Result searchForGroupByKeyword(final String keyword){
 		Logger.info("Search for group with keyword: " +keyword);
 		List<Group> result = Group.searchForGroupByKeyword(keyword);
-		if(result.size() > 0){
-			return redirect(routes.GroupController.view(result.get(0).id));
-		} else {
-			return redirect(routes.GroupController.view(0));
-		}
+		return ok(searchModalResult.render(result));
 	}
 	
 	

@@ -130,12 +130,31 @@ $(document).ready(function () {
 		});
 	});
 
-		
-	
 	
 	/*
 	 * END GROUP COMMENTS
 	 */
 	
 	
+	/*
+	 * GROUP SEARCH
+	 */
+	$('#groupSearchSubmit').click(function(){
+		var keyword = $('#groupSearchQuery').val();
+		$.ajax({
+			url: "/gruppe/searchForGroup/" + keyword,
+			type: "GET",
+			success: function(data){
+				$('#searchGroupResults').replaceWith(data)
+			
+			}
+		});
+		
+	});
+	
+	
+	
+	/*
+	 * END GROUP SEARCH
+	 */
 });

@@ -1,0 +1,35 @@
+ @(groups: List[Group])
+  <table class="table table-hover" id="searchGroupResults">
+        <colgroup>
+            <col width="40%">
+            <col width="30%">
+            <col width="30%">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Gruppenname</th>
+                <th>Erstellt von</th>
+                <th>Verf&uuml;gbare Optionen</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+		<!-- Fuer Fabi: Ajax-Abfrage um alle Gruppen zu holen. -->
+
+	         @for(group <- groups) {
+	         	<tr>
+	                <td>@if(group.isClosed == true) {
+		                   <i class="icon-lock"></i>
+		                } else {
+		                   <i class="icon-globe"></i>
+		                }
+		                <a href="@routes.GroupController.view(group.id)" rel="popover" data-trigger="hover" data-content="@group.description" data-original-title="Beschreibung"> @group.title</a>
+		            </td>
+	                <td><a href="#" rel="popover" data-html="true" data-trigger="hover" data-content="Rolle: Student <br /> Angewandte Informatik (Master)" data-original-title="@group.owner.name" data-placement="top">@group.owner.name</a></td>
+	                <td><a href="@routes.GroupController.join(group.id)" rel="tooltip" title="Beitreten"><i class="icon-ok"></i></a></td>
+	            </tr>
+	         }
+         
+        
+        </tbody>
+    </table>

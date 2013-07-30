@@ -130,35 +130,38 @@ public class Group extends BaseModel {
 
 	}
 
+	/**
+	 * Search for a group with a given keyword.
+	 * 
+	 * @param keyword
+	 * @return List of groups wich matches with the keyword
+	 */
 	@SuppressWarnings("unchecked")
 	public static List<Group> searchForGroupByKeyword(String keyword) {
-		// String selectString =
-		// "SELECT * FROM Group WHERE to_tsvector(group_.title) @@ to_tsquery('Closed')";
-		// List<Group> result =
-		// JPA.em().createQuery(selectString).setParameter(1,keyword).getResultList();
-		// return result;
 		Logger.info("Group model searchForGroupByKeyWord: " + keyword);
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
-		try {
+		/*try {
+		 This part takes care to create indexes of persistent data, which is not inserted via hibernate/ JPA this block
+		 is now in the onStart in Global.java
 			fullTextEntityManager.createIndexer(Group.class).startAndWait();
 		} catch (InterruptedException e) {
 			
 			Logger.error(e.getMessage());
-		}
+		}*/
+		//Create a querybuilder for the group entity 
 		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
 				.buildQueryBuilder().forEntity(Group.class).get();
+		//Sets the field we want to search on and tries to match with the given keyword
 		org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword()
 				.onFields("title").matching(keyword).createQuery();
 		// wrap Lucene query in a javax.persistence.Query
-		
 		FullTextQuery fullTextQuery = fullTextEntityManager
 				.createFullTextQuery(luceneQuery, Group.class);
 
-		List<Group> result = fullTextQuery.getResultList();
+		List<Group> result = fullTextQuery.getResultList(); //The result...
 		Logger.info("Found " +result.size() +" groups with keyword: " +keyword);
 		
 
 		return result;
 	}
-
 }

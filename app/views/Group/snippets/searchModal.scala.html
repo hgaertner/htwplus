@@ -7,45 +7,12 @@
     <br />
     <form class="form-search">
         <div class="input-append">
-            <input type="text" class="search-query" placeholder="Gruppenname eingeben...">
-            <button type="button" class="btn btn-warning">Suchen</button>
+            <input type="text" class="search-query" placeholder="Gruppenname eingeben..." id="groupSearchQuery">
+            <button type="button" class="btn btn-warning" id="groupSearchSubmit">Suchen</button>
         </div>
     </form>
     <br />
-    <table class="table table-hover">
-        <colgroup>
-            <col width="40%">
-            <col width="30%">
-            <col width="30%">
-        </colgroup>
-        <thead>
-            <tr>
-                <th>Gruppenname</th>
-                <th>Erstellt von</th>
-                <th>Verf&uuml;gbare Optionen</th>
-            </tr>
-        </thead>
-        <tbody>
-        
-		<!-- Fuer Fabi: Ajax-Abfrage um alle Gruppen zu holen. -->
-        @defining(GroupController.showAll()) { groups =>
-	         @for(group <- groups) {
-	         	<tr>
-	                <td>@if(group.isClosed == true) {
-		                   <i class="icon-lock"></i>
-		                } else {
-		                   <i class="icon-globe"></i>
-		                }
-		                <a href="@routes.GroupController.view(group.id)" rel="popover" data-trigger="hover" data-content="@group.description" data-original-title="Beschreibung"> @group.title</a>
-		            </td>
-	                <td><a href="#" rel="popover" data-html="true" data-trigger="hover" data-content="Rolle: Student <br /> Angewandte Informatik (Master)" data-original-title="@group.owner.name" data-placement="top">@group.owner.name</a></td>
-	                <td><a href="@routes.GroupController.join(group.id)" rel="tooltip" title="Beitreten"><i class="icon-ok"></i></a></td>
-	            </tr>
-	         }
-         }
-        
-        </tbody>
-    </table>
+     @views.html.Group.snippets.searchModalResult(groups)
 </div>
 <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Schlie&szlig;en</button>
