@@ -20,6 +20,7 @@ POST	/course/:id/edit					controllers.CourseController.update(id:Long)
 GET		/course/:id/delete					controllers.CourseController.delete(id:Long)
 POST	/course/addPost						controllers.CourseController.addPost(id:Long)
 GET 	/course/:id/join					controllers.CourseController.join(id:Long)
+GET		/course/searchForCourse/:keyword	controllers.CourseController.searchByKeyword(keyword:String)
 
 #Group
 GET 	/gruppen							controllers.GroupController.index()

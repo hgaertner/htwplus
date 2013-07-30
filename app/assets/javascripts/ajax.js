@@ -179,7 +179,7 @@ $(document).ready(function () {
 	$('#courseSearchSubmit').click(function(){
 		var keyword = $('#courseSearchQuery').val();
 		$.ajax({
-			url: "/gruppe/searchForGroup/" + keyword,
+			url: "/course/searchForCourse/" + keyword,
 			type: "GET",
 			success: function(data){
 				$('#searchCourseResults').replaceWith(data)
