@@ -296,6 +296,10 @@ textarea {
 	vertical-align: bottom;
 }
 
+.media-heading .btn-group {
+	margin-top: -3px;
+}
+
 .media-heading.post {
 	line-height: 22px;
 	vertical-align: middle;
