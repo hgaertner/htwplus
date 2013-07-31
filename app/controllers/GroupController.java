@@ -89,7 +89,10 @@ public class GroupController extends BaseController {
 			return ok(addModal.render(filledForm));
 		} else {
 			Group group = filledForm.get();
-			group.create(account);
+			if(filledForm.data().get("optionsRadios").equals("1")){
+				group.isClosed = true;
+			}
+			group.createWithGroupAccount(account);
 			flash("success", "Neue Gruppe erstellt!");
 			return ok(addModalSuccess.render());
 		}
@@ -152,14 +155,14 @@ public class GroupController extends BaseController {
 			return redirect(routes.GroupController.view(id));
 		}
 		if(GroupAccount.find(account, group) == null){
-			GroupAccount groupAccount = new GroupAccount(account, group);
+			GroupAccount groupAccount;
 			if(!group.isClosed){
-				groupAccount.linkType = LinkType.establish;
+				groupAccount = new GroupAccount(account, group, LinkType.establish);
 				groupAccount.create();
 				flash("success", "Gruppe erfolgreich beigetreten!");
 				return redirect(routes.GroupController.view(id));
 			} else {
-				groupAccount.linkType = LinkType.request;
+				groupAccount = new GroupAccount(account, group, LinkType.request);
 				groupAccount.create();
 				flash("success", "Deine Anfrage wurde erfolgreich übermittelt!");
 				return redirect(routes.GroupController.index());

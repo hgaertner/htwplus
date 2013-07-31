@@ -29,9 +29,10 @@ public class GroupAccount extends BaseModel {
 
 	}
 
-	public GroupAccount(Account account, Group group) {
+	public GroupAccount(Account account, Group group, LinkType linkType) {
 		this.account = account;
 		this.group = group;
+		this.linkType = linkType;
 	}
 
 	public static GroupAccount findById(Long id) {
