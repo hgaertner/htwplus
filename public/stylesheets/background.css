@@ -428,9 +428,36 @@ textarea {
 }
 
 #commentContent{
-	margin-right: 10px;
-	width: 80%;
-	float: left;
+	height: 30px;
+	margin: 0px;
+    transition: height 0.5s;
+	-webkit-transition: height 0.5s;
+	-moz-transition: height 0.5s;
+	-ms-transition: height 0.5s;
+	-o-transition: height 0.5s;
+}
+
+#commentContent:focus
+{
+	height: 100px;
+}
+
+#postContent{
+	height: 30px;
+    transition: height 0.5s;
+	-webkit-transition: height 0.5s;
+	-moz-transition: height 0.5s;
+	-ms-transition: height 0.5s;
+	-o-transition: height 0.5s;
+}
+
+#postContent:focus
+{
+	height: 100px;
+}
+
+.commentSubmit{
+	margin: -0px;
 }
 
 #fileupload input[readonly] {

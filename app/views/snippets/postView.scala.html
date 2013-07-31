@@ -6,45 +6,44 @@
 	@views.html.snippets.deletePostModal(post.id)
 
 	<div class="well">
-	<div class="media">
-		<a class="pull-left" href="@routes.ProfileController.view(post.owner.id)"> <img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="30" width="30" class="img-polaroid" /></a>
-		<div class="media-body">
-			<h4 class="media-heading">
-				<a href="@routes.ProfileController.view(post.owner.id)" data-placement="top" data-original-title="@post.owner.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover">@post.owner.name</a>
-				@if(post.belongsToGroup && currentView != "group"){schrieb in <a href="@routes.GroupController.view(post.group.id)">@post.group.title</a>}
-				@if(post.belongsToCourse && currentView != "course"){schrieb in <a href="@routes.CourseController.view(post.course.id)">@post.course.title</a>}
-				@if(post.belongsToAccount && user != post.account && post.account != post.owner){<a href="@routes.ProfileController.view(post.account.id)">@post.account.name</a>} 
-				@if(post.owner.id == user.id){
-                	<div class="btn-group">
-                		<a role="button" class="btn btn-small" onclick="editPostCom('@post.id')" rel="tooltip" data-original-title="Post bearbeiten"><i class="icon-pencil"></i></a>
-                		<a href="#confirmModalDeletePost@post.id" data-toggle="modal" role="button" class="btn btn-small last" rel="tooltip" data-original-title="Post löschen"><i class="icon-trash"></i></a>
-                	</div>
-                }
-			</h4>
-			@post.createdAt.format("dd. MMM yyyy HH:mm")
-			<br />
+		<div class="media">
+			<a class="pull-left" href="@routes.ProfileController.view(post.owner.id)"> <img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="30" width="30" class="img-polaroid" /></a>
+			<div class="media-body">
+				<h4 class="media-heading">
+					<a href="@routes.ProfileController.view(post.owner.id)" data-placement="top" data-original-title="@post.owner.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover">@post.owner.name</a>
+					@if(post.belongsToGroup && currentView != "group"){schrieb in <a href="@routes.GroupController.view(post.group.id)">@post.group.title</a>}
+					@if(post.belongsToCourse && currentView != "course"){schrieb in <a href="@routes.CourseController.view(post.course.id)">@post.course.title</a>}
+					@if(post.belongsToAccount && user != post.account && post.account != post.owner){<a href="@routes.ProfileController.view(post.account.id)">@post.account.name</a>} 
+					@if(post.owner.id == user.id){
+                		<div class="btn-group">
+                			<a role="button" class="btn btn-small" onclick="editPostCom('@post.id')" rel="tooltip" data-original-title="Post bearbeiten"><i class="icon-pencil"></i></a>
+                			<a href="#confirmModalDeletePost@post.id" data-toggle="modal" role="button" class="btn btn-small last" rel="tooltip" data-original-title="Post löschen"><i class="icon-trash"></i></a>
+                		</div>
+                	}
+				</h4>
+				@post.createdAt.format("dd. MMM yyyy HH:mm")
+				<br />
+			</div>
+		</div>
+		<br />
+		<div id="@post.id"><b>@post.content</b></div>
+		<hr />
+		<div class="comment" id="comments-@post.id">
+
+			@if(post.getCountComments() > 2) {
+				<a href="#collapse-@post.id" class="olderComments unloaded">Alle Kommentare anzeigen...</a>
+				<div id="collapse-@post.id" class="collapse"></div>
+			}
+			@defining(PostController.getCommentsForPostInGroup(post.id)) { comments => 
+	 			@for(comment <- comments){
+	 				@views.html.snippets.postComment(comment)
+	 			}
+	 		}
+			@form(routes.PostController.addComment(post.id), 'class -> "addComment") {
+				@textarea(postForm("Content"), '_label -> "", 'id -> "commentContent", 'placeholder -> "Schreibe ein Kommentar...")
+				<button class="btn btn-small btn-warning commentSubmit" type="submit">Kommentieren</button>
+			}
 		</div>
 	</div>
-	<br />
-	<div id="@post.id"><b>@post.content</b></div>
-	}
-	<hr />
-	<div class="comment" id="comments-@post.id">
+}
 
-	@if(post.getCountComments() > 2) {
-	<a href="#collapse-@post.id" class="olderComments unloaded">Alle Kommentare anzeigen...</a>
-	<div id="collapse-@post.id" class="collapse">	
-	</div>
-	}
-
-	 @defining(PostController.getCommentsForPostInGroup(post.id)) { comments => 
-	 	@for(comment <- comments){
-	 		@views.html.snippets.postComment(comment)
-	 	}
-	 }
-		@form(routes.PostController.addComment(post.id), 'class -> "addComment") {
-		@textarea(postForm("Content"), '_label -> "", 'id -> "commentContent", 'rows -> "1", 'placeholder -> "Schreibe ein Kommentar...")
-		<button class="btn btn-small btn-warning commentSubmit" type="submit">Kommentieren</button>
-		}
-	</div>
-</div>
