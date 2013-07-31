@@ -13,7 +13,7 @@
 			<property name="hibernate.search.default.directory_provider"
 				value="org.hibernate.search.store.impl.FSDirectoryProvider" />
 			<!--  <property name="hibernate.search.indexing_strategy" value="aut" /> -->
-			<property name="hibernate.search.default.indexBase" value="htwplus/you/havetochangethispath" />
+			<property name="hibernate.search.default.indexBase" value="searchstuff" />
 		</properties>
 	</persistence-unit>
 
