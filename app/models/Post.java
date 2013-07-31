@@ -133,8 +133,8 @@ public class Post extends BaseModel {
 		}
 		
 		// Add posts from all groups of this account
-		for(GroupAccount groupAccount : GroupAccount.allByAccount(account)){
-			posts.addAll(getPostForGroup(groupAccount.group));
+		for(Group group : GroupAccount.findEstablished(account)){
+			posts.addAll(getPostForGroup(group));
 		}
 		
 		return posts;
