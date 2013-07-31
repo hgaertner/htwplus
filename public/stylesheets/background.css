@@ -409,6 +409,10 @@ textarea {
 	margin-left: 50px;
 }
 
+.addComment textarea {
+	margin-bottom: 0px;
+} 
+
 #addPost label,
 #addComment label {
 	display: none;
@@ -439,7 +443,7 @@ textarea {
 	margin-right: 10px;
 	width: 80%;
 	float: left;
-	height: 30px;
+	height: 26px;
     transition: height 0.5s ease 0.2s;
 	-webkit-transition: height 0.5s ease 0.2s;
 	-moz-transition: height 0.5s ease 0.2s;
@@ -449,11 +453,11 @@ textarea {
 
 #commentContent:focus
 {
-	height: 100px;
+	height: 104px;
 }
 
 #postContent{
-	height: 30px;
+	height: 26px;
     transition: height 0.5s ease 0.2s;
 	-webkit-transition: height 0.5s ease 0.2s;
 	-moz-transition: height 0.5s ease 0.2s;
@@ -463,7 +467,7 @@ textarea {
 
 #postContent:focus
 {
-	height: 100px;
+	height: 104px;
 }
 
 .commentSubmit{
