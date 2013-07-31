@@ -30,6 +30,7 @@ import play.api.data.validation.ValidationError;
 import play.data.validation.Constraints.*;
 import javax.persistence.*;
 import models.base.BaseModel;
+import models.enums.LinkType;
 import play.db.jpa.*;
 
 @Indexed
@@ -109,11 +110,12 @@ public class Group extends BaseModel {
 		this.owner = account;
 		JPA.em().persist(this);
 		GroupAccount groupAccount = new GroupAccount(account, this);
-		groupAccount.approved = true;
+		groupAccount.linkType = LinkType.establish;
 		groupAccount.create();
 	}
 
 	@Override
+	@Deprecated
 	public void create() {
 		JPA.em().persist(this);
 	}
@@ -170,8 +172,8 @@ public class Group extends BaseModel {
 		List<GroupAccount> groupAccounts = (List<GroupAccount>) JPA
 				.em()
 				.createQuery(
-						"SELECT g FROM GroupAccount g WHERE g.account.id = ?1 and g.group.id = ?2 AND approved = TRUE")
-				.setParameter(1, account.id).setParameter(2, group.id)
+						"SELECT g FROM GroupAccount g WHERE g.account.id = ?1 and g.group.id = ?2 AND linkType = ?3")
+				.setParameter(1, account.id).setParameter(2, group.id).setParameter(3, LinkType.establish)
 				.getResultList();
 		
 		if(groupAccounts.isEmpty()) {

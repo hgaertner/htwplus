@@ -66,9 +66,9 @@ Offene Anfragen</span></h2>
 		<tr>
 			@if(accountGroup.account.equals(user)) {
 			<td><a href="@routes.GroupController.view(accountGroup.group.id)">@accountGroup.group.title</a></td>
-			<td><a href="@routes.ProfileController.view(accountGroup.account.id)">Du</a></td>
-			<td>@if(accountGroup.approved == false) {abgelehnt} else {in Bearabeitung}</td>
-			<td><a href="@routes.GroupController.removeMember(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" data-original-title="Anfrage zurückziehen"><i class="icon-remove"></i></a></td>
+			<td><a href="@routes.ProfileController.view(accountGroup.account.id)">Dir</a></td>
+			<td>@if(accountGroup.linkType.equals(models.enums.LinkType.reject)) {abgelehnt} else {in Bearabeitung}</td>
+			<td><a href="@routes.GroupController.removeMember(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" data-original-title="@if(accountGroup.linkType.equals(models.enums.LinkType.reject)) {löschen} else {Anfrage zurückziehen}"><i class="icon-remove"></i></a></td>
 			} else {
 			<td><a href="@routes.GroupController.view(accountGroup.group.id)">@accountGroup.group.title</a></td>
 			<td><a href="@routes.ProfileController.view(accountGroup.account.id)">@accountGroup.account.name</a></td>

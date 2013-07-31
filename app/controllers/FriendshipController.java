@@ -80,11 +80,11 @@ public class FriendshipController extends BaseController {
 			return redirect(routes.FriendshipController.index());
 		} else{
 			// if so: set LinkType from request to friend
-			requestLink.linkType = LinkType.friend;
+			requestLink.linkType = LinkType.establish;
 			requestLink.update();
 			
 			// and create new friend-connection between currentAccount and requester
-			new Friendship(currentUser,potentialFriend,LinkType.friend).create();
+			new Friendship(currentUser,potentialFriend,LinkType.establish).create();
 			
 			flash("success","Freundschaft erfolgreich hergestellt!");
 		}

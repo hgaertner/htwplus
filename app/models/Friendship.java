@@ -71,7 +71,7 @@ public class Friendship extends BaseModel {
 	public static Friendship findFriendLink(Account account, Account target) {
 		try{
 			return (Friendship) JPA.em().createQuery("SELECT fs FROM Friendship fs WHERE fs.account.id = ?1 and fs.friend.id = ?2 AND fs.linkType = ?3")
-			.setParameter(1, account.id).setParameter(2, target.id).setParameter(3, LinkType.friend).getSingleResult();
+			.setParameter(1, account.id).setParameter(2, target.id).setParameter(3, LinkType.establish).getSingleResult();
 		} catch (NoResultException exp) {
 			return null;
 		}
@@ -80,7 +80,7 @@ public class Friendship extends BaseModel {
 	public static boolean alreadyFriendly(Account me, Account potentialFriend) {
 		try {
 			JPA.em().createQuery("SELECT fs FROM Friendship fs WHERE fs.account.id = ?1 and fs.friend.id = ?2 AND fs.linkType = ?3")
-			.setParameter(1, me.id).setParameter(2, potentialFriend.id).setParameter(3, LinkType.friend).getSingleResult();
+			.setParameter(1, me.id).setParameter(2, potentialFriend.id).setParameter(3, LinkType.establish).getSingleResult();
 		} catch (NoResultException exp) {
 	    	return false;
 		}
@@ -90,7 +90,7 @@ public class Friendship extends BaseModel {
 	@SuppressWarnings("unchecked")
 	public static List<Account> findFriends(Account account){
 		return (List<Account>) JPA.em().createQuery("SELECT fs.friend FROM Friendship fs WHERE fs.account.id = ?1 AND fs.linkType = ?2")
-				.setParameter(1, account.id).setParameter(2, LinkType.friend).getResultList();
+				.setParameter(1, account.id).setParameter(2, LinkType.establish).getResultList();
 	}
 	
 	@SuppressWarnings("unchecked")

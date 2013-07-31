@@ -17,6 +17,7 @@ import models.Group;
 import models.GroupAccount;
 import models.Media;
 import models.Post;
+import models.enums.LinkType;
 
 import play.Logger;
 import play.data.Form;
@@ -42,28 +43,10 @@ public class GroupController extends BaseController {
 	public static Result index() {
 		Navigation.set(Level.GROUPS);
 		Account account = Component.currentAccount();
-		List<GroupAccount> groupAccounts = GroupAccount.allByAccount(account);
-		List<Group> approvedGroups = new ArrayList<Group>();
-		List<GroupAccount> unapprovedGroups = new ArrayList<GroupAccount>();
-		
-		// split Groups (approved/unapproved)
-		if(!groupAccounts.isEmpty()){
-			for(GroupAccount groupAccount : groupAccounts){
-				if(groupAccount.approved == null){
-					unapprovedGroups.add(groupAccount);
-				} else {
-					if(groupAccount.approved == true && groupAccount.account.equals(account)){
-						approvedGroups.add(groupAccount.group);
-					} 
-
-					if(groupAccount.approved == false && groupAccount.account.equals(account)){
-						unapprovedGroups.add(groupAccount);
-					}
-				}
-			}
-		}
-				
-		return ok(index.render(approvedGroups,unapprovedGroups,groupForm));
+		List<Group> groupAccounts = GroupAccount.findEstablished(account);
+		List<GroupAccount> groupRequests = GroupAccount.findRequests(account);
+								
+		return ok(index.render(groupAccounts,groupRequests,groupForm));
 	}
 		
 	@Transactional(readOnly=true)
@@ -171,13 +154,16 @@ public class GroupController extends BaseController {
 		if(GroupAccount.find(account, group) == null){
 			GroupAccount groupAccount = new GroupAccount(account, group);
 			if(!group.isClosed){
-				groupAccount.approved = true;
+				groupAccount.linkType = LinkType.establish;
+				groupAccount.create();
 				flash("success", "Gruppe erfolgreich beigetreten!");
+				return redirect(routes.GroupController.view(id));
 			} else {
+				groupAccount.linkType = LinkType.request;
+				groupAccount.create();
 				flash("success", "Deine Anfrage wurde erfolgreich übermittelt!");
+				return redirect(routes.GroupController.index());
 			}
-			groupAccount.create();
-			return redirect(routes.GroupController.view(id));
 		}
 		
 		return redirect(routes.GroupController.index());
@@ -186,13 +172,19 @@ public class GroupController extends BaseController {
 	public static Result removeMember(long groupId, long accountId){
 		Account account = Account.findById(accountId);
 		Group group = Group.findById(groupId);
-		GroupAccount groupAccount = GroupAccount.find(Account.findById(accountId), group);
+		GroupAccount groupAccount = GroupAccount.find(account, group);
 		if(groupAccount != null && !Secured.isOwnerOfGroup(group, account)){
 			groupAccount.delete();
 			if(account.equals(Component.currentAccount())){
 				flash("info", "Gruppe erfolgreich verlassen!");
 			} else {
 				flash("info", "Mitglied erfolgreich entfernt!");
+			}
+			if(groupAccount.linkType.equals(LinkType.request)){
+				flash("info", "Anfrage zurückgezogen!");			
+			}
+			if(groupAccount.linkType.equals(LinkType.reject)){
+				flash("info", "Anfrage gelöscht!");			
 			}
 		} else {
 			flash("info", "Das geht leider nicht :(");
@@ -206,7 +198,7 @@ public class GroupController extends BaseController {
 		if(account != null && group != null && Secured.isOwnerOfGroup(group, Component.currentAccount())){
 			GroupAccount groupAccount = GroupAccount.find(account, group);
 			if(groupAccount != null){
-				groupAccount.approved = true;
+				groupAccount.linkType = LinkType.establish;
 				groupAccount.update();
 			}
 		}
@@ -219,7 +211,7 @@ public class GroupController extends BaseController {
 		if(account != null && group != null && Secured.isOwnerOfGroup(group, Component.currentAccount())){
 			GroupAccount groupAccount = GroupAccount.find(account, group);
 			if(groupAccount != null){
-				groupAccount.approved = false;
+				groupAccount.linkType = LinkType.reject;
 			}
 		}
 		return redirect(routes.GroupController.index());
