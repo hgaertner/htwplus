@@ -18,7 +18,6 @@ object ApplicationBuild extends Build {
     //elastic search module
     //"com.clever-age" % "play2-elasticsearch" % "0.6-SNAPSHOT",
     "org.hibernate" % "hibernate-search" % "4.3.0.Final",
-    "org.hibernate" % "hibernate-annotations" % "3.5.6-Final",
     "org.hibernate" % "hibernate-core" % "4.2.3.Final",
     "org.hibernate" % "hibernate-commons-annotations" % "3.2.0.Final")
 
