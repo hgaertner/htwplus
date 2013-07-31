@@ -19,7 +19,22 @@
 	</dl>
 	@form(routes.GroupController.update(group.id), 'id -> "editGroupForm") {
 		@textarea(groupForm("description"), '_label -> "Beschreibung", 'rows -> "5")
+		<!--
 		@checkbox(groupForm("isClosed"), '_label -> None, '_text -> "Geschlossene Gruppe")
+		-->
+		<dl>
+			<dt>Sichtbarkeit</dt>
+			<dd>
+				<label class="radio">
+					<input type="radio" name="optionsRadios" id="optionsRadios2" value="0">
+					<i class="icon-globe"></i> Öffentliche Gruppe
+				</label>
+				<label class="radio">
+					<input type="radio" name="optionsRadios" id="optionsRadios1" value="1" checked>
+					<i class="icon-lock"></i> Private Gruppe
+				</label>
+			</dd>
+		</dl>
 	}
 	<dl>
 		<dt>Mitglieder</dt>
