@@ -97,6 +97,43 @@ public class Post extends BaseModel {
 				.getResultList();
 	}
 	
+	/**
+	 * @author Iven
+	 * @param account - Account (usually currentUser)
+	 * @param groupList - a list containing all groups of currentAccount
+	 * @param friendList - a list containing all friends of currentAccount
+	 * @return List of Posts
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<Post> findStreamForAccount(Account account, List<Group> groupList, List<Account> friendList){
+		// since JPA is unable to handle empty lists (eg. groupList, friendList) we need to assemble our query.
+		String groupListClause = "";
+		String friendListClause = "";
+		
+		// add additional clauses if not empty
+		if(!groupList.isEmpty()){
+			groupListClause = " OR p.group IN :groupList ";
+		}
+		if(!friendList.isEmpty()){
+			friendListClause = " OR p.account IN :friendList ";
+		}
+		
+		// create Query
+		Query query = JPA.em().createQuery("SELECT p FROM Post p WHERE p.account = :currentAccount "+groupListClause+friendListClause+" ORDER BY p.createdAt DESC");
+		query.setParameter("currentAccount", account);
+		
+		// add parameter as needed
+		if(!groupList.isEmpty()){
+			query.setParameter("groupList", groupList);
+		}
+		if(!friendList.isEmpty()){
+			query.setParameter("friendList", friendList);
+		}
+		
+		List<Post> posts = query.getResultList();
+		return posts;
+	}
+	
 	public static int countCommentsForPost(Long id) {
 		return ((Number)JPA.em().createQuery("SELECT COUNT(p.id) FROM Post p WHERE p.parent.id = ?1").setParameter(1, id).getSingleResult()).intValue();
 	}
@@ -120,23 +157,16 @@ public class Post extends BaseModel {
 		return false;
 	}
 
+	/**
+	 * @author Iven
+	 * @param account - Account (usually currentUser)
+	 * @return List of Posts
+	 */
 	public static List<Post> getStream(Account account) {
-		// Create empty ArrayList
-		List<Post> posts = new ArrayList<Post>();
-		
-		// Add posts for given Account
-		posts.addAll(getPostForAccount(account));
-		
-		// Add posts from all friend of this account
-		for(Account friend : Friendship.findFriends(account)){
-			posts.addAll(getPostForAccount(friend));
-		}
-		
-		// Add posts from all groups of this account
-		for(Group group : GroupAccount.findEstablished(account)){
-			posts.addAll(getPostForGroup(group));
-		}
-		
-		return posts;
+		// find friends, groups and course of given account
+		List<Account> friendList = Friendship.findFriends(account);
+		List<Group> groupList = GroupAccount.findEstablished(account);
+			
+		return findStreamForAccount(account, groupList, friendList);
 	}
 }

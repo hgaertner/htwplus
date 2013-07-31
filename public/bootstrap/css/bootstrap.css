@@ -234,6 +234,10 @@ a:focus {
   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
+.img-polaroid.dreizig {
+	width: 30px;
+	height: 30px;
+}
 .img-circle {
   -webkit-border-radius: 500px;
   -moz-border-radius: 500px;
@@ -4488,7 +4492,7 @@ a.thumbnail:focus {
   margin-top: 15px;
 }
 .media:first-child {
-  margin-top: 0;
+	margin-top: 0px;
 }
 .media-object {
   display: block;

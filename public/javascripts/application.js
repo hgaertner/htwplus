@@ -112,10 +112,6 @@ $('#editProfileModal').on('show', function () {
 	setAvatar(aID);
 });
 
-$('#commentContent').click(function () {
-    $(this).animate({ height: "200px" }, 500);
-});
-
 $('[rel="tooltip"]').tooltip('toggle');
 $('[rel="tooltip"]').tooltip('hide');
 $('[rel="popover"]').popover('toggle');

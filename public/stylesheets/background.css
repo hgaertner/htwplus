@@ -10,6 +10,10 @@ form {
 	margin: 0px;
 }
 
+.clear {
+	clear: both;
+}
+
 #logo {
 	height: 89px;
 	position: relative;
@@ -431,6 +435,35 @@ textarea {
 	margin-right: 10px;
 	width: 80%;
 	float: left;
+	height: 30px;
+    transition: height 0.5s;
+	-webkit-transition: height 0.5s;
+	-moz-transition: height 0.5s;
+	-ms-transition: height 0.5s;
+	-o-transition: height 0.5s;
+}
+
+#commentContent:focus
+{
+	height: 100px;
+}
+
+#postContent{
+	height: 30px;
+    transition: height 0.5s;
+	-webkit-transition: height 0.5s;
+	-moz-transition: height 0.5s;
+	-ms-transition: height 0.5s;
+	-o-transition: height 0.5s;
+}
+
+#postContent:focus
+{
+	height: 100px;
+}
+
+.commentSubmit{
+	margin: -0px;
 }
 
 #fileupload {

@@ -106,16 +106,15 @@ public class Group extends BaseModel {
 		return null;
 	}
 
-	public void create(Account account) {
+	public void createWithGroupAccount(Account account) {
 		this.owner = account;
-		JPA.em().persist(this);
-		GroupAccount groupAccount = new GroupAccount(account, this);
-		groupAccount.linkType = LinkType.establish;
+		this.create();
+		GroupAccount groupAccount = new GroupAccount(account, this, LinkType.establish);
 		groupAccount.create();
+		
 	}
 
 	@Override
-	@Deprecated
 	public void create() {
 		JPA.em().persist(this);
 	}
