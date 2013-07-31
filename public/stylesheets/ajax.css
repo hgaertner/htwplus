@@ -1,21 +1,15 @@
-#loading {
+.loading {
 	background-image: url(../images/loading.gif);
 	width: 16px;
 	height: 16px;
-	margin-right: 8px;
 	vertical-align: middle;
+	margin-right: 8px;
 	background-size: 100%;
 	display: none;
 }
 
-#loadingMedia {
-	position: absolute;
-	background-image: url(../images/loading.gif);
-	width: 16px;
-	height: 16px;
-	margin-left: 8px;
-	background-size: 100%;
-	display: none;
+.loading#loadingMedia{
+	vertical-align: top;
 }
 
 #loading-active {

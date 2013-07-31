@@ -1,14 +1,16 @@
 @(mediaForm: Form[Media],target:String,id:Long) 
 @import helper._
 
-<h4>Neue Dateien hochladen<span id="loadingMedia"></span></h4>
-@form(action = routes.MediaController.upload(target, id), 'enctype -> "multipart/form-data") {
-	<div id="fileupload">
-    	<input class="span5" id="fileupload-input" type="file" name="upload" multiple="multiple" onchange="setFileNames()">
-    	<div class="input-append">
-    		<input class="span5" id="files" type="text" placeholder="Dateien zum Hochladen" readonly="true"
-    		 onclick="$('#fileupload-input').click();"  rel="tooltip" data-original-title="Hier klicken, um Dateien auszuwählen!" data-delay="500">
-		    <button class="btn btn-warning" type="submit" id="fileuploadSubmit">Senden</button>
-		</div>
-	</div>                                          
+<h4>Neue Dateien hochladen <div class="loading" id="loadingMedia"></div></h4>
+
+@form(action = routes.MediaController.upload(target, id), 'enctype -> "multipart/form-data", 'id -> "fileuploadForm") {
+<input class="span5" id="fileupload-input" type="file" name="upload" multiple="multiple" onchange="setFileNames()">
 }
+
+<div class="input-append" id="fileupload">
+	<label for="fileupload-input">
+		<input class="span5" id="files" type="text" placeholder="Dateien zum Hochladen" readonly="true" rel="tooltip" data-original-title="Hier klicken, um Dateien auszuwählen!" data-delay="500">
+	</label>
+	<input class="btn btn-warning" type="button" value="Senden" onclick="mediaUpload();">
+</div>
+

@@ -79,6 +79,12 @@ function setFileNames() {
 	document.getElementById("files").value = names;
 }
 
+function mediaUpload() {
+	document.getElementById("loadingMedia").style.display = "inline-block";
+	document.getElementById("fileuploadForm").submit();
+	document.getElementById("fileuploadForm").submit();
+}
+
 function updateAvatar(parent) {
 	var childs = document.getElementById("avatars").getElementsByClassName("img-polaroid");
 	for (i = 0; i < childs.length; i++) {

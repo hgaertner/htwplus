@@ -5,12 +5,11 @@ $(document).ready(function () {
 	 */
 	$.ajaxSetup({
 	    beforeSend:function(){
-	        $("#loading").show();
-	        // show gif here, eg:
-	        $("#loading").css('display', 'inline-block');
+	        $(".loading").show();
+	        $(".loading").css('display', 'inline-block');
 	    },
 	    complete:function(){
-	        $("#loading").hide();
+	        $(".loading").hide();
 	    }
 	});
 	
@@ -162,11 +161,6 @@ $(document).ready(function () {
 	/*
 	 * MEDIA UPLOAD
 	 */
-	
-	$('#fileuploadSubmit').click(function(){
-		$('#loadingMedia').show();
-        /*$("#loadingMedia").css('display', 'inline-block');*/
-	});
 	
 	
 	/*
