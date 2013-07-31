@@ -10,6 +10,10 @@ form {
 	margin: 0px;
 }
 
+.clear {
+	clear: both;
+}
+
 #logo {
 	height: 89px;
 	position: relative;
@@ -428,8 +432,10 @@ textarea {
 }
 
 #commentContent{
+	margin-right: 10px;
+	width: 80%;
+	float: left;
 	height: 30px;
-	margin: 0px;
     transition: height 0.5s;
 	-webkit-transition: height 0.5s;
 	-moz-transition: height 0.5s;
