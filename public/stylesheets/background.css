@@ -440,11 +440,11 @@ textarea {
 	width: 80%;
 	float: left;
 	height: 30px;
-    transition: height 0.5s;
-	-webkit-transition: height 0.5s;
-	-moz-transition: height 0.5s;
-	-ms-transition: height 0.5s;
-	-o-transition: height 0.5s;
+    transition: height 0.5s ease 0.2s;
+	-webkit-transition: height 0.5s ease 0.2s;
+	-moz-transition: height 0.5s ease 0.2s;
+	-ms-transition: height 0.5s ease 0.2s;
+	-o-transition: height 0.5s ease 0.2s;
 }
 
 #commentContent:focus
@@ -454,11 +454,11 @@ textarea {
 
 #postContent{
 	height: 30px;
-    transition: height 0.5s;
-	-webkit-transition: height 0.5s;
-	-moz-transition: height 0.5s;
-	-ms-transition: height 0.5s;
-	-o-transition: height 0.5s;
+    transition: height 0.5s ease 0.2s;
+	-webkit-transition: height 0.5s ease 0.2s;
+	-moz-transition: height 0.5s ease 0.2s;
+	-ms-transition: height 0.5s ease 0.2s;
+	-o-transition: height 0.5s ease 0.2s;
 }
 
 #postContent:focus
