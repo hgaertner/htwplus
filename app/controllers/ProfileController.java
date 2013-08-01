@@ -10,6 +10,7 @@ import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.Profile.*;
+import views.html.Profile.snippets.*;
 
 @Transactional
 public class ProfileController extends BaseController {
@@ -24,7 +25,7 @@ public class ProfileController extends BaseController {
 			flash("info", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());
 		} else {
-			return ok(index.render(account, accountForm.fill(account), postForm));
+			return ok(index.render(account, postForm));
 			//return ok(index.render(account));
 		}
 	}
@@ -36,7 +37,7 @@ public class ProfileController extends BaseController {
 			flash("info", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());
 		} else {
-			return ok(index.render(account, accountForm.fill(account), postForm));
+			return ok(index.render(account, postForm));
 			//return ok(index.render(account));
 		}
 	}
@@ -52,33 +53,27 @@ public class ProfileController extends BaseController {
 	}
 
 	public static Result edit(Long id) {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Account account = Account.findById(id);
 		if (account == null) {
 			flash("info", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());
 		} else {
-			return ok(index.render(account, accountForm.fill(account), postForm));
-			//return ok(edit.render(account.id, accountForm.fill(account)));
+			return ok(editForm.render(account, accountForm.fill(account)));
 		}
 	}
 
 	public static Result update(Long id) {
-		if (Secured.isOwnerOfAccount(id, ctx())) {
 			Account account = Account.findById(id);
-			Form<Account> filledForm = accountForm.bindFromRequest();
-			System.out.println(filledForm.errors());
-			if (filledForm.hasErrors()) {
-				flash("error", "Error in Form!");
-				return badRequest(index.render(account, filledForm, postForm));
-				//return badRequest(edit.render(id, filledForm));
-			} else {
-				filledForm.get().update();
-				flash("info", "Profile updated!");
-				return redirect(routes.Application.index());
-			}
-		} else {
-			return forbidden();
-		}
+			String firstname = accountForm.bindFromRequest().data().get("firstname");
+			account.firstname = firstname;
+			flash("info", "Dieses Profil gibt es nicht.");
+			return redirect(routes.GroupController.index());
 	}
 
 }

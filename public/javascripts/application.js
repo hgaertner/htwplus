@@ -85,19 +85,7 @@ function mediaUpload() {
 	document.getElementById("fileuploadForm").submit();
 }
 
-function updateAvatar(parent) {
-	var childs = document.getElementById("avatars").getElementsByClassName("img-polaroid");
-	for (i = 0; i < childs.length; i++) {
-		childs[i].className = "img-polaroid";
-	}
-	parent.className = "img-polaroid active";
-	document.getElementById("avatar").value = parent.id;
-}
 
-function setAvatar(id) {
-	document.getElementById(id).className = "img-polaroid active";
-	document.getElementById("avatar").value = id;
-}
 
 /* Reload Page after creating or edit a new Group */
 $('#createNewGroupModal').on('hidden', function () {
@@ -107,10 +95,6 @@ $('#editModal').on('hidden', function () {
 	location.reload();
 });
 
-/* select current avatar when profile edit modal is shown */
-$('#editProfileModal').on('show', function () {
-	setAvatar(aID);
-});
 
 $('[rel="tooltip"]').tooltip('toggle');
 $('[rel="tooltip"]').tooltip('hide');

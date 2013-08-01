@@ -1,4 +1,4 @@
-@(user: Account, profileForm: Form[Account], postForm: Form[Post])
+@(user: Account, postForm: Form[Post])
 @import helper._
 
 @main("Profil") {
@@ -7,9 +7,9 @@
 	@user.firstname @user.lastname
 	<div class="btn-group">
 		<a href="@routes.ProfileController.stream(user.id)" role="button" class="btn" rel="tooltip" data-original-title="Profilestream"><i class="icon-comment"></i></a>
-		<a href="#editProfileModal" class="btn" data-toggle="modal" rel="tooltip"
-			title="Profil bearbeiten"><i class="icon-pencil"></i></a> <a
-			href="#editPwModal" class="btn last" data-toggle="modal"
+		<a href="@routes.ProfileController.edit(user.id)" data-target="#editProfileModal" class="btn ajaxModal" data-toggle="modal" rel="tooltip"
+			title="Profil bearbeiten"><i class="icon-pencil"></i></a> 
+			<a href="#editPwModal" class="btn last" data-toggle="modal"
 			rel="tooltip" title="Passwort bearbeiten"><i class="icon-wrench"></i></a>
 	</div>
 </h2>
@@ -18,10 +18,7 @@
 <br />
 
 <!-- editModal -->
-@views.html.Profile.snippets.edit(profileForm)
-<script type="text/javascript">
-var aID = "a0";
-</script>
+@views.html.Profile.snippets.edit()
 <!-- Ende editModal -->
 
 <!-- editPwModal -->

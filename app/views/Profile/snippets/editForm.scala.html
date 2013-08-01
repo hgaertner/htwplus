@@ -1,0 +1,91 @@
+@(profile: Account, profileForm: Form[Account])
+@import helper._
+
+@form(routes.ProfileController.update(profile.id), 'id -> "ajaxForm") {
+
+	@inputText(
+		profileForm("firstname"), 
+		'_label -> "Vorname *",
+		'placeholder -> "Max" 
+       )
+	@inputText(
+		profileForm("lastname"), 
+		'_label -> "Nachname *",
+		'placeholder -> "Mustermann"
+	)
+	@inputText(
+		profileForm("email"),
+		'_label -> "Email *",
+		'placeholder -> "max.mustermann@muster.de"
+	)
+	<dl>
+		<dt>Studiengang</dt>
+		<dd><select name="program">
+					<option>Angewandte Informatik</option>
+					<option>Bekleidungstechnik</option>
+					<option>Computer Engineering</option>
+					<option>Elektrotechnik</option>
+					<option>Facility Management</option>
+					<option>Game Design</option>
+		</select></dd>
+	</dl>
+	<dl>
+		<dt>Semester</dt>
+		<dd><select name="semester">
+					<option>1. Semester</option>
+					<option>2. Semester</option>
+					<option>3. Semester</option>
+					<option>4. Semester</option>
+					<option>5. Semester</option>
+					<option>6. Semester</option>
+					<option>7. Semester</option>
+					<option>8. Semester</option>
+		</select><select name="degree">
+					<option>Bachelor</option>
+					<option>Master</option>
+					<option>Diplom</option>
+		</select></dd>
+	</dl>
+	<dl>
+		<dt>Avatar</dt>
+		<dd id="avatars">
+			<img id="a0" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a1" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a2" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a3" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a4" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a5" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a6" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a7" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a8" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a9" class="img-polaroid" src="@routes.Assets.at("images/avatar.png")" height="80" width="80" alt="avatar" onclick="updateAvatar(this)" />
+		</dd>
+	</dl>
+	<input id="avatar" name="avatar" type="hidden" value="">
+	
+	<script type="text/javascript">
+	
+	var aID = "a0";
+	
+	function updateAvatar(parent) {
+		var childs = document.getElementById("avatars").getElementsByClassName("img-polaroid");
+		for (i = 0; i < childs.length; i++) {
+			childs[i].className = "img-polaroid";
+		}
+		parent.className = "img-polaroid active";
+		document.getElementById("avatar").value = parent.id;
+	}
+	
+	function setAvatar(id) {
+		document.getElementById(id).className = "img-polaroid active";
+		document.getElementById("avatar").value = id;
+	}
+	
+	setAvatar(aID);
+	
+	</script>
+	
+
+
+	
+}

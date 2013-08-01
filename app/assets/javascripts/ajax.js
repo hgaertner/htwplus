@@ -13,15 +13,37 @@ $(document).ready(function () {
 	    }
 	});
 	
+	/*
+	 * GENERIC AJAX FORM REQUEST
+	 */
+	
+	$('.ajaxModal').on('hidden', function () {
+		  $(this).removeData('modal');
+	});
+	
+	$('.ajaxModalSave').click(function(){
+		var form = $(this).parent().prev().find('#ajaxForm');
+		var url = form.attr("action");
+		$.ajax({
+			url: url,
+			type: "POST",
+			data: form.serialize()
+		});
+		
+	});
 	
 	/*
+	 * END GENERIC AJAX FORM REQUEST
+	 */
+	
+	/*
+	 * NEW GROUP MODAL
+	 * 
 	 * Bind the action.
 	 * Using 'on' is critical, otherwise the binding would be lost after the request
 	 */
 	$('#createNewGroupModal').on("click", "#submitGroup", createGroupRequest);
-	$('#registerModal').on("click", "#submitSignup", sumitSignupRequest);
-	
-	
+
 	function createGroupRequest() {
 		jsRoutes.controllers.GroupController.create().ajax({
 			type: "POST",
@@ -30,6 +52,21 @@ $(document).ready(function () {
 		});
 		return false;
 	}
+	
+
+	function createGroup(data) {
+		$('#createNewGroupModal').html(data);
+	}
+	
+	/*
+	 * END NEW GROUP MODAL 
+	 */
+	
+	
+	/*
+	 * REGISTER MODAL
+	 */
+	$('#registerModal').on("click", "#submitSignup", sumitSignupRequest);
 	
 	function sumitSignupRequest() {
 		jsRoutes.controllers.AccountController.submit().ajax({
@@ -40,13 +77,12 @@ $(document).ready(function () {
 		return false;
 	}
 	
-	function createGroup(data) {
-		$('#createNewGroupModal').html(data);
-	}
-	
 	function submitSignup(data) {
 		$('#registerModal').html(data);
 	}
+	/*
+	 * END REGISTER MODAL
+	 */
 	
 	/*
 	 * EDIT GROUP
@@ -157,17 +193,7 @@ $(document).ready(function () {
 	 * END GROUP COMMENTS
 	 */
 
-	
-	/*
-	 * MEDIA UPLOAD
-	 */
-	
-	
-	/*
-	 * END MEDIA UPLOAD
-	 */
-	
-	
+		
 	/*
 	 * GROUP SEARCH
 	 */
