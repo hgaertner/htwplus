@@ -411,7 +411,11 @@ textarea {
 
 .addComment textarea {
 	margin-bottom: 0px;
-} 
+}
+
+.collapse .media:first-child {
+      margin-top: 15px;
+}
 
 #addPost label,
 #addComment label {
@@ -468,10 +472,6 @@ textarea {
 #postContent:focus
 {
 	height: 104px;
-}
-
-.commentSubmit{
-	margin: -0px;
 }
 
 #fileupload {
