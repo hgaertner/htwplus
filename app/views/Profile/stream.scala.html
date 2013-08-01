@@ -1,14 +1,14 @@
-@(currentUser: Account, posts:List[Post], postForm: Form[Post])
+@(currentProfile: Account, posts:List[Post], postForm: Form[Post])
 @main("Newsstream") {
     
-	<h1>@currentUser.name's Newsstream</h1>
+	<h1>@currentProfile.name's Newsstream</h1>@if(Component.currentAccount.equals(currentProfile)){<h5>(Das sehen deine Besucher)</h5>}
   	<br />
   
-	@views.html.snippets.postForm(currentUser.id, models.Post.STREAM, postForm)
+	@views.html.snippets.postForm(currentProfile.id, models.Post.PROFILE, postForm)
 		
 	@if(posts != null) {
 		@for(post <- posts) {
-			@views.html.snippets.postView(post, postForm, models.Post.STREAM)
+			@views.html.snippets.postView(post, postForm, models.Post.PROFILE)
 		}
 	}
 }

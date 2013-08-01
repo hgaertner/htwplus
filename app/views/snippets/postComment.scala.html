@@ -4,7 +4,7 @@
 	<div class="media-body">
 		<h5 class="media-heading">
 				<a href="@routes.ProfileController.view(comment.owner.id)" data-placement="top" data-original-title="@comment.owner.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover">@comment.owner.name</a>
-				<small>(@comment.createdAt.format("dd. MMM yyyy hh:mm"))</small>
+				<small>(@comment.createdAt.format("dd. MMM yyyy HH:mm"))</small>
 		</h5>
 			<b>@comment.content</b>
 	</div>

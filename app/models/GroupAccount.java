@@ -55,7 +55,7 @@ public class GroupAccount extends BaseModel {
 	}
 
 	/**
-	 * Find all Groups where given Account is Owner or Member
+	 * Find all groups where given account is owner or member
 	 */
 	public static List<Group> findEstablished(Account account) {
 		@SuppressWarnings("unchecked")
@@ -63,6 +63,20 @@ public class GroupAccount extends BaseModel {
 				.em()
 				.createQuery(
 						"SELECT ga.group FROM GroupAccount ga WHERE ga.account.id = ?1 AND ga.linkType = ?2")
+				.setParameter(1, account.id)
+				.setParameter(2, LinkType.establish).getResultList();
+		return groupAccounts;
+	}
+	
+	/**
+	 * Find all non private groups where given account is owner or member 
+	 */
+	public static List<Group> findPublicEstablished(Account account) {
+		@SuppressWarnings("unchecked")
+		List<Group> groupAccounts = JPA
+				.em()
+				.createQuery(
+						"SELECT ga.group FROM GroupAccount ga WHERE ga.account.id = ?1 AND ga.linkType = ?2 AND ga.group.isClosed = FALSE")
 				.setParameter(1, account.id)
 				.setParameter(2, LinkType.establish).getResultList();
 		return groupAccounts;

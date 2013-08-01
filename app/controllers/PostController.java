@@ -21,6 +21,12 @@ public class PostController extends BaseController {
 	
 	static Form<Post> postForm = Form.form(Post.class);
 	
+	/**
+	 * @author Iven
+	 * @param anyId - can be a accountId, groupId or courseId
+	 * @param target - define target stream: profile-stream, group-stream or course-stream
+	 * @return
+	 */
 	public static Result addPost(Long anyId, String target) {
 		Account account = Component.currentAccount();
 		Form<Post> filledForm = postForm.bindFromRequest();
@@ -45,7 +51,7 @@ public class PostController extends BaseController {
 		if(target.equals(Post.COURSE)) {
 			Logger.info("Ich poste in den Course");		
 		}
-		if(target.equals(Post.STREAM)) {
+		if(target.equals(Post.PROFILE)) {
 			Account profile = Account.findById(anyId);
 			if(Secured.isFriend(profile) || profile.equals(account)){
 				if (filledForm.hasErrors()) {
@@ -56,9 +62,10 @@ public class PostController extends BaseController {
 					p.owner = account;
 					p.create();
 				}
-				return redirect(routes.Application.index());
+				return redirect(routes.ProfileController.stream(anyId));
 			}
-			
+			flash("info","Du kannst nur Freunden auf den Stream schreiben!");
+			return redirect(routes.ProfileController.stream(anyId));
 		}
 		return redirect(routes.Application.index());
 	}

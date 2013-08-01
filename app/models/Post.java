@@ -19,7 +19,7 @@ public class Post extends BaseModel {
 	
 	public static String GROUP = "group";
 	public static String COURSE = "course";
-	public static String STREAM = "stream";
+	public static String PROFILE = "profile";
 
 	@Required
 	@Column(length=2000)
@@ -79,13 +79,6 @@ public class Post extends BaseModel {
 				.getResultList();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static List<Post> getPostForAccount(Account account) {
-		return (List<Post>) JPA.em()
-				.createQuery("SELECT p FROM Post p WHERE p.account.id = ?1 ORDER BY p.createdAt DESC")
-				.setParameter(1, account.id)
-				.getResultList();
-	}
 	
 	@SuppressWarnings("unchecked")
 	public static List<Post> getCommentsForPost(Long id, int start, int max) {	
@@ -99,34 +92,38 @@ public class Post extends BaseModel {
 	
 	/**
 	 * @author Iven
-	 * @param account - Account (usually currentUser)
-	 * @param groupList - a list containing all groups of currentAccount
-	 * @param friendList - a list containing all friends of currentAccount
+	 * @param account - Account (current user, profile or a friend)
+	 * @param groupList - a list containing all groups of given account
+	 * @param friendList - a list containing all friends of given account
 	 * @return List of Posts
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Post> findStreamForAccount(Account account, List<Group> groupList, List<Account> friendList){
+	public static List<Post> findStreamForAccount(Account account, List<Group> groupList, List<Account> friendList, boolean isVisitor){
 		// since JPA is unable to handle empty lists (eg. groupList, friendList) we need to assemble our query.
 		String groupListClause = "";
 		String friendListClause = "";
+		String visitorClause = "";
 		
-		// add additional clauses if not empty
-		if(!groupList.isEmpty()){
+		// add additional clauses if not null or empty
+		if(groupList != null && !groupList.isEmpty()){
 			groupListClause = " OR p.group IN :groupList ";
 		}
-		if(!friendList.isEmpty()){
+		if(friendList != null && !friendList.isEmpty()){
 			friendListClause = " OR p.account IN :friendList ";
+		}
+		if(isVisitor){
+			visitorClause = " AND p.owner = :currentAccount ";
 		}
 		
 		// create Query
-		Query query = JPA.em().createQuery("SELECT p FROM Post p WHERE p.account = :currentAccount "+groupListClause+friendListClause+" ORDER BY p.createdAt DESC");
+		Query query = JPA.em().createQuery("SELECT p FROM Post p WHERE p.account = :currentAccount "+visitorClause+groupListClause+friendListClause+" ORDER BY p.createdAt DESC");
 		query.setParameter("currentAccount", account);
 		
 		// add parameter as needed
-		if(!groupList.isEmpty()){
+		if(groupList != null && !groupList.isEmpty()){
 			query.setParameter("groupList", groupList);
 		}
-		if(!friendList.isEmpty()){
+		if(friendList != null && !friendList.isEmpty()){
 			query.setParameter("friendList", friendList);
 		}
 		
@@ -159,7 +156,7 @@ public class Post extends BaseModel {
 
 	/**
 	 * @author Iven
-	 * @param account - Account (usually currentUser)
+	 * @param account - Account (usually current user)
 	 * @return List of Posts
 	 */
 	public static List<Post> getStream(Account account) {
@@ -167,6 +164,28 @@ public class Post extends BaseModel {
 		List<Account> friendList = Friendship.findFriends(account);
 		List<Group> groupList = GroupAccount.findEstablished(account);
 			
-		return findStreamForAccount(account, groupList, friendList);
+		return findStreamForAccount(account, groupList, friendList, false);
+	}
+	
+	/**
+	 * @author Iven
+	 * @param account - Account (usually the visitors page)
+	 * @return List of Posts
+	 */
+	public static List<Post> getPublicStream(Account currentProfile) {	
+		return findStreamForAccount(currentProfile,null, null, true);
+	}
+
+	/**
+	 * @author Iven
+	 * @param account - Account (usually a friends)
+	 * @return List of Posts
+	 */
+	public static List<Post> getFriendStream(Account friend) {
+		// find friends, non closed-groups and non closed-course of given account
+		List<Group> groupList = GroupAccount.findPublicEstablished(friend);
+		List<Account> friendList = Friendship.findFriends(friend);
+			
+		return findStreamForAccount(friend, groupList, friendList, false);
 	}
 }

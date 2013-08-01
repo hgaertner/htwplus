@@ -2,6 +2,7 @@ package controllers;
 
 import controllers.Navigation.Level;
 import models.Account;
+import models.Friendship;
 import models.Post;
 import play.cache.Cache;
 import play.data.Form;
@@ -42,10 +43,12 @@ public class ProfileController extends BaseController {
 	
 	public static Result stream(Long accountId){
 		Account account = Account.findById(accountId);
-		Navigation.set(Level.STREAM, account.name);
-		Account currentAccount = Component.currentAccount();
+		Navigation.set(Level.PROFILE, "Newsstream", account.name, routes.ProfileController.view(account.id));
 		
-		return ok(stream.render(currentAccount,Post.getStream(account),postForm));
+		if(Friendship.alreadyFriendly(Component.currentAccount(), account)){
+			return ok(stream.render(account,Post.getFriendStream(account),postForm));
+		}
+		return ok(stream.render(account,Post.getPublicStream(account),postForm));
 	}
 
 	public static Result edit(Long id) {

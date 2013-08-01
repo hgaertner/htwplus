@@ -4,11 +4,11 @@
 	<h1>Mein Newsstream</h1>
   	<br />
   
-	@views.html.snippets.postForm(currentUser.id, models.Post.STREAM, postForm)
+	@views.html.snippets.postForm(currentUser.id, models.Post.PROFILE, postForm)
 		
 	@if(posts != null) {
 		@for(post <- posts) {
-			@views.html.snippets.postView(post, postForm, models.Post.STREAM)
+			@views.html.snippets.postView(post, postForm, models.Post.PROFILE)
 		}
 	}
 }
