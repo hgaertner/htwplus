@@ -39,6 +39,14 @@ public class ProfileController extends BaseController {
 			//return ok(index.render(account));
 		}
 	}
+	
+	public static Result stream(Long accountId){
+		Account account = Account.findById(accountId);
+		Navigation.set(Level.STREAM, account.name);
+		Account currentAccount = Component.currentAccount();
+		
+		return ok(stream.render(currentAccount,Post.getStream(account),postForm));
+	}
 
 	public static Result edit(Long id) {
 		Account account = Account.findById(id);

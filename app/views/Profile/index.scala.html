@@ -6,6 +6,7 @@
 <h2>
 	@user.firstname @user.lastname
 	<div class="btn-group">
+		<a href="@routes.ProfileController.stream(user.id)" role="button" class="btn" rel="tooltip" data-original-title="Profilestream"><i class="icon-comment"></i></a>
 		<a href="#editProfileModal" class="btn" data-toggle="modal" rel="tooltip"
 			title="Profil bearbeiten"><i class="icon-pencil"></i></a> <a
 			href="#editPwModal" class="btn last" data-toggle="modal"
@@ -75,7 +76,5 @@ var aID = "a0";
 		<td>2. Semester Master</td>
 	</tr>
 </table>
-
-@views.html.snippets.postForm(user.id, models.Post.STREAM, postForm)
-
+	
 }
