@@ -143,6 +143,7 @@ body#smallHead #content {
 
 .well {
 	padding: 15px;
+	margin-bottom: 0px;
 }
 
 .media small {
@@ -337,10 +338,6 @@ textarea {
 	margin-top: 15px;
 }
 
-.well {
-	margin-bottom: 0px;
-}
-
 #searchModal .modal-body {
 	padding-bottom: 45px;
 }
@@ -349,20 +346,17 @@ textarea {
 	font-weight: bold;
 }
 
-.modal-body input, select {
-	height: auto !important;
-}
-
 .modal-body input, select, textarea {
 	width: 100%;
+}
+
+.modal-body input[type="text"]:not(.search-query),
+.modal-body input[type="password"] {
+	height: auto !important;
 	line-height: 16px;
 	box-sizing: border-box;
 	-webkit-box-sizing:border-box;
-	-moz-box-sizing: border-box;
-}
-
-.modal-body input {
-	margin-bottom: 0px;
+	-moz-box-sizing: border-box
 }
 
 .modal-body input[type="radio"] {
