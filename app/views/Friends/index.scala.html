@@ -1,11 +1,18 @@
 @(friends: List[Account], requests: List[Friendship], accounts: List[Account])
 
 @main("Freunde") {
+
 <!-- searchModal -->
 <div id="searchModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
 	@views.html.Friends.snippets.searchModal(accounts)   
 </div>
 <!-- Ende searchModal -->
+
+<!-- confirmDeleteFriendModal -->
+@for(friend <- friends){
+<div id="confirmDeleteFriend@friend.id" class="modal hide fade" tabindex="-1" role="dialog">@views.html.Profile.snippets.deleteFriendModal(friend)</div>
+}
+<!-- Ende confirmDeleteFriendModal -->
 
 <h2><span rel="tooltip" data-original-title="Hier findest du den aktuellen Status deiner Freundschafts-Anfragen." data-delay="500">
 	Offene Anfragen</span></h2>
@@ -103,7 +110,7 @@
 				width="25" class="img-polaroid" /></td>
 			<td><a href="@routes.ProfileController.view(friend.id)">@friend.name</a><br />(Angewandte
 				Informatik)</td>
-			<td style="vertical-align:middle;"><a href="@routes.FriendshipController.deleteFriend(friend.id)" data-toggle="modal" rel="tooltip"
+			<td style="vertical-align:middle;"><a href="#confirmDeleteFriend@friend.id" data-toggle="modal" rel="tooltip"
 				title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
 		</tr>
 	}

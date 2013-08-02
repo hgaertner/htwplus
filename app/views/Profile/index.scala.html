@@ -10,9 +10,9 @@
 		<a href="@routes.ProfileController.stream(user.id)" role="button" class="btn" rel="tooltip" data-original-title="Newsstream"><i class="icon-comment"></i></a>
 		@if(curUser.id == user.id) {
 		<a href="@routes.ProfileController.edit(user.id)" data-target="#editProfileModal" class="btn ajaxModal" data-toggle="modal" rel="tooltip" title="Profil bearbeiten"><i class="icon-pencil"></i></a> 
-		<a href="#editPwModal" class="btn last" data-toggle="modal" rel="tooltip" title="Passwort bearbeiten"><i class="icon-wrench"></i></a>
+		<a href="#editPwModal" class="btn last" data-toggle="modal" rel="tooltip" title="Passwort ändern"><i class="icon-wrench"></i></a>
 		} else { @if(Friendship.alreadyFriendly(curUser, user)) {
-		<a href="@routes.FriendshipController.deleteFriend(user.id)" class="btn last" data-toggle="modal" rel="tooltip" title="Freundschaft beenden"><i class="icon-trash"></i></a>
+		<a href="#confirmDeleteFriend" class="btn last" data-toggle="modal" rel="tooltip" title="Freundschaft beenden"><i class="icon-trash"></i></a>
 		} else {
 		<a href="@routes.FriendshipController.requestFriend(user.id)" class="btn last" rel="tooltip" title="Einladung senden"><i class="icon-plus"></i></a>
 		}}
@@ -21,6 +21,10 @@
 <br />
 <img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="120" width="120" class="img-polaroid" />
 <br />
+
+<!-- confirmDeleteFriendModal -->
+<div id="confirmDeleteFriend" class="modal hide fade" tabindex="-1" role="dialog">@views.html.Friends.snippets.deleteFriendModal(user)</div>
+<!-- Ende confirmDeleteFriendModal -->
 
 <!-- editModal -->
 @if(curUser.id == user.id) {
