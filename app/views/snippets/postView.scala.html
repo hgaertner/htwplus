@@ -7,7 +7,7 @@
 
 	<div class="well">
 		<div class="media">
-			<a class="pull-left" href="@routes.ProfileController.view(post.owner.id)"> <img alt="avatar" src="@routes.Assets.at("images/avatar.png")"class="img-polaroid" /></a>
+			<a class="pull-left" href="@routes.ProfileController.view(post.owner.id)"> <img alt="avatar" src="@post.owner.getAvatarUrl()"class="img-polaroid" /></a>
 			<div class="media-body">
 				<h4 class="media-heading">
 					<a href="@routes.ProfileController.view(post.owner.id)" data-placement="top" data-original-title="@post.owner.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover">@post.owner.name</a>

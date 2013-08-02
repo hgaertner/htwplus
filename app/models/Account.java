@@ -6,6 +6,7 @@ import play.data.validation.Constraints.*;
 import javax.persistence.*;
 
 import controllers.Component;
+import controllers.routes;
 import models.base.BaseModel;
 import play.db.jpa.*;
 
@@ -30,6 +31,8 @@ public class Account extends BaseModel {
 
 	@Required
 	public String password;
+	
+	public String avatar;
 
 	@OneToMany(mappedBy = "account")
 	public Set<Friendship> friends;
@@ -62,6 +65,7 @@ public class Account extends BaseModel {
 
 	@Override
 	public void update() {
+		this.name = this.firstname+" "+this.lastname;
 		JPA.em().merge(this);
 	}
 
@@ -107,6 +111,11 @@ public class Account extends BaseModel {
 	//
 	// GETTER & SETTER
 	//
+	
+	public String getAvatarUrl() {
+		String url = routes.Assets.at("images/avatars/" + this.avatar + ".png").toString();
+		return url;
+	}
 	
 	public String getLastname() {
 		return lastname;

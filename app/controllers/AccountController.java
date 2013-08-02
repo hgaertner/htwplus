@@ -5,6 +5,7 @@ import static play.data.Form.form;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
 import models.Account;
 import models.Login;
@@ -74,6 +75,8 @@ public class AccountController extends BaseController {
         } else {
             Account created = filledForm.get();
             created.password = Component.md5(created.password);
+            Random generator = new Random();
+            created.avatar = "a" + generator.nextInt(10);
             created.create();
             return ok(signupSuccess.render());
         }

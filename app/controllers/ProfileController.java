@@ -92,6 +92,7 @@ public class ProfileController extends BaseController {
 		 	} else {
 				account.firstname = filledForm.field("firstname").value();
 				account.lastname = filledForm.field("lastname").value();
+				account.avatar = filledForm.field("avatar").value();
 				account.update();
 		 		result.put("status", "redirect");
 			 	result.put("url", routes.ProfileController.me().toString());

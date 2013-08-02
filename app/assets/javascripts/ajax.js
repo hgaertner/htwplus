@@ -19,6 +19,7 @@ $(document).ready(function () {
 	
 	$('.ajaxModal').on('hidden', function () {
 		  $(this).removeData('modal');
+		  $(this).find('.modal-body').html("Wird geladen ...");
 	});
 	
 	$('.ajaxModalSave').click(function(){
