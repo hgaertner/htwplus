@@ -1,16 +1,20 @@
 package controllers;
 
-import controllers.Navigation.Level;
 import models.Account;
 import models.Friendship;
 import models.Post;
-import play.cache.Cache;
+
+import org.codehaus.jackson.node.ObjectNode;
+
+import play.Logger;
 import play.data.Form;
 import play.db.jpa.Transactional;
-import play.mvc.Controller;
+import play.libs.Json;
 import play.mvc.Result;
-import views.html.Profile.*;
-import views.html.Profile.snippets.*;
+import views.html.Profile.index;
+import views.html.Profile.stream;
+import views.html.Profile.snippets.editForm;
+import controllers.Navigation.Level;
 
 @Transactional
 public class ProfileController extends BaseController {
@@ -54,7 +58,7 @@ public class ProfileController extends BaseController {
 
 	public static Result edit(Long id) {
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(0);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,10 +74,31 @@ public class ProfileController extends BaseController {
 
 	public static Result update(Long id) {
 			Account account = Account.findById(id);
-			String firstname = accountForm.bindFromRequest().data().get("firstname");
-			account.firstname = firstname;
-			flash("info", "Dieses Profil gibt es nicht.");
-			return redirect(routes.GroupController.index());
+			Form<Account> filledForm = accountForm.bindFromRequest();
+		 	ObjectNode result = Json.newObject();
+		 	Boolean error = false;
+		 	
+		 	if(filledForm.field("firstname").value() == "") {
+		 		error = true;
+		 	}
+		 	if(filledForm.field("lastname").value() == "") {
+		 		error = true;
+		 	}
+		 	
+		 	if(error) {
+		 		result.put("status", "response");
+				String form = editForm.render(account, filledForm).toString();
+			 	result.put("payload", form);	
+		 	} else {
+				account.firstname = filledForm.field("firstname").value();
+				account.lastname = filledForm.field("lastname").value();
+				account.update();
+		 		result.put("status", "redirect");
+			 	result.put("url", routes.ProfileController.me().toString());
+				flash("success", "Profil erfolgreich gespeichert.");
+		 	}
+		 	
+			return ok(result);
 	}
 
 }

@@ -26,10 +26,19 @@ $(document).ready(function () {
 		var url = form.attr("action");
 		$.ajax({
 			url: url,
+			dataType: "json",
 			type: "POST",
-			data: form.serialize()
+			data: form.serialize(),
+			success: function(data){
+				var status = data.status;
+				if(status == "redirect" && data.url != null) {
+					window.location.replace(data.url);
+				}
+				if(status == "response" && data.payload != null) {
+					form.replaceWith(data.payload);
+				}
+			}
 		});
-		
 	});
 	
 	/*
