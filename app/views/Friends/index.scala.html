@@ -106,18 +106,15 @@
 	<tbody>
 	@for(friend <- friends){
 		<tr>
-			<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" height="25"
-				width="25" class="img-polaroid" /></td>
-			<td><a href="@routes.ProfileController.view(friend.id)">@friend.name</a><br />(Angewandte
-				Informatik)</td>
-			<td style="vertical-align:middle;"><a href="#confirmDeleteFriend@friend.id" data-toggle="modal" rel="tooltip"
-				title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
+			<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" class="img-polaroid" /></td>
+			<td><a href="@routes.ProfileController.view(friend.id)">@friend.name</a><br />(Angewandte Informatik)</td>
+			<td style="vertical-align:middle;"><a href="#confirmDeleteFriend@friend.id" data-toggle="modal" rel="tooltip" title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
 		</tr>
 	}
 	</tbody>
 </table>
 } else {
-<p><img src="@routes.Assets.at("images/foreverAlone.png")"><i> Noch keine befreundeten Personen vorhanden.</i></p>
+<p>Noch keine befreundeten Personen vorhanden.</i></p>
 }
 
 }

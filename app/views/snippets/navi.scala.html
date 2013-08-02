@@ -7,7 +7,7 @@
 			<div class="postitHeader @status"></div>
 			<div class="postitBody @status">
 				<a href="@Navigation.getLevelRoute(Navigation.Level.PROFILE)">@Navigation.getLevelTitle(Navigation.Level.PROFILE)</a><br /> <img alt="avatar"
-					src="@routes.Assets.at("images/avatar.png")" height="50" width="50" class="img-polaroid" /><br />
+					src="@routes.Assets.at("images/avatar.png")" class="img-polaroid" /><br />
 				<a href="@Navigation.getLevelRoute(Navigation.Level.PROFILE)">@Component.currentAccount().firstname @Component.currentAccount().lastname</a><br /> <br /> <small><a
 					href="@routes.AccountController.logout">logout </a></small><i
 					class="icon-remove-sign icon-white"></i>
