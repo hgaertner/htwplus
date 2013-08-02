@@ -32,7 +32,7 @@ public class ProfileController extends BaseController {
 
 	public static Result view(Long id) {
 		Account account = Account.findById(id);
-		Navigation.set(Level.PROFILE, account.name);
+		Navigation.set(Level.FRIENDS, "Profil", account.name, routes.ProfileController.view(account.id));
 		if (account == null) {
 			flash("info", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());
@@ -44,7 +44,7 @@ public class ProfileController extends BaseController {
 	
 	public static Result stream(Long accountId){
 		Account account = Account.findById(accountId);
-		Navigation.set(Level.PROFILE, "Newsstream", account.name, routes.ProfileController.view(account.id));
+		Navigation.set(Level.FRIENDS, "Newsstream", account.name, routes.ProfileController.view(account.id));
 		
 		if(Friendship.alreadyFriendly(Component.currentAccount(), account)){
 			return ok(stream.render(account,Post.getFriendStream(account),postForm));

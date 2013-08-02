@@ -2,15 +2,20 @@
 @import helper._
 
 @main("Profil") {
+@defining(Component.currentAccount()) { curUser =>
 
 <h2>
 	@user.firstname @user.lastname
 	<div class="btn-group">
-		<a href="@routes.ProfileController.stream(user.id)" role="button" class="btn" rel="tooltip" data-original-title="Profilestream"><i class="icon-comment"></i></a>
-		<a href="@routes.ProfileController.edit(user.id)" data-target="#editProfileModal" class="btn ajaxModal" data-toggle="modal" rel="tooltip"
-			title="Profil bearbeiten"><i class="icon-pencil"></i></a> 
-			<a href="#editPwModal" class="btn last" data-toggle="modal"
-			rel="tooltip" title="Passwort bearbeiten"><i class="icon-wrench"></i></a>
+		<a href="@routes.ProfileController.stream(user.id)" role="button" class="btn" rel="tooltip" data-original-title="Newsstream"><i class="icon-comment"></i></a>
+		@if(curUser.id == user.id) {
+		<a href="@routes.ProfileController.edit(user.id)" data-target="#editProfileModal" class="btn ajaxModal" data-toggle="modal" rel="tooltip" title="Profil bearbeiten"><i class="icon-pencil"></i></a> 
+		<a href="#editPwModal" class="btn last" data-toggle="modal" rel="tooltip" title="Passwort bearbeiten"><i class="icon-wrench"></i></a>
+		} else { @if(Friendship.alreadyFriendly(curUser, user)) {
+		<a href="@routes.FriendshipController.deleteFriend(user.id)" class="btn last" data-toggle="modal" rel="tooltip" title="Freundschaft beenden"><i class="icon-trash"></i></a>
+		} else {
+		<a href="@routes.FriendshipController.requestFriend(user.id)" class="btn last" rel="tooltip" title="Einladung senden"><i class="icon-plus"></i></a>
+		}}
 	</div>
 </h2>
 <br />
@@ -18,10 +23,13 @@
 <br />
 
 <!-- editModal -->
-@views.html.Profile.snippets.edit()
+@if(curUser.id == user.id) {
+	@views.html.Profile.snippets.edit()
+}
 <!-- Ende editModal -->
 
 <!-- editPwModal -->
+@if(curUser.id == user.id) {
 <div id="editPwModal" class="modal hide fade" tabindex="-1"
 	role="dialog" aria-labelledby="editPwModalLabel" aria-hidden="true">
 	<div class="modal-header">
@@ -53,7 +61,10 @@
 		<button class="btn btn-warning">Speichern</button>
 	</div>
 </div>
+}
 <!-- Ende editPwModal -->
+}
+
 <br />
 <table class="table">
 	<colgroup>
