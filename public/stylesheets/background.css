@@ -474,10 +474,6 @@ textarea {
 	height: 104px;
 }
 
-#fileupload {
-	margin-bottom: 0px;
-}
-
 #fileupload input[readonly] {
 	cursor: default;
 	background-color: white;
@@ -486,6 +482,10 @@ textarea {
 #fileupload label {
 	display: inline-block;
 	margin-bottom: 0px;
+}
+
+#fileupload + .tooltip {
+	margin-top: 0px;
 }
 
 #fileuploadForm {
