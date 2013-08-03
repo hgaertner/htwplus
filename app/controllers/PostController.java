@@ -137,6 +137,4 @@ public class PostController extends BaseController {
 		return redirect(routesTo);
 	}
 	
-	
-	
 }

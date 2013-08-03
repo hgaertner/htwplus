@@ -111,11 +111,12 @@ public class GroupController extends BaseController {
 	@Transactional
 	public static Result update(Long groupId) {
 		Group group = Group.findById(groupId);
-		String description = groupForm.bindFromRequest().data().get("description");
-		if(groupForm.bindFromRequest().data().get("isClosed") == null){
-			group.isClosed = false;
-		} else {
+		Form<Group> filledForm = groupForm.bindFromRequest();
+		String description = filledForm.data().get("description");
+		if(filledForm.data().get("optionsRadios").equals("1")){
 			group.isClosed = true;
+		} else {
+			group.isClosed = false;
 		}
 		group.description = description;
 		group.update();

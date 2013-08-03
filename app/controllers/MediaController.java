@@ -154,13 +154,15 @@ public class MediaController extends BaseController {
 	    String path = Play.application().path().toString();
 	    String tmpPath = Play.application().configuration().getString("media.tempPath");
 	    File dir = new File(tmpPath);
-	    System.out.println(path+"   "+tmpPath);
+
 	    File[] files = dir.listFiles();
-	    for (File file : files) {
-			if(file.getName().startsWith(tempPrefix)) {
-				file.delete();
+	    if(files != null){	    
+		    for (File file : files) {
+				if(file.getName().startsWith(tempPrefix)) {
+					file.delete();
+				}
 			}
-		}
+	    }
     }
     
 	@Transactional

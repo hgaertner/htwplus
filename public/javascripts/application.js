@@ -10,20 +10,6 @@ function getCurrentStyle (element, cssPropertyName) {
    }
 }
 
-function editPostCom(id) {
-	var editBox = document.getElementById("editBox");
-	if (editBox != null)
-		//Post or Comment is already editing
-		editBox.focus();
-	else {
-		var elem = document.getElementById(id)
-		elem.innerHTML = "<textarea id='editBox' rows='3'>" +
-						 elem.innerHTML +
-						 "</textarea><br /><button class='btn btn-small btn-warning' type='submit'>Speichern</button>";
-		document.getElementById("editBox").focus();
-	}
-}
-
 function changeText(id, parent) {
 	var heightBefore = parseInt(getCurrentStyle(document.getElementById(id), "height").replace(/[a-z]/g, ""));
 	if (heightBefore > 0)
