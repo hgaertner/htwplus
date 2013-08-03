@@ -5,7 +5,7 @@
 @defining(Component.currentAccount()) { curUser =>
 
 <h2>
-	@user.firstname @user.lastname
+	@user.name
 	<div class="btn-group">
 		<a href="@routes.ProfileController.stream(user.id)" role="button" class="btn" rel="tooltip" data-original-title="Newsstream"><i class="icon-comment"></i></a>
 		@if(curUser.id == user.id) {
@@ -34,37 +34,7 @@
 
 <!-- editPwModal -->
 @if(curUser.id == user.id) {
-<div id="editPwModal" class="modal hide fade" tabindex="-1"
-	role="dialog" aria-labelledby="editPwModalLabel" aria-hidden="true">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal"
-			aria-hidden="true">x</button>
-		<h3 id="editPwModalLabel">Passwort ändern</h3>
-	</div>
-	<div class="modal-body">
-		<table class="table">
-			<tr>
-				<th>Altes Passwort</th>
-				<td colspan="3"><input type="password" placeholder="">
-				</td>
-			</tr>
-			<tr>
-				<th>Neues Passwort</th>
-				<td colspan="3"><input type="password" placeholder="">
-				</td>
-			</tr>
-			<tr>
-				<th>Wiederholung</th>
-				<td colspan="3"><input type="password" placeholder="">
-				</td>
-			</tr>
-		</table>
-	</div>
-	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true">Abbrechen</button>
-		<button class="btn btn-warning">Speichern</button>
-	</div>
-</div>
+	@views.html.Profile.snippets.passwordModal()
 }
 <!-- Ende editPwModal -->
 }

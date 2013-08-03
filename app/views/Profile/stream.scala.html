@@ -1,10 +1,45 @@
-@(currentProfile: Account, posts:List[Post], postForm: Form[Post])
+@(user: Account, posts:List[Post], postForm: Form[Post])
+
 @main("Newsstream") {
+@defining(Component.currentAccount()) { curUser =>
     
-	<h1>@currentProfile.name's Newsstream</h1>@if(Component.currentAccount.equals(currentProfile)){<h5>(Das sehen deine Besucher)</h5>}
+	<h2>
+		@user.name's Newsstream
+		<div class="btn-group">
+			<a href="@routes.ProfileController.view(user.id)" role="button" class="btn" rel="tooltip" data-original-title="Profil"><i class="icon-user"></i></a>
+			@if(curUser.equals(user)) {
+			<a href="@routes.ProfileController.edit(user.id)" data-target="#editProfileModal" class="btn ajaxModal" data-toggle="modal" rel="tooltip" title="Profil bearbeiten"><i class="icon-pencil"></i></a> 
+			<a href="#editPwModal" class="btn last" data-toggle="modal" rel="tooltip" title="Passwort ändern"><i class="icon-wrench"></i></a>
+			} else { @if(Friendship.alreadyFriendly(curUser, user)) {
+			<a href="#confirmDeleteFriend" class="btn last" data-toggle="modal" rel="tooltip" title="Freundschaft beenden"><i class="icon-trash"></i></a>
+			} else {
+			<a href="@routes.FriendshipController.requestFriend(user.id)" class="btn last" rel="tooltip" title="Einladung senden"><i class="icon-plus"></i></a>
+			}}
+		</div>
+	</h2>
+	
+<!-- confirmDeleteFriendModal -->
+<div id="confirmDeleteFriend" class="modal hide fade" tabindex="-1" role="dialog">@views.html.Friends.snippets.deleteFriendModal(user)</div>
+<!-- Ende confirmDeleteFriendModal -->
+
+<!-- editModal -->
+@if(curUser.equals(user)) {
+	@views.html.Profile.snippets.edit()
+}
+<!-- Ende editModal -->
+
+<!-- editPwModal -->
+@if(curUser.equals(user)) {
+	@views.html.Profile.snippets.passwordModal()
+}
+<!-- Ende editPwModal -->
+	
+	@if(curUser.equals(user)) {
+	<h5>(Das sehen deine Besucher)</h5>
+	}
   	<br />
-  
-	@views.html.snippets.postForm(currentProfile.id, models.Post.PROFILE, postForm)
+}
+	@views.html.snippets.postForm(user.id, models.Post.PROFILE, postForm)
 		
 	@if(posts != null) {
 		@for(post <- posts) {
