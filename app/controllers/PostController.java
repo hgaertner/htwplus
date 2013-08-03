@@ -35,7 +35,7 @@ public class PostController extends BaseController {
 			Group group = Group.findById(anyId);
 			if (Secured.isMemberOfGroup(group, account)) {
 				if (filledForm.hasErrors()) {
-					flash("error", "Error in Form!");
+					flash("error", "Jo, fast. Probiere es noch einmal mit Inhalt ;-)");
 				} else {
 					Post p = filledForm.get();
 					p.owner = Component.currentAccount();
@@ -55,7 +55,7 @@ public class PostController extends BaseController {
 			Account profile = Account.findById(anyId);
 			if(Secured.isFriend(profile) || profile.equals(account)){
 				if (filledForm.hasErrors()) {
-					flash("error", "Error in Form!");
+					flash("error", "Jo, fast. Probiere es noch einmal mit Inhalt ;-)");
 				} else {
 					Post p = filledForm.get();
 					p.account = profile;
