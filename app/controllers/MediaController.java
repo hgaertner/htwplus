@@ -147,7 +147,6 @@ public class MediaController extends BaseController {
     	
     	zipOut.flush();
     	zipOut.close();
-    	System.out.println(file);
     	return file;
     }
     
@@ -155,7 +154,7 @@ public class MediaController extends BaseController {
 	    String path = Play.application().path().toString();
 	    String tmpPath = Play.application().configuration().getString("media.tempPath");
 	    File dir = new File(tmpPath);
-	    
+	    System.out.println(path+"   "+tmpPath);
 	    File[] files = dir.listFiles();
 	    for (File file : files) {
 			if(file.getName().startsWith(tempPrefix)) {
