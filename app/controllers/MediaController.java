@@ -147,6 +147,7 @@ public class MediaController extends BaseController {
     	
     	zipOut.flush();
     	zipOut.close();
+    	System.out.println(file);
     	return file;
     }
     
