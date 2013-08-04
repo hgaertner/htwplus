@@ -129,9 +129,9 @@ public class PostController extends BaseController {
 		Account account = Component.currentAccount();
 		if (Secured.isOwnerOfPost(post, account)) {
 			post.delete();
-			flash("info", "Post gelöscht");
+			flash("info", "Gelöscht!");
 		} else {
-			flash("info", "Post konnte nicht gelöscht werden");
+			flash("info", "Konnte nicht gelöscht werden!");
 		}
 
 		return redirect(routesTo);
