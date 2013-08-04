@@ -3,7 +3,10 @@ package models;
 import java.util.*;
 
 import play.data.validation.Constraints.*;
+
+import javax.jws.Oneway;
 import javax.persistence.*;
+import javax.validation.ConstraintViolationException;
 
 import controllers.Component;
 import controllers.routes;
@@ -44,6 +47,11 @@ public class Account extends BaseModel {
 
 	public String studentId;
 
+	@OneToOne
+	public Studycourse studycourse;
+	public String degree;
+	public Integer semester;
+
 	public int role;
 
 	public Boolean approved;
@@ -51,6 +59,7 @@ public class Account extends BaseModel {
 	public static Account findById(Long id) {
 		return JPA.em().find(Account.class, id);
 	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public static List<Account> findAll(){
@@ -64,7 +73,7 @@ public class Account extends BaseModel {
 	}
 
 	@Override
-	public void update() {
+	public void update() throws PersistenceException {
 		this.name = this.firstname+" "+this.lastname;
 		JPA.em().merge(this);
 	}
@@ -156,7 +165,7 @@ public class Account extends BaseModel {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
+	
 	public static boolean isOwner(Long accountId, String email) {
 		Account a = JPA.em().find(Account.class, accountId);
 		if(a.email.equals(email)){

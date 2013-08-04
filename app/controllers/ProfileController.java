@@ -1,13 +1,25 @@
 package controllers;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.PersistenceException;
+import javax.persistence.RollbackException;
+import javax.validation.ConstraintViolationException;
+
 import models.Account;
 import models.Friendship;
 import models.Post;
+import models.Studycourse;
 
 import org.codehaus.jackson.node.ObjectNode;
 
 import play.Logger;
 import play.data.Form;
+import play.data.validation.Constraints.EmailValidator;
+import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.libs.Json;
 import play.mvc.Result;
@@ -73,33 +85,70 @@ public class ProfileController extends BaseController {
 	}
 
 	public static Result update(Long id) {
-			Account account = Account.findById(id);
-			Form<Account> filledForm = accountForm.bindFromRequest();
-		 	ObjectNode result = Json.newObject();
-		 	Boolean error = false;
+		Account account = Account.findById(id);
+		Form<Account> filledForm = accountForm.bindFromRequest();
+		
+		// JSON as return value
+		ObjectNode result = Json.newObject();
+
+		// Set fields to checked by JPA Validation
+		Set<String> checkErrorSet = new HashSet<String>();
+		checkErrorSet.add("firstname");
+		checkErrorSet.add("lastname");
+		checkErrorSet.add("email");
+
+		// Does Email exists already
+		Account exisitingAccount = Account.findByEmail(filledForm.field("email").value());
+        if(exisitingAccount != null && !exisitingAccount.equals(account) ) {
+            filledForm.reject("email", "Diese Mail wird bereits verwendet!");
+        }
+		
+        // Get the JPA Errors
+		Set<String> errorSet = filledForm.errors().keySet();
+		
+		// Check error set against desired fields
+	 	if(!Collections.disjoint(errorSet, checkErrorSet)) {
+	 		// Set status, so Java Script will place the form again
+	 		result.put("status", "response");
+			String form = editForm.render(account, filledForm).toString();
+		 	result.put("payload", form);	
 		 	
-		 	if(filledForm.field("firstname").value() == "") {
-		 		error = true;
-		 	}
-		 	if(filledForm.field("lastname").value() == "") {
-		 		error = true;
-		 	}
-		 	
-		 	if(error) {
-		 		result.put("status", "response");
-				String form = editForm.render(account, filledForm).toString();
-			 	result.put("payload", form);	
-		 	} else {
-				account.firstname = filledForm.field("firstname").value();
-				account.lastname = filledForm.field("lastname").value();
-				account.avatar = filledForm.field("avatar").value();
-				account.update();
-		 		result.put("status", "redirect");
-			 	result.put("url", routes.ProfileController.me().toString());
-				flash("success", "Profil erfolgreich gespeichert.");
-		 	}
-		 	
-			return ok(result);
+		 // Everything fine, save it
+	 	} else {
+			account.firstname = filledForm.field("firstname").value();
+			account.lastname = filledForm.field("lastname").value();
+			account.avatar = filledForm.field("avatar").value();	
+			account.email = filledForm.field("email").value();
+			
+			if(filledForm.field("degree").value().equals("null")){
+				account.degree = null;
+			} else {
+				account.degree = filledForm.field("degree").value();
+			}
+			
+			Logger.info(filledForm.field("semester").value());
+			if(filledForm.field("semester").value().equals("0")){
+				account.semester = null;
+			} else {
+				account.semester = Integer.parseInt(filledForm.field("semester").value());
+			}
+			
+			Long studycourseId = Long.parseLong(filledForm.field("studycourse").value());
+			Studycourse studycourse;
+			if(studycourseId != 0) {
+				studycourse = Studycourse.findById(studycourseId);
+			} else {
+				studycourse = null;
+			}
+			account.studycourse = studycourse;
+        	account.update();
+        	// Set status, so Java Script will redirect
+	 		result.put("status", "redirect");
+		 	result.put("url", routes.ProfileController.me().toString());
+			flash("success", "Profil erfolgreich gespeichert.");
+	 	}
+	 	
+		return ok(result);
 	}
 
 }

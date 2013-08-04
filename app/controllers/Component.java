@@ -22,8 +22,15 @@ public class Component extends Action.Simple {
 	@Override
 	@Transactional
     public Result call(Context ctx) throws Throwable {
-		Account account = Account.findByEmail(ctx.session().get("email"));
-		ctx.args.put("account", account);
+		String sessionId = ctx.session().get("id");
+		
+		if(sessionId != null) {
+			Long id = Long.parseLong(ctx.session().get("id"));
+			Account account = Account.findById(id);
+			ctx.args.put("account", account);
+		} else {
+			ctx.args.put("account", null);
+		}
         return delegate.call(ctx);
     }
 

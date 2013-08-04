@@ -7,8 +7,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
+import javax.validation.ConstraintViolationException;
+
 import models.Account;
 import models.Login;
+import play.Logger;
 import play.data.Form;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
@@ -77,7 +80,7 @@ public class AccountController extends BaseController {
             created.password = Component.md5(created.password);
             Random generator = new Random();
             created.avatar = "a" + generator.nextInt(10);
-            created.create();
+            created.create();   
             return ok(signupSuccess.render());
         }
     }

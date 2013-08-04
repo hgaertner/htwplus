@@ -51,11 +51,27 @@
 	</tr>
 	<tr>
 		<th>Studiengang</th>
-		<td>Angewandte Informatik</td>
+		@if(user.studycourse != null) {
+			<td>@user.studycourse.title</td>
+		} else {
+			<td>Keine Angabe</td>
+		}
 	</tr>
 	<tr>
 		<th>Semester</th>
-		<td>2. Semester Master</td>
+		@if(user.semester != null) {
+			<td>@{user.semester + "."} Semester</td>
+		} else {
+			<td>Keine Angabe</td>
+		}
+	</tr>
+	<tr>
+		<th>Abschluss</th>
+		@if(user.degree != null) {
+			<td>@user.degree</td>
+		} else {
+			<td>Keine Angabe</td>
+		}
 	</tr>
 </table>
 	
