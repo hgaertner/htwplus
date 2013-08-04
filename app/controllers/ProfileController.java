@@ -126,7 +126,6 @@ public class ProfileController extends BaseController {
 				account.degree = filledForm.field("degree").value();
 			}
 			
-			Logger.info(filledForm.field("semester").value());
 			if(filledForm.field("semester").value().equals("0")){
 				account.semester = null;
 			} else {
