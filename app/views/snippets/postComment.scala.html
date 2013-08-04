@@ -1,10 +1,14 @@
 @(comment: Post)
+@views.html.snippets.deleteCommentModal(comment.id)
 <div class="media">
 	<a class="pull-left" href="@routes.ProfileController.view(comment.owner.id)"> <img alt="avatar" src="@comment.owner.getAvatarUrl()" class="img-polaroid" /></a>
 	<div class="media-body">
 		<h5 class="media-heading">
 				<a href="@routes.ProfileController.view(comment.owner.id)" data-placement="top" data-original-title="@comment.owner.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover">@comment.owner.name</a>
 				<small>(@comment.createdAt.format("dd. MMM yyyy HH:mm"))</small>
+				@if(comment.owner.id == Component.currentAccount.id){
+                		<a href="#confirmModalDeleteComment@comment.id" data-toggle="modal" rel="tooltip" data-original-title="Post löschen"><i class="icon-trash"></i></a>
+                }
 		</h5>
 		@comment.content
 	</div>
