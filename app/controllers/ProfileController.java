@@ -26,6 +26,7 @@ import play.mvc.Result;
 import views.html.Profile.index;
 import views.html.Profile.stream;
 import views.html.Profile.snippets.editForm;
+import views.html.Profile.snippets.passwordForm;
 import controllers.Navigation.Level;
 
 @Transactional
@@ -68,6 +69,64 @@ public class ProfileController extends BaseController {
 		return ok(stream.render(account,Post.getPublicStream(account),postForm));
 	}
 
+	public static Result editPassword(Long id) {
+		Account account = Account.findById(id);
+		return ok(passwordForm.render(account, accountForm.fill(account)));
+	}
+	
+	public static Result updatePassword(Long id) {
+		Account account = Account.findById(id);
+		Form<Account> filledForm = accountForm.bindFromRequest();
+		ObjectNode result = Json.newObject();
+		Boolean error = false;
+		
+		Set<String> checkErrorSet = new HashSet<String>();
+		checkErrorSet.add("password");
+		
+		String oldPassword = filledForm.field("oldPassword").value();
+		String password = filledForm.field("password").value();
+		String repeatPassword = filledForm.field("repeatPassword").value();
+		
+		if(!oldPassword.isEmpty()) {
+			if(!account.password.equals(Component.md5(oldPassword))) {
+				filledForm.reject("oldPassword", "Dein altes Passwort ist nicht korrekt.");
+				error = true;
+			}
+		} else {
+			filledForm.reject("oldPassword", "Bitte gebe dein altes Passwort ein.");
+			error = true;
+		}
+		
+		if(password.length() < 6) {
+			filledForm.reject("password", "Das Passwort muss mindestens 6 Zeichen haben.");
+			error = true;
+		}
+		
+		if(!password.equals(repeatPassword)) {
+			filledForm.reject("repeatPassword", "Die Passwörter stimmen nicht überein.");
+			error = true;
+		}
+		
+		Set<String> errorSet = filledForm.errors().keySet();
+		if(!Collections.disjoint(errorSet, checkErrorSet)){
+			error = true;
+		}
+			
+	 	if(error) {
+	 		result.put("status", "response");
+			String form = passwordForm.render(account, filledForm).toString();
+		 	result.put("payload", form);		 	
+	 	} else {
+			account.password = Component.md5(password);
+        	account.update();
+	 		result.put("status", "redirect");
+		 	result.put("url", routes.ProfileController.me().toString());
+			flash("success", "Passwort erfolgreich geändert.");
+	 	}	 	
+		return ok(result);
+	}
+	
+	
 	public static Result edit(Long id) {
 		try {
 			Thread.sleep(0);

@@ -2,7 +2,7 @@
 @import helper._
 @import models._
 
-@form(routes.ProfileController.update(profile.id), 'id -> "ajaxForm") {
+@form(routes.ProfileController.update(profile.id), 'class -> "ajaxForm") {
 
 	@inputText(
 		profileForm("firstname"), 
