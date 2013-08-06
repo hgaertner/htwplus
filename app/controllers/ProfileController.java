@@ -34,7 +34,7 @@ public class ProfileController extends BaseController {
 
 	static Form<Account> accountForm = Form.form(Account.class);
 	static Form<Post> postForm = Form.form(Post.class);
-	
+
 	public static Result me() {
 		Navigation.set(Level.PROFILE);
 		Account account = Component.currentAccount();
@@ -43,38 +43,43 @@ public class ProfileController extends BaseController {
 			return redirect(routes.Application.index());
 		} else {
 			return ok(index.render(account, postForm));
-			//return ok(index.render(account));
+			// return ok(index.render(account));
 		}
 	}
 
-	public static Result view(Long id) {
+	public static Result view(final Long id) {
 		Account account = Account.findById(id);
-		Navigation.set(Level.FRIENDS, "Profil", account.name, routes.ProfileController.view(account.id));
+
 		if (account == null) {
 			flash("info", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());
 		} else {
+			Navigation.set(Level.FRIENDS, "Profil", account.name,
+					routes.ProfileController.view(account.id));
 			return ok(index.render(account, postForm));
-			//return ok(index.render(account));
+			// return ok(index.render(account));
 		}
 	}
-	
-	public static Result stream(Long accountId){
+
+	public static Result stream(Long accountId) {
 		Account account = Account.findById(accountId);
 		Account currentUser = Component.currentAccount();
-		
-		if(currentUser.equals(account)){
+
+		if (currentUser.equals(account)) {
 			Navigation.set(Level.PROFILE, "Newsstream");
 		} else {
-			Navigation.set(Level.FRIENDS, "Newsstream", account.name, routes.ProfileController.view(account.id));
+			Navigation.set(Level.FRIENDS, "Newsstream", account.name,
+					routes.ProfileController.view(account.id));
 		}
-		
+
 		// case for friends and own profile
-		if(Friendship.alreadyFriendly(Component.currentAccount(), account) || Component.currentAccount().equals(account)){
-			return ok(stream.render(account,Post.getFriendStream(account),postForm));
+		if (Friendship.alreadyFriendly(Component.currentAccount(), account)
+				|| Component.currentAccount().equals(account)) {
+			return ok(stream.render(account, Post.getFriendStream(account),
+					postForm));
 		}
 		// case for visitors
-		flash("info","Du kannst nur den Stream deiner Freunde betrachten!");
+		flash("info", "Du kannst nur den Stream deiner Freunde betrachten!");
 		return redirect(routes.ProfileController.view(accountId));
 	}
 
@@ -82,60 +87,63 @@ public class ProfileController extends BaseController {
 		Account account = Account.findById(id);
 		return ok(passwordForm.render(account, accountForm.fill(account)));
 	}
-	
+
 	public static Result updatePassword(Long id) {
 		Account account = Account.findById(id);
 		Form<Account> filledForm = accountForm.bindFromRequest();
 		ObjectNode result = Json.newObject();
 		Boolean error = false;
-		
+
 		Set<String> checkErrorSet = new HashSet<String>();
 		checkErrorSet.add("password");
-		
+
 		String oldPassword = filledForm.field("oldPassword").value();
 		String password = filledForm.field("password").value();
 		String repeatPassword = filledForm.field("repeatPassword").value();
-		
-		if(!oldPassword.isEmpty()) {
-			if(!account.password.equals(Component.md5(oldPassword))) {
-				filledForm.reject("oldPassword", "Dein altes Passwort ist nicht korrekt.");
+
+		if (!oldPassword.isEmpty()) {
+			if (!account.password.equals(Component.md5(oldPassword))) {
+				filledForm.reject("oldPassword",
+						"Dein altes Passwort ist nicht korrekt.");
 				error = true;
 			}
 		} else {
-			filledForm.reject("oldPassword", "Bitte gebe dein altes Passwort ein.");
+			filledForm.reject("oldPassword",
+					"Bitte gebe dein altes Passwort ein.");
 			error = true;
 		}
-		
-		if(password.length() < 6) {
-			filledForm.reject("password", "Das Passwort muss mindestens 6 Zeichen haben.");
+
+		if (password.length() < 6) {
+			filledForm.reject("password",
+					"Das Passwort muss mindestens 6 Zeichen haben.");
 			error = true;
 		}
-		
-		if(!password.equals(repeatPassword)) {
-			filledForm.reject("repeatPassword", "Die Passwörter stimmen nicht überein.");
+
+		if (!password.equals(repeatPassword)) {
+			filledForm.reject("repeatPassword",
+					"Die Passwörter stimmen nicht überein.");
 			error = true;
 		}
-		
+
 		Set<String> errorSet = filledForm.errors().keySet();
-		if(!Collections.disjoint(errorSet, checkErrorSet)){
+		if (!Collections.disjoint(errorSet, checkErrorSet)) {
 			error = true;
 		}
-			
-	 	if(error) {
-	 		result.put("status", "response");
+
+		if (error) {
+			result.put("status", "response");
 			String form = passwordForm.render(account, filledForm).toString();
-		 	result.put("payload", form);		 	
-	 	} else {
+			result.put("payload", form);
+		} else {
 			account.password = Component.md5(password);
-        	account.update();
-	 		result.put("status", "redirect");
-		 	result.put("url", routes.ProfileController.me().toString());
+			account.update();
+			result.put("status", "redirect");
+			result.put("url", routes.ProfileController.me().toString());
 			flash("success", "Passwort erfolgreich geändert.");
-	 	}	 	
+		}
 		return ok(result);
 	}
-	
-	
+
 	public static Result edit(Long id) {
 		try {
 			Thread.sleep(0);
@@ -155,7 +163,7 @@ public class ProfileController extends BaseController {
 	public static Result update(Long id) {
 		Account account = Account.findById(id);
 		Form<Account> filledForm = accountForm.bindFromRequest();
-		
+
 		// JSON as return value
 		ObjectNode result = Json.newObject();
 
@@ -166,55 +174,58 @@ public class ProfileController extends BaseController {
 		checkErrorSet.add("email");
 
 		// Does Email exists already
-		Account exisitingAccount = Account.findByEmail(filledForm.field("email").value());
-        if(exisitingAccount != null && !exisitingAccount.equals(account) ) {
-            filledForm.reject("email", "Diese Mail wird bereits verwendet!");
-        }
-		
-        // Get the JPA Errors
+		Account exisitingAccount = Account.findByEmail(filledForm
+				.field("email").value());
+		if (exisitingAccount != null && !exisitingAccount.equals(account)) {
+			filledForm.reject("email", "Diese Mail wird bereits verwendet!");
+		}
+
+		// Get the JPA Errors
 		Set<String> errorSet = filledForm.errors().keySet();
-		
+
 		// Check error set against desired fields
-	 	if(!Collections.disjoint(errorSet, checkErrorSet)) {
-	 		// Set status, so Java Script will place the form again
-	 		result.put("status", "response");
+		if (!Collections.disjoint(errorSet, checkErrorSet)) {
+			// Set status, so Java Script will place the form again
+			result.put("status", "response");
 			String form = editForm.render(account, filledForm).toString();
-		 	result.put("payload", form);	
-		 	
-		 // Everything fine, save it
-	 	} else {
+			result.put("payload", form);
+
+			// Everything fine, save it
+		} else {
 			account.firstname = filledForm.field("firstname").value();
 			account.lastname = filledForm.field("lastname").value();
-			account.avatar = filledForm.field("avatar").value();	
+			account.avatar = filledForm.field("avatar").value();
 			account.email = filledForm.field("email").value();
-			
-			if(filledForm.field("degree").value().equals("null")){
+
+			if (filledForm.field("degree").value().equals("null")) {
 				account.degree = null;
 			} else {
 				account.degree = filledForm.field("degree").value();
 			}
-			
-			if(filledForm.field("semester").value().equals("0")){
+
+			if (filledForm.field("semester").value().equals("0")) {
 				account.semester = null;
 			} else {
-				account.semester = Integer.parseInt(filledForm.field("semester").value());
+				account.semester = Integer.parseInt(filledForm
+						.field("semester").value());
 			}
-			
-			Long studycourseId = Long.parseLong(filledForm.field("studycourse").value());
+
+			Long studycourseId = Long.parseLong(filledForm.field("studycourse")
+					.value());
 			Studycourse studycourse;
-			if(studycourseId != 0) {
+			if (studycourseId != 0) {
 				studycourse = Studycourse.findById(studycourseId);
 			} else {
 				studycourse = null;
 			}
 			account.studycourse = studycourse;
-        	account.update();
-        	// Set status, so Java Script will redirect
-	 		result.put("status", "redirect");
-		 	result.put("url", routes.ProfileController.me().toString());
+			account.update();
+			// Set status, so Java Script will redirect
+			result.put("status", "redirect");
+			result.put("url", routes.ProfileController.me().toString());
 			flash("success", "Profil erfolgreich gespeichert.");
-	 	}
-	 	
+		}
+
 		return ok(result);
 	}
 
