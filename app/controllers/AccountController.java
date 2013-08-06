@@ -31,7 +31,7 @@ public class AccountController extends BaseController {
 	public static Result authenticate() {
 		Form<Login> loginForm = form(Login.class).bindFromRequest();
 		if (loginForm.hasErrors()) {
-			flash("success", "Nutzer oder Passwort nicht korrekt");
+			flash("error", "Nutzer oder Passwort nicht korrekt");
 			return badRequest(index.render());
 		} else {
 			session().clear();
@@ -47,7 +47,7 @@ public class AccountController extends BaseController {
 	 */
 	public static Result logout() {
 		session().clear();
-		flash("success", "You've been logged out");
+		flash("success", "Du bist nun ausgeloggt");
 		return redirect(routes.Application.index());
 	}
 	  
@@ -80,7 +80,7 @@ public class AccountController extends BaseController {
             created.password = Component.md5(created.password);
             Random generator = new Random();
             created.avatar = "a" + generator.nextInt(10);
-            created.create();   
+            created.create();
             return ok(signupSuccess.render());
         }
     }
