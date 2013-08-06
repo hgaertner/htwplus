@@ -42,7 +42,7 @@ public class Studycourse extends BaseModel {
 	
 	@SuppressWarnings("unchecked")
 	public static List<Studycourse> getAll() {
-		List<Studycourse> courses = JPA.em().createQuery("FROM Studycourse").getResultList();
+		List<Studycourse> courses = JPA.em().createQuery("FROM Studycourse ORDER BY title").getResultList();
 		return courses;
 	}
 	

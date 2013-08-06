@@ -16,31 +16,8 @@
 				</div>
 			</div>
 		</form>
-		<br />
-		<table class="table table-hover">
-			<colgroup>
-				<col width="15%">
-				<col width="70%">
-				<col width="15%">
-			</colgroup>
-			<thead>
-				<tr>
-					<th>Avatar</th>
-					<th>Name</th>
-					<th>Optionen</th>
-				</tr>
-			</thead>
-			<tbody>
-			@for(account <- accounts) {
-				<tr>
-					<td>@views.html.snippets.userLinkAvatar(account)</td>
-					<td>@views.html.snippets.userLink(account)</td>
-					<td><a href="@routes.FriendshipController.requestFriend(account.id)" rel="tooltip" title="Einladung senden"><i
-							class="icon-plus"></i></a></td>
-				</tr>
-			}
-			</tbody>
-		</table>
+		<br/>
+		 @views.html.Friends.snippets.searchModalResult(accounts)
 	</div>
 	<div class="modal-footer">
     <div class="loading"></div>

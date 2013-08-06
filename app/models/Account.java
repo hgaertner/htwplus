@@ -206,8 +206,8 @@ public class Account extends BaseModel {
 	 * @return List of accounts which matches with the keyword
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Group> searchForAccountByKeyword(String keyword) {
-		Logger.info("Group model searchForAccountByKeyWord: " + keyword.toLowerCase());
+	public static List<Account> searchForAccountByKeyword(String keyword) {
+		Logger.info("Account model searchForAccountByKeyWord: " + keyword.toLowerCase());
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
 		/*try {
 		 This part takes care to create indexes of persistent data, which is not inserted via hibernate/ JPA this block
@@ -219,15 +219,15 @@ public class Account extends BaseModel {
 		}*/
 		//Create a querybuilder for the group entity 
 		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
-				.buildQueryBuilder().forEntity(Group.class).get();
+				.buildQueryBuilder().forEntity(Account.class).get();
 		//Sets the field we want to search on and tries to match with the given keyword
 		org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword().wildcard()
-				.onField("title").matching("*"+keyword.toLowerCase()+"*").createQuery();
+				.onField("name").matching("*"+keyword.toLowerCase()+"*").createQuery();
 		// wrap Lucene query in a javax.persistence.Query
 		FullTextQuery fullTextQuery = fullTextEntityManager
 				.createFullTextQuery(luceneQuery, Account.class);
 
-		List<Group> result = fullTextQuery.getResultList(); //The result...
+		List<Account> result = fullTextQuery.getResultList(); //The result...
 		Logger.info("Found " +result.size() +" accounts with keyword: " +keyword);
 
 

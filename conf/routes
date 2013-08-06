@@ -56,6 +56,7 @@ GET		/user/:id/password					controllers.ProfileController.editPassword(id:Long)
 POST		/user/:id/password				controllers.ProfileController.updatePassword(id:Long)
 POST	/user/:id/edit						controllers.ProfileController.update(id:Long)
 GET		/user/:id/stream					controllers.ProfileController.stream(id:Long)
+GET		/user/searchForAccount/:keyword		controllers.AccountController.searchByKeyword(keyword:String)
 
 
 #Friends
