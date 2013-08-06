@@ -199,7 +199,7 @@ public class Group extends BaseModel {
 	 */
 	@SuppressWarnings("unchecked")
 	public static List<Group> searchForGroupByKeyword(String keyword) {
-		Logger.info("Group model searchForGroupByKeyWord: " + keyword);
+		Logger.info("Group model searchForGroupByKeyWord: " + keyword.toLowerCase());
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
 		/*try {
 		 This part takes care to create indexes of persistent data, which is not inserted via hibernate/ JPA this block
@@ -213,8 +213,8 @@ public class Group extends BaseModel {
 		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
 				.buildQueryBuilder().forEntity(Group.class).get();
 		//Sets the field we want to search on and tries to match with the given keyword
-		org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword()
-				.onFields("title").matching(keyword).createQuery();
+		org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword().wildcard()
+				.onField("title").matching("*"+keyword.toLowerCase()+"*").createQuery();
 		// wrap Lucene query in a javax.persistence.Query
 		FullTextQuery fullTextQuery = fullTextEntityManager
 				.createFullTextQuery(luceneQuery, Group.class);

@@ -2,10 +2,12 @@
 @import helper._
 
 @main("Group View") {
+	<div class="clear">
 	@if(!group.isClosed || isMember) {
-	<h2>
-		@group.title@if(group.isClosed) {<i class="icon-lock"></i>} else {<i class="icon-globe"></i>}
-		<div class="btn-group">
+	<h2>@group.title</h2>
+	<div class="miniMenue">
+	@if(group.isClosed) {<i class="icon-lock"></i>} else {<i class="icon-globe"></i>}
+	<div class="btn-group">
 			<a href="@routes.GroupController.view(group.id)" role="button" class="btn active" rel="tooltip" data-original-title="Gruppennewsstream"><i class="icon-comment"></i></a>
 			<a href="@routes.GroupController.media(group.id)" role="button" class="btn" rel="tooltip" data-original-title="Gruppenmedien"><i class="icon-file"></i></a>
 			@defining(Component.currentAccount()) { user => @if(group.owner.id == user.id){
@@ -16,8 +18,9 @@
 				}
 			}
 			<a href="#infoModal@group.id" role="button" class="btn last" data-toggle="modal" rel="tooltip" data-original-title="Gruppeninfo"><i class="icon-info-sign"></i></a>
-		</div>
-	</h2>
+	</div>
+	</div>
+	</div>
 	<br />
 	<!-- Start editModal -->
 				<div id="editModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
