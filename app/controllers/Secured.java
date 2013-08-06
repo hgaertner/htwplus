@@ -34,6 +34,15 @@ public class Secured extends Security.Authenticator {
 		}
 	}
 
+	
+	public static boolean isAllowedToDeletePost(final Post post, final Account account){
+		if(post != null){
+			if(isOwnerOfPost(post, account) || post.account.equals(account)){
+				return true;
+			}
+		}
+		return false;
+	}
 	public static boolean isOwnerOfPost(Post post, Account account){
 		if(post != null){
 			return post.owner.equals(account);

@@ -120,18 +120,18 @@ public class PostController extends BaseController {
 	}
 	
 	@Transactional
-	public static Result deletePost(Long postId) {
+	public static Result deletePost(final Long postId) {
 		
 		// verify redirect after deletion
 		Call routesTo = routes.Application.index();
 		
-		Post post = Post.findById(postId);
-		Account account = Component.currentAccount();
-		if (Secured.isOwnerOfPost(post, account)) {
+		final Post post = Post.findById(postId);
+		final Account account = Component.currentAccount();
+		if (Secured.isAllowedToDeletePost(post, account)) {
 			post.delete();
-			flash("info", "Gelöscht!");
+			flash("success", "Gelöscht!");
 		} else {
-			flash("info", "Konnte nicht gelöscht werden!");
+			flash("error", "Konnte nicht gelöscht werden!");
 		}
 
 		return redirect(routesTo);
