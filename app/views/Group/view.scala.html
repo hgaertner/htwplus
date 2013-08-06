@@ -1,12 +1,15 @@
 @(group: Group, posts:List[Post], postForm: Form[Post], isMember: Boolean )
 @import helper._
+@import models.enums._
 
 @main("Group View") {
 	<div class="clear">
 	@if(!group.isClosed || isMember) {
 	<h2 id="truncated">@group.title</h2>
-	<div class="miniMenue">
-	@if(group.isClosed) {<i class="icon-lock"></i>} else {<i class="icon-globe"></i>}
+	<div class="miniMenue"> 
+	@if(group.groupType.equals(GroupType.open)) { <i class="icon-globe"></i>}
+	@if(group.groupType.equals(GroupType.close)) { <i class="icon-lock"></i>}
+	@if(group.groupType.equals(GroupType.course)) { <i class="icon-briefcase"></i>}
 	<div class="btn-group">
 			<a href="@routes.GroupController.view(group.id)" role="button" class="btn active" rel="tooltip" data-original-title="Gruppennewsstream"><i class="icon-comment"></i></a>
 			<a href="@routes.GroupController.media(group.id)" role="button" class="btn" rel="tooltip" data-original-title="Gruppenmedien"><i class="icon-file"></i></a>

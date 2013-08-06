@@ -54,12 +54,14 @@ public class Group extends BaseModel {
 	public Set<GroupAccount> groupAccounts;
 
 	public Boolean isClosed = false;
-	
-	@Enumerated(EnumType.STRING)
-	public GroupType type;
 
 	@ManyToOne
 	public Account owner;
+	
+	@Enumerated(EnumType.STRING)
+	public GroupType groupType;
+	
+	public String token;
 	
 	@OneToMany(mappedBy="group")
 	@OrderBy("createdAt DESC")

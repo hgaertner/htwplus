@@ -1,5 +1,6 @@
 @(approvedGroups: List[Group], unapprovedGroups: List[GroupAccount], groupForm: Form[Group])
 @import helper._
+@import models.enums._
 
 @main("Gruppen") {
 
@@ -108,7 +109,10 @@ Offene Anfragen</span></h2>
 	<tbody>
 		@for(group <- approvedGroups) {
 		<tr>
-			<td>@if(group.isClosed == true) {<i class="icon-lock"></i>} else {<i class="icon-globe"></i>}
+			<td>
+			@if(group.groupType.equals(GroupType.open)) { <i class="icon-globe"></i>}
+			@if(group.groupType.equals(GroupType.close)) { <i class="icon-lock"></i>}
+			@if(group.groupType.equals(GroupType.course)) { <i class="icon-briefcase"></i>}
 				<a href="@routes.GroupController.view(group.id)">@if(group.owner.id == user.id) {
 					<b> @group.title</b></a> <small>(gegründet)</small>} else { @group.title</a>}
 			</td>
