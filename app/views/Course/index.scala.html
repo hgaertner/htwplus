@@ -4,7 +4,11 @@
 
 @main("Kurse") {
     <h1>Kurse (@courses.size())</h1>
+    <a href="#searchModal" role="button" class="btn" data-toggle="modal" rel="tooltip" data-original-title="Kurse suchen"><i class="icon-search"></i></a>
                   <br />
+    <!-- searchModal -->
+	<div id="searchModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">@views.html.Course.snippets.searchModal(null)</div>
+	<!-- Ende searchModal -->
    
     <a class="btn btn-primary" href="@routes.CourseController.add">Add</a>
     
