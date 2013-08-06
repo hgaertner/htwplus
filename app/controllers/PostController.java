@@ -80,11 +80,17 @@ public class PostController extends BaseController {
 			flash("error", "Error in Form!");
 			return badRequest();
 		} else {
-			Post post = filledForm.get();
-			post.owner = Component.currentAccount();
-			post.parent = parent;
-			post.create();
-			return ok(views.html.snippets.postComment.render(post));
+			if(Secured.isMemberOfGroup(parent.group, account)){
+				Post post = filledForm.get();
+				post.owner = Component.currentAccount();
+				post.parent = parent;
+				post.create();
+				return ok(views.html.snippets.postComment.render(post));
+			}else {
+				Logger.info(account.name + " is not in group with id: " + parent.group.id);
+				flash("error", "Du musst vorher der Gruppe beitreten");
+				return badRequest();
+			}
 		}
 	}
 	
