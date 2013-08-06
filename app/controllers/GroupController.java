@@ -17,6 +17,7 @@ import models.Group;
 import models.GroupAccount;
 import models.Media;
 import models.Post;
+import models.enums.GroupType;
 import models.enums.LinkType;
 
 import play.Logger;
@@ -85,12 +86,22 @@ public class GroupController extends BaseController {
 	public static Result create() {
 		Account account = Component.currentAccount();
 		Form<Group> filledForm = groupForm.bindFromRequest();
+		int groupType = Integer.parseInt(filledForm.data().get("optionsRadios"));
 		if (filledForm.hasErrors()) {
+			System.out.println(filledForm.errors());
 			return ok(addModal.render(filledForm));
 		} else {
 			Group group = filledForm.get();
 			if(filledForm.data().get("optionsRadios").equals("1")){
 				group.isClosed = true;
+			}
+			switch(groupType){
+				case 0: group.type = GroupType.open; break;
+				case 1: group.type = GroupType.close; break;
+				case 2: group.type = GroupType.course; break;
+				default: 
+					filledForm.reject("Nicht möglich!");
+					return ok(addModal.render(filledForm));
 			}
 			group.createWithGroupAccount(account);
 			flash("success", "Neue Gruppe erstellt!");
@@ -112,11 +123,20 @@ public class GroupController extends BaseController {
 	public static Result update(Long groupId) {
 		Group group = Group.findById(groupId);
 		Form<Group> filledForm = groupForm.bindFromRequest();
+		int groupType = Integer.parseInt(filledForm.data().get("optionsRadios"));
 		String description = filledForm.data().get("description");
 		if(filledForm.data().get("optionsRadios").equals("1")){
 			group.isClosed = true;
 		} else {
 			group.isClosed = false;
+		}
+		switch(groupType){
+			case 0: group.type = GroupType.open; break;
+			case 1: group.type = GroupType.close; break;
+			case 2: group.type = GroupType.course; break;
+			default:
+				filledForm.reject("Nicht möglich!");
+				return ok(addModal.render(filledForm));
 		}
 		group.description = description;
 		group.update();
