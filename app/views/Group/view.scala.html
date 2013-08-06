@@ -4,7 +4,7 @@
 @main("Group View") {
 	<div class="clear">
 	@if(!group.isClosed || isMember) {
-	<h2>@group.title</h2>
+	<h2 id="truncated">@group.title</h2>
 	<div class="miniMenue">
 	@if(group.isClosed) {<i class="icon-lock"></i>} else {<i class="icon-globe"></i>}
 	<div class="btn-group">

@@ -10,7 +10,7 @@ form {
 	margin: 0px;
 }
 
-h2 {
+#truncated {
 	float: left;
 	max-width: 55%;
 	overflow: hidden;
