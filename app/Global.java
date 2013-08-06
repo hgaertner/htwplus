@@ -63,7 +63,7 @@ public class Global extends GlobalSettings {
 					//Generate indexes
 					FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
 					try {
-						fullTextEntityManager.createIndexer(Group.class, Course.class).startAndWait();
+						fullTextEntityManager.createIndexer(Group.class, Course.class, Account.class).startAndWait();
 					
 					} catch (InterruptedException e) {
 						

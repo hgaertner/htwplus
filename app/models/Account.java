@@ -2,11 +2,22 @@ package models;
 
 import java.util.*;
 
+import play.Logger;
 import play.data.validation.Constraints.*;
 
 import javax.jws.Oneway;
 import javax.persistence.*;
 import javax.validation.ConstraintViolationException;
+
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.FullTextQuery;
+import org.hibernate.search.jpa.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 
 import controllers.Component;
 import controllers.routes;
@@ -16,10 +27,12 @@ import play.db.jpa.*;
 import java.util.Set;
 
 @Entity
+@Indexed
 public class Account extends BaseModel {
 
 	public String loginname;
 	
+	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	public String name;
 
 	@Required
@@ -97,7 +110,7 @@ public class Account extends BaseModel {
     }
 
     /**
-     * Autehnticates a user by email and password.
+     * Authenticates a user by email and password.
      * @param email of the user who wants to be authenticate
      * @param password of the user should match to the email ;) 
      * @return Returns the current account or Null
@@ -184,5 +197,40 @@ public class Account extends BaseModel {
 	public static List<Account> all() {
 		List<Account> accounts = JPA.em().createQuery("FROM Account").getResultList();
 		return accounts;
+	}
+	
+	/**
+	 * Search for a account with a given keyword.
+	 * 
+	 * @param keyword
+	 * @return List of accounts which matches with the keyword
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<Group> searchForAccountByKeyword(String keyword) {
+		Logger.info("Group model searchForAccountByKeyWord: " + keyword.toLowerCase());
+		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
+		/*try {
+		 This part takes care to create indexes of persistent data, which is not inserted via hibernate/ JPA this block
+		 is now in the onStart in Global.java
+			fullTextEntityManager.createIndexer(Group.class).startAndWait();
+		} catch (InterruptedException e) {
+			
+			Logger.error(e.getMessage());
+		}*/
+		//Create a querybuilder for the group entity 
+		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
+				.buildQueryBuilder().forEntity(Group.class).get();
+		//Sets the field we want to search on and tries to match with the given keyword
+		org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword().wildcard()
+				.onField("title").matching("*"+keyword.toLowerCase()+"*").createQuery();
+		// wrap Lucene query in a javax.persistence.Query
+		FullTextQuery fullTextQuery = fullTextEntityManager
+				.createFullTextQuery(luceneQuery, Account.class);
+
+		List<Group> result = fullTextQuery.getResultList(); //The result...
+		Logger.info("Found " +result.size() +" accounts with keyword: " +keyword);
+
+
+		return result;
 	}
 }
