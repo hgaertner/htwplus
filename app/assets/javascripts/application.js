@@ -81,6 +81,14 @@ $('#editModal').on('hidden', function () {
 	location.reload();
 });
 
+/* toggle enter */
+$('.modal-body').keypress(function(e) {
+	var code = null;
+    code = (e.keyCode ? e.keyCode : e.which);
+    if (code == 13) {
+        e.preventDefault();
+    }
+});
 
 $('[rel="tooltip"]').tooltip('toggle');
 $('[rel="tooltip"]').tooltip('hide');
