@@ -29,3 +29,4 @@ conf/application.conf
 public/media
 conf/META-INF/persistence.xml
 searchstuff
+htwplus

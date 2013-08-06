@@ -61,12 +61,21 @@ public class ProfileController extends BaseController {
 	
 	public static Result stream(Long accountId){
 		Account account = Account.findById(accountId);
-		Navigation.set(Level.FRIENDS, "Newsstream", account.name, routes.ProfileController.view(account.id));
+		Account currentUser = Component.currentAccount();
 		
-		if(Friendship.alreadyFriendly(Component.currentAccount(), account)){
+		if(currentUser.equals(account)){
+			Navigation.set(Level.PROFILE, "Newsstream");
+		} else {
+			Navigation.set(Level.FRIENDS, "Newsstream", account.name, routes.ProfileController.view(account.id));
+		}
+		
+		// case for friends and own profile
+		if(Friendship.alreadyFriendly(Component.currentAccount(), account) || Component.currentAccount().equals(account)){
 			return ok(stream.render(account,Post.getFriendStream(account),postForm));
 		}
-		return ok(stream.render(account,Post.getPublicStream(account),postForm));
+		// case for visitors
+		flash("info","Du kannst nur den Stream deiner Freunde betrachten!");
+		return redirect(routes.ProfileController.view(accountId));
 	}
 
 	public static Result editPassword(Long id) {

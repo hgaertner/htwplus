@@ -169,15 +169,6 @@ public class Post extends BaseModel {
 	
 	/**
 	 * @author Iven
-	 * @param account - Account (usually the visitors page)
-	 * @return List of Posts
-	 */
-	public static List<Post> getPublicStream(Account currentProfile) {	
-		return findStreamForAccount(currentProfile,null, null, true);
-	}
-
-	/**
-	 * @author Iven
 	 * @param account - Account (usually a friends)
 	 * @return List of Posts
 	 */

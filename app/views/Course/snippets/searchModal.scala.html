@@ -1,0 +1,19 @@
+ @(courses: List[Course])
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+    <h3 id="searchModalLabel">Kurse suchen</h3>
+</div>
+<div class="modal-body">
+    <br />
+    <form class="form-search">
+        <div class="input-append">
+            <input type="text" class="search-query" placeholder="Kursname eingeben..." id="courseSearchQuery">
+            <button type="button" class="btn btn-warning" id="courseSearchSubmit">Suchen</button>
+        </div>
+    </form>
+    <br />
+     @views.html.Course.snippets.searchModalResult(courses)
+</div>
+<div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Schlie&szlig;en</button>
+</div>
