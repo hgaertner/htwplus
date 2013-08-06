@@ -5,10 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.codehaus.jackson.node.ObjectNode;
+
 
 import controllers.Navigation.Level;
 
 import play.*;
+import play.libs.Json;
 import play.mvc.*;
 import play.data.*;
 
@@ -17,6 +20,7 @@ import models.Group;
 import models.GroupAccount;
 import models.Media;
 import models.Post;
+import models.enums.GroupType;
 import models.enums.LinkType;
 
 import play.Logger;
@@ -32,6 +36,8 @@ import views.html.Group.snippets.addModalSuccess;
 import views.html.Group.snippets.editModal;
 import views.html.Group.snippets.editModalSuccess;
 import views.html.Group.snippets.searchModalResult;
+import views.html.Group.snippets.tokenForm;
+import views.html.Profile.snippets.editForm;
 
 @Security.Authenticated(Secured.class)
 @Transactional
@@ -85,12 +91,22 @@ public class GroupController extends BaseController {
 	public static Result create() {
 		Account account = Component.currentAccount();
 		Form<Group> filledForm = groupForm.bindFromRequest();
+		int groupType = Integer.parseInt(filledForm.data().get("optionsRadios"));
 		if (filledForm.hasErrors()) {
+			System.out.println(filledForm.errors());
 			return ok(addModal.render(filledForm));
 		} else {
 			Group group = filledForm.get();
 			if(filledForm.data().get("optionsRadios").equals("1")){
 				group.isClosed = true;
+			}
+			switch(groupType){
+				case 0: group.type = GroupType.open; break;
+				case 1: group.type = GroupType.close; break;
+				case 2: group.type = GroupType.course; break;
+				default: 
+					filledForm.reject("Nicht möglich!");
+					return ok(addModal.render(filledForm));
 			}
 			group.createWithGroupAccount(account);
 			flash("success", "Neue Gruppe erstellt!");
@@ -112,11 +128,20 @@ public class GroupController extends BaseController {
 	public static Result update(Long groupId) {
 		Group group = Group.findById(groupId);
 		Form<Group> filledForm = groupForm.bindFromRequest();
+		int groupType = Integer.parseInt(filledForm.data().get("optionsRadios"));
 		String description = filledForm.data().get("description");
 		if(filledForm.data().get("optionsRadios").equals("1")){
 			group.isClosed = true;
 		} else {
 			group.isClosed = false;
+		}
+		switch(groupType){
+			case 0: group.type = GroupType.open; break;
+			case 1: group.type = GroupType.close; break;
+			case 2: group.type = GroupType.course; break;
+			default:
+				filledForm.reject("Nicht möglich!");
+				return ok(addModal.render(filledForm));
 		}
 		group.description = description;
 		group.update();
@@ -147,30 +172,46 @@ public class GroupController extends BaseController {
 		return ok(searchModalResult.render(result));
 	}
 	
+	public static Result enterToken(long id) {
+		ObjectNode result = Json.newObject();
+		result.put("status", "response");
+		result.put("payload", "response");
+		
+		return ok(result);
+	}
+	
 	
 	public static Result join(long id){
 		Account account = Component.currentAccount();
 		Group group = Group.findById(id);
+		ObjectNode result = Json.newObject();
+		
+		
 		if(Secured.isMemberOfGroup(group, account)){
+			result.put("status", "redirect");
+			result.put("url", routes.GroupController.view(id).toString());
 			flash("info", "Du bist bereits Mitglied dieser Gruppe!");
-			return redirect(routes.GroupController.view(id));
 		}
 		if(GroupAccount.find(account, group) == null){
 			GroupAccount groupAccount;
 			if(!group.isClosed){
-				groupAccount = new GroupAccount(account, group, LinkType.establish);
-				groupAccount.create();
-				flash("success", "Gruppe erfolgreich beigetreten!");
-				return redirect(routes.GroupController.view(id));
+				result.put("status", "response");
+				String form = tokenForm.render(group, groupForm).toString();
+				result.put("payload", form);
+				//groupAccount = new GroupAccount(account, group, LinkType.establish);
+				//groupAccount.create();
+				//flash("success", "Gruppe erfolgreich beigetreten!");
+				//return redirect(routes.GroupController.view(id));
 			} else {
 				groupAccount = new GroupAccount(account, group, LinkType.request);
 				groupAccount.create();
 				flash("success", "Deine Anfrage wurde erfolgreich übermittelt!");
-				return redirect(routes.GroupController.index());
+				result.put("status", "redirect");
+				result.put("url", routes.GroupController.index().toString());
 			}
 		}
 		
-		return redirect(routes.GroupController.index());
+		return ok(result);
 	}
 		
 	public static Result removeMember(long groupId, long accountId){

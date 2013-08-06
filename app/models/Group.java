@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -29,7 +31,10 @@ import play.Logger;
 import play.api.data.validation.ValidationError;
 import play.data.validation.Constraints.*;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import models.base.BaseModel;
+import models.enums.GroupType;
 import models.enums.LinkType;
 import play.db.jpa.*;
 
@@ -49,6 +54,9 @@ public class Group extends BaseModel {
 	public Set<GroupAccount> groupAccounts;
 
 	public Boolean isClosed = false;
+	
+	@Enumerated(EnumType.STRING)
+	public GroupType type;
 
 	@ManyToOne
 	public Account owner;

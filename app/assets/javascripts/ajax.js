@@ -42,6 +42,49 @@ $(document).ready(function () {
 		});
 	});
 	
+	$('.modal-body').on("click", ".ajaxModalLink", function(){
+		var url = $(this).attr("href");
+		var modalBody = $(this).parentsUntil('.modal', '.modal-body');
+		$.ajax({
+			url: url,
+			dataType: "json",
+			type: "GET",
+			success: function(data){
+				var status = data.status;
+				if(status == "redirect" && data.url != null) {
+					window.location.replace(data.url);
+				}
+				if(status == "response" && data.payload != null) {
+					modalBody.html(data.payload);
+				}
+			}
+		});
+		return false;
+	});
+	
+	$('.modal-body').on("click", ".ajaxModalSubmit", function(){
+		var form = $(this).closest('form');
+		var url = form.attr('action');
+		$.ajax({
+			url: url,
+			dataType: "json",
+			type: "POST",
+			data: form.serialize(),
+			success: function(data){
+				var status = data.status;
+				if(status == "redirect" && data.url != null) {
+					window.location.replace(data.url);
+				}
+				if(status == "response" && data.payload != null) {
+					form.html(data.payload);
+				}
+			}
+		});
+		return false;
+		
+	});
+	
+	
 	/*
 	 * END GENERIC AJAX FORM REQUEST
 	 */
