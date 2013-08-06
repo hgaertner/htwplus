@@ -10,6 +10,26 @@ form {
 	margin: 0px;
 }
 
+#truncated {
+	float: left;
+	max-width: 55%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+table {
+	table-layout: fixed;
+}
+
+td {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.miniMenue {
+	padding-top: 10px;
+}
+
 .clear {
 	clear: both;
 }

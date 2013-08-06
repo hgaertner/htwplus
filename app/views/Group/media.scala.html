@@ -2,8 +2,10 @@
 @import helper._
 
 @main("Group Media") {
-	<h2>
-		@group.title@if(group.isClosed == true) {<i class="icon-lock"></i>} else {<i class="icon-globe"></i>}
+	<div class="clear">
+	<h2 id="truncated">@group.title</h2>
+	<div class="miniMenue">
+	@if(group.isClosed == true) {<i class="icon-lock"></i>} else {<i class="icon-globe"></i>}
 		<div class="btn-group">
 			<a href="@routes.GroupController.view(group.id)" role="button" class="btn" rel="tooltip" data-original-title="Gruppennewsstream"><i class="icon-comment"></i></a>
 			<a href="@routes.GroupController.media(group.id)" role="button" class="btn active" rel="tooltip" data-original-title="Gruppenmedien"><i class="icon-file"></i></a>
@@ -13,7 +15,17 @@
 			}}
 			<a href="#infoModal@group.id" role="button" class="btn last" data-toggle="modal" rel="tooltip" data-original-title="Gruppeninfo"><i class="icon-info-sign"></i></a>
 		</div>
-	</h2>
+	</div>
+	</div>
+	@if(!mediaList.isEmpty) {
+ 	@views.html.Media.list(mediaList,models.Media.GROUP,group.id)
+ } else {
+	<br /><br /><i>Es wurden noch keine Dateien hochgeladen.</i>
+ }
+ <hr />
+ <br />
+
+ @views.html.Media.upload(mediaForm,models.Media.GROUP,group.id)
 	
 	<!-- Start editModal -->
 		<div id="editModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
@@ -44,13 +56,4 @@
 	</div>
 	<!-- End confirmDeleteGroupModal -->
 
- @if(!mediaList.isEmpty) {
- 	@views.html.Media.list(mediaList,models.Media.GROUP,group.id)
- } else {
- 	<p><i>Es wurden noch keine Dateien hochgeladen.</i></p>
- }
- <hr />
- <br />
-
- @views.html.Media.upload(mediaForm,models.Media.GROUP,group.id)
 }
