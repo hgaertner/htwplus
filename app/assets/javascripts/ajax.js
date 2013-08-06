@@ -241,4 +241,24 @@ $(document).ready(function () {
 		});
 		
 	});
+	/*
+	 *END COURSE SEARCH 
+	 */
+	
+	/*
+	 * ACCOUNT SEARCH
+	 */
+	$('#accountSearchSubmit').click(function(){
+		var keyword = $('#accountSearchQuery').val();
+		$.ajax({
+			url: "/account/searchForAccount/" + keyword,
+			type: "GET",
+			succes: function(data){
+				$('#searchAccountResults').replaceWith(data)
+			}
+		})
+	})
+	/*
+	 * END ACCOUNT SEARCH
+	 */
 });
