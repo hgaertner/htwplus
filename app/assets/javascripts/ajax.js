@@ -23,7 +23,7 @@ $(document).ready(function () {
 	});
 	
 	$('.ajaxModalSave').click(function(){
-		var form = $(this).parent().prev().find('#ajaxForm');
+		var form = $(this).parent().prev().find('.ajaxForm');
 		var url = form.attr("action");
 		$.ajax({
 			url: url,
