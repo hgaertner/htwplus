@@ -40,9 +40,7 @@
 				<a href="@routes.ProfileController.view(request.account.id)">Mir</a>
 			</td>
 			<td>
-				<a href="@routes.ProfileController.view(request.friend.id)">@request.friend.name</a>
-				<br />
-				(Angewandte Informatik)
+				@views.html.snippets.userLink(request.friend)
 			</td>
 			<td>
 				@if(request.linkType.equals(models.enums.LinkType.reject)){ abgelehnt } 
@@ -55,9 +53,7 @@
 			</td>
 		} else {
 			<td>
-				<a href="@routes.ProfileController.view(request.account.id)">@request.account.name</a>
-				<br />
-				(Angewandte Informatik)
+				@views.html.snippets.userLink(request.account)
 			</td>
 			<td>
 				<a href="@routes.ProfileController.view(request.friend.id)">Mich</a>
@@ -98,16 +94,16 @@
 	<thead>
 		<tr>
 			<th>Avatar</th>
-			<th>Name<br />(Studiengang)</th>
+			<th>Name</th>
 			<th>Optionen</th>
 		</tr>
 	</thead>
 	<tbody>
 	@for(friend <- friends){
 		<tr>
-			<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" class="img-polaroid" /></td>
-			<td><a href="@routes.ProfileController.view(friend.id)">@friend.name</a><br />(Angewandte Informatik)</td>
-			<td style="vertical-align:middle;"><a href="#confirmDeleteFriend@friend.id" data-toggle="modal" rel="tooltip" title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
+			<td>@views.html.snippets.userLinkAvatar(friend)</td>
+			<td>@views.html.snippets.userLink(friend)</td>
+			<td><a href="#confirmDeleteFriend@friend.id" data-toggle="modal" rel="tooltip" title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
 		</tr>
 	}
 	</tbody>

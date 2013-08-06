@@ -33,13 +33,8 @@
 			<tbody>
 			@for(account <- accounts) {
 				<tr>
-					<td><img alt="avatar" src="@routes.Assets.at("images/avatar.png")" class="img-polaroid" /></td>
-					<td>
-						<a href="@routes.ProfileController.view(account.id)" rel="popover" data-html="true" data-trigger="hover"
-						   data-content="Rolle: Student <br /> Angewandte Informatik (Master)" data-original-title="@account.name"
-						   data-placement="top">@account.name
-						</a>
-						</td>
+					<td>@views.html.snippets.userLinkAvatar(account)</td>
+					<td>@views.html.snippets.userLink(account)</td>
 					<td><a href="@routes.FriendshipController.requestFriend(account.id)" rel="tooltip" title="Einladung senden"><i
 							class="icon-plus"></i></a></td>
 				</tr>

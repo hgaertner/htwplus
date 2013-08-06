@@ -8,9 +8,8 @@
 			<div class="postitBody @status">
 				<a href="@Navigation.getLevelRoute(Navigation.Level.PROFILE)">@Navigation.getLevelTitle(Navigation.Level.PROFILE)</a><br /> <img alt="avatar"
 					src="@Component.currentAccount().getAvatarUrl()" class="img-polaroid" /><br />
-				<a href="@Navigation.getLevelRoute(Navigation.Level.PROFILE)">@Component.currentAccount().firstname @Component.currentAccount().lastname</a><br /> <br /> <small><a
-					href="@routes.AccountController.logout">logout </a></small><i
-					class="icon-remove-sign icon-white"></i>
+				<a href="@Navigation.getLevelRoute(Navigation.Level.PROFILE)">@Component.currentAccount().firstname @Component.currentAccount().lastname</a><br /><br />
+				<small><a href="@routes.AccountController.logout">logout </a></small><i class="icon-remove-sign icon-white"></i>
 			</div>
 			<div class="postitFooter @status"></div>
 		}

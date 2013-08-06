@@ -18,19 +18,20 @@
 		@if(groups != null){ @for(group <- groups) {
 		<tr>
 			<td>@if(group.isClosed == true) { 
-				<i class="icon-lock"></i> 
+					<i class="icon-lock"></i> 
 				} else { 
 					<i class="icon-globe"></i> 
-				} <a href="@routes.GroupController.view(group.id)" rel="popover"
+				}
+				<a href="@routes.GroupController.view(group.id)" rel="popover"
 				data-trigger="hover" data-content="@group.description"
 				data-original-title="Beschreibung"> @group.title</a>
 			</td>
-			<td><a href="#" rel="popover" data-html="true"
-				data-trigger="hover"
-				data-content="Rolle: Student <br /> Angewandte Informatik (Master)"
-				data-original-title="@group.owner.name" data-placement="top">@group.owner.name</a></td>
+			<td>
+				@views.html.snippets.userLink(group.owner)
+			</td>
 			<td><a href="@routes.GroupController.join(group.id)"
-				rel="tooltip" title="Beitreten"><i class="icon-ok"></i></a></td>
+				rel="tooltip" title="Beitreten"><i class="icon-ok"></i></a>
+			</td>
 		</tr>
 		} }
 
