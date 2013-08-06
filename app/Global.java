@@ -3,6 +3,7 @@ import org.hibernate.search.jpa.Search;
 
 import controllers.Component;
 import models.Account;
+import models.Course;
 import models.Group;
 import play.Application;
 import play.GlobalSettings;
@@ -49,9 +50,21 @@ public class Global extends GlobalSettings {
 						account = Account.all().get(0);
 					}
 					
+					//Create open group if there is none
+					if(models.Group.all().size() <= 0 && account != null){
+						models.Group group = new models.Group();
+						group.title = "Test Group";
+						group.isClosed = false;
+						group.description = "This is a test group generate in the Global.java file.";
+						group.owner = account;
+						group.create();
+						
+					}
+					//Generate indexes
 					FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
 					try {
-						fullTextEntityManager.createIndexer(Group.class).startAndWait();
+						fullTextEntityManager.createIndexer(Group.class, Course.class).startAndWait();
+					
 					} catch (InterruptedException e) {
 						
 						Logger.error(e.getMessage());
