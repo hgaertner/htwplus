@@ -5,10 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.codehaus.jackson.node.ObjectNode;
+
 
 import controllers.Navigation.Level;
 
 import play.*;
+import play.libs.Json;
 import play.mvc.*;
 import play.data.*;
 
@@ -32,6 +35,8 @@ import views.html.Group.snippets.addModalSuccess;
 import views.html.Group.snippets.editModal;
 import views.html.Group.snippets.editModalSuccess;
 import views.html.Group.snippets.searchModalResult;
+import views.html.Group.snippets.tokenForm;
+import views.html.Profile.snippets.editForm;
 
 @Security.Authenticated(Secured.class)
 @Transactional
@@ -147,30 +152,46 @@ public class GroupController extends BaseController {
 		return ok(searchModalResult.render(result));
 	}
 	
+	public static Result enterToken(long id) {
+		ObjectNode result = Json.newObject();
+		result.put("status", "response");
+		result.put("payload", "response");
+		
+		return ok(result);
+	}
+	
 	
 	public static Result join(long id){
 		Account account = Component.currentAccount();
 		Group group = Group.findById(id);
+		ObjectNode result = Json.newObject();
+		
+		
 		if(Secured.isMemberOfGroup(group, account)){
+			result.put("status", "redirect");
+			result.put("url", routes.GroupController.view(id).toString());
 			flash("info", "Du bist bereits Mitglied dieser Gruppe!");
-			return redirect(routes.GroupController.view(id));
 		}
 		if(GroupAccount.find(account, group) == null){
 			GroupAccount groupAccount;
 			if(!group.isClosed){
-				groupAccount = new GroupAccount(account, group, LinkType.establish);
-				groupAccount.create();
-				flash("success", "Gruppe erfolgreich beigetreten!");
-				return redirect(routes.GroupController.view(id));
+				result.put("status", "response");
+				String form = tokenForm.render(group, groupForm).toString();
+				result.put("payload", form);
+				//groupAccount = new GroupAccount(account, group, LinkType.establish);
+				//groupAccount.create();
+				//flash("success", "Gruppe erfolgreich beigetreten!");
+				//return redirect(routes.GroupController.view(id));
 			} else {
 				groupAccount = new GroupAccount(account, group, LinkType.request);
 				groupAccount.create();
 				flash("success", "Deine Anfrage wurde erfolgreich übermittelt!");
-				return redirect(routes.GroupController.index());
+				result.put("status", "redirect");
+				result.put("url", routes.GroupController.index().toString());
 			}
 		}
 		
-		return redirect(routes.GroupController.index());
+		return ok(result);
 	}
 		
 	public static Result removeMember(long groupId, long accountId){

@@ -34,6 +34,8 @@ GET 	/gruppe/:groupId/remove/:accountId	controllers.GroupController.removeMember
 GET 	/gruppe/:groupId/accept/:accountId	controllers.GroupController.acceptRequest(groupId:Long, accountId: Long)
 GET 	/gruppe/:groupId/decline/:accountId	controllers.GroupController.declineRequest(groupId:Long, accountId: Long)
 GET		/gruppe/searchForGroup/:keyword		controllers.GroupController.searchForGroupByKeyword(keyword:String)
+POST	/gruppe/:id/entertoken				controllers.GroupController.enterToken(id:Long)
+
 
 #Post and Comments
 POST	/post/:id/addComment				controllers.PostController.addComment(id:Long)
