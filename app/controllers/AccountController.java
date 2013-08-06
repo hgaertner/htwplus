@@ -5,17 +5,20 @@ import static play.data.Form.form;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Random;
 
 import javax.validation.ConstraintViolationException;
 
 import models.Account;
+import models.Group;
 import models.Login;
 import play.Logger;
 import play.data.Form;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 import views.html.index;
+import views.html.Friends.snippets.searchModalResult;
 import views.html.snippets.signup;
 import views.html.snippets.signupSuccess;
 
@@ -85,6 +88,17 @@ public class AccountController extends BaseController {
         }
     }
     
+    /**
+     * Search for a user by the given keyword
+     * @param keyword
+     * @return Returns an result object
+     */
+    public static Result searchByKeyword(final String keyword){
+		Logger.info("Search for accounts with keyword: " +keyword);
+		List<Account> result = Account.searchForAccountByKeyword(keyword);
+		Logger.debug("Result 1: " + result.get(0).name);
+		return ok(searchModalResult.render(result));
+	}
 
 	
 }

@@ -1,0 +1,27 @@
+ @(accounts: List[Account])
+<table class="table table-hover" id="searchAccountResults">
+	<colgroup>
+		<col width="15%">
+		<col width="70%">
+		<col width="15%">
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Avatar</th>
+			<th>Name</th>
+			<th>Optionen</th>
+		</tr>
+	</thead>
+	<tbody>
+		@if(accounts != null){ @for(account <- accounts) {
+			
+		<tr>
+			<td>@views.html.snippets.userLinkAvatar(account)</td>
+			<td>@views.html.snippets.userLink(account)</td>
+			<td><a href="@routes.FriendshipController.requestFriend(account.id)" rel="tooltip" title="Einladung senden"><i class="icon-plus"></i></a></td>
+		</tr>
+		}}else{
+			@accounts
+		}
+	</tbody>
+</table>

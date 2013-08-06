@@ -251,7 +251,7 @@ $(document).ready(function () {
 	$('#accountSearchSubmit').click(function(){
 		var keyword = $('#accountSearchQuery').val();
 		$.ajax({
-			url: "/account/searchForAccount/" + keyword,
+			url: "/user/searchForAccount/" + keyword,
 			type: "GET",
 			succes: function(data){
 				$('#searchAccountResults').replaceWith(data)

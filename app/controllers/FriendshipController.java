@@ -18,7 +18,6 @@ public class FriendshipController extends BaseController {
 	
 	public static Result index() {
 		Navigation.set(Level.FRIENDS);
-		List<Account> allAccounts = Account.findAll();
 		Account currentUser = Component.currentAccount();
 		List<Account> friends = Friendship.findFriends(currentUser);
 		
@@ -26,7 +25,7 @@ public class FriendshipController extends BaseController {
 		List<Friendship> requests = Friendship.findRequests(currentUser);
 		requests.addAll(Friendship.findRejects(currentUser));
 		
-		return ok(index.render(friends,requests,allAccounts));
+		return ok(index.render(friends,requests));
 	}
 	
 	public static Result requestFriend(long friendId){
