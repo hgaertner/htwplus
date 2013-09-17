@@ -19,11 +19,6 @@
                 			<a href="#confirmModalDeletePost@post.id" data-toggle="modal" rel="tooltip" data-original-title="Post löschen"><i class="icon-trash"></i></a>
                 		}
                 	}
-                	@if(post.owner != null) {
-                		@if(post.owner.id == user.id){
-                			<a href="#confirmModalDeletePost@post.id" data-toggle="modal" rel="tooltip" data-original-title="Post löschen"><i class="icon-trash"></i></a>
-                		}
-                	}
 				</h4>
 				<small>@post.createdAt.format("dd. MMM yyyy HH:mm")</small>
 			</div>

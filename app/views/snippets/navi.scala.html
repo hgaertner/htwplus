@@ -44,15 +44,5 @@
 			<div class="postitFooter @status"></div>
 		}
 		</div>
-		
-		<div class="postit">
-		@defining(if(Navigation.getLevel() == Navigation.Level.COURSES){"active"} else {"deactive"}) { status =>
-			<div class="postitHeader @status"></div>
-			<div class="postitBody @status">
-				<a href="@Navigation.getLevelRoute(Navigation.Level.COURSES)">@Navigation.getLevelTitle(Navigation.Level.COURSES)</a><br />
-			</div>
-			<div class="postitFooter @status"></div>
-		}
-		</div>
 	</div>
 </div>

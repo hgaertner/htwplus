@@ -17,7 +17,7 @@
 			</div>
 		</form>
 		<br/>
-		 @views.html.Friends.snippets.searchModalResult(accounts)
+		 @views.html.Friends.snippets.searchModalResult(models.Account.findAll())
 	</div>
 	<div class="modal-footer">
     <div class="loading"></div>
