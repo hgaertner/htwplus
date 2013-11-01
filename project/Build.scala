@@ -19,7 +19,10 @@ object ApplicationBuild extends Build {
     //"com.clever-age" % "play2-elasticsearch" % "0.6-SNAPSHOT",
     "org.hibernate" % "hibernate-search" % "4.3.0.Final",
     "org.hibernate" % "hibernate-core" % "4.2.3.Final",
-    "org.hibernate" % "hibernate-commons-annotations" % "3.2.0.Final")
+    "org.hibernate" % "hibernate-commons-annotations" % "3.2.0.Final",
+    "org.apache.directory.api" % "api-all" % "1.0.0-M20"
+    
+ )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here 

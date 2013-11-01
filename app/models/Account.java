@@ -108,6 +108,19 @@ public class Account extends BaseModel {
 	    	return null;
 		}
     }
+    
+	/**
+     * Retrieve a User by loginname
+     */
+    public static Account findByLoginName(String loginName) {
+    	try{
+	    	return (Account) JPA.em()
+					.createQuery("from Account a where a.loginname = :loginname")
+					.setParameter("loginname", loginName).getSingleResult();
+	    } catch (NoResultException exp) {
+	    	return null;
+		}
+    }
 
     /**
      * Authenticates a user by email and password.
