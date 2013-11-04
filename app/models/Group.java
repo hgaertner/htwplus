@@ -44,10 +44,10 @@ import play.db.jpa.*;
 public class Group extends BaseModel {
 
 	@Required
-	@Column(unique=true)
+	@Column(unique = true)
 	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	public String title;
-	
+
 	public String description;
 
 	@OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
@@ -57,18 +57,18 @@ public class Group extends BaseModel {
 
 	@ManyToOne
 	public Account owner;
-	
+
 	@Enumerated(EnumType.STRING)
 	public GroupType groupType;
-	
+
 	public String token;
-	
-	@OneToMany(mappedBy="group")
+
+	@OneToMany(mappedBy = "group")
 	@OrderBy("createdAt DESC")
 	public List<Media> media;
-		
+
 	// GETTER & SETTER
-	
+
 	public String getTitle() {
 		return title;
 	}
@@ -76,7 +76,7 @@ public class Group extends BaseModel {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
@@ -84,7 +84,7 @@ public class Group extends BaseModel {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public Boolean getIsClosed() {
 		return isClosed;
 	}
@@ -108,9 +108,9 @@ public class Group extends BaseModel {
 	public void setMedia(List<Media> media) {
 		this.media = media;
 	}
-	
-	public String validate(){
-		if(Group.findByTitle(this.title) != null){
+
+	public String validate() {
+		if (Group.findByTitle(this.title) != null) {
 			return "Der Titel ist bereits vergeben";
 		}
 		return null;
@@ -119,9 +119,10 @@ public class Group extends BaseModel {
 	public void createWithGroupAccount(Account account) {
 		this.owner = account;
 		this.create();
-		GroupAccount groupAccount = new GroupAccount(account, this, LinkType.establish);
+		GroupAccount groupAccount = new GroupAccount(account, this,
+				LinkType.establish);
 		groupAccount.create();
-		
+
 	}
 
 	@Override
@@ -131,7 +132,7 @@ public class Group extends BaseModel {
 
 	@Override
 	public void update() {
-		//this.id = id;
+		// this.id = id;
 		// createdAt seems to be overwritten (null) - quickfix? (Iven)
 		// this.createdAt = findById(id).createdAt;
 		JPA.em().merge(this);
@@ -141,58 +142,57 @@ public class Group extends BaseModel {
 	public void delete() {
 		// delete all Posts
 		List<Post> posts = Post.getPostForGroup(this);
-		for(Post post : posts){
+		for (Post post : posts) {
 			post.delete();
 		}
-		
+
 		// delete media
-		for(Media media : this.media){
+		for (Media media : this.media) {
 			media.delete();
 		}
 		JPA.em().remove(this);
 	}
-	
-	
-		
+
 	public static Group findById(Long id) {
 		return JPA.em().find(Group.class, id);
 	}
-	
+
 	public static Group findByTitle(String title) {
 		@SuppressWarnings("unchecked")
-		List<Group> groups =  (List<Group>) JPA.em().createQuery("FROM Group g WHERE g.title = ?1")
+		List<Group> groups = (List<Group>) JPA.em()
+				.createQuery("FROM Group g WHERE g.title = ?1")
 				.setParameter(1, title).getResultList();
-		
-		if(groups.isEmpty()) {
+
+		if (groups.isEmpty()) {
 			return null;
-		} else  {
+		} else {
 			return groups.get(0);
 		}
 	}
 
-	@SuppressWarnings("unchecked")	
+	@SuppressWarnings("unchecked")
 	public static List<Group> all() {
 		List<Group> groups = JPA.em().createQuery("FROM Group").getResultList();
 		return groups;
 	}
-	
+
 	public static boolean isMember(Group group, Account account) {
 		@SuppressWarnings("unchecked")
 		List<GroupAccount> groupAccounts = (List<GroupAccount>) JPA
 				.em()
 				.createQuery(
 						"SELECT g FROM GroupAccount g WHERE g.account.id = ?1 and g.group.id = ?2 AND linkType = ?3")
-				.setParameter(1, account.id).setParameter(2, group.id).setParameter(3, LinkType.establish)
-				.getResultList();
-		
-		if(groupAccounts.isEmpty()) {
+				.setParameter(1, account.id).setParameter(2, group.id)
+				.setParameter(3, LinkType.establish).getResultList();
+
+		if (groupAccounts.isEmpty()) {
 			return false;
-		} else  {
+		} else {
 			return true;
 		}
 
 	}
-	
+
 	/**
 	 * Search for a group with a given keyword.
 	 * 
@@ -201,29 +201,26 @@ public class Group extends BaseModel {
 	 */
 	@SuppressWarnings("unchecked")
 	public static List<Group> searchForGroupByKeyword(String keyword) {
-		Logger.info("Group model searchForGroupByKeyWord: " + keyword.toLowerCase());
-		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
-		/*try {
-		 This part takes care to create indexes of persistent data, which is not inserted via hibernate/ JPA this block
-		 is now in the onStart in Global.java
-			fullTextEntityManager.createIndexer(Group.class).startAndWait();
-		} catch (InterruptedException e) {
-			
-			Logger.error(e.getMessage());
-		}*/
-		//Create a querybuilder for the group entity 
+		Logger.info("Group model searchForGroupByKeyWord: "
+				+ keyword.toLowerCase());
+		FullTextEntityManager fullTextEntityManager = Search
+				.getFullTextEntityManager(JPA.em());
+		// Create a querybuilder for the group entity
 		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
 				.buildQueryBuilder().forEntity(Group.class).get();
-		//Sets the field we want to search on and tries to match with the given keyword
-		org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword().wildcard()
-				.onField("title").matching("*"+keyword.toLowerCase()+"*").createQuery();
+		// Sets the field we want to search on and tries to match with the given
+		// keyword
+		org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword()
+				.wildcard().onField("title")
+				.matching("*" + keyword.toLowerCase() + "*").createQuery();
+
 		// wrap Lucene query in a javax.persistence.Query
 		FullTextQuery fullTextQuery = fullTextEntityManager
 				.createFullTextQuery(luceneQuery, Group.class);
 
-		List<Group> result = fullTextQuery.getResultList(); //The result...
-		Logger.info("Found " +result.size() +" groups with keyword: " +keyword);
-
+		List<Group> result = fullTextQuery.getResultList(); // The result...
+		Logger.info("Found " + result.size() + " groups with keyword: "
+				+ keyword);
 
 		return result;
 	}

@@ -24,13 +24,12 @@ import views.html.snippets.signupSuccess;
 
 @Transactional
 public class AccountController extends BaseController {
-	
-    /**
-     * Defines a form wrapping the Account class.
-     */ 
-    final static Form<Account> signupForm = form(Account.class);
-  
-	
+
+	/**
+	 * Defines a form wrapping the Account class.
+	 */
+	final static Form<Account> signupForm = form(Account.class);
+
 	public static Result authenticate() {
 		Form<Login> loginForm = form(Login.class).bindFromRequest();
 		if (loginForm.hasErrors()) {
@@ -39,8 +38,10 @@ public class AccountController extends BaseController {
 		} else {
 			session().clear();
 			session("email", loginForm.get().email);
-			session("id", Account.findByEmail(loginForm.get().email).id.toString());
-			session("firstname", Account.findByEmail(loginForm.get().email).firstname);
+			session("id",
+					Account.findByEmail(loginForm.get().email).id.toString());
+			session("firstname",
+					Account.findByEmail(loginForm.get().email).firstname);
 			return redirect(routes.Application.index());
 		}
 	}
@@ -53,52 +54,57 @@ public class AccountController extends BaseController {
 		flash("success", "Du bist nun ausgeloggt");
 		return redirect(routes.Application.index());
 	}
-	  
-    /**
-     * Handle the form submission.
-     */
-    @Transactional
-    public static Result submit() {
-        Form<Account> filledForm = signupForm.bindFromRequest();
-        System.out.println(filledForm.errors());
-        // Check Mail
-        if(!(Account.findByEmail(filledForm.field("email").value()) == null)) {
-            filledForm.reject("email", "Diese Mail wird bereits verwendet!");
-        }
-        // Check repeated password
-        if(!filledForm.field("password").valueOr("").isEmpty()) {
-            if(!filledForm.field("password").valueOr("").equals(filledForm.field("repeatPassword").value())) {
-                filledForm.reject("repeatPassword", "Passwörter stimmen nicht überein");
-            }
-        }
-        if(filledForm.field("password").value().length() < 6){
-        	filledForm.reject("password", "Das Passwort muss mindestens 6 Zeichen haben.");
-        }
-                
-        if(filledForm.hasErrors()) {
-        	
-            return ok(signup.render(filledForm));
-        } else {
-            Account created = filledForm.get();
-            created.password = Component.md5(created.password);
-            Random generator = new Random();
-            created.avatar = "a" + generator.nextInt(10);
-            created.create();
-            return ok(signupSuccess.render());
-        }
-    }
-    
-    /**
-     * Search for a user by the given keyword
-     * @param keyword
-     * @return Returns an result object
-     */
-    public static Result searchByKeyword(final String keyword){
-		Logger.info("Search for accounts with keyword: " +keyword);
+
+	/**
+	 * Handle the form submission.
+	 */
+	@Transactional
+	public static Result submit() {
+		Form<Account> filledForm = signupForm.bindFromRequest();
+		System.out.println(filledForm.errors());
+		// Check Mail
+		if (!(Account.findByEmail(filledForm.field("email").value()) == null)) {
+			filledForm.reject("email", "Diese Mail wird bereits verwendet!");
+		}
+		// Check repeated password
+		if (!filledForm.field("password").valueOr("").isEmpty()) {
+			if (!filledForm.field("password").valueOr("")
+					.equals(filledForm.field("repeatPassword").value())) {
+				filledForm.reject("repeatPassword",
+						"Passwörter stimmen nicht überein");
+			}
+		}
+		if (filledForm.field("password").value().length() < 6) {
+			filledForm.reject("password",
+					"Das Passwort muss mindestens 6 Zeichen haben.");
+		}
+
+		if (filledForm.hasErrors()) {
+
+			return ok(signup.render(filledForm));
+		} else {
+			Account created = filledForm.get();
+			created.password = Component.md5(created.password);
+			Random generator = new Random();
+			created.avatar = "a" + generator.nextInt(10);
+			created.create();
+			return ok(signupSuccess.render());
+		}
+	}
+
+	/**
+	 * Search for a user by the given keyword
+	 * 
+	 * @param keyword
+	 * @return Returns an result object
+	 */
+	public static Result searchByKeyword(final String keyword) {
+		Logger.info("Search for accounts with keyword: " + keyword);
 		List<Account> result = Account.searchForAccountByKeyword(keyword);
-		Logger.debug("Result 1: " + result.get(0).name);
+		if (result != null && result.size() > 1) {
+			Logger.debug("Found " + result.size() + " users with the keyword: " +keyword);
+		}
 		return ok(searchModalResult.render(result));
 	}
 
-	
 }

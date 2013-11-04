@@ -209,14 +209,6 @@ public class Account extends BaseModel {
 	public static List<Account> searchForAccountByKeyword(String keyword) {
 		Logger.info("Account model searchForAccountByKeyWord: " + keyword.toLowerCase());
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
-		/*try {
-		 This part takes care to create indexes of persistent data, which is not inserted via hibernate/ JPA this block
-		 is now in the onStart in Global.java
-			fullTextEntityManager.createIndexer(Group.class).startAndWait();
-		} catch (InterruptedException e) {
-			
-			Logger.error(e.getMessage());
-		}*/
 		//Create a querybuilder for the group entity 
 		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
 				.buildQueryBuilder().forEntity(Account.class).get();

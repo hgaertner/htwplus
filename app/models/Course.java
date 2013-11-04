@@ -103,14 +103,6 @@ public class Course extends BaseModel {
 	public static List<Course> searchByKeyword(final String keyword){
 		Logger.info("Course model searchByKeyword: " + keyword.toLowerCase());
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
-		/*try {
-		 This part takes care to create indexes of persistent data, which is not inserted via hibernate/ JPA this block
-		 is now in the onStart in Global.java
-			fullTextEntityManager.createIndexer(Group.class).startAndWait();
-		} catch (InterruptedException e) {
-			
-			Logger.error(e.getMessage());
-		}*/
 		//Create a querybuilder for the group entity 
 		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
 				.buildQueryBuilder().forEntity(Course.class).get();
