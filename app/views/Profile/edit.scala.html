@@ -2,6 +2,10 @@
 @import helper._
 @import models._
 
+@main("Editieren") {
+
+<h2>Profil bearbeiten</h2>
+
 @form(routes.ProfileController.update(profile.id), 'class -> "ajaxForm") {
 
 	@inputText(
@@ -77,6 +81,8 @@
 	</dl>
 	<input id="avatar" name="avatar" type="hidden" value="">
 	
+	<input type="submit" value="Speichern" class="btn btn-success">
+	
 	<script type="text/javascript">
 	
 	var aID = "@profile.avatar";
@@ -98,8 +104,5 @@
 	setAvatar(aID);
 	
 	</script>
-	
-
-
-	
+}
 }

@@ -22,12 +22,6 @@
 <div id="confirmDeleteFriend" class="modal hide fade" tabindex="-1" role="dialog">@views.html.Friends.snippets.deleteFriendModal(user)</div>
 <!-- Ende confirmDeleteFriendModal -->
 
-<!-- editModal -->
-@if(curUser.equals(user)) {
-	@views.html.Profile.snippets.edit()
-}
-<!-- Ende editModal -->
-
 <!-- editPwModal -->
 @if(curUser.equals(user)) {
 	@views.html.Profile.snippets.passwordModal()
