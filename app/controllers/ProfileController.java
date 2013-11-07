@@ -25,7 +25,6 @@ import play.libs.Json;
 import play.mvc.Result;
 import views.html.Profile.index;
 import views.html.Profile.stream;
-import views.html.Profile.snippets.editForm;
 import views.html.Profile.snippets.passwordForm;
 import views.html.Profile.edit;
 import controllers.Navigation.Level;
