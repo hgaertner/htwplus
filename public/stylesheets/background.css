@@ -362,16 +362,21 @@ textarea {
 	padding-bottom: 45px;
 }
 
-.modal-body label {
+.noModal {
+	padding-left: 10%;
+	padding-right: 10%;
+}
+
+.noModal label {
 	font-weight: bold;
 }
 
-.modal-body input, select, textarea {
+.noModal input, select, textarea {
 	width: 100%;
 }
 
-.modal-body input[type="text"]:not(.search-query),
-.modal-body input[type="password"] {
+.noModal input[type="text"]:not(.search-query),
+.noModal input[type="password"] {
 	height: auto !important;
 	line-height: 16px;
 	box-sizing: border-box;
@@ -379,52 +384,50 @@ textarea {
 	-moz-box-sizing: border-box
 }
 
-.modal-body input[type="radio"] {
+.noModal input[type="radio"] {
 	width: auto;
 	margin-top: 2px;
 }
 
-.modal-body dd i {
+.noModal dd i {
 	margin-top: 0px;
 }
 
-.modal-body dd input {
+.noModal dd input {
 	margin-top: -5px;
 }
 
-.modal-body dd button {
+.noModal dd button {
 	margin-top: -5px;
 }
 
-.modal-body dl {
+.noModal dl {
 	height: 20px;
 }
 
-.modal-body dl dd:last-child {
+.noModal dl dd:last-child {
 	padding-bottom: 8px;
 }
 
-.modal-body dt {
+.noModal dt {
    float:left;
    clear: both;
    width: 30%;
 }
 
-.modal-body dd {
+.noModal dd {
    float: right;
    width: 68%;
    margin-bottom: 8px;
 }
 
-.modal-body dd.error {
+.noModal dd.error {
 	text-shadow: 1px 1px 1px rgba(185, 74, 72, 0.5);
 	color: #b94a48;
 }
 
-.modal-body dd.info {
+.noModal dd.info {
 	display: none;
-	text-shadow: 1px 1px 1px rgba(118, 185, 0, 0.5);
-	color: #76B900;
 }
 
 .comment {
