@@ -1,4 +1,6 @@
-package lib;
+package models;
+
+import models.enums.AccountRole;
 
 import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.cursor.EntryCursor;
@@ -22,21 +24,15 @@ public class LDAPConnector {
 	
 	private String username = null;
 	private String password = null;
-	private String email = null;
 	private String firstname = null;
 	private String lastname = null;
 
-	private Boolean student = false;
-	private Boolean tutor = false;
+	private AccountRole role = null;
 	
 	LdapConnection conn = null;
 		
 	public String getUsername() {
 		return username;
-	}
-
-	public String getEmail() {
-		return email;
 	}
 
 	public String getFirstname() {
@@ -47,12 +43,8 @@ public class LDAPConnector {
 		return lastname;
 	}
 	
-	public Boolean isStudent() {
-		return this.student;
-	}
-	
-	public Boolean isTutor() {
-		return this.tutor;
+	public AccountRole getRole() {
+		return role;
 	}
 	
 	public LDAPConnector() {
@@ -78,10 +70,9 @@ public class LDAPConnector {
 			entCursor =  conn.search(this.root, "(uid=" + this.username + ")", SearchScope.ONELEVEL, "*");
 			entCursor.next();
 			Entry entry = entCursor.get();
-			this.email = entry.get("mail").getString();
 			this.firstname = entry.get("givenName").getString();
 			this.lastname = entry.get("sn").getString();
-			Logger.info("Read Account from LDAP: " + this.firstname + " " + this.lastname + " " + this.email);
+			Logger.info("Read Account from LDAP: " + this.firstname + " " + this.lastname);
 		} catch (LdapException | CursorException e) {
 			e.printStackTrace();
 			throw new LDAPConnectorException("Es gab ein Problem bei der Verbindung zum LDAP-Server. Bitte versuche es später noch einmal.");
@@ -94,10 +85,10 @@ public class LDAPConnector {
 	    		Entry entry = entCursor.get();
 	    		role = entry.get("cn").getString();
 	    		if(role.equals(this.studentIdent)) {
-	    			this.student = true;
+	    			this.role = AccountRole.STUDENT;
 	    		}
 	    		if(role.equals(this.tutorIdent)){
-	    			this.tutor = true;
+	    			this.role = AccountRole.TUTOR;
 	    		}
 	    	}
 		} catch (LdapException | CursorException e) {

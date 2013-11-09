@@ -22,6 +22,7 @@ import org.hibernate.search.query.dsl.QueryBuilder;
 import controllers.Component;
 import controllers.routes;
 import models.base.BaseModel;
+import models.enums.AccountRole;
 import play.db.jpa.*;
 
 import java.util.Set;
@@ -41,7 +42,6 @@ public class Account extends BaseModel {
 	@Required
 	public String lastname;
 
-	@Required
 	@Email
 	public String email;
 
@@ -65,7 +65,7 @@ public class Account extends BaseModel {
 	public String degree;
 	public Integer semester;
 
-	public int role;
+	public AccountRole role;
 
 	public Boolean approved;
 

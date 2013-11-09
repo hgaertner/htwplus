@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.Random;
 
 
-import lib.LDAPConnector;
-import lib.LDAPConnector.LDAPConnectorException;
+
+
 import models.Account;
+import models.LDAPConnector;
 import models.Login;
+import models.LDAPConnector.LDAPConnectorException;
+import models.enums.AccountRole;
 import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
@@ -59,14 +62,19 @@ public class AccountController extends BaseController {
 		if(account == null) {
 			account = new Account();
 			Logger.info("New Account for " + ldap.getUsername() + " will be created.");
-			account.email = ldap.getEmail();
 			account.firstname = ldap.getFirstname();
 			account.lastname = ldap.getLastname();
 			account.loginname = ldap.getUsername();
 			account.password = "LDAP - not needed";
             Random generator = new Random();
             account.avatar = "a" + generator.nextInt(10);
+            account.role = ldap.getRole();
 			account.create();
+		} else {
+			account.firstname = ldap.getFirstname();
+			account.lastname = ldap.getLastname();
+            account.role = ldap.getRole();
+			account.update();
 		}
 		
 		session().clear();
