@@ -3,7 +3,6 @@ package controllers;
 import java.util.List;
 
 import controllers.Navigation.Level;
-
 import models.Account;
 import models.Friendship;
 import models.Post;
