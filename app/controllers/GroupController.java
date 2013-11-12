@@ -36,7 +36,6 @@ import views.html.Group.snippets.addModal;
 import views.html.Group.snippets.addModalSuccess;
 import views.html.Group.snippets.editModal;
 import views.html.Group.snippets.editModalSuccess;
-import views.html.Group.snippets.searchModalResult;
 import views.html.Group.snippets.tokenForm;
 import views.html.Profile.snippets.editForm;
 import views.html.Group.searchresult;
