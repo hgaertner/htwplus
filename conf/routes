@@ -36,9 +36,8 @@ GET 	/group/:id/join						controllers.GroupController.join(id:Long)
 GET 	/group/:groupId/remove/:accountId	controllers.GroupController.removeMember(groupId:Long, accountId: Long)
 GET 	/group/:groupId/accept/:accountId	controllers.GroupController.acceptRequest(groupId:Long, accountId: Long)
 GET 	/group/:groupId/decline/:accountId	controllers.GroupController.declineRequest(groupId:Long, accountId: Long)
-GET		/group/searchForGroup/:keyword		controllers.GroupController.searchForGroupByKeyword(keyword:String)
+GET		/gruppe/searchForGroup/				controllers.GroupController.searchForGroupByKeyword()
 POST	/group/:id/entertoken				controllers.GroupController.enterToken(id:Long)
-
 
 #Post and Comments
 POST	/post/:id/addComment				controllers.PostController.addComment(id:Long)
@@ -57,7 +56,7 @@ GET		/user/:id/editPassword				controllers.ProfileController.editPassword(id:Lon
 POST	/user/:id/updatePassword			controllers.ProfileController.updatePassword(id:Long)
 POST	/user/:id/edit						controllers.ProfileController.update(id:Long)
 GET		/user/:id/stream					controllers.ProfileController.stream(id:Long)
-GET		/user/searchForAccount/:keyword		controllers.AccountController.searchByKeyword(keyword:String)
+GET		/user/searchForAccount/				controllers.AccountController.searchByKeyword()
 
 
 #Friends

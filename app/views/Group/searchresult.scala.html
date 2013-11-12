@@ -1,5 +1,5 @@
- @(groups: List[Group])
-<table class="table table-hover" id="searchGroupResults">
+@(groups: List[Group]) @main("Searchresult"){ @if(groups != null) {
+<table class="table table-hover">
 	<colgroup>
 		<col width="45%">
 		<col width="40%">
@@ -13,9 +13,8 @@
 		</tr>
 	</thead>
 	<tbody>
-
-		<!-- Fuer Fabi: Ajax-Abfrage um alle Gruppen zu holen. -->
-		@if(groups != null){ @for(group <- groups) {
+	<tbody>
+		@for(group <- groups){
 		<tr>
 			<td>@if(group.isClosed == true) { 
 					<i class="icon-lock"></i> 
@@ -33,8 +32,7 @@
 
 				rel="tooltip" title="Beitreten" class="ajaxModalLink"><i class="icon-ok"></i></a></td>
 		</tr>
-		} }
-
-
+		}
 	</tbody>
 </table>
+} }
