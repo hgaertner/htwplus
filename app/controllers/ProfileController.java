@@ -1,13 +1,8 @@
 package controllers;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.PersistenceException;
-import javax.persistence.RollbackException;
-import javax.validation.ConstraintViolationException;
 
 import models.Account;
 import models.Friendship;
@@ -18,18 +13,18 @@ import org.codehaus.jackson.node.ObjectNode;
 
 import play.Logger;
 import play.data.Form;
-import play.data.validation.Constraints.EmailValidator;
-import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.libs.Json;
 import play.mvc.Result;
+import play.mvc.Security;
+import views.html.Profile.edit;
 import views.html.Profile.index;
 import views.html.Profile.stream;
 import views.html.Profile.snippets.passwordForm;
-import views.html.Profile.edit;
 import controllers.Navigation.Level;
 
 @Transactional
+@Security.Authenticated(Secured.class)
 public class ProfileController extends BaseController {
 
 	static Form<Account> accountForm = Form.form(Account.class);
@@ -156,51 +151,67 @@ public class ProfileController extends BaseController {
 	}
 
 	public static Result update(Long id) {
+		// Get regarding Object
 		Account account = Account.findById(id);
+		
+		// Check Access
+		if(!Secured.editAccount(account)) {
+			return redirect(routes.Application.index());
+		}
+		
+		// Get the data from the request
 		Form<Account> filledForm = accountForm.bindFromRequest();
+		
+		Navigation.set(Level.PROFILE, "Editieren");
 	
-		// Does Email exists already
-		Account exisitingAccount = Account.findByEmail(filledForm
-				.field("email").value());
+		// Remove expected errors
+		filledForm.errors().remove("password");
+		filledForm.errors().remove("studycourse");
+
+		// Custom Validations
+		Account exisitingAccount = Account.findByEmail(filledForm.field("email").value());
 		if (exisitingAccount != null && !exisitingAccount.equals(account)) {
 			filledForm.reject("email", "Diese Mail wird bereits verwendet!");
-			Navigation.set(Level.PROFILE, "Editieren");
-			return badRequest(edit.render(account, filledForm.fill(account)));
+			return badRequest(edit.render(account, filledForm));
 		}
-
-		account.firstname = filledForm.field("firstname").value();
-		account.lastname = filledForm.field("lastname").value();
-		account.avatar = filledForm.field("avatar").value();
-		account.email = filledForm.field("email").value();
-
-		if (filledForm.field("degree").value().equals("null")) {
-			account.degree = null;
-		} else {
-			account.degree = filledForm.field("degree").value();
-		}
-
-		if (filledForm.field("semester").value().equals("0")) {
-			account.semester = null;
-		} else {
-			account.semester = Integer.parseInt(filledForm
-					.field("semester").value());
-		}
-
-		Long studycourseId = Long.parseLong(filledForm.field("studycourse")
-				.value());
-		Studycourse studycourse;
-		if (studycourseId != 0) {
-			studycourse = Studycourse.findById(studycourseId);
-		} else {
-			studycourse = null;
-		}
-		account.studycourse = studycourse;
-		account.update();
-
-		flash("success", "Profil erfolgreich gespeichert.");
 		
+		// Perform JPA Validation
+		if(filledForm.hasErrors()) {
+			return badRequest(edit.render(account, filledForm));
+		} else {
 
-		return redirect(routes.ProfileController.me());
+			// Fill an and update the model manually 
+			// because the its just a partial form
+			account.firstname = filledForm.field("firstname").value();
+			account.lastname = filledForm.field("lastname").value();
+			account.avatar = filledForm.field("avatar").value();
+			account.email = filledForm.field("email").value();
+
+			if (filledForm.field("degree").value().equals("null")) {
+				account.degree = null;
+			} else {
+				account.degree = filledForm.field("degree").value();
+			}
+
+			if (filledForm.field("semester").value().equals("0")) {
+				account.semester = null;
+			} else {
+				account.semester = Integer.parseInt(filledForm.field("semester").value());
+			}
+
+			Long studycourseId = Long.parseLong(filledForm.field("studycourse").value());
+			Studycourse studycourse;
+			if (studycourseId != 0) {
+				studycourse = Studycourse.findById(studycourseId);
+			} else {
+				studycourse = null;
+			}
+			account.studycourse = studycourse;
+			account.update();
+		
+			flash("success", "Profil erfolgreich gespeichert.");
+			return redirect(routes.ProfileController.me());
+		}
 	}
 
 }
