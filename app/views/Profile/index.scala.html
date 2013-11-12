@@ -10,7 +10,7 @@
 		<a href="@routes.ProfileController.stream(user.id)" role="button" class="btn" rel="tooltip" data-original-title="Newsstream"><i class="icon-comment"></i></a>
 		@if(curUser.id == user.id) {
 		<a href="@routes.ProfileController.edit(user.id)" class="btn" rel="tooltip" title="Profil bearbeiten"><i class="icon-pencil"></i></a> 
-		<a href="@routes.ProfileController.editPassword(user.id)" data-target="#editPwModal"  class="btn last" data-toggle="modal" rel="tooltip" title="Passwort ändern"><i class="icon-wrench"></i></a>
+		<a href="@routes.ProfileController.editPassword(user.id)" class="btn last" rel="tooltip" title="Passwort ändern"><i class="icon-wrench"></i></a>
 		} else { @if(Friendship.alreadyFriendly(curUser, user)) {
 		<a href="#confirmDeleteFriend" class="btn last" data-toggle="modal" rel="tooltip" title="Freundschaft beenden"><i class="icon-trash"></i></a>
 		} else {
@@ -26,11 +26,6 @@
 <div id="confirmDeleteFriend" class="modal hide fade" tabindex="-1" role="dialog">@views.html.Friends.snippets.deleteFriendModal(user)</div>
 <!-- Ende confirmDeleteFriendModal -->
 
-<!-- editPwModal -->
-@if(curUser.id == user.id) {
-	@views.html.Profile.snippets.passwordModal()
-}
-<!-- Ende editPwModal -->
 }
 
 <br />

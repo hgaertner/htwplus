@@ -20,7 +20,7 @@ import play.mvc.Security;
 import views.html.Profile.edit;
 import views.html.Profile.index;
 import views.html.Profile.stream;
-import views.html.Profile.snippets.passwordForm;
+import views.html.Profile.editPassword;
 import controllers.Navigation.Level;
 
 @Transactional
@@ -80,63 +80,70 @@ public class ProfileController extends BaseController {
 
 	public static Result editPassword(Long id) {
 		Account account = Account.findById(id);
-		return ok(passwordForm.render(account, accountForm.fill(account)));
+		Navigation.set(Level.PROFILE, "Editieren");
+		return ok(editPassword.render(account, accountForm.fill(account)));
 	}
 
 	public static Result updatePassword(Long id) {
+		// Get regarding Object
 		Account account = Account.findById(id);
-		Form<Account> filledForm = accountForm.bindFromRequest();
-		ObjectNode result = Json.newObject();
+		
+		// Create error switch
 		Boolean error = false;
+		
+		// Check Access
+		if(!Secured.editAccount(account)) {
+			return redirect(routes.Application.index());
+		}
+		
+		// Get data from request
+		Form<Account> filledForm = accountForm.bindFromRequest();
+		
+		
+		// Remove all unnecessary fields
+		filledForm.errors().remove("firstname");
+		filledForm.errors().remove("lastname");
+		filledForm.errors().remove("email");
 
-		Set<String> checkErrorSet = new HashSet<String>();
-		checkErrorSet.add("password");
-
+		// Store old and new password for validation
 		String oldPassword = filledForm.field("oldPassword").value();
 		String password = filledForm.field("password").value();
 		String repeatPassword = filledForm.field("repeatPassword").value();
-
+		
+		// Perform JPA Validation
+		if(filledForm.hasErrors()) {
+			error = true;
+		}
+		
+		// Custom Validations
 		if (!oldPassword.isEmpty()) {
 			if (!account.password.equals(Component.md5(oldPassword))) {
-				filledForm.reject("oldPassword",
-						"Dein altes Passwort ist nicht korrekt.");
+				filledForm.reject("oldPassword", "Dein altes Passwort ist nicht korrekt.");
 				error = true;
 			}
 		} else {
-			filledForm.reject("oldPassword",
-					"Bitte gebe dein altes Passwort ein.");
+			filledForm.reject("oldPassword","Bitte gebe Dein altes Passwort ein.");
 			error = true;
 		}
 
 		if (password.length() < 6) {
-			filledForm.reject("password",
-					"Das Passwort muss mindestens 6 Zeichen haben.");
+			filledForm.reject("password", "Das Passwort muss mindestens 6 Zeichen haben.");
 			error = true;
 		}
 
 		if (!password.equals(repeatPassword)) {
-			filledForm.reject("repeatPassword",
-					"Die Passwörter stimmen nicht überein.");
-			error = true;
-		}
-
-		Set<String> errorSet = filledForm.errors().keySet();
-		if (!Collections.disjoint(errorSet, checkErrorSet)) {
+			filledForm.reject("repeatPassword", "Die Passwörter stimmen nicht überein.");
 			error = true;
 		}
 
 		if (error) {
-			result.put("status", "response");
-			String form = passwordForm.render(account, filledForm).toString();
-			result.put("payload", form);
+			return badRequest(editPassword.render(account, filledForm));
 		} else {
 			account.password = Component.md5(password);
 			account.update();
-			result.put("status", "redirect");
-			result.put("url", routes.ProfileController.me().toString());
 			flash("success", "Passwort erfolgreich geändert.");
 		}
-		return ok(result);
+		return redirect(routes.ProfileController.me());
 	}
 
 	public static Result edit(Long id) {

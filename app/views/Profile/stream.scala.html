@@ -8,8 +8,8 @@
 		<div class="btn-group">
 			<a href="@routes.ProfileController.view(user.id)" role="button" class="btn" rel="tooltip" data-original-title="Profil"><i class="icon-user"></i></a>
 			@if(curUser.equals(user)) {
-			<a href="@routes.ProfileController.edit(user.id)" data-target="#editProfileModal" class="btn ajaxModal" data-toggle="modal" rel="tooltip" title="Profil bearbeiten"><i class="icon-pencil"></i></a> 
-			<a href="#editPwModal" class="btn last" data-toggle="modal" rel="tooltip" title="Passwort ändern"><i class="icon-wrench"></i></a>
+			<a href="@routes.ProfileController.edit(user.id)" class="btn" rel="tooltip" title="Profil bearbeiten"><i class="icon-pencil"></i></a> 
+			<a href="@routes.ProfileController.editPassword(user.id)" class="btn last" data-toggle="modal" rel="tooltip" title="Passwort ändern"><i class="icon-wrench"></i></a>
 			} else { @if(Friendship.alreadyFriendly(curUser, user)) {
 			<a href="#confirmDeleteFriend" class="btn last" data-toggle="modal" rel="tooltip" title="Freundschaft beenden"><i class="icon-trash"></i></a>
 			} else {
@@ -18,15 +18,9 @@
 		</div>
 	</h2>
 	
-<!-- confirmDeleteFriendModal -->
-<div id="confirmDeleteFriend" class="modal hide fade" tabindex="-1" role="dialog">@views.html.Friends.snippets.deleteFriendModal(user)</div>
-<!-- Ende confirmDeleteFriendModal -->
-
-<!-- editPwModal -->
-@if(curUser.equals(user)) {
-	@views.html.Profile.snippets.passwordModal()
-}
-<!-- Ende editPwModal -->
+	<!-- confirmDeleteFriendModal -->
+	<div id="confirmDeleteFriend" class="modal hide fade" tabindex="-1" role="dialog">@views.html.Friends.snippets.deleteFriendModal(user)</div>
+	<!-- Ende confirmDeleteFriendModal -->
 	
 	@if(curUser.equals(user)) {
 	<h5>(Das sehen deine Freunde)</h5>
