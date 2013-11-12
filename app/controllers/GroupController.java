@@ -31,9 +31,8 @@ import play.mvc.Security;
 import views.html.Group.index;
 import views.html.Group.media;
 import views.html.Group.view;
-import views.html.Group.createGroup;
-import views.html.Group.snippets.editModal;
-import views.html.Group.snippets.editModalSuccess;
+import views.html.Group.create;
+import views.html.Group.edit;
 import views.html.Group.snippets.searchModalResult;
 import views.html.Group.snippets.tokenForm;
 
@@ -91,7 +90,7 @@ public class GroupController extends BaseController {
 	
 	public static Result create() {
 		Navigation.set(Level.GROUPS, "Erstellen");
-		return ok(createGroup.render(groupForm));
+		return ok(create.render(groupForm));
 	}
 
 	public static Result add() {	
@@ -102,7 +101,7 @@ public class GroupController extends BaseController {
 		
 		// Perform JPA Validation
 		if (filledForm.hasErrors()) {
-			return badRequest(createGroup.render(filledForm));
+			return badRequest(create.render(filledForm));
 		} else {
 			Group group = filledForm.get();
 			int groupType = Integer.parseInt(filledForm.data().get("optionsRadios"));
@@ -116,13 +115,13 @@ public class GroupController extends BaseController {
 				case 2: group.groupType = GroupType.course; break;
 				default: 
 					filledForm.reject("Nicht möglich!");
-					return ok(createGroup.render(filledForm));
+					return ok(create.render(filledForm));
 			}
 			
 			if(groupType == 2){
 				if(filledForm.data().get("token").equals("")){
 					filledForm.reject("token","Bitte token eingeben!");
-					return ok(createGroup.render(filledForm));
+					return ok(create.render(filledForm));
 				}
 			}
 			
@@ -138,13 +137,20 @@ public class GroupController extends BaseController {
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
-			return ok(editModal.render(group, groupForm.fill(group)));
+			Navigation.set(Level.GROUPS, "Bearbeiten", group.title, routes.GroupController.view(group.id));
+			return ok(edit.render(group, groupForm.fill(group)));
 		}
 	}
 	
 	@Transactional
 	public static Result update(Long groupId) {
 		Group group = Group.findById(groupId);
+				
+		// Check rights
+		if(!Secured.isOwnerOfGroup(group, Component.currentAccount())) {
+			return redirect(routes.Application.index());
+		}
+		
 		Form<Group> filledForm = groupForm.bindFromRequest();
 		int groupType = Integer.parseInt(filledForm.data().get("optionsRadios"));
 		String description = filledForm.data().get("description");
@@ -159,11 +165,12 @@ public class GroupController extends BaseController {
 			case 2: group.groupType = GroupType.course; break;
 			default:
 				filledForm.reject("Nicht möglich!");
-				return ok(createGroup.render(filledForm));
+				return ok(create.render(filledForm));
 		}
 		group.description = description;
 		group.update();
-		return ok(editModalSuccess.render());
+		flash("info", "Gruppe " + group.title + " erfolgreich bearbeitet!");
+		return redirect(routes.GroupController.view(groupId));
 		
 	}
 	
