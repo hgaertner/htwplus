@@ -3,6 +3,7 @@ package controllers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.codehaus.jackson.node.ObjectNode;
@@ -38,6 +39,7 @@ import views.html.Group.snippets.editModalSuccess;
 import views.html.Group.snippets.searchModalResult;
 import views.html.Group.snippets.tokenForm;
 import views.html.Profile.snippets.editForm;
+import views.html.Group.searchresult;
 
 @Security.Authenticated(Secured.class)
 @Transactional
@@ -173,10 +175,24 @@ public class GroupController extends BaseController {
 	}
 	
 	
-	public static Result searchForGroupByKeyword(final String keyword){
-		Logger.info("Search for group with keyword: " +keyword);
-		List<Group> result = Group.searchForGroupByKeyword(keyword);
-		return ok(searchModalResult.render(result));
+	public static Result searchForGroupByKeyword(){
+		List<Group> result = null;
+		final Set<Map.Entry<String, String[]>> entries = request()
+				.queryString().entrySet();
+		for (Map.Entry<String, String[]> entry : entries) {
+			if (entry.getKey().equals("keyword")) {
+				final String keyword = entry.getValue()[0];
+				Logger.debug("Value of key" + keyword);
+				result = Group.searchForGroupByKeyword(keyword);
+				if (result != null && result.size() > 1) {
+					Logger.debug("Found " + result.size()
+							+ " groups with the keyword: " + keyword);
+				}
+			}
+
+		}
+
+		return ok(searchresult.render(result));
 	}
 	
 	public static Result enterToken(long groupId) {

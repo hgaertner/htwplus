@@ -3,23 +3,21 @@ package controllers;
 import static play.data.Form.form;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
-
-
-
+import java.util.Set;
 
 import models.Account;
 import models.LDAPConnector;
-import models.Login;
 import models.LDAPConnector.LDAPConnectorException;
-import models.enums.AccountRole;
+import models.Login;
 import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 import views.html.index;
-import views.html.Friends.snippets.searchModalResult;
+import views.html.Friends.searchresult;
 import views.html.snippets.signup;
 import views.html.snippets.signupSuccess;
 
@@ -34,21 +32,21 @@ public class AccountController extends BaseController {
 	public static Result authenticate() {
 		DynamicForm form = form().bindFromRequest();
 		String username = form.field("email").value();
-		if(username.contains("@")) {
+		if (username.contains("@")) {
 			return defaultAuthenticate();
-		} else if (username.length() == 0){
+		} else if (username.length() == 0) {
 			flash("error", "Bitte gebe einen Benutzernamen ein!");
 			return badRequest(index.render());
 		} else {
 			return LDAPAuthenticate();
 		}
 	}
-	
+
 	private static Result LDAPAuthenticate() {
 		DynamicForm form = form().bindFromRequest();
 		String username = form.field("email").value();
 		String password = form.field("password").value();
-		
+
 		LDAPConnector ldap = new LDAPConnector();
 		try {
 			ldap.connect(username, password);
@@ -56,32 +54,32 @@ public class AccountController extends BaseController {
 			flash("error", e.getMessage());
 			return badRequest(index.render());
 		}
-		
+
 		Account account = Account.findByLoginName(ldap.getUsername());
-		if(account == null) {
+		if (account == null) {
 			account = new Account();
-			Logger.info("New Account for " + ldap.getUsername() + " will be created.");
+			Logger.info("New Account for " + ldap.getUsername()
+					+ " will be created.");
 			account.firstname = ldap.getFirstname();
 			account.lastname = ldap.getLastname();
 			account.loginname = ldap.getUsername();
 			account.password = "LDAP - not needed";
-            Random generator = new Random();
-            account.avatar = "a" + generator.nextInt(10);
-            account.role = ldap.getRole();
+			Random generator = new Random();
+			account.avatar = "a" + generator.nextInt(10);
+			account.role = ldap.getRole();
 			account.create();
 		} else {
 			account.firstname = ldap.getFirstname();
 			account.lastname = ldap.getLastname();
-            account.role = ldap.getRole();
+			account.role = ldap.getRole();
 			account.update();
 		}
-		
+
 		session().clear();
 		session("id", account.id.toString());
 		return redirect(routes.Application.index());
 	}
-	
-	
+
 	private static Result defaultAuthenticate() {
 		Form<Login> loginForm = form(Login.class).bindFromRequest();
 		if (loginForm.hasErrors()) {
@@ -97,7 +95,6 @@ public class AccountController extends BaseController {
 			return redirect(routes.Application.index());
 		}
 	}
-	
 
 	/**
 	 * Logout and clean the session.
@@ -151,13 +148,25 @@ public class AccountController extends BaseController {
 	 * @param keyword
 	 * @return Returns an result object
 	 */
-	public static Result searchByKeyword(final String keyword) {
-		Logger.info("Search for accounts with keyword: " + keyword);
-		List<Account> result = Account.searchForAccountByKeyword(keyword);
-		if (result != null && result.size() > 1) {
-			Logger.debug("Found " + result.size() + " users with the keyword: " +keyword);
+	public static Result searchByKeyword() {
+		List<Account> result = null;
+		final Set<Map.Entry<String, String[]>> entries = request()
+				.queryString().entrySet();
+		for (Map.Entry<String, String[]> entry : entries) {
+			if (entry.getKey().equals("keyword")) {
+				final String keyword = entry.getValue()[0];
+				Logger.debug("Value of key" + keyword);
+				result = Account
+						.searchForAccountByKeyword(keyword);
+				if (result != null && result.size() > 1) {
+					Logger.debug("Found " + result.size()
+							+ " users with the keyword: " + keyword);
+				}
+			}
+
 		}
-		return ok(searchModalResult.render(result));
+
+		return ok(searchresult.render(result));
 	}
 
 }
