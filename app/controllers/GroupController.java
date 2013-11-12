@@ -31,20 +31,20 @@ import play.mvc.Security;
 import views.html.Group.index;
 import views.html.Group.media;
 import views.html.Group.view;
-import views.html.Group.snippets.addModal;
-import views.html.Group.snippets.addModalSuccess;
-import views.html.Group.snippets.editModal;
-import views.html.Group.snippets.editModalSuccess;
+import views.html.Group.create;
+import views.html.Group.edit;
 import views.html.Group.snippets.searchModalResult;
 import views.html.Group.snippets.tokenForm;
-import views.html.Profile.snippets.editForm;
 
-@Security.Authenticated(Secured.class)
+
 @Transactional
+@Security.Authenticated(Secured.class)
 public class GroupController extends BaseController {
 
 	static Form<Group> groupForm = Form.form(Group.class);
 	static Form<Post> postForm = Form.form(Post.class);
+	
+	
 	
 	public static Result index() {
 		Navigation.set(Level.GROUPS);
@@ -87,15 +87,25 @@ public class GroupController extends BaseController {
 			return ok(media.render(group, mediaForm, mediaSet));
 		}
 	}
-
+	
 	public static Result create() {
-		Account account = Component.currentAccount();
+		Navigation.set(Level.GROUPS, "Erstellen");
+		return ok(create.render(groupForm));
+	}
+
+	public static Result add() {	
+		Navigation.set(Level.GROUPS, "Erstellen");
+		
+		// Get data from request
 		Form<Group> filledForm = groupForm.bindFromRequest();
-		int groupType = Integer.parseInt(filledForm.data().get("optionsRadios"));
+		
+		// Perform JPA Validation
 		if (filledForm.hasErrors()) {
-			return ok(addModal.render(filledForm));
+			return badRequest(create.render(filledForm));
 		} else {
 			Group group = filledForm.get();
+			int groupType = Integer.parseInt(filledForm.data().get("optionsRadios"));
+			
 			if(filledForm.data().get("optionsRadios").equals("1")){
 				group.isClosed = true;
 			}
@@ -105,19 +115,19 @@ public class GroupController extends BaseController {
 				case 2: group.groupType = GroupType.course; break;
 				default: 
 					filledForm.reject("Nicht möglich!");
-					return ok(addModal.render(filledForm));
+					return ok(create.render(filledForm));
 			}
 			
 			if(groupType == 2){
 				if(filledForm.data().get("token").equals("")){
 					filledForm.reject("token","Bitte token eingeben!");
-					return ok(addModal.render(filledForm));
+					return ok(create.render(filledForm));
 				}
 			}
 			
-			group.createWithGroupAccount(account);
+			group.createWithGroupAccount(Component.currentAccount());
 			flash("success", "Neue Gruppe erstellt!");
-			return ok(addModalSuccess.render());
+			return redirect(routes.GroupController.index());
 		}
 	}
 
@@ -127,13 +137,20 @@ public class GroupController extends BaseController {
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
-			return ok(editModal.render(group, groupForm.fill(group)));
+			Navigation.set(Level.GROUPS, "Bearbeiten", group.title, routes.GroupController.view(group.id));
+			return ok(edit.render(group, groupForm.fill(group)));
 		}
 	}
 	
 	@Transactional
 	public static Result update(Long groupId) {
 		Group group = Group.findById(groupId);
+				
+		// Check rights
+		if(!Secured.isOwnerOfGroup(group, Component.currentAccount())) {
+			return redirect(routes.Application.index());
+		}
+		
 		Form<Group> filledForm = groupForm.bindFromRequest();
 		int groupType = Integer.parseInt(filledForm.data().get("optionsRadios"));
 		String description = filledForm.data().get("description");
@@ -148,11 +165,12 @@ public class GroupController extends BaseController {
 			case 2: group.groupType = GroupType.course; break;
 			default:
 				filledForm.reject("Nicht möglich!");
-				return ok(addModal.render(filledForm));
+				return ok(create.render(filledForm));
 		}
 		group.description = description;
 		group.update();
-		return ok(editModalSuccess.render());
+		flash("info", "Gruppe " + group.title + " erfolgreich bearbeitet!");
+		return redirect(routes.GroupController.view(groupId));
 		
 	}
 	

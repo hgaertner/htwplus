@@ -1,13 +1,8 @@
 package controllers;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.PersistenceException;
-import javax.persistence.RollbackException;
-import javax.validation.ConstraintViolationException;
 
 import models.Account;
 import models.Friendship;
@@ -18,18 +13,18 @@ import org.codehaus.jackson.node.ObjectNode;
 
 import play.Logger;
 import play.data.Form;
-import play.data.validation.Constraints.EmailValidator;
-import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.libs.Json;
 import play.mvc.Result;
+import play.mvc.Security;
+import views.html.Profile.edit;
 import views.html.Profile.index;
 import views.html.Profile.stream;
-import views.html.Profile.snippets.editForm;
-import views.html.Profile.snippets.passwordForm;
+import views.html.Profile.editPassword;
 import controllers.Navigation.Level;
 
 @Transactional
+@Security.Authenticated(Secured.class)
 public class ProfileController extends BaseController {
 
 	static Form<Account> accountForm = Form.form(Account.class);
@@ -85,113 +80,115 @@ public class ProfileController extends BaseController {
 
 	public static Result editPassword(Long id) {
 		Account account = Account.findById(id);
-		return ok(passwordForm.render(account, accountForm.fill(account)));
+		Navigation.set(Level.PROFILE, "Editieren");
+		return ok(editPassword.render(account, accountForm.fill(account)));
 	}
 
 	public static Result updatePassword(Long id) {
+		// Get regarding Object
 		Account account = Account.findById(id);
-		Form<Account> filledForm = accountForm.bindFromRequest();
-		ObjectNode result = Json.newObject();
+		
+		// Create error switch
 		Boolean error = false;
+		
+		// Check Access
+		if(!Secured.editAccount(account)) {
+			return redirect(routes.Application.index());
+		}
+		
+		// Get data from request
+		Form<Account> filledForm = accountForm.bindFromRequest();
+		
+		
+		// Remove all unnecessary fields
+		filledForm.errors().remove("firstname");
+		filledForm.errors().remove("lastname");
+		filledForm.errors().remove("email");
 
-		Set<String> checkErrorSet = new HashSet<String>();
-		checkErrorSet.add("password");
-
+		// Store old and new password for validation
 		String oldPassword = filledForm.field("oldPassword").value();
 		String password = filledForm.field("password").value();
 		String repeatPassword = filledForm.field("repeatPassword").value();
-
+		
+		// Perform JPA Validation
+		if(filledForm.hasErrors()) {
+			error = true;
+		}
+		
+		// Custom Validations
 		if (!oldPassword.isEmpty()) {
 			if (!account.password.equals(Component.md5(oldPassword))) {
-				filledForm.reject("oldPassword",
-						"Dein altes Passwort ist nicht korrekt.");
+				filledForm.reject("oldPassword", "Dein altes Passwort ist nicht korrekt.");
 				error = true;
 			}
 		} else {
-			filledForm.reject("oldPassword",
-					"Bitte gebe dein altes Passwort ein.");
+			filledForm.reject("oldPassword","Bitte gebe Dein altes Passwort ein.");
 			error = true;
 		}
 
 		if (password.length() < 6) {
-			filledForm.reject("password",
-					"Das Passwort muss mindestens 6 Zeichen haben.");
+			filledForm.reject("password", "Das Passwort muss mindestens 6 Zeichen haben.");
 			error = true;
 		}
 
 		if (!password.equals(repeatPassword)) {
-			filledForm.reject("repeatPassword",
-					"Die Passwörter stimmen nicht überein.");
-			error = true;
-		}
-
-		Set<String> errorSet = filledForm.errors().keySet();
-		if (!Collections.disjoint(errorSet, checkErrorSet)) {
+			filledForm.reject("repeatPassword", "Die Passwörter stimmen nicht überein.");
 			error = true;
 		}
 
 		if (error) {
-			result.put("status", "response");
-			String form = passwordForm.render(account, filledForm).toString();
-			result.put("payload", form);
+			return badRequest(editPassword.render(account, filledForm));
 		} else {
 			account.password = Component.md5(password);
 			account.update();
-			result.put("status", "redirect");
-			result.put("url", routes.ProfileController.me().toString());
 			flash("success", "Passwort erfolgreich geändert.");
 		}
-		return ok(result);
+		return redirect(routes.ProfileController.me());
 	}
 
 	public static Result edit(Long id) {
-		try {
-			Thread.sleep(0);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		Account account = Account.findById(id);
 		if (account == null) {
 			flash("info", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());
 		} else {
-			return ok(editForm.render(account, accountForm.fill(account)));
+			Navigation.set(Level.PROFILE, "Editieren");
+			return ok(edit.render(account, accountForm.fill(account)));
 		}
 	}
 
 	public static Result update(Long id) {
+		// Get regarding Object
 		Account account = Account.findById(id);
+		
+		// Check Access
+		if(!Secured.editAccount(account)) {
+			return redirect(routes.Application.index());
+		}
+		
+		// Get the data from the request
 		Form<Account> filledForm = accountForm.bindFromRequest();
+		
+		Navigation.set(Level.PROFILE, "Editieren");
+	
+		// Remove expected errors
+		filledForm.errors().remove("password");
+		filledForm.errors().remove("studycourse");
 
-		// JSON as return value
-		ObjectNode result = Json.newObject();
-
-		// Set fields to checked by JPA Validation
-		Set<String> checkErrorSet = new HashSet<String>();
-		checkErrorSet.add("firstname");
-		checkErrorSet.add("lastname");
-		checkErrorSet.add("email");
-
-		// Does Email exists already
-		Account exisitingAccount = Account.findByEmail(filledForm
-				.field("email").value());
+		// Custom Validations
+		Account exisitingAccount = Account.findByEmail(filledForm.field("email").value());
 		if (exisitingAccount != null && !exisitingAccount.equals(account)) {
 			filledForm.reject("email", "Diese Mail wird bereits verwendet!");
+			return badRequest(edit.render(account, filledForm));
 		}
-
-		// Get the JPA Errors
-		Set<String> errorSet = filledForm.errors().keySet();
-
-		// Check error set against desired fields
-		if (!Collections.disjoint(errorSet, checkErrorSet)) {
-			// Set status, so Java Script will place the form again
-			result.put("status", "response");
-			String form = editForm.render(account, filledForm).toString();
-			result.put("payload", form);
-
-			// Everything fine, save it
+		
+		// Perform JPA Validation
+		if(filledForm.hasErrors()) {
+			return badRequest(edit.render(account, filledForm));
 		} else {
+
+			// Fill an and update the model manually 
+			// because the its just a partial form
 			account.firstname = filledForm.field("firstname").value();
 			account.lastname = filledForm.field("lastname").value();
 			account.avatar = filledForm.field("avatar").value();
@@ -206,12 +203,10 @@ public class ProfileController extends BaseController {
 			if (filledForm.field("semester").value().equals("0")) {
 				account.semester = null;
 			} else {
-				account.semester = Integer.parseInt(filledForm
-						.field("semester").value());
+				account.semester = Integer.parseInt(filledForm.field("semester").value());
 			}
 
-			Long studycourseId = Long.parseLong(filledForm.field("studycourse")
-					.value());
+			Long studycourseId = Long.parseLong(filledForm.field("studycourse").value());
 			Studycourse studycourse;
 			if (studycourseId != 0) {
 				studycourse = Studycourse.findById(studycourseId);
@@ -220,13 +215,10 @@ public class ProfileController extends BaseController {
 			}
 			account.studycourse = studycourse;
 			account.update();
-			// Set status, so Java Script will redirect
-			result.put("status", "redirect");
-			result.put("url", routes.ProfileController.me().toString());
+		
 			flash("success", "Profil erfolgreich gespeichert.");
+			return redirect(routes.ProfileController.me());
 		}
-
-		return ok(result);
 	}
 
 }

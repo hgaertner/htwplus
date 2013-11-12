@@ -18,6 +18,7 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.hibernate.validator.constraints.Length;
 
 import controllers.Component;
 import controllers.routes;
@@ -43,6 +44,7 @@ public class Account extends BaseModel {
 	public String lastname;
 
 	@Email
+	@Column(unique=true)
 	public String email;
 
 	@Required
