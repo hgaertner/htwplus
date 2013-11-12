@@ -4,10 +4,6 @@
 
 @main("Gruppen") {
 
-<!-- createNewGroupModal -->
-<div id="createNewGroupModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="createNewGroupModalLabel" aria-hidden="true">@views.html.Group.snippets.addModal(groupForm)</div>
-<!-- Ende createNewGroupModal -->
-
 <!-- searchModal -->
 <div id="searchModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">@views.html.Group.snippets.searchModal(null)</div>
 <!-- Ende searchModal -->
@@ -90,7 +86,7 @@ Offene Anfragen</span></h2>
 <h2>
 	<span rel="tooltip" data-original-title="Hier findest du alle Gruppen die du gegründet hast oder denen du beigetreten bist." data-delay="500">Meine Gruppen</span>
 	<div class="btn-group">
-		<a href="#createNewGroupModal" role="button" class="btn" data-toggle="modal" rel="tooltip" data-original-title="neue Gruppe erstellen"><i class="icon-plus"></i></a>
+		<a href="@routes.GroupController.create" role="button" class="btn" rel="tooltip" title="Neue Gruppe erstellen"><i class="icon-plus"></i></a>
 		<a href="#searchModal" role="button" class="btn last" data-toggle="modal" rel="tooltip" data-original-title="Gruppe suchen"><i class="icon-search"></i></a>
 	</div>
 </h2>
