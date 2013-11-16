@@ -12,7 +12,7 @@
 			<div class="postitHeader active"></div>
 			<div class="postitBody active">
 				@helper.form(routes.AccountController.authenticate) {
-				<b>Email</b><br /> <input type="email" name="email"
+				<b>Email</b><br /> <input type="text" name="email"
 					placeholder="Email" value="@loginForm("email").value"> <b>Passwort</b><br />
 				<input type="password" name="password" placeholder="Passwort">
 				<button type="submit" class="btn btn-warning">Anmelden</button>

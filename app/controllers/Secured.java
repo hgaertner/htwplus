@@ -7,12 +7,13 @@ import play.mvc.Http.*;
 import views.html.index;
 
 import models.*;
+import models.enums.*;
 
 public class Secured extends Security.Authenticator {
 
 	@Override
     public String getUsername(Context ctx) {
-        return ctx.session().get("email");
+        return ctx.session().get("id");
     }
 	
 	@Override
@@ -84,5 +85,13 @@ public class Secured extends Security.Authenticator {
 	}
 	public static boolean isFriend(Account account){
 		return Friendship.alreadyFriendly(Component.currentAccount(), account);
+	}
+	
+	public static boolean editAccount(Account account) {
+		if(Component.currentAccount().equals(account)){
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

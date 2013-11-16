@@ -27,10 +27,16 @@ public class Component extends Action.Simple {
 		if(sessionId != null) {
 			Long id = Long.parseLong(ctx.session().get("id"));
 			Account account = Account.findById(id);
+			if(account == null) {
+				ctx.session().clear();
+				Logger.info("Clear Session");
+				return redirect(routes.Application.index());
+			} 
 			ctx.args.put("account", account);
 		} else {
 			ctx.args.put("account", null);
 		}
+		
         return delegate.call(ctx);
     }
 

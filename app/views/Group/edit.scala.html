@@ -1,18 +1,67 @@
-@(id: Long, groupForm: Form[Group])
+@(group: Group, groupForm: Form[Group])
 @import helper._
 
-@main("Edit Group") {
+@main("Gruppe bearbeiten") {
     
-    <h2>Edit Group</h2>
-    <br />
-    @form(routes.GroupController.update(id)) {
+    <div class="noModal">
+	<h2>Gruppe bearbeiten</h2>
+	<dl>
+		<dt>Gruppengründer</dt>
+		<dd>@group.owner.firstname @group.owner.lastname</dd>
+	</dl>
+	<dl>
+		<dt>Erstellt am</dt>
+		<dd>@group.createdAt.format("dd. MMM yyyy")</dd>
+	</dl>
+	@form(routes.GroupController.update(group.id), 'id -> "editGroupForm") {
+		@textarea(groupForm("description"), '_label -> "Beschreibung", 'rows -> "5")
+		<dl>
+			<dt>Sichtbarkeit</dt>
+			<dd>
+				<label class="radio">
+					<input type="radio" name="optionsRadios" id="optionsRadios2" value="0" @if(!group.isClosed) {checked}>
+					<i class="icon-globe"></i> Öffentliche Gruppe
+				</label>
+				<label class="radio">
+					<input type="radio" name="optionsRadios" id="optionsRadios1" value="1" @if(group.isClosed) {checked}>
+					<i class="icon-lock"></i> Private Gruppe
+				</label>
+			</dd>
+		</dl>
+		<button class="btn btn-success">Speichern</button>
+	}
+	<dl>
+		<dt>Mitglieder</dt>
+		<dd>
+			<table class="table table-hover table-condensed">
+				<colgroup>
+					<col width="70%">
+					<col width="30%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Optionen</th>
+					</tr>
+				</thead>
+				<tbody>
+					@defining(GroupAccount.findAccountsByGroup(group)) { accounts =>
+			             @for(account <- accounts) {              
+                            <tr>
+                                <td><a data-placement="top" data-original-title="@account.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover" href="@routes.ProfileController.view(account.id)">@account.name</a></td>
+                                @if(account.id != group.owner.id){
+                                	<td><a href="@routes.GroupController.removeMember(group.id,account.id)" rel="tooltip" title="Löschen"><i class="icon-remove"></i></a></td>
+                                }
+                            </tr>
+                         }
+              		}
+				</tbody>
+			</table>
+		</dd>
+	</dl>
+	
+</div>
         
-        @inputText(groupForm("title"), '_label -> "Title: ")
-     	@textarea(groupForm("description"), '_label -> "Description: ") 
-   		@checkbox(groupForm("isClosed"), '_label -> None, '_text -> "geschlossene Gruppe")
-   		
-        <input type="submit" value="Update" class="btn btn-success">
-        
-    }
+    
     
 }

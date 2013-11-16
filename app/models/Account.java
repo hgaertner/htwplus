@@ -18,10 +18,12 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.hibernate.validator.constraints.Length;
 
 import controllers.Component;
 import controllers.routes;
 import models.base.BaseModel;
+import models.enums.AccountRole;
 import play.db.jpa.*;
 
 import java.util.Set;
@@ -41,8 +43,8 @@ public class Account extends BaseModel {
 	@Required
 	public String lastname;
 
-	@Required
 	@Email
+	@Column(unique=true)
 	public String email;
 
 	@Required
@@ -65,7 +67,7 @@ public class Account extends BaseModel {
 	public String degree;
 	public Integer semester;
 
-	public int role;
+	public AccountRole role;
 
 	public Boolean approved;
 
@@ -104,6 +106,19 @@ public class Account extends BaseModel {
 	    	return (Account) JPA.em()
 					.createQuery("from Account a where a.email = :email")
 					.setParameter("email", email).getSingleResult();
+	    } catch (NoResultException exp) {
+	    	return null;
+		}
+    }
+    
+	/**
+     * Retrieve a User by loginname
+     */
+    public static Account findByLoginName(String loginName) {
+    	try{
+	    	return (Account) JPA.em()
+					.createQuery("from Account a where a.loginname = :loginname")
+					.setParameter("loginname", loginName).getSingleResult();
 	    } catch (NoResultException exp) {
 	    	return null;
 		}
@@ -209,14 +224,6 @@ public class Account extends BaseModel {
 	public static List<Account> searchForAccountByKeyword(String keyword) {
 		Logger.info("Account model searchForAccountByKeyWord: " + keyword.toLowerCase());
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
-		/*try {
-		 This part takes care to create indexes of persistent data, which is not inserted via hibernate/ JPA this block
-		 is now in the onStart in Global.java
-			fullTextEntityManager.createIndexer(Group.class).startAndWait();
-		} catch (InterruptedException e) {
-			
-			Logger.error(e.getMessage());
-		}*/
 		//Create a querybuilder for the group entity 
 		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
 				.buildQueryBuilder().forEntity(Account.class).get();

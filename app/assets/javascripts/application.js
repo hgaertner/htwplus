@@ -71,16 +71,6 @@ function mediaUpload() {
 	document.getElementById("fileuploadForm").submit();
 }
 
-
-
-/* Reload Page after creating or edit a new Group */
-$('#createNewGroupModal').on('hidden', function () {
-	location.reload();
-});
-$('#editModal').on('hidden', function () {
-	location.reload();
-});
-
 /* toggle enter */
 $('.modal-body').keypress(function(e) {
 	var code = null;
