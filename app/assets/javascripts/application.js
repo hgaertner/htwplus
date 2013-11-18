@@ -20,26 +20,11 @@ function changeText(id, parent) {
 }
 
 function resizeRings() {
-	var heightContent = parseInt(getCurrentStyle(document.getElementById("content"), "height").replace(/[a-z]/g, ""));
-	if (document.getElementById("smallHead") == null)
-		heightContent += 52;
-	var offset = heightContent % 12;
+	var offset = $("#content").height() % 12;
 	if (offset != 0)
-		document.getElementById("content").style.paddingBottom = 12 - offset + "px";
+		$("#content").css('padding-bottom', (12 - offset) + "px");
 	else
-		document.getElementById("content").style.paddingBottom = 0;
-}
-
-if (matchMedia) {
-	var mq1 = window.matchMedia("(min-width: 1200px)");
-	mq1.addListener(resizeRings);
-	resizeRings(mq1);
-	var mq2 = window.matchMedia("(max-width: 1199px)");
-	mq2.addListener(resizeRings);
-	resizeRings(mq2);
-	var mq3 = window.matchMedia("(max-width: 979px)");
-	mq3.addListener(resizeRings);
-	resizeRings(mq3);
+		$("#content").css('padding-bottom', '0');
 }
 
 function toggleMediaSelection(parent) {
@@ -47,28 +32,6 @@ function toggleMediaSelection(parent) {
 	for (i = 0; i < childs.length; i++) {
 		childs[i].checked = parent.checked;
 	}
-}
-
-function setFileNames() {
-	var names = "";
-	var fileList = document.getElementById("fileupload-input").files;
-	for (var i = 0; i < fileList.length; i++) {
-        if ('name' in fileList[i]) {
-            names += fileList[i].name;
-        } else {
-            names += fileList[i].fileName;
-        }
-        if (i != fileList.length - 1) {
-        	names += ", ";
-        }
-	}
-	document.getElementById("files").value = names;
-}
-
-function mediaUpload() {
-	document.getElementById("loadingMedia").style.display = "inline-block";
-	document.getElementById("fileuploadForm").submit();
-	document.getElementById("fileuploadForm").submit();
 }
 
 /* toggle enter */
@@ -80,7 +43,10 @@ $('.modal-body').keypress(function(e) {
     }
 });
 
-$('[rel="tooltip"]').tooltip('toggle');
-$('[rel="tooltip"]').tooltip('hide');
-$('[rel="popover"]').popover('toggle');
-$('[rel="popover"]').popover('hide');
+$(window).resize(function() {
+	resizeRings();
+});
+
+resizeRings();
+$('[rel="tooltip"]').tooltip();
+$('[rel="popover"]').popover();

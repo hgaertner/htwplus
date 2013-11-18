@@ -76,16 +76,13 @@ public class GroupController extends BaseController {
 	public static Result media(Long id) {
 		Form<Media> mediaForm = Form.form(Media.class);
 		Group group = Group.findById(id);
-		if(!Secured.isMemberOfGroup(group, Component.currentAccount())){
-			flash("info","Bitte tritt der Gruppe erst bei.");
-			return view(id);
-		}
+		Account account = Component.currentAccount();
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
 			Navigation.set(Level.GROUPS, "Media", group.title, routes.GroupController.view(group.id));
 			List<Media> mediaSet = group.media; 
-			return ok(media.render(group, mediaForm, mediaSet));
+			return ok(media.render(group, mediaForm, mediaSet, Secured.isMemberOfGroup(group, account)));
 		}
 	}
 	

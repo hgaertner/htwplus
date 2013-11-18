@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="@routes.Assets.at("bootstrap/css/bootstrap.min.css")">
 <!-- Own -->
 <link rel="stylesheet" media="all" href="@routes.Assets.at("stylesheets/background.css")">
+<link rel="stylesheet" media="all" href="@routes.Assets.at("stylesheets/bootstrap-prettyfile.css")">
 <link rel="stylesheet" media="all" href="@routes.Assets.at("stylesheets/ajax.css")">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -17,20 +18,26 @@
 @if(user != null){
 <body id="smallHead">
 } else {
-<body>
+<body id="@title">
 }
 
 	<header>
 		<div class="container">
-			<div class="span9">
-				<div id="logo"></div>
+			<div class="row">
+				<div class="col-xs-9">
+				@if(user != null){
+					<div id="logo"><img src="@routes.Assets.at("images/logoSmall.png")" /></div>
+				} else {
+					<div id="logo"><img src="@routes.Assets.at("images/logo.png")" /></div>
+				}
+				</div>
 			</div>
 		</div>
 	</header>
 
 	<div class="container">
 		<div class="row">
-			<div class="span9">
+			<div class="col-xs-9">
 				<div id="right">
 					<div id="topRight"></div>
 					<div id="bottomRight"></div>
@@ -47,19 +54,19 @@
 									}
 									@if(flash.containsKey("success")) {
 										<div class="alert alert-success fade in">
-											<button type="button" class="close" data-dismiss="alert">x</button>
+											<button type="button" class="close" data-dismiss="alert">&times;</button>
 											@flash.get("success")
 										</div>
 									} 
 									@if(flash.containsKey("info")) {
 										<div class="alert alert-info fade in">
-											<button type="button" class="close" data-dismiss="alert">x</button>
+											<button type="button" class="close" data-dismiss="alert">&times;</button>
 											@flash.get("info")
 										</div>
 									} 
 									@if(flash.containsKey("error")) {
-										<div class="alert alert-error fade in">
-											<button type="button" class="close" data-dismiss="alert">x</button>
+										<div class="alert alert-danger fade in">
+											<button type="button" class="close" data-dismiss="alert">&times;</button>
 											@flash.get("error")
 										</div>
 									} 
@@ -86,20 +93,23 @@
 
 	<footer>
 		<div class="container">
-			<div class="span9">
-				<div id="htw">
-					@views.html.snippets.impressumModal()
-					<a href="#impressumModal" data-toggle="modal">Impressum</a>
+			<div class="row">
+				<div class="col-xs-9">
+					<div id="htw">
+						@views.html.snippets.impressumModal()
+						<a href="#impressumModal" data-toggle="modal">Impressum</a>
+					</div>
 				</div>
 			</div>
 		</div>
 	</footer>
 
-	<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.10.0.js")"></script>
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.js")"></script>
 	<script type="text/javascript" src="@routes.Assets.at("bootstrap/js/bootstrap.min.js")"></script>
 	<script type="text/javascript" src="@routes.Application.javascriptRoutes()"></script>
     <script type="text/javascript" src="@routes.Assets.at("javascripts/ajax.js")"></script>
 	<script type="text/javascript" src="@routes.Assets.at("javascripts/application.js")"></script>
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap-prettyfile.js")"></script>
 
 </body>
 </html>

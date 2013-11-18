@@ -4,10 +4,11 @@
 @form(routes.GroupController.enterToken(group.id), 'class -> "ajaxForm") {
 	
 	@inputText(
-		groupForm("token"), 
+		groupForm("token"),
+		'class -> "form-control",
 		'_label -> "Token: "
     )
 	
-	<input type="submit" class="btn btn-warning ajaxModalSubmit" value="Submit">
+	<button type="submit" class="btn btn-warning ajaxModalSubmit">Senden</button>
 }
 

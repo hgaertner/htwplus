@@ -4,109 +4,142 @@
 
 @main("Gruppen") {
 
-<!-- Start infoModal -->
-@for(group <- approvedGroups) {
-<div id="infoModal@group.id" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="false">@views.html.Group.snippets.infoModal(group)</div>
-}
-<!-- Ende infoModal -->
-
-
-<!-- Start confirmDeleteGroupModal -->
-@for(group <- approvedGroups) {
-<div id="confirmDeleteGroup@group.id" class="modal hide fade" tabindex="-1" role="dialog">@views.html.Group.snippets.deleteGroupModal(group)</div>
-}
-<!-- End confirmDeleteGroupModal -->
-
-@defining(Component.currentAccount()) { user =>
-<h2><span rel="tooltip" data-original-title="Hier findest du den aktuellen Status deiner Gruppen-Anfragen." data-delay="500">
-Offene Anfragen</span></h2>
-@if(!unapprovedGroups.isEmpty){
-<table class="table table-hover">
-	<colgroup>
-		<col width="30%">
-		<col width="30%">
-		<col width="25%">
-		<col width="15%">
-	</colgroup>
-	<thead>
-		<tr>
-			<th>Gruppenname</th>
-			<th>Von</th>
-			<th>Status</th>
-			<th>Optionen</th>
-		</tr>
-	</thead>
-
-	<tbody>
-		@for(accountGroup <- unapprovedGroups) {
-		<tr>
-			@if(accountGroup.account.equals(user)) {
-			<td><a href="@routes.GroupController.view(accountGroup.group.id)">@accountGroup.group.title</a></td>
-			<td><a href="@routes.ProfileController.view(accountGroup.account.id)">Dir</a></td>
-			<td>@if(accountGroup.linkType.equals(models.enums.LinkType.reject)) {abgelehnt} else {in Bearabeitung}</td>
-			<td><a href="@routes.GroupController.removeMember(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" data-original-title="@if(accountGroup.linkType.equals(models.enums.LinkType.reject)) {löschen} else {Anfrage zurückziehen}"><i class="icon-remove"></i></a></td>
-			} else {
-			<td><a href="@routes.GroupController.view(accountGroup.group.id)">@accountGroup.group.title</a></td>
-			<td>@views.html.snippets.userLink(accountGroup.account)</td>
-			<td>zu bearbeiten</td>
-			<td><a href="@routes.GroupController.acceptRequest(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" data-original-title="Anfrage akzeptieren"><i class="icon-ok"></i></a>
-			    <a href="@routes.GroupController.declineRequest(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" data-original-title="Anfrage zurückweisen"><i class="icon-remove"></i></a></td>
-			}
-		</tr>
-		}
-	</tbody>
-</table>
-} else {
-<p><i>Keine Anfragen vorhanden.</i></p>
-}
-<hr />
-<br />
-
-<h2>
-	<span rel="tooltip" data-original-title="Hier findest du alle Gruppen die du gegründet hast oder denen du beigetreten bist." data-delay="500">Meine Gruppen</span>
-	<div class="btn-group">
-		<a href="@routes.GroupController.create" role="button" class="btn" rel="tooltip" title="Neue Gruppe erstellen"><i class="icon-plus"></i></a>
+	<!-- Start infoModal -->
+	@for(group <- approvedGroups) {
+	<div class="modal fade" id="infoModal@group.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+		@views.html.Group.snippets.infoModal(group)
 	</div>
-	<form action="@routes.GroupController.searchForGroupByKeyword" method="GET">
-		<input type="text" placeholder="Name der Gruppe eingeben.." id="groupSearchQuery"  name="keyword">
-		<input type="submit" id="searchsubmit" value="Search for group by name" class="btn primary">
-	</form>
-</h2>
-@if(!approvedGroups.isEmpty){
-<table class="table table-hover">
-	<colgroup>
-		<col width="85%">
-		<col width="15%">
-	</colgroup>
-	<thead>
-		<tr>
-			<th>Gruppenname</th>
-			<th>Optionen</th>
-		</tr>
-	</thead>
-	<tbody>
-		@for(group <- approvedGroups) {
-		<tr>
-			<td>
-			@if(group.groupType.equals(GroupType.open)) { <i class="icon-globe"></i>}
-			@if(group.groupType.equals(GroupType.close)) { <i class="icon-lock"></i>}
-			@if(group.groupType.equals(GroupType.course)) { <i class="icon-briefcase"></i>}
-				<a href="@routes.GroupController.view(group.id)">@if(group.owner.id == user.id) {
-					<b> @group.title</b></a> <small>(gegründet)</small>} else { @group.title</a>}
-			</td>
-			<td><a href="#infoModal@group.id" rel="tooltip" data-original-title="Gruppeninfo" data-toggle="modal"><i class="icon-info-sign"></i></a>
-				@if(Secured.isOwnerOfGroup(group, user)) {
-					<a href="#confirmDeleteGroup@group.id" rel="tooltip" data-toggle="modal" data-original-title="Gruppe löschen"><i class="icon-trash"></i></a>
-				} else {
-					<a href="@routes.GroupController.removeMember(group.id, user.id)" rel="tooltip" data-toggle="modal" data-original-title="Gruppe verlassen"><i class="icon-remove"></i></a>
+	}
+	<!-- Ende infoModal -->
+	
+	
+	<!-- Start confirmDeleteGroupModal -->
+	@for(group <- approvedGroups) {
+	<div class="modal fade" id="confirmDeleteGroup@group.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+		@views.html.Group.snippets.deleteGroupModal(group)
+	</div>
+	}
+	<!-- End confirmDeleteGroupModal -->
+	
+	@defining(Component.currentAccount()) { user =>
+		<h2>
+			<span rel="tooltip" data-original-title="Hier findest du den aktuellen Status deiner Gruppen-Anfragen." data-delay="500" data-container="body">
+				Offene Anfragen
+			</span>
+		</h2>
+		
+		@if(!unapprovedGroups.isEmpty){
+		<table class="table table-hover">
+			<colgroup>
+				<col width="30%">
+				<col width="30%">
+				<col width="25%">
+				<col width="15%">
+			</colgroup>
+			<thead>
+				<tr>
+					<th>Gruppenname</th>
+					<th>Von</th>
+					<th>Status</th>
+					<th>Optionen</th>
+				</tr>
+			</thead>
+		
+			<tbody>
+				@for(accountGroup <- unapprovedGroups) {
+				<tr>
+					@if(accountGroup.account.equals(user)) {
+					<td><a href="@routes.GroupController.view(accountGroup.group.id)">@accountGroup.group.title</a></td>
+					<td><a href="@routes.ProfileController.view(accountGroup.account.id)">Dir</a></td>
+					<td>@if(accountGroup.linkType.equals(models.enums.LinkType.reject)) {abgelehnt} else {in Bearabeitung}</td>
+					<td><a href="@routes.GroupController.removeMember(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" data-original-title="@if(accountGroup.linkType.equals(models.enums.LinkType.reject)) {löschen} else {Anfrage zurückziehen}" data-container="body"><span class="glyphicon glyphicon-remove"></span></a></td>
+					} else {
+					<td><a href="@routes.GroupController.view(accountGroup.group.id)">@accountGroup.group.title</a></td>
+					<td>@views.html.snippets.userLink(accountGroup.account)</td>
+					<td>zu bearbeiten</td>
+					<td>
+						<a href="@routes.GroupController.acceptRequest(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" data-original-title="Anfrage akzeptieren" data-container="body"><span class="glyphicon glyphicon-ok"></span></a>
+					    <a href="@routes.GroupController.declineRequest(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" data-original-title="Anfrage zurückweisen" data-container="body"><span class="glyphicon glyphicon-remove"></span></a>
+					</td>
+					}
+				</tr>
 				}
-			</td>
-		</tr>
+			</tbody>
+		</table>
+		} else {
+		<p><i>Keine Anfragen vorhanden.</i></p>
 		}
-	</tbody>
-</table>
-} else {
-<p><i>Noch keinen Gruppen beigetreten.</i></p>
-}
-}
+		<hr />
+		<br />
+		
+		<h2>
+			<span rel="tooltip" data-original-title="Hier findest du alle Gruppen die du gegründet hast oder denen du beigetreten bist." data-delay="500" data-container="body">
+				Meine Gruppen
+			</span>
+			<a href="@routes.GroupController.create" role="button" class="btn btn-default" rel="tooltip" title="Neue Gruppe erstellen" data-container="body">
+				<span class="glyphicon glyphicon-plus"></span>
+			</a>
+		</h2>
+		
+		<form action="@routes.GroupController.searchForGroupByKeyword" method="GET">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="Name der Gruppe eingeben.." id="groupSearchQuery"  name="keyword">
+						<span class="input-group-btn">
+							<button type="submit" id="searchsubmit" class="btn btn-warning">Suchen</button>
+						</span>
+					</div>
+				</div>
+			</div>
+		</form>
+		<br />
+		
+		@if(!approvedGroups.isEmpty){
+		<table class="table table-hover">
+			<colgroup>
+				<col width="85%">
+				<col width="15%">
+			</colgroup>
+			<thead>
+				<tr>
+					<th>Gruppenname</th>
+					<th>Optionen</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for(group <- approvedGroups) {
+				<tr>
+					<td>
+					@if(group.groupType.equals(GroupType.open)) { <span class="glyphicon glyphicon-globe"></span>}
+					@if(group.groupType.equals(GroupType.close)) { <span class="glyphicon glyphicon-lock"></span>}
+					@if(group.groupType.equals(GroupType.course)) { <span class="glyphicon glyphicon-briefcase"></span>}
+						<a href="@routes.GroupController.view(group.id)">
+							@if(group.owner.id == user.id) {
+							<b> @group.title</b></a> <small>(gegründet)</small>
+							} else { @group.title}
+						</a>
+					</td>
+					<td>
+						<a href="#infoModal@group.id" rel="tooltip" data-toggle="modal" data-original-title="Gruppeninfo" data-container="body">
+							<span class="glyphicon glyphicon-info-sign"></span>
+						</a>
+						@if(Secured.isOwnerOfGroup(group, user)) {
+						<a href="#confirmDeleteGroup@group.id" rel="tooltip" data-toggle="modal" data-original-title="Gruppe löschen" data-container="body">
+							<span class="glyphicon glyphicon-trash"></span>
+						</a>
+						} else {
+						<a href="@routes.GroupController.removeMember(group.id, user.id)" rel="tooltip" data-toggle="modal" data-original-title="Gruppe verlassen" data-container="body">
+							<span class="glyphicon glyphicon-remove"></span>
+						</a>
+						}
+					</td>
+				</tr>
+				}
+			</tbody>
+		</table>
+		} else {
+		<p><i>Noch keinen Gruppen beigetreten.</i></p>
+		}
+	}
 }
