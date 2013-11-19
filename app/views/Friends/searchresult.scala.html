@@ -1,4 +1,7 @@
 @(users: List[Account]) @main("Searchresult"){ @if(users != null) {
+<h2>Suchergebnisse für Freunde</h2>
+<br>
+<div class="noModal">
 <table class="table table-hover">
 	<colgroup>
 		<col width="33%">
@@ -19,4 +22,5 @@
 		}
 	</tbody>
 </table>
+</div>
 } }

@@ -9,13 +9,12 @@ import java.util.Set;
 import org.codehaus.jackson.node.ObjectNode;
 
 
-import controllers.Navigation.Level;
 
+import controllers.Navigation.Level;
 import play.*;
 import play.libs.Json;
 import play.mvc.*;
 import play.data.*;
-
 import models.Account;
 import models.Group;
 import models.GroupAccount;
@@ -23,7 +22,6 @@ import models.Media;
 import models.Post;
 import models.enums.GroupType;
 import models.enums.LinkType;
-
 import play.Logger;
 import play.data.Form;
 import play.db.jpa.Transactional;
@@ -200,6 +198,7 @@ public class GroupController extends BaseController {
 			if (entry.getKey().equals("keyword")) {
 				final String keyword = entry.getValue()[0];
 				Logger.debug("Value of key" + keyword);
+				Navigation.set(Level.GROUPS, "Suchergebnisse");
 				result = Group.searchForGroupByKeyword(keyword);
 				if (result != null && result.size() > 1) {
 					Logger.debug("Found " + result.size()
