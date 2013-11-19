@@ -1,26 +1,25 @@
 @(loginForm: Form[Login], signupForm: Form[Account])
 
-<!-- editModal -->
-<div id="registerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
-@views.html.snippets.signup(signupForm)
-</div>
-<!-- Ende editModal -->
-
-<div class="span3">
-	<div class="navi" data-spy="affix" data-offset-bottom="83">
+<div class="col-xs-3">
+	<div class="navi" data-spy="affix" data-offset-top="65" data-offset-bottom="83">
 		<div class="postit" id="register">
 			<div class="postitHeader active"></div>
 			<div class="postitBody active">
+			
 				@helper.form(routes.AccountController.authenticate) {
-				<b>Email</b><br /> <input type="text" name="email"
-					placeholder="Email" value="@loginForm("email").value"> <b>Passwort</b><br />
-				<input type="password" name="password" placeholder="Passwort">
-				<button type="submit" class="btn btn-warning">Anmelden</button>
-				}
-				<div class="register">
-					<a href="#registerModal" data-toggle="modal"><i
-						class="icon-plus-sign icon-white"></i><small> Registrieren</small></a>
+				
+				<div class="form-group">
+					<label for="loginUser">Mat-Nr./E-Mail</label>
+					<input type="text" class="form-control" id="loginUser" name="email" placeholder="s0123456" value="@loginForm("email").value">
 				</div>
+				<div class="form-group">
+					<label for="loginPassword">Passwort</label>
+					<input type="password" class="form-control" id="loginPassword" name="password" placeholder="Passwort">
+				</div>
+				<button type="submit" class="btn btn-warning">Anmelden</button>
+					
+				}
+				
 			</div>
 			<div class="postitFooter active"></div>
 		</div>

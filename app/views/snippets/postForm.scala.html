@@ -2,6 +2,6 @@
 @import helper._
 
 @form(routes.PostController.addPost(anyId, target), 'id -> "addPost") {
-		@textarea(postForm("Content"),'id -> "postContent", 'placeholder -> "Erstelle einen neuen Post...")
+		@textarea(postForm("Content"), 'class -> "form-control", 'id -> "postContent", 'placeholder -> "Erstelle einen neuen Post...")
 		<button type="submit" class="btn btn-warning">Posten</button>  
 }

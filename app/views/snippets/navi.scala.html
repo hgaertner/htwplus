@@ -1,15 +1,14 @@
 @(title: String)
-<div class="span3">
-	<div class="navi" data-spy="affix" data-offset-top="65"
-		data-offset-bottom="83">
+<div class="col-xs-3">
+	<div class="navi" data-spy="affix" data-offset-top="65" data-offset-bottom="83">
 		<div class="postit">
 		@defining(if(Navigation.getLevel() == Navigation.Level.PROFILE){"active"} else {"deactive"}) { status =>
 			<div class="postitHeader @status"></div>
 			<div class="postitBody @status">
 				<a href="@Navigation.getLevelRoute(Navigation.Level.PROFILE)">@Navigation.getLevelTitle(Navigation.Level.PROFILE)</a><br /> <img alt="avatar"
-					src="@Component.currentAccount().getAvatarUrl()" class="img-polaroid" /><br />
+					src="@Component.currentAccount().getAvatarUrl()" class="img-thumbnail" /><br />
 				<a href="@Navigation.getLevelRoute(Navigation.Level.PROFILE)">@Component.currentAccount().firstname @Component.currentAccount().lastname</a><br /><br />
-				<small><a href="@routes.AccountController.logout">logout </a></small><i class="icon-remove-sign icon-white"></i>
+				<small><a href="@routes.AccountController.logout">logout <span class="glyphicon glyphicon-remove-sign"></span></a></small>
 			</div>
 			<div class="postitFooter @status"></div>
 		}

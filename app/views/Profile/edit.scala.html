@@ -10,94 +10,102 @@
 @form(routes.ProfileController.update(profile.id), 'class -> "ajaxForm") {
 
 	@inputText(
-		profileForm("firstname"), 
+		profileForm("firstname"),
+		'class -> "form-control",
 		'_label -> "Vorname *",
 		'placeholder -> "Max" 
     )
 	@inputText(
-		profileForm("lastname"), 
+		profileForm("lastname"),
+		'class -> "form-control",
 		'_label -> "Nachname *",
 		'placeholder -> "Mustermann"
 	)
 	@inputText(
 		profileForm("email"),
+		'class -> "form-control",
 		'_label -> "Email *",
 		'placeholder -> "max.mustermann@muster.de"
 	)
 	<dl>
 		<dt>Studiengang</dt>
-		<dd><select name="studycourse">
-		@if(profile.studycourse == null) {
-			<option value="0" selected="selected">Keine Angabe</option>
-		} else {
-			<option value="0">Keine Angabe</option>
-		}
-				
-		@for(studycourse <- Studycourse.getAll()){
-			<option value="@studycourse.id" @if(profile.studycourse !=null && profile.studycourse.equals(studycourse)){selected="selected"}>@studycourse.title</option>
-		}
-		</select></dd>
+		<dd>
+			<select class="form-control" name="studycourse">
+				@if(profile.studycourse == null) {
+				<option value="0" selected="selected">Keine Angabe</option>
+				} else {
+				<option value="0">Keine Angabe</option>
+				}
+				@for(studycourse <- Studycourse.getAll()){
+				<option value="@studycourse.id" @if(profile.studycourse !=null && profile.studycourse.equals(studycourse)){selected="selected"}>@studycourse.title</option>
+				}
+			</select>
+		</dd>
 	</dl>
 	<dl>
 		<dt>Semester</dt>
-		<dd><select name="semester">
-					@if(profile.semester == null) {
-							<option value="0" selected="selected">Keine Angabe</option>
-					} else {
-							<option value="0">Keine Angabe</option>
-					}
-					<option value="1" @if(profile.semester !=null && profile.semester == 1){selected="selected"}>1. Semester</option>
-					<option value="2" @if(profile.semester !=null && profile.semester == 2){selected="selected"}>2. Semester</option>
-					<option value="3" @if(profile.semester !=null && profile.semester == 3){selected="selected"}>3. Semester</option>
-					<option value="4" @if(profile.semester !=null && profile.semester == 4){selected="selected"}>4. Semester</option>
-					<option value="5" @if(profile.semester !=null && profile.semester == 5){selected="selected"}>5. Semester</option>
-					<option value="6" @if(profile.semester !=null && profile.semester == 6){selected="selected"}>6. Semester</option>
-					<option value="7" @if(profile.semester !=null && profile.semester == 7){selected="selected"}>7. Semester</option>
-					<option value="8" @if(profile.semester !=null && profile.semester == 8){selected="selected"}>8. Semester</option>
-		</select><select name="degree">
-					@if(profile.degree == null) {
-							<option value="null" selected="selected">Keine Angabe</option>
-					} else {
-							<option value="null">Keine Angabe</option>
-					}
-					<option value="Bachelor" @if(profile.degree !=null && profile.degree.equals("Bachelor")){selected="selected"}>Bachelor</option>
-					<option value="Master" @if(profile.degree !=null && profile.degree.equals("Master")){selected="selected"}>Master</option>
-					<option value="Diplom" @if(profile.degree !=null && profile.degree.equals("Diplom")){selected="selected"}>Diplom</option>
-		</select></dd>
+		<dd>
+			<select class="form-control" name="semester">
+				@if(profile.semester == null) {
+				<option value="0" selected="selected">Keine Angabe</option>
+				} else {
+				<option value="0">Keine Angabe</option>
+				}
+				<option value="1" @if(profile.semester !=null && profile.semester == 1){selected="selected"}>1. Semester</option>
+				<option value="2" @if(profile.semester !=null && profile.semester == 2){selected="selected"}>2. Semester</option>
+				<option value="3" @if(profile.semester !=null && profile.semester == 3){selected="selected"}>3. Semester</option>
+				<option value="4" @if(profile.semester !=null && profile.semester == 4){selected="selected"}>4. Semester</option>
+				<option value="5" @if(profile.semester !=null && profile.semester == 5){selected="selected"}>5. Semester</option>
+				<option value="6" @if(profile.semester !=null && profile.semester == 6){selected="selected"}>6. Semester</option>
+				<option value="7" @if(profile.semester !=null && profile.semester == 7){selected="selected"}>7. Semester</option>
+				<option value="8" @if(profile.semester !=null && profile.semester == 8){selected="selected"}>8. Semester</option>
+			</select>
+			
+			<select class="form-control" name="degree">
+				@if(profile.degree == null) {
+				<option value="null" selected="selected">Keine Angabe</option>
+				} else {
+				<option value="null">Keine Angabe</option>
+				}
+				<option value="Bachelor" @if(profile.degree !=null && profile.degree.equals("Bachelor")){selected="selected"}>Bachelor</option>
+				<option value="Master" @if(profile.degree !=null && profile.degree.equals("Master")){selected="selected"}>Master</option>
+				<option value="Diplom" @if(profile.degree !=null && profile.degree.equals("Diplom")){selected="selected"}>Diplom</option>
+			</select>
+		</dd>
 	</dl>
 	<dl>
 		<dt>Avatar</dt>
 		<dd id="avatars">
-			<img id="a0" class="img-polaroid" src="@routes.Assets.at("images/avatars/a0.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a1" class="img-polaroid" src="@routes.Assets.at("images/avatars/a1.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a2" class="img-polaroid" src="@routes.Assets.at("images/avatars/a2.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a3" class="img-polaroid" src="@routes.Assets.at("images/avatars/a3.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a4" class="img-polaroid" src="@routes.Assets.at("images/avatars/a4.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a5" class="img-polaroid" src="@routes.Assets.at("images/avatars/a5.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a6" class="img-polaroid" src="@routes.Assets.at("images/avatars/a6.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a7" class="img-polaroid" src="@routes.Assets.at("images/avatars/a7.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a8" class="img-polaroid" src="@routes.Assets.at("images/avatars/a8.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a9" class="img-polaroid" src="@routes.Assets.at("images/avatars/a9.png")" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a0" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a0.png")" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a1" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a1.png")" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a2" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a2.png")" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a3" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a3.png")" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a4" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a4.png")" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a5" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a5.png")" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a6" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a6.png")" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a7" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a7.png")" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a8" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a8.png")" alt="avatar" onclick="updateAvatar(this)" />
+			<img id="a9" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a9.png")" alt="avatar" onclick="updateAvatar(this)" />
 		</dd>
 	</dl>
-	<input id="avatar" name="avatar" type="hidden" value="">
-	<input type="submit" value="Speichern" class="btn btn-success">
+	<input type="hidden" id="avatar" name="avatar" value="">
+	<input type="submit" class="btn btn-warning" value="Speichern">
 
 	<script type="text/javascript">
 	
 	var aID = "@profile.avatar";
 	
 	function updateAvatar(parent) {
-		var childs = document.getElementById("avatars").getElementsByClassName("img-polaroid");
+		var childs = document.getElementById("avatars").getElementsByClassName("img-thumbnail");
 		for (i = 0; i < childs.length; i++) {
-			childs[i].className = "img-polaroid";
+			childs[i].className = "img-thumbnail";
 		}
-		parent.className = "img-polaroid active";
+		parent.className = "img-thumbnail active";
 		document.getElementById("avatar").value = parent.id;
 	}
 	
 	function setAvatar(id) {
-		document.getElementById(id).className = "img-polaroid active";
+		document.getElementById(id).className = "img-thumbnail active";
 		document.getElementById("avatar").value = id;
 	}
 	
