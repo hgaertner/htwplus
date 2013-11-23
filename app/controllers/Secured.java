@@ -71,15 +71,7 @@ public class Secured extends Security.Authenticator {
 	public static boolean isOwnerOfMedia(final Long mediaId){
 		return Media.isOwner(mediaId, Component.currentAccount());
 	}
-	
-	public static boolean isOwnerOfCourse(final Long courseId){
-		return Course.isOwner(courseId, Component.currentAccount());
-	}
-	
-	public static boolean isMemberOfCourse(final Long courseId){
-		return Course.isMember(courseId, Component.currentAccount());
-	}
-	
+		
 	public static boolean isOwnerOfAccount(final Long accountId, final Context ctx){
 		return Account.isOwner(accountId, ctx.session().get("email"));
 	}

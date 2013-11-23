@@ -3,7 +3,6 @@ import org.hibernate.search.jpa.Search;
 
 import controllers.Component;
 import models.Account;
-import models.Course;
 import models.Group;
 import play.Application;
 import play.GlobalSettings;
@@ -52,7 +51,7 @@ public class Global extends GlobalSettings {
 					//Generate indexes
 					FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
 					try {
-						fullTextEntityManager.createIndexer(Group.class, Course.class, Account.class).startAndWait();
+						fullTextEntityManager.createIndexer(Group.class, Account.class).startAndWait();
 					
 					} catch (InterruptedException e) {
 						

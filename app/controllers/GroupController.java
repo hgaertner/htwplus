@@ -115,8 +115,9 @@ public class GroupController extends BaseController {
 			}
 			
 			if(groupType == 2){
-				if(filledForm.data().get("token").equals("")){
-					filledForm.reject("token","Bitte token eingeben!");
+				String token = filledForm.data().get("token");
+				if(token.equals("") || token.length() < 4 || token.length() > 45){
+					filledForm.reject("token","Bitte einen Token zwischen 4 und 45 Zeichen eingeben!");
 					return ok(create.render(filledForm));
 				}
 			}
