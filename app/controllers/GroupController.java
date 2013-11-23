@@ -100,11 +100,14 @@ public class GroupController extends BaseController {
 			return badRequest(create.render(filledForm));
 		} else {
 			Group group = filledForm.get();
-			int groupType = Integer.parseInt(filledForm.data().get("optionsRadios"));
-			
-			if(filledForm.data().get("optionsRadios").equals("1")){
-				group.isClosed = true;
+			int groupType;
+			try {
+				groupType = Integer.parseInt(filledForm.data().get("visibility"));
+			} catch (NumberFormatException ex){
+				filledForm.reject("visibility","Bitte eine Sichtbarkeit wählen!");
+				return ok(create.render(filledForm));
 			}
+			
 			switch(groupType){
 				case 0: group.groupType = GroupType.open; break;
 				case 1: group.groupType = GroupType.close; break;
@@ -113,7 +116,9 @@ public class GroupController extends BaseController {
 					filledForm.reject("Nicht möglich!");
 					return ok(create.render(filledForm));
 			}
-			
+			if(groupType == 1){
+				group.isClosed = true;
+			}
 			if(groupType == 2){
 				String token = filledForm.data().get("token");
 				if(token.equals("") || token.length() < 4 || token.length() > 45){
