@@ -34,20 +34,14 @@
 		  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		    <ul class="nav navbar-nav">
 		      @defining(if(Navigation.getLevel() == Navigation.Level.STREAM){"active"} else {"deactive"}) { status =>
-		      	<li class="@status"><a href="@Navigation.getLevelRoute(Navigation.Level.STREAM)">Newsstream</a></li>
+		      	<li class="@status"><a href="@Navigation.getLevelRoute(Navigation.Level.STREAM)">@Navigation.getLevelTitle(Navigation.Level.STREAM)</a></li>
 		      }
 		      @defining(if(Navigation.getLevel() == Navigation.Level.FRIENDS){"active"} else {"deactive"}) { status =>
-		      	<li class"@status"><a href="@Navigation.getLevelRoute(Navigation.Level.FRIENDS)">Freunde</a></li>
+		      	<li class="@status"><a href="@Navigation.getLevelRoute(Navigation.Level.FRIENDS)">@Navigation.getLevelTitle(Navigation.Level.FRIENDS)</a></li>
 		      }
 		      @defining(if(Navigation.getLevel() == Navigation.Level.GROUPS){"active"} else {"deactive"}) { status =>
-			      <li class="dropdown @status">
-			        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gruppen & Kurse <b class="caret"></b></a>
-			        <ul class="dropdown-menu">
-			          <li><a href="@Navigation.getLevelRoute(Navigation.Level.GROUPS)">Gruppen & Kurse ansehen</a></li>
-			          <li><a href="@routes.GroupController.create()">Neue Gruppe erstellen</a></li>
-			        </ul>
-			      </li>
-			  }
+		      	<li class="@status"><a href="@Navigation.getLevelRoute(Navigation.Level.GROUPS)">@Navigation.getLevelTitle(Navigation.Level.GROUPS)</a></li>
+		      }
 			  <li class="dropdown">
 			        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Neuigkeiten <span class="badge">5</span> <b class="caret"></b></a>
 			        <ul class="dropdown-menu">
