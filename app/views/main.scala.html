@@ -3,115 +3,164 @@
 
 <!DOCTYPE html>
 <html lang="de">
-<head>
-<title>HTW.plus()</title>
-<!-- Bootstrap -->
-<link rel="stylesheet" href="@routes.Assets.at("bootstrap/css/bootstrap.min.css")">
-<!-- Own -->
-<link rel="stylesheet" media="all" href="@routes.Assets.at("stylesheets/background.css")">
-<link rel="stylesheet" media="all" href="@routes.Assets.at("stylesheets/bootstrap-prettyfile.css")">
-<link rel="stylesheet" media="all" href="@routes.Assets.at("stylesheets/ajax.css")">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-</head>
+	<head>
+		<title>HTW.plus()</title>
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="@routes.Assets.at("bootstrap/css/bootstrap.min.css")">
+		<!-- Own -->
+		<link rel="stylesheet" media="all" href="@routes.Assets.at("stylesheets/background.css")">
+		<link rel="stylesheet" media="all" href="@routes.Assets.at("stylesheets/bootstrap-prettyfile.css")">
+		<link rel="stylesheet" media="all" href="@routes.Assets.at("stylesheets/ajax.css")">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	</head>
 
-@if(user != null){
-<body id="smallHead">
-} else {
-<body id="@title">
-}
+	@if(user != null){
+		<body id="smallHead">
+	
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		  <!-- Brand and toggle get grouped for better mobile display -->
+		  <div class="navbar-header">
+		    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+		      <span class="sr-only">Toggle navigation</span>
+		      <span class="icon-bar"></span>
+		      <span class="icon-bar"></span>
+		      <span class="icon-bar"></span>
+		    </button>
+		    <img src="@routes.Assets.at("images/logoSmall.png")" class="logo">
+		  </div>
+		
+		  <!-- Collect the nav links, forms, and other content for toggling -->
+		  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		    <ul class="nav navbar-nav">
+		      @defining(if(Navigation.getLevel() == Navigation.Level.STREAM){"active"} else {"deactive"}) { status =>
+		      	<li class="@status"><a href="@Navigation.getLevelRoute(Navigation.Level.STREAM)">Newsstream</a></li>
+		      }
+		      @defining(if(Navigation.getLevel() == Navigation.Level.FRIENDS){"active"} else {"deactive"}) { status =>
+		      	<li class"@status"><a href="@Navigation.getLevelRoute(Navigation.Level.FRIENDS)">Freunde</a></li>
+		      }
+		      @defining(if(Navigation.getLevel() == Navigation.Level.GROUPS){"active"} else {"deactive"}) { status =>
+			      <li class="dropdown @status">
+			        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gruppen & Kurse <b class="caret"></b></a>
+			        <ul class="dropdown-menu">
+			          <li><a href="@Navigation.getLevelRoute(Navigation.Level.GROUPS)">Gruppen & Kurse ansehen</a></li>
+			          <li><a href="@routes.GroupController.create()">Neue Gruppe erstellen</a></li>
+			        </ul>
+			      </li>
+			  }
+			  <li class="dropdown">
+			        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Neuigkeiten <span class="badge">5</span> <b class="caret"></b></a>
+			        <ul class="dropdown-menu">
+			          <li><a href="#">Neue Medien in Gruppe <b>Das ist keine Magie</b></a></li>
+			          <li><a href="#">Neue Freundschaftsanfrage von <b>Iven Z.</b></a></li>
+			          <li><a href="#">Neuer Post in Kurs <b>Das ist keine Magie</b></a></li>
+			          <li><a href="#"><b>Fabian K.</b> hat deine Freundschaftsanfrage bestätigt</a></li>
+			          <li><a href="#"><b>Anne H.</b> hat deine Freundschaftsanfrage abgelehnt</a></li>
+			        </ul>
+			      </li>
+		    </ul>
+		    <form class="navbar-form navbar-left" role="search">
+		      <div class="form-group">
+		        <input type="text" class="form-control" placeholder="Gruppe oder Kurs">
+		      </div>
+		      <button type="submit" class="btn btn-default">Suchen</button>
+		    </form>
+		    <ul class="nav navbar-nav navbar-right">
+		      <li><img alt="avatar" src="@Component.currentAccount().getAvatarUrl()" height="50px"/></li>
+		      <li class="dropdown">
+		        <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Component.currentAccount().firstname @Component.currentAccount().lastname<b class="caret"></b></a>
+		        <ul class="dropdown-menu">
+		          <li><a href="@routes.ProfileController.stream(user.id)">Mein Newsstream</a></li>
+		          <li><a href="@Navigation.getLevelRoute(Navigation.Level.PROFILE)">Mein Profil ansehen</a></li>
+		          <li><a href="@routes.ProfileController.edit(user.id)">Mein Profil bearbeiten</a></li>
+		          <li class="divider"></li>
+		          <li><a href="@routes.AccountController.logout">Logout</a></li>
+		        </ul>
+		      </li>
+		    </ul>
+		  </div><!-- /.navbar-collapse -->
+		</nav>
 
-	<header>
+	} else {
+		<body id="@title">
+	}
+
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-9">
-				@if(user != null){
-					<div id="logo"><img src="@routes.Assets.at("images/logoSmall.png")" /></div>
-				} else {
-					<div id="logo"><img src="@routes.Assets.at("images/logo.png")" /></div>
-				}
-				</div>
-			</div>
-		</div>
-	</header>
-
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-9">
-				<div id="right">
-					<div id="topRight"></div>
-					<div id="bottomRight"></div>
-					<div id="left">
-						<div id="topLeft"></div>
-						<div id="bottomLeft"></div>
-						<!-- Content -->
-						<div id="top">
-							<div id="bottom">
-								<div id="content">
-									@if(user != null){
-										<br />
-										@views.html.snippets.breadcrumb()
-									}
-									@if(flash.containsKey("success")) {
-										<div class="alert alert-success fade in">
-											<button type="button" class="close" data-dismiss="alert">&times;</button>
-											@flash.get("success")
-										</div>
-									} 
-									@if(flash.containsKey("info")) {
-										<div class="alert alert-info fade in">
-											<button type="button" class="close" data-dismiss="alert">&times;</button>
-											@flash.get("info")
-										</div>
-									} 
-									@if(flash.containsKey("error")) {
-										<div class="alert alert-danger fade in">
-											<button type="button" class="close" data-dismiss="alert">&times;</button>
-											@flash.get("error")
-										</div>
-									} 
-									
-                  					@content
+					<div id="right">
+						<div id="topRight"></div>
+						<div id="bottomRight"></div>
+						<div id="left">
+							<div id="topLeft"></div>
+							<div id="bottomLeft"></div>
+							<!-- Content -->
+							<div id="top">
+								<div id="bottom">
+									<div id="content">
+										@if(user != null){
+											<br />
+											@views.html.snippets.breadcrumb()
+										}
+										@if(flash.containsKey("success")) {
+											<div class="alert alert-success fade in">
+												<button type="button" class="close" data-dismiss="alert">&times;</button>
+												@flash.get("success")
+											</div>
+										} 
+										@if(flash.containsKey("info")) {
+											<div class="alert alert-info fade in">
+												<button type="button" class="close" data-dismiss="alert">&times;</button>
+												@flash.get("info")
+											</div>
+										} 
+										@if(flash.containsKey("error")) {
+											<div class="alert alert-danger fade in">
+												<button type="button" class="close" data-dismiss="alert">&times;</button>
+												@flash.get("error")
+											</div>
+										} 
+										
+	                  					@content
+									</div>
 								</div>
 							</div>
+							<!-- Ende Content -->
 						</div>
-						<!-- Ende Content -->
+					</div>
+				</div>
+	
+				<!-- Navigation -->
+				@if(user != null){
+				} else {
+						@controllers.Component.loginForm()
+				}
+				<!-- End Navigation -->
+	
+			</div>
+		</div>
+
+		<footer>
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-9">
+						<div id="htw">
+							@views.html.snippets.impressumModal()
+							<a href="#impressumModal" data-toggle="modal">Impressum</a>
+						</div>
 					</div>
 				</div>
 			</div>
+		</footer>
+	
+		<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.at("bootstrap/js/bootstrap.min.js")"></script>
+		<script type="text/javascript" src="@routes.Application.javascriptRoutes()"></script>
+	    <script type="text/javascript" src="@routes.Assets.at("javascripts/ajax.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.at("javascripts/application.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap-prettyfile.js")"></script>
 
-			<!-- Navigation -->
-			@if(user != null){
-					@views.html.snippets.navi(title)
-			} else {
-					@controllers.Component.loginForm()
-			}
-			<!-- End Navigation -->
-
-		</div>
-	</div>
-
-	<footer>
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-9">
-					<div id="htw">
-						@views.html.snippets.impressumModal()
-						<a href="#impressumModal" data-toggle="modal">Impressum</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</footer>
-
-	<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.js")"></script>
-	<script type="text/javascript" src="@routes.Assets.at("bootstrap/js/bootstrap.min.js")"></script>
-	<script type="text/javascript" src="@routes.Application.javascriptRoutes()"></script>
-    <script type="text/javascript" src="@routes.Assets.at("javascripts/ajax.js")"></script>
-	<script type="text/javascript" src="@routes.Assets.at("javascripts/application.js")"></script>
-	<script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap-prettyfile.js")"></script>
-
-</body>
+	</body>
 </html>
 
 }

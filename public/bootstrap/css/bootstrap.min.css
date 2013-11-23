@@ -14,7 +14,7 @@ audio,canvas,video{display:inline-block;}
 audio:not([controls]){display:none;height:0;}
 [hidden],template{display:none;}
 html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}
-body{margin:0;}
+body{margin-top:80px;}
 a{background:transparent;}
 a:focus{outline:thin dotted;}
 a:active,a:hover{outline:0;}
@@ -675,7 +675,7 @@ textarea.input-group-sm>.form-control,textarea.input-group-sm>.input-group-addon
 .label-info{background-color:#5bc0de;}.label-info[href]:hover,.label-info[href]:focus{background-color:#31b0d5;}
 .label-warning{background-color:#ff5f00;}.label-warning[href]:hover,.label-warning[href]:focus{background-color:#cc4c00;}
 .label-danger{background-color:#d9534f;}.label-danger[href]:hover,.label-danger[href]:focus{background-color:#c9302c;}
-.badge{display:inline-block;min-width:10px;padding:3px 7px;font-size:11px;font-weight:bold;color:#ffffff;line-height:1;vertical-align:baseline;white-space:nowrap;text-align:center;background-color:#999999;border-radius:10px;}.badge:empty{display:none;}
+.badge{display:inline-block;min-width:10px;padding:3px 7px;font-size:11px;font-weight:bold;color:#ffffff;line-height:1;vertical-align:baseline;white-space:nowrap;text-align:center;background-color:#76b900;border-radius:10px;}.badge:empty{display:none;}
 a.badge:hover,a.badge:focus{color:#ffffff;text-decoration:none;cursor:pointer;}
 .btn .badge{position:relative;top:-1px;}
 a.list-group-item.active>.badge,.nav-pills>.active>a>.badge{color:#76b900;background-color:#ffffff;}
