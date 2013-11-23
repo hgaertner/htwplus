@@ -18,7 +18,6 @@ import views.html.Group.view;
 public class Post extends BaseModel {
 	
 	public static String GROUP = "group";
-	public static String COURSE = "course";
 	public static String PROFILE = "profile";
 
 	@Required
@@ -30,8 +29,7 @@ public class Post extends BaseModel {
 
 	@ManyToOne
 	public Group group;
-	@ManyToOne
-	public Course course;
+
 	@ManyToOne
 	public Account account;
 
@@ -62,13 +60,6 @@ public class Post extends BaseModel {
 		
 	public static Post findById(Long id) {
 		return JPA.em().find(Post.class, id);
-	}
-
-	@SuppressWarnings("unchecked")
-	public static List<Post> getPostForCourse(Long courseId) {
-		return (List<Post>) JPA.em()
-				.createQuery("SELECT p FROM Post p WHERE p.course.id = ?1 ORDER BY p.createdAt DESC")
-				.setParameter(1, courseId).getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -143,12 +134,7 @@ public class Post extends BaseModel {
 		if(this.group != null) return true;
 		return false;
 	}
-	
-	public boolean belongsToCourse(){
-		if(this.course != null) return true;
-		return false;
-	}
-	
+		
 	public boolean belongsToAccount(){
 		if(this.account != null) return true;
 		return false;
@@ -160,7 +146,7 @@ public class Post extends BaseModel {
 	 * @return List of Posts
 	 */
 	public static List<Post> getStream(Account account) {
-		// find friends, groups and course of given account
+		// find friends and groups of given account
 		List<Account> friendList = Friendship.findFriends(account);
 		List<Group> groupList = GroupAccount.findEstablished(account);
 			
@@ -173,7 +159,7 @@ public class Post extends BaseModel {
 	 * @return List of Posts
 	 */
 	public static List<Post> getFriendStream(Account friend) {
-		// find friends, non closed-groups and non closed-course of given account
+		// find friends and non closed-groups of given account
 		List<Group> groupList = GroupAccount.findPublicEstablished(friend);
 		List<Account> friendList = Friendship.findFriends(friend);
 			

@@ -17,7 +17,6 @@ public class Navigation {
 		callMapping.put(Level.STREAM, routes.Application.index());
 		callMapping.put(Level.FRIENDS, routes.FriendshipController.index());
 		callMapping.put(Level.GROUPS, routes.GroupController.index());
-		callMapping.put(Level.COURSES, routes.CourseController.index());
 	}
 	
 	private static Map<Level,String> titleMapping = new HashMap<Navigation.Level, String>();
@@ -27,7 +26,6 @@ public class Navigation {
 		titleMapping.put(Level.STREAM, "Newsstream");
 		titleMapping.put(Level.FRIENDS, "Freunde");
 		titleMapping.put(Level.GROUPS, "Gruppen");
-		titleMapping.put(Level.COURSES, "Kurse");
 	}
 	
 	private static Call fallbackCall = routes.Application.index();

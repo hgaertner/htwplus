@@ -32,6 +32,7 @@ import play.api.data.validation.ValidationError;
 import play.data.validation.Constraints.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 
 import models.base.BaseModel;
 import models.enums.GroupType;
@@ -60,7 +61,7 @@ public class Group extends BaseModel {
 
 	@Enumerated(EnumType.STRING)
 	public GroupType groupType;
-
+	
 	public String token;
 
 	@OneToMany(mappedBy = "group")

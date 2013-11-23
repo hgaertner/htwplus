@@ -10,29 +10,9 @@
 
 	@inputText(groupForm("title"), 'class -> "form-control", '_label -> "Titel")
 	@textarea(groupForm("description"), 'class -> "form-control", '_label -> "Beschreibung")
-	<dl>
-		<dt>Sichtbarkeit</dt>
-		<dd>
-			<div class="radio">
-				<label>
-					<input type="radio" name="optionsRadios" id="optionsRadios2" value="0" checked>
-					<span class="glyphicon glyphicon-globe"></span> Öffentliche Gruppe
-				</label>
-			</div>
-			<div class="radio">
-				<label>
-					<input type="radio" name="optionsRadios" id="optionsRadios1" value="1">
-					<span class="glyphicon glyphicon-lock"></span> Private Gruppe
-				</label>
-			</div>
-			<div class="radio">
-				<label>
-					<input type="radio" name="optionsRadios" id="optionsRadios1" value="2">
-					<span class="glyphicon glyphicon-briefcase"></span> Kurs
-				</label>
-			</div>
-		</dd>
-	</dl>
+	@inputRadioGroup(groupForm("visibility"),
+					 options = options("0"->"Öffentliche Gruppe","1"->"Private Gruppe","2"->"Kurs"),
+          			 '_label -> "Sichtbarkeit")
 	@inputText(groupForm("token"), 'class -> "form-control", '_label -> "Token")
 	
 	<button type="submit" class="btn btn-warning">Gruppe erstellen</button>

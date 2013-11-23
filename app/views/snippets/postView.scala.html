@@ -12,7 +12,6 @@
 				<h4 class="media-heading">
 					@views.html.snippets.userLink(post.owner)
 					@if(post.belongsToGroup && currentView != "group"){schrieb in <a href="@routes.GroupController.view(post.group.id)">@post.group.title</a>}
-					@if(post.belongsToCourse && currentView != "course"){schrieb in <a href="@routes.CourseController.view(post.course.id)">@post.course.title</a>}
 					@if(post.belongsToAccount && user != post.account && post.account != post.owner){&rarr; <a href="@routes.ProfileController.view(post.account.id)">@post.account.name</a>} 
 					@if(post.owner != null && post.account != null){
 						@if(post.owner.id == user.id || user.id == post.account.id){

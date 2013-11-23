@@ -21,7 +21,6 @@ import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.data.*;
 import models.*;
-import views.html.Course.view;
 import views.html.Media.*;
 import play.db.jpa.*;
 import scala.annotation.meta.param;
@@ -59,10 +58,6 @@ public class MediaController extends BaseController {
     		Group group = media.group;
     		ret = routes.GroupController.media(group.id);
     	} 
-    	if(media.belongsToCourse()){
-    		Course course = media.course;
-    		ret = routes.GroupController.media(course.id);
-    	} 
     	
     	media.delete();
 		flash("success", "Datei " + media.title + " erfolgreich gelöscht!");
@@ -74,17 +69,12 @@ public class MediaController extends BaseController {
     	
 		Call ret = routes.Application.index();
 		Group group = null;
-		Course course = null;
 		String filename = "result.zip";
 		
 		if(target.equals(Media.GROUP)) {
 			group = Group.findById(id);
 			filename = createFileName(group.title);
 			ret = routes.GroupController.media(id);
-		} else if (target.equals(Media.COURSE)) {
-			course = Course.findById(id);
-			filename = createFileName(course.title);
-			ret = routes.CourseController.index();
 		} else {
 			return redirect(ret);
 		}
@@ -173,15 +163,11 @@ public class MediaController extends BaseController {
 	    
 		Call ret = routes.Application.index();
 		Group group = null;
-		Course course = null;
 		
 		// Where to put the media
 		if(target.equals(Media.GROUP)) {
 			group = Group.findById(id);
 			ret = routes.GroupController.media(id);
-		} else if (target.equals(Media.COURSE)) {
-			course = Course.findById(id);
-			ret = routes.CourseController.index();
 		} else {
 			return redirect(ret);
 		}
@@ -230,14 +216,7 @@ public class MediaController extends BaseController {
 						return redirect(ret);
 					}
 					
-				} else if (target.equals(Media.COURSE)) {
-					med.course = course;
-					if(med.existsInCourse(course)){
-						flash("error", error);
-						return redirect(ret);
-					}
-				}
-				
+				} 				
 				mediaList.add(med);
 			}
 			
