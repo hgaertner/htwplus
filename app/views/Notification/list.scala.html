@@ -1,0 +1,9 @@
+@(notification:List[Notification])
+
+
+		@for(note <- notification){
+			@if(note.hallo == NotificationType.GROUP_NEW_POST) {
+						<li>@note.objectId</li>
+			}
+		
+		}

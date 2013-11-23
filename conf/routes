@@ -74,6 +74,9 @@ POST	/media/multiple/:target/:id			controllers.MediaController.multiView(target:
 GET		/media/:id							controllers.MediaController.view(id:Long)
 GET 	/media/:id/delete					controllers.MediaController.delete(id:Long)
 
+#Notification
+GET		/notification/user/:id				controllers.NotificationController.viewForUser(id:Long)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               		controllers.Assets.at(path="/public", file)
 

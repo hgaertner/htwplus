@@ -2,9 +2,12 @@ package models;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NoResultException;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import play.Logger;
 import play.data.validation.Constraints.Required;
@@ -12,15 +15,25 @@ import play.db.jpa.JPA;
 import models.base.BaseModel;
 
 @Entity
+@Table(uniqueConstraints=
+@UniqueConstraint(columnNames = {
+		"account_id", 
+		"type", 
+		"object_id"
+		}))
 public class Notification extends BaseModel {
 	
-	public static enum Type {
-		NEW_GROUP_POST,
-		GROUP_ACTIVITY,
-		GROUP_MEDIA_ACTIVITY,
-		COURSE_ACTIVITY,
-		COURSE_MEDIA_ACTIVITY,
-		NEWSSTREAM
+	public enum Scope {
+		GROUP,
+		FRIENDSHIP
+	}
+	
+	public enum Type {
+		HALLO
+	}
+	
+	public enum NotificationType {
+		GROUP_NEW_POST
 	}
 
 	@Required
@@ -28,13 +41,12 @@ public class Notification extends BaseModel {
 	public Account account;
 	
 	@Required
-	public Type type;
+	public NotificationType type;
 	
-	public String hash;
+	@Column(name = "object_id")
+	public Long objectId;
 	
-	@Required
-	public Boolean read = false;
-	
+
 	public static void groupActivity() {
 		
 	}
@@ -43,16 +55,15 @@ public class Notification extends BaseModel {
 	public static void newGroupPost(Group group, Account sender) {
 		// Get all accounts for that group
 		List<Account> accounts =  GroupAccount.findAccountsByGroup(group);
-		Type type = Type.NEW_GROUP_POST;
+		NotificationType type = NotificationType.GROUP_NEW_POST;
 		
 		for (Account account : accounts) {
 			if(!account.equals(sender)){
-				String hash = Notification.buildHash(account, type, group.id); 
-				if(Notification.findByHash(hash) == null) {
+				if(Notification.findUnique(type, account, group.id) == null) {
 					Notification notf = new Notification();
 					notf.account = account;
 					notf.type = type;
-					notf.hash = hash;
+					notf.objectId = group.id;
 					notf.create();
 					Logger.info("Created new Notification for User: " + account.id.toString());
 				}
@@ -60,22 +71,27 @@ public class Notification extends BaseModel {
 		}
 	}
 	
-	public static Notification findByHash(String hash) {
+	public static Notification findUnique(NotificationType type, Account account, Long objectId) {
     	try{
 	    	return (Notification) JPA.em()
-					.createQuery("from Notification n where n.hash = :hash")
-					.setParameter("hash", hash).getSingleResult();
+					.createQuery("from Notification n where n.type = :type AND n.account.id = :account AND n.objectId = :object")
+					.setParameter("type", type)
+					.setParameter("account", account.id)
+					.setParameter("object", objectId)
+					.getSingleResult();
 	    } catch (NoResultException exp) {
 	    	return null;
 		}
 	}
 	
-	private static String buildHash(Account account, Type type, Long referenceId) {
-		return account.id.toString() + 
-				"_" + String.valueOf(type.ordinal()) + 
-				"_" + referenceId.toString();
+	@SuppressWarnings("unchecked")
+	public static List<Notification> findByUser(Account account) {
+		return (List<Notification>) JPA.em()
+				.createQuery("FROM Notification n WHERE n.account.id = :account")
+				.setParameter("account", account.id)
+				.getResultList();
 	}
-	
+		
 	@Override
 	public void create() {
 		JPA.em().persist(this);
