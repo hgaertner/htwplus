@@ -1,9 +1,12 @@
 @(notification:List[Notification])
 
+@import models.Notification.NotificationType
+@import models.Group
 
 		@for(note <- notification){
-			@if(note.hallo == NotificationType.GROUP_NEW_POST) {
-						<li>@note.objectId</li>
+			@if(note.noteType == NotificationType.GROUP_NEW_POST) {
+					@defining(Group.findById(note.objectId)) { group =>
+						@element{Neuer Post in Gruppe <a href="@routes.NotificationController.forwardByString(note.id,routes.GroupController.view(group.id).toString())">@group.title</a>}
+					}
 			}
-		
 		}

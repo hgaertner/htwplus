@@ -7,6 +7,7 @@ import models.Course;
 import models.Group;
 import models.Media;
 import models.Notification;
+import models.Notification.NotificationType;
 import models.Post;
 import play.Logger;
 import play.Play;
@@ -42,7 +43,7 @@ public class PostController extends BaseController {
 					p.owner = Component.currentAccount();
 					p.group = group;
 					p.create();
-					Notification.newGroupPost(group, account);
+					Notification.newGroupNotification(NotificationType.POST_NEW_COMMENT, group, account);
 				}
 			} else {
 				flash("info","Bitte tritt der Gruppe erst bei.");

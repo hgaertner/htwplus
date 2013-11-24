@@ -2,8 +2,12 @@ package controllers;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+
 import models.Account;
 import models.Notification;
+import models.Notification.NotificationType;
+import play.Logger;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -33,8 +37,37 @@ public class NotificationController extends Controller {
 	
 	
 	public static Result forward(Long notificationId) {
+		Notification note = Notification.findById(notificationId);
 		
-		return null;
+		if(note == null) {
+			return badRequest("Das gibts doch garnicht!");
+		}
+		
+		if(note.noteType == NotificationType.GROUP_NEW_POST) {
+			return redirect(routes.GroupController.view(note.objectId));
+		}
+		
+		// Delete Note here
+		
+		return badRequest("Invalid Request");
+	}
+	
+	public static Result forwardByString(Long notificationId, String url) {
+		Notification note = Notification.findById(notificationId);
+		Logger.info(url);
+
+		if(note == null) {
+			return badRequest("Das gibts doch garnicht!");
+		}
+		
+		if(note.noteType == NotificationType.GROUP_NEW_POST) {
+			return redirect(url);
+			//return redirect(routes.GroupController.view(note.objectId));
+		}
+	
+		// Delete Note here
+		
+		return badRequest("Invalid Request");
 	}
 	
 	

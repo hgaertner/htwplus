@@ -1,6 +1,7 @@
 package models;
 
 import java.util.List;
+import java.lang.Exception;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,51 +19,72 @@ import models.base.BaseModel;
 @Table(uniqueConstraints=
 @UniqueConstraint(columnNames = {
 		"account_id", 
-		"type", 
+		"noteType", 
 		"object_id"
 		}))
 public class Notification extends BaseModel {
 	
 	public enum Scope {
 		GROUP,
-		FRIENDSHIP
+		POST,
+		ACCOUNT
 	}
 	
-	public enum Type {
-		HALLO
-	}
 	
 	public enum NotificationType {
-		GROUP_NEW_POST
+		GROUP_NEW_POST(Scope.GROUP),
+		GROUP_NEW_MEDIA(Scope.GROUP),
+		GROUP_NEW_REQUEST(Scope.GROUP),
+		GROUP_REQUEST_SUCCESS(Scope.GROUP),
+		GROUP_REQUEST_FAIL(Scope.GROUP),
+		POST_NEW_COMMENT(Scope.POST);
+		
+		
+		private Scope scope;
+		
+		public Scope getScope() {
+			return this.scope;
+		}
+		
+		private NotificationType(Scope scope) {
+			this.scope = scope;
+		}
 	}
-
+	
 	@Required
 	@OneToOne
 	public Account account;
 	
 	@Required
-	public NotificationType type;
+	public NotificationType noteType;
 	
 	@Column(name = "object_id")
 	public Long objectId;
 	
+	public static Notification findById(Long id) {
+		return JPA.em().find(Notification.class, id);
+	}
 
 	public static void groupActivity() {
 		
 	}
 
 	// GROUP NOTIFICATIONS
-	public static void newGroupPost(Group group, Account sender) {
+	public static void newGroupNotification(NotificationType noteType, Group group, Account sender) {
 		// Get all accounts for that group
+		if(noteType.getScope() != Scope.GROUP) {
+			throw new RuntimeException("Invalid Notification Type for this method");
+		}
+		
 		List<Account> accounts =  GroupAccount.findAccountsByGroup(group);
-		NotificationType type = NotificationType.GROUP_NEW_POST;
+		NotificationType type = noteType;
 		
 		for (Account account : accounts) {
 			if(!account.equals(sender)){
 				if(Notification.findUnique(type, account, group.id) == null) {
 					Notification notf = new Notification();
 					notf.account = account;
-					notf.type = type;
+					notf.noteType = type;
 					notf.objectId = group.id;
 					notf.create();
 					Logger.info("Created new Notification for User: " + account.id.toString());
@@ -74,7 +96,7 @@ public class Notification extends BaseModel {
 	public static Notification findUnique(NotificationType type, Account account, Long objectId) {
     	try{
 	    	return (Notification) JPA.em()
-					.createQuery("from Notification n where n.type = :type AND n.account.id = :account AND n.objectId = :object")
+					.createQuery("from Notification n where n.noteType = :type AND n.account.id = :account AND n.objectId = :object")
 					.setParameter("type", type)
 					.setParameter("account", account.id)
 					.setParameter("object", objectId)
@@ -105,8 +127,7 @@ public class Notification extends BaseModel {
 
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
-		
+		JPA.em().remove(this);
 	}
 	
 }
