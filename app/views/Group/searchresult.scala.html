@@ -29,12 +29,13 @@
 						<td>
 							@views.html.snippets.userLink(group.owner)
 						</td>
-						<td>
-							@if(group.isClosed) {
-								<a href="@routes.GroupController.join(group.id)" rel="tooltip" title="Anfrage senden"><i class="glyphicon glyphicon-ok"></i></a>
-							} else {
-								<a href="@routes.GroupController.join(group.id)" rel="tooltip" title="Beitreten"><i class="glyphicon glyphicon-plus"></i></a>
-							}
+						<td><a href="@routes.GroupController.join(group.id)" rel="tooltip" title="Anfrage senden">
+							@{group.groupType.toString match {
+								case "open" => {<i class="glyphicon glyphicon-plus"></i>}
+								case "close" => {<i class="glyphicon glyphicon-envelope"></i>}
+								case "course" => {<i class="glyphicon glyphicon-plus"></i>}
+							} }
+							</a>
 						</td>
 					</tr>
 				}
