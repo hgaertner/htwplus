@@ -19,7 +19,6 @@
 		<body id="smallHead">
 			@views.html.snippets.navi()
 		
-
 	} else {
 		<body id="@title">
 	}
@@ -33,7 +32,6 @@
 						<div id="left">
 							<div id="topLeft"></div>
 							<div id="bottomLeft"></div>
-							<!-- Content -->
 							<div id="top">
 								<div id="bottom">
 									<div id="content">
@@ -59,26 +57,25 @@
 												@flash.get("error")
 											</div>
 										} 
-										
-	                  					@content
-									</div>
-								</div>
-							</div>
-							<!-- Ende Content -->
-						</div>
-					</div>
-				</div>
-	
-				<!-- Navigation -->
+											
+		                  				@content
+									</div> <!-- /content -->
+								</div> <!-- /bottom -->
+							</div> <!-- /top -->
+						</div> <!-- /left -->
+					</div> <!-- /right -->
+				</div> <!-- /col-xs-9 -->
+		
+				<!-- if logged out -->
 				@if(user != null){
 				} else {
-						@controllers.Component.loginForm()
+					@controllers.Component.loginForm()
 				}
-				<!-- End Navigation -->
+				<!-- /if logged out -->
+		
+			</div> <!-- /row -->
+		</div> <!-- /container -->
 	
-			</div>
-		</div>
-
 		<footer>
 			<div class="container">
 				<div class="row">
