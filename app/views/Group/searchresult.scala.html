@@ -1,42 +1,44 @@
 @(groups: List[Group]) @main("Searchresult"){ @if(groups != null) {
-<h2>Suchergebnisse für Gruppen</h2>
-<br>
-<div class="noModal">
-<table class="table table-hover">
-	<colgroup>
-		<col width="45%">
-		<col width="40%">
-		<col width="15%">
-	</colgroup>
-	<thead>
-		<tr>
-			<th>Gruppenname</th>
-			<th>Erstellt von</th>
-			<th>Optionen</th>
-		</tr>
-	</thead>
-	<tbody>
-	<tbody>
-		@for(group <- groups){
-		<tr>
-			<td>@if(group.isClosed == true) { 
-					<i class="icon-lock"></i> 
-				} else { 
-					<i class="icon-globe"></i> 
+	<h2>Suchergebnisse für Gruppen</h2>
+	<br>
+	<div class="noModal">
+		<table class="table table-hover">
+			<colgroup>
+				<col width="45%">
+				<col width="40%">
+				<col width="15%">
+			</colgroup>
+			<thead>
+				<tr>
+					<th>Gruppenname</th>
+					<th>Erstellt von</th>
+					<th>Optionen</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for(group <- groups){
+					<tr>
+						<td>
+							@if(group.isClosed) { 
+								<i class="glyphicon glyphicon-lock"></i> 
+							} else { 
+								<i class="glyphicon glyphicon-globe"></i> 
+							}
+							<a href="@routes.GroupController.view(group.id)" rel="popover" data-trigger="hover" data-content="@group.description" data-original-title="Beschreibung" data-placement="top">@group.title</a>
+						</td>
+						<td>
+							@views.html.snippets.userLink(group.owner)
+						</td>
+						<td>
+							@if(group.isClosed) {
+								<a href="@routes.GroupController.join(group.id)" rel="tooltip" title="Anfrage senden"><i class="glyphicon glyphicon-ok"></i></a>
+							} else {
+								<a href="@routes.GroupController.join(group.id)" rel="tooltip" title="Beitreten"><i class="glyphicon glyphicon-plus"></i></a>
+							}
+						</td>
+					</tr>
 				}
-				<a href="@routes.GroupController.view(group.id)" rel="popover"
-				data-trigger="hover" data-content="@group.description"
-				data-original-title="Beschreibung"> @group.title</a>
-			</td>
-			<td>
-				@views.html.snippets.userLink(group.owner)
-			</td>
-			<td>
-				<a href="@routes.GroupController.join(group.id)" rel="tooltip" title="Beitreten" class="ajaxModalLink"><i class="glyphicon glyphicon-plus"></i></a>
-			</td>
-		</tr>
-		}
-	</tbody>
-</table>
-</div>
+			</tbody>
+		</table>
+	</div> <!-- /noModal -->
 } }
