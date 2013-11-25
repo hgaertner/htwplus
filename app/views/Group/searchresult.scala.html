@@ -32,7 +32,7 @@
 								@if(!Secured.isMemberOfGroup(group, user)) {
 									<a href="@routes.GroupController.join(group.id)" rel="tooltip" title="Beitreten"><i class="glyphicon glyphicon-plus"></i></a>
 								}
-								@if(!Secured.isOwnerOfGroup(group, user)) {
+								@if(Secured.isOwnerOfGroup(group, user)) {
 									<a href="@routes.GroupController.edit(group.id)" rel="tooltip" title="Beitreten"><i class="glyphicon glyphicon-pencil"></i></a>
 									<a href="@routes.GroupController.edit(group.id)" rel="tooltip" title="Beitreten"><i class="glyphicon glyphicon-trash"></i></a>
 								}
