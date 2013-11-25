@@ -18,21 +18,24 @@
 	
 	
 	<div class="clear">
-	@if(!group.isClosed || isMember) {
+	@if(group.groupType != GroupType.close || Secured.isMemberOfGroup(group, Component.currentAccount)) {
 		<h2 id="truncated">@group.title</h2>
 		<div class="miniMenue">
-			@if(group.groupType.equals(GroupType.open)) { <span class="glyphicon glyphicon-globe"></span>}
-			@if(group.groupType.equals(GroupType.close)) { <span class="glyphicon glyphicon-lock"></span>}
-			@if(group.groupType.equals(GroupType.course)) { <span class="glyphicon glyphicon-briefcase"></span>}
+			@{group.groupType match {
+				case GroupType.open => {<i class="glyphicon glyphicon-globe"></i>}
+				case GroupType.close => {<i class="glyphicon glyphicon-lock"></i>}
+				case GroupType.course => {<i class="glyphicon glyphicon-briefcase"></i>}
+			} }
 			<div class="btn-group">
 				<a href="@routes.GroupController.view(group.id)" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Gruppennewsstream" data-container="body"><span class="glyphicon glyphicon-comment"></span></a>
 				<a href="@routes.GroupController.media(group.id)" role="button" class="btn btn-default" rel="tooltip" data-original-title="Gruppenmedien" data-container="body"><span class="glyphicon glyphicon-file"></span></a>
-			@defining(Component.currentAccount()) { user => @if(group.owner.id == user.id) {
+			@if(Secured.isOwnerOfGroup(group, Component.currentAccount)) {
 				<a href="@routes.GroupController.edit(group.id)" role="button" class="btn btn-default" rel="tooltip" data-original-title="Gruppe bearbeiten" data-container="body"><span class="glyphicon glyphicon-pencil"></span></a>
 				<a href="#confirmDeleteGroup" role="button" class="btn btn-default" rel="tooltip" data-toggle="modal" data-original-title="Gruppe löschen" data-container="body"><span class="glyphicon glyphicon-trash"></span></a>
-			} @if(!isMember) {
+			}
+			@if(!Secured.isMemberOfGroup(group, Component.currentAccount)) {
 				<a href="@routes.GroupController.join(group.id)" role="button" class="btn btn-default" rel="tooltip" data-original-title="Beitreten" data-container="body"><span class="glyphicon glyphicon-ok"></span></a>
-			}}
+			}
 				<a href="#infoModal" role="button" class="btn btn-default" data-toggle="modal" rel="tooltip" data-original-title="Gruppeninfo" data-container="body"><span class="glyphicon glyphicon-info-sign"></span></a>
 			</div>
 		</div>
