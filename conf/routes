@@ -25,7 +25,8 @@ GET 	/group/:groupId/remove/:accountId	controllers.GroupController.removeMember(
 GET 	/group/:groupId/accept/:accountId	controllers.GroupController.acceptRequest(groupId:Long, accountId: Long)
 GET 	/group/:groupId/decline/:accountId	controllers.GroupController.declineRequest(groupId:Long, accountId: Long)
 GET		/gruppe/searchForGroup/				controllers.GroupController.searchForGroupByKeyword()
-POST	/group/:id/entertoken				controllers.GroupController.enterToken(id:Long)
+GET		/group/:id/token					controllers.GroupController.token(id:Long)
+POST	/group/:id/validate				    controllers.GroupController.validateToken(id:Long)
 
 #Post and Comments
 POST	/post/:id/addComment				controllers.PostController.addComment(id:Long)
