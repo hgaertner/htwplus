@@ -10,10 +10,12 @@ import org.codehaus.jackson.node.ObjectNode;
 
 
 
+
 import controllers.Navigation.Level;
 import play.*;
 import play.libs.Json;
 import play.mvc.*;
+import play.api.data.Field;
 import play.data.*;
 import models.Account;
 import models.Group;
@@ -32,7 +34,7 @@ import views.html.Group.media;
 import views.html.Group.view;
 import views.html.Group.create;
 import views.html.Group.edit;
-import views.html.Group.snippets.tokenForm;
+import views.html.Group.token;
 import views.html.Group.searchresult;
 
 
@@ -215,27 +217,27 @@ public class GroupController extends BaseController {
 		return ok(searchresult.render(result));
 	}
 	
-	public static Result enterToken(long groupId) {
-		Account account = Component.currentAccount();
-		ObjectNode result = Json.newObject();
+	public static Result token(Long groupId) {
 		Group group = Group.findById(groupId);
+		return ok(token.render(group, groupForm));
+	}
+	
+	public static Result validateToken(Long groupId) {
+		Group group = Group.findById(groupId);
+		
 		Form<Group> filledForm = groupForm.bindFromRequest();
-		String token = filledForm.data().get("token");
-		if(token.equals(group.token)){
+		String enteredToken = filledForm.data().get("token");
+		
+		if(enteredToken.equals(group.token)){
+			Account account = Component.currentAccount();
 			GroupAccount groupAccount = new GroupAccount(account, group, LinkType.establish);
 			groupAccount.create();
-			result.put("status", "redirect");
-			result.put("url", routes.GroupController.view(groupId).toString());
-			flash("success", "Gruppe erfolgreich beigetreten!");
+			flash("success", "Kurs erfolgreich beigetreten!");
+			return redirect(routes.GroupController.view(groupId));
 		} else {
-			result.put("status", "response");
-			filledForm.reject("token","Der Token ist falsch.");
-			String form = tokenForm.render(group, filledForm).toString();
-			
-			result.put("payload", form);
+			flash("error", "Der Token ist falsch.");
+			return badRequest(token.render(group, filledForm));
 		}
-		
-		return ok(result);
 	}
 	
 	
@@ -248,32 +250,26 @@ public class GroupController extends BaseController {
 		
 		if(Secured.isMemberOfGroup(group, account)){
 			Logger.debug("User is already member of group or course");
-			result.put("status", "redirect");
-			result.put("url", routes.GroupController.view(id).toString());
-			flash("info", "Du bist bereits Mitglied dieser Gruppe!");
+			flash("error", "Du bist bereits Mitglied dieser Gruppe!");
+			return redirect(routes.GroupController.view(id));
 		}
 		
 		else if(group.groupType.equals(GroupType.open)){
 			groupAccount = new GroupAccount(account, group, LinkType.establish);
 			groupAccount.create();
-			result.put("status", "redirect");
-			result.put("url", routes.GroupController.view(id).toString());
 			flash("success", "Gruppe erfolgreich beigetreten!");
+			return redirect(routes.GroupController.view(id));
 		}
 		
 		else if(group.groupType.equals(GroupType.close)){
 			groupAccount = new GroupAccount(account, group, LinkType.request);
 			groupAccount.create();
-			result.put("status", "redirect");
-			result.put("url", routes.GroupController.index().toString());
 			flash("success", "Deine Anfrage wurde erfolgreich übermittelt!");
+			return redirect(routes.GroupController.view(id));
 		}
 		
 		else if(group.groupType.equals(GroupType.course)){
-			
-			result.put("status", "response");
-			String form = tokenForm.render(group, groupForm).toString();
-			result.put("payload", form);
+			return redirect(routes.GroupController.token(id));
 		}
 				
 		return ok(result);
