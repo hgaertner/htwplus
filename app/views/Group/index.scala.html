@@ -81,18 +81,6 @@
 			</a>
 		</h2>
 		
-		<form action="@routes.GroupController.searchForGroupByKeyword" method="GET">
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="input-group">
-						<input type="text" class="form-control" placeholder="Name der Gruppe eingeben.." id="groupSearchQuery"  name="keyword">
-						<span class="input-group-btn">
-							<button type="submit" id="searchsubmit" class="btn btn-warning">Suchen</button>
-						</span>
-					</div>
-				</div>
-			</div>
-		</form>
 		<br />
 		
 		@if(!approvedGroups.isEmpty){
