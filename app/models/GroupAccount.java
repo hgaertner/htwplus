@@ -8,6 +8,7 @@ import play.db.jpa.*;
 import java.util.List;
 
 import models.base.BaseModel;
+import models.enums.GroupType;
 import models.enums.LinkType;
 
 @Entity
@@ -62,12 +63,28 @@ public class GroupAccount extends BaseModel {
 		List<Group> groupAccounts = JPA
 				.em()
 				.createQuery(
-						"SELECT ga.group FROM GroupAccount ga WHERE ga.account.id = ?1 AND ga.linkType = ?2")
+						"SELECT ga.group FROM GroupAccount ga WHERE ga.account.id = ?1 AND ga.linkType = ?2 AND ga.group.groupType != ?3")
 				.setParameter(1, account.id)
-				.setParameter(2, LinkType.establish).getResultList();
+				.setParameter(2, LinkType.establish)
+				.setParameter(3, GroupType.course).getResultList();
 		return groupAccounts;
 	}
 	
+	/**
+	 * Find all courses where given account is owner or member.
+	 */
+	public static List<Group> findCoursesEstablished(final Account account)
+	{
+		@SuppressWarnings("unchecked")
+		List<Group> courseAccounts = JPA
+				.em()
+				.createQuery(
+						"SELECT ga.group FROM GroupAccount ga WHERE ga.account.id = ?1 AND ga.linkType = ?2 AND ga.group.groupType = ?3")
+				.setParameter(1, account.id)
+				.setParameter(2, LinkType.establish)
+				.setParameter(3, GroupType.course).getResultList();
+		return courseAccounts;
+	}
 	/**
 	 * Find all non private groups where given account is owner or member 
 	 */

@@ -50,8 +50,9 @@ public class GroupController extends BaseController {
 		Account account = Component.currentAccount();
 		List<Group> groupAccounts = GroupAccount.findEstablished(account);
 		List<GroupAccount> groupRequests = GroupAccount.findRequests(account);
-								
-		return ok(index.render(groupAccounts,groupRequests,groupForm));
+		final List<Group> courseAccounts = GroupAccount.findCoursesEstablished(account);
+		
+		return ok(index.render(groupAccounts, courseAccounts,groupRequests,groupForm));
 	}
 		
 	@Transactional(readOnly=true)
