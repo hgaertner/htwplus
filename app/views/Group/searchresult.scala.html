@@ -1,5 +1,5 @@
 @(groups: List[Group]) @main("Searchresult"){ @if(groups != null) {
-	<h2>Suchergebnisse für Gruppen</h2>
+	<h2>Suchergebnisse</h2>
 	<br>
 	<div class="noModal">
 		<table class="table table-hover">
@@ -19,11 +19,11 @@
 				@for(group <- groups){
 					<tr>
 						<td>
-							@if(group.isClosed) { 
-								<i class="glyphicon glyphicon-lock"></i> 
-							} else { 
-								<i class="glyphicon glyphicon-globe"></i> 
-							}
+							@{group.groupType.toString match {
+								case "open" => {<i class="glyphicon glyphicon-globe"></i>}
+								case "close" => {<i class="glyphicon glyphicon-lock"></i>}
+								case "course" => {<i class="glyphicon glyphicon-briefcase"></i>}
+							} }
 							<a href="@routes.GroupController.view(group.id)" rel="popover" data-trigger="hover" data-content="@group.description" data-original-title="Beschreibung" data-placement="top">@group.title</a>
 						</td>
 						<td>
@@ -41,4 +41,6 @@
 			</tbody>
 		</table>
 	</div> <!-- /noModal -->
+} else {
+	<h2>Keine Suchergebnisse</h2>
 } }

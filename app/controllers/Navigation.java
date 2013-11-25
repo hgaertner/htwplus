@@ -25,7 +25,7 @@ public class Navigation {
 		titleMapping.put(Level.PROFILE, "Profil");
 		titleMapping.put(Level.STREAM, "Newsstream");
 		titleMapping.put(Level.FRIENDS, "Freunde");
-		titleMapping.put(Level.GROUPS, "Gruppen");
+		titleMapping.put(Level.GROUPS, "Gruppen & Kurse");
 	}
 	
 	private static Call fallbackCall = routes.Application.index();
