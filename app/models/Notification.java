@@ -39,7 +39,6 @@ public class Notification extends BaseModel {
 		GROUP_REQUEST_FAIL(Scope.GROUP),
 		POST_NEW_COMMENT(Scope.POST);
 		
-		
 		private Scope scope;
 		
 		public Scope getScope() {
