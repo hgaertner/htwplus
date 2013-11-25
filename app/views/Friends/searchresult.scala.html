@@ -1,4 +1,6 @@
 @(users: List[Account]) @main("Searchresult"){ @if(users != null) {
+@defining(Component.currentAccount()) { curUser =>
+
 	<h2>Suchergebnisse für Freunde</h2>
 	<br>
 	<div class="noModal">
@@ -6,11 +8,13 @@
 			<colgroup>
 				<col width="33%">
 				<col width="33%">
+				<col width="33%">
 			</colgroup>
 			<thead>
 				<tr>
 					<th>Avatar</th>
 					<th>Name</th>
+					<th>Optionen</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -18,12 +22,16 @@
 					<tr>
 						<td>@views.html.snippets.userLinkAvatar(user)</td>
 						<td>@views.html.snippets.userLink(user)</td>
-					</tr>
-					<tr>
-						<td><a href="@routes.FriendshipController.requestFriend(user.id)" rel="tooltip" title="Beitreten" class="ajaxModalLink"><i class="glyphicon glyphicon-plus"></i></a></td>
+						<td>
+							@if(Friendship.alreadyFriendly(curUser, user)) {
+								<a href="#confirmDeleteFriend" data-toggle="modal" rel="tooltip" title="Freundschaft beenden" data-container="body"><i class="glyphicon glyphicon-trash"></i></a>
+							} else {
+								<a href="@routes.FriendshipController.requestFriend(user.id)" rel="tooltip" title="Einladung senden" data-container="body"><i class="glyphicon glyphicon-plus"></i></a>
+							}
+						</td>
 					</tr>
 				}
 			</tbody>
 		</table>
 	</div>  <!-- /noModal -->
-} }
+} } }
