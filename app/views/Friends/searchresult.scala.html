@@ -26,7 +26,7 @@
 							@if(Friendship.alreadyFriendly(curUser, user)) {
 								<a href="#confirmDeleteFriend" data-toggle="modal" rel="tooltip" title="Freundschaft beenden" data-container="body"><i class="glyphicon glyphicon-trash"></i></a>
 							} else {
-								<a href="@routes.FriendshipController.requestFriend(user.id)" rel="tooltip" title="Einladung senden" data-container="body"><i class="glyphicon glyphicon-plus"></i></a>
+								<a href="@routes.FriendshipController.requestFriend(user.id)" rel="tooltip" title="Einladung senden" data-container="body"><i class="glyphicon glyphicon-envelope"></i></a>
 							}
 						</td>
 					</tr>

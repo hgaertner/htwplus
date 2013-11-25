@@ -1,4 +1,8 @@
-@(groups: List[Group]) @main("Searchresult"){ @if(groups != null) {
+@(groups: List[Group])
+@import models.enums._
+@main("Searchresult"){ @if(groups != null) {
+
+
 	<h2>Suchergebnisse</h2>
 	<br>
 	<div class="noModal">
@@ -17,31 +21,32 @@
 			</thead>
 			<tbody>
 				@for(group <- groups){
-					<tr>
-						<td>
-							@{group.groupType.toString match {
-								case "open" => {<i class="glyphicon glyphicon-globe"></i>}
-								case "close" => {<i class="glyphicon glyphicon-lock"></i>}
-								case "course" => {<i class="glyphicon glyphicon-briefcase"></i>}
-							} }
-							<a href="@routes.GroupController.view(group.id)" rel="popover" data-trigger="hover" data-content="@group.description" data-original-title="Beschreibung" data-placement="top">@group.title</a>
-						</td>
-						<td>
-							@views.html.snippets.userLink(group.owner)
-						</td>
-						<td><a href="@routes.GroupController.join(group.id)" rel="tooltip" title="Anfrage senden">
-							@{group.groupType.toString match {
-								case "open" => {<i class="glyphicon glyphicon-plus"></i>}
-								case "close" => {<i class="glyphicon glyphicon-envelope"></i>}
-								case "course" => {<i class="glyphicon glyphicon-plus"></i>}
-							} }
-							</a>
-						</td>
-					</tr>
+					@if(!Secured.isMemberOfGroup(group, Component.currentAccount)) {
+						<tr>
+							<td>
+								@{group.groupType match {
+									case GroupType.open => {<i class="glyphicon glyphicon-globe"></i>}
+									case GroupType.close => {<i class="glyphicon glyphicon-lock"></i>}
+									case GroupType.course => {<i class="glyphicon glyphicon-briefcase"></i>}
+								} }
+								<a href="@routes.GroupController.view(group.id)" rel="popover" data-trigger="hover" data-content="@group.description" data-original-title="Beschreibung" data-placement="top">@group.title</a>
+							</td>
+							<td>
+								@views.html.snippets.userLink(group.owner)
+							</td>
+							<td>
+								@{group.groupType match {
+									case GroupType.open => {<a href="@routes.GroupController.join(group.id)" rel="tooltip" title="Beitreten"><i class="glyphicon glyphicon-plus"></i></a>}
+									case GroupType.close => {<a href="@routes.GroupController.join(group.id)" rel="tooltip" title="Anfrage senden"><i class="glyphicon glyphicon-envelope"></i></a>}
+									case GroupType.course => {<a href="@routes.GroupController.join(group.id)" rel="tooltip" title="Beitreten"><i class="glyphicon glyphicon-plus"></i></a>}
+								} }
+							</td>
+						</tr>
+					}
 				}
 			</tbody>
 		</table>
 	</div> <!-- /noModal -->
 } else {
 	<h2>Keine Suchergebnisse</h2>
-} }
+} } 
