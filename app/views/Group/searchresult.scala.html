@@ -1,6 +1,23 @@
 @(groups: List[Group])
 @import models.enums._
 @main("Searchresult"){ @if(groups != null) {
+
+	<!-- Start confirmDeleteGroupModal -->
+	@for(group <- groups) {
+		<div class="modal fade" id="confirmDeleteGroup@group.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+			@views.html.Group.snippets.deleteGroupModal(group)
+		</div>
+	}
+	<!-- End confirmDeleteGroupModal -->
+	
+	<!-- Start infoModal -->
+	@for(group <- groups) {
+	<div class="modal fade" id="infoModal@group.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+		@views.html.Group.snippets.infoModal(group)
+	</div>
+	}
+	<!-- Ende infoModal -->
+
 	<br>
 	@defining(Component.currentAccount()) { user =>
 	<div class="noModal">
@@ -23,18 +40,25 @@
 						<tr>
 							<td>
 								<i class="glyphicon glyphicon-briefcase"></i>
-								<a href="@routes.GroupController.view(group.id)" rel="popover" data-trigger="hover" data-content="@group.description" data-original-title="Beschreibung" data-placement="top">@group.title</a>
+								<a href="@routes.GroupController.view(group.id)">@if(Secured.isOwnerOfGroup(group, user)) {
+									<b> @group.title</b></a> <small>(gegründet)</small>
+									} else { @group.title}
+								</a>
 							</td>
 							<td>
 								@views.html.snippets.userLink(group.owner)
 							</td>
 							<td>
-								@if(!Secured.isMemberOfGroup(group, user)) {
-									<a href="@routes.GroupController.join(group.id)" rel="tooltip" title="Beitreten"><i class="glyphicon glyphicon-plus"></i></a>
-								}
+								<a href="#infoModal@group.id" rel="tooltip" data-toggle="modal" data-original-title="Kursinfo" data-container="body">
+									<i class="glyphicon glyphicon-info-sign"></i>
+								</a>
 								@if(Secured.isOwnerOfGroup(group, user)) {
-									<a href="@routes.GroupController.edit(group.id)" rel="tooltip" title="Beitreten"><i class="glyphicon glyphicon-pencil"></i></a>
-									<a href="@routes.GroupController.edit(group.id)" rel="tooltip" title="Beitreten"><i class="glyphicon glyphicon-trash"></i></a>
+									<a href="@routes.GroupController.edit(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Kurs bearbeiten" data-container="body"><i class="glyphicon glyphicon-pencil"></i></a>
+									<a href="#confirmDeleteGroup@group.id" rel="tooltip" data-toggle="modal" data-original-title="Kurs löschen" data-container="body"><i class="glyphicon glyphicon-trash"></i></a>
+								} else {
+									<a href="@routes.GroupController.removeMember(group.id, user.id)" rel="tooltip" data-toggle="modal" data-original-title="Kurs verlassen" data-container="body">
+										<i class="glyphicon glyphicon-remove"></i>
+									</a>
 								}
 							</td>
 						</tr>
@@ -60,26 +84,34 @@
 			<tbody>
 				@for(group <- groups){
 					@if(group.groupType != GroupType.course) {
-						@if(!Secured.isMemberOfGroup(group, user)) {
-							<tr>
-								<td>
-									@{group.groupType match {
-										case GroupType.open => {<i class="glyphicon glyphicon-globe"></i>}
-										case GroupType.close => {<i class="glyphicon glyphicon-lock"></i>}
-									} }
-									<a href="@routes.GroupController.view(group.id)" rel="popover" data-trigger="hover" data-content="@group.description" data-original-title="Beschreibung" data-placement="top">@group.title</a>
-								</td>
-								<td>
-									@views.html.snippets.userLink(group.owner)
-								</td>
-								<td>
-									@{group.groupType match {
-										case GroupType.open => {<a href="@routes.GroupController.join(group.id)" rel="tooltip" title="Beitreten"><i class="glyphicon glyphicon-plus"></i></a>}
-										case GroupType.close => {<a href="@routes.GroupController.join(group.id)" rel="tooltip" title="Anfrage senden"><i class="glyphicon glyphicon-envelope"></i></a>}
-									} }
-								</td>
-							</tr>
-						}
+						<tr>
+							<td>
+								@{group.groupType match {
+									case GroupType.open => {<i class="glyphicon glyphicon-globe"></i>}
+									case GroupType.close => {<i class="glyphicon glyphicon-lock"></i>}
+								} }
+								<a href="@routes.GroupController.view(group.id)">@if(Secured.isOwnerOfGroup(group, user)) {
+									<b> @group.title</b></a> <small>(gegründet)</small>
+									} else { @group.title}
+								</a>
+							</td>
+							<td>
+								@views.html.snippets.userLink(group.owner)
+							</td>
+							<td>
+								<a href="#infoModal@group.id" rel="tooltip" data-toggle="modal" data-original-title="Gruppeninfo" data-container="body">
+									<i class="glyphicon glyphicon-info-sign"></i>
+								</a>
+								@if(Secured.isOwnerOfGroup(group, user)) {
+									<a href="@routes.GroupController.edit(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Gruppe bearbeiten" data-container="body"><i class="glyphicon glyphicon-pencil"></i></a>
+									<a href="#confirmDeleteGroup@group.id" rel="tooltip" data-toggle="modal" data-original-title="Gruppe löschen" data-container="body"><i class="glyphicon glyphicon-trash"></i></a>
+								} else {
+									<a href="@routes.GroupController.removeMember(group.id, user.id)" rel="tooltip" data-toggle="modal" data-original-title="Gruppe verlassen" data-container="body">
+										<i class="glyphicon glyphicon-remove"></i>
+									</a>
+								}
+							</td>
+						</tr>
 					}
 				}
 			</tbody>
