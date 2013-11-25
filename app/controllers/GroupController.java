@@ -242,16 +242,18 @@ public class GroupController extends BaseController {
 	public static Result join(long id){
 		Account account = Component.currentAccount();
 		Group group = Group.findById(id);
+		Logger.info("Found group with id: " + group.id);
 		ObjectNode result = Json.newObject();
 		GroupAccount groupAccount;
 		
 		if(Secured.isMemberOfGroup(group, account)){
+			Logger.debug("User is already member of group or course");
 			result.put("status", "redirect");
 			result.put("url", routes.GroupController.view(id).toString());
 			flash("info", "Du bist bereits Mitglied dieser Gruppe!");
 		}
 		
-		if(group.groupType.equals(GroupType.open)){
+		else if(group.groupType.equals(GroupType.open)){
 			groupAccount = new GroupAccount(account, group, LinkType.establish);
 			groupAccount.create();
 			result.put("status", "redirect");
@@ -259,7 +261,7 @@ public class GroupController extends BaseController {
 			flash("success", "Gruppe erfolgreich beigetreten!");
 		}
 		
-		if(group.groupType.equals(GroupType.close)){
+		else if(group.groupType.equals(GroupType.close)){
 			groupAccount = new GroupAccount(account, group, LinkType.request);
 			groupAccount.create();
 			result.put("status", "redirect");
@@ -267,7 +269,7 @@ public class GroupController extends BaseController {
 			flash("success", "Deine Anfrage wurde erfolgreich übermittelt!");
 		}
 		
-		if(group.groupType.equals(GroupType.course)){
+		else if(group.groupType.equals(GroupType.course)){
 			
 			result.put("status", "response");
 			String form = tokenForm.render(group, groupForm).toString();
