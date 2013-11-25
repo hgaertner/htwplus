@@ -98,9 +98,9 @@
 @if(!friends.isEmpty()) {
 <table class="table table-hover">
 	<colgroup>
-		<col width="15%">
-		<col width="65%">
-		<col width="15%">
+		<col width="25%">
+		<col width="50%">
+		<col width="25%">
 	</colgroup>
 	<thead>
 		<tr>
@@ -114,7 +114,7 @@
 		<tr>
 			<td>@views.html.snippets.userLinkAvatar(friend)</td>
 			<td>@views.html.snippets.userLink(friend)</td>
-			<td><a href="#confirmDeleteFriend@friend.id" data-toggle="modal" rel="tooltip" title="Freundschaft beenden"><i class="icon-trash"></i></a></td>
+			<td><a href="#confirmDeleteFriend@friend.id" data-toggle="modal" rel="tooltip" title="Freundschaft beenden"><i class="glyphicon glyphicon-trash"></i></a></td>
 		</tr>
 	}
 	</tbody>
