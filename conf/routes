@@ -10,18 +10,6 @@ GET     /logout                 			controllers.AccountController.logout()
 # JavaScript Routes
 GET		/assets/javascripts/routes			controllers.Application.javascriptRoutes()
 
-# Course
-GET     /courses                			controllers.CourseController.index()
-GET     /course/add             			controllers.CourseController.add()
-POST    /course/add             			controllers.CourseController.create()
-GET		/course/:id							controllers.CourseController.view(id:Long)
-GET		/course/:id/edit					controllers.CourseController.edit(id:Long)
-POST	/course/:id/edit					controllers.CourseController.update(id:Long)
-GET		/course/:id/delete					controllers.CourseController.delete(id:Long)
-POST	/course/addPost						controllers.CourseController.addPost(id:Long)
-GET 	/course/:id/join					controllers.CourseController.join(id:Long)
-GET		/course/searchForCourse/:keyword	controllers.CourseController.searchByKeyword(keyword:String)
-
 #Group
 GET 	/groups								controllers.GroupController.index()
 #GET 	/groups/user/:id					controllers.GroupController.indexByAccount(id:Long)
@@ -37,7 +25,8 @@ GET 	/group/:groupId/remove/:accountId	controllers.GroupController.removeMember(
 GET 	/group/:groupId/accept/:accountId	controllers.GroupController.acceptRequest(groupId:Long, accountId: Long)
 GET 	/group/:groupId/decline/:accountId	controllers.GroupController.declineRequest(groupId:Long, accountId: Long)
 GET		/gruppe/searchForGroup/				controllers.GroupController.searchForGroupByKeyword()
-POST	/group/:id/entertoken				controllers.GroupController.enterToken(id:Long)
+GET		/group/:id/token					controllers.GroupController.token(id:Long)
+POST	/group/:id/validate				    controllers.GroupController.validateToken(id:Long)
 
 #Post and Comments
 POST	/post/:id/addComment				controllers.PostController.addComment(id:Long)

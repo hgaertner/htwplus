@@ -8,28 +8,14 @@
 
     @form(routes.GroupController.add()) {
 
-	@inputText(groupForm("title"), '_label -> "Titel")
-	@textarea(groupForm("description"), '_label -> "Beschreibung")
-	<dl>
-		<dt>Sichtbarkeit</dt>
-		<dd>
-			<label class="radio">
-				<input type="radio" name="optionsRadios" id="optionsRadios2" value="0" checked>
-				<i class="icon-globe"></i> Öffentliche Gruppe
-			</label>
-			<label class="radio">
-				<input type="radio" name="optionsRadios" id="optionsRadios1" value="1">
-				<i class="icon-lock"></i> Private Gruppe
-			</label>
-			<label class="radio">
-				<input type="radio" name="optionsRadios" id="optionsRadios1" value="2">
-				<i class="icon-briefcase"></i> Kurs
-			</label>
-		</dd>
-	</dl>
-	@inputText(groupForm("token"), '_label -> "Token")
+	@inputText(groupForm("title"), 'class -> "form-control", '_label -> "Titel")
+	@textarea(groupForm("description"), 'class -> "form-control", '_label -> "Beschreibung")
+	@inputRadioGroup(groupForm("visibility"),
+					 options = options("0"->"Öffentliche Gruppe","1"->"Private Gruppe","2"->"Kurs"),
+          			 '_label -> "Sichtbarkeit")
+	@inputText(groupForm("token"), 'class -> "form-control", '_label -> "Token")
 	
-	<button class="btn btn-success">Gruppe erstellen</button>
+	<button type="submit" class="btn btn-warning">Gruppe erstellen</button>
 	}
 	
     </div>

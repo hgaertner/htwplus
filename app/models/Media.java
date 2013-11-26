@@ -21,7 +21,6 @@ import controllers.routes;
 import play.db.jpa.*;
 import play.mvc.Result;
 import scala.reflect.io.FileOperationException;
-import views.html.Course.view;
 
 import java.util.UUID;
 
@@ -47,10 +46,7 @@ public class Media extends BaseModel {
 	
 	@ManyToOne
 	public Group group;
-	
-	@ManyToOne
-	public Course course;
-	
+		
 	@ManyToOne
 	public Account owner;
 	
@@ -58,7 +54,6 @@ public class Media extends BaseModel {
 	public File file;
 	
 	public static String GROUP = "group";
-	public static String COURSE = "course";
 	
 	public static Media findById(Long id) {
 		Media media = JPA.em().find(Media.class, id);
@@ -74,16 +69,6 @@ public class Media extends BaseModel {
 	
 	public boolean existsInGroup(Group group) {
 		List<Media> media = group.media;
-		for (Media m : media) {
-			if(m.title.equals(this.title)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public boolean existsInCourse(Course course) {
-		List<Media> media = course.media;
 		for (Media m : media) {
 			if(m.title.equals(this.title)) {
 				return true;
@@ -171,10 +156,5 @@ public class Media extends BaseModel {
 		if(this.group != null) return true;
 		return false;
 	}
-	
-	public boolean belongsToCourse(){
-		if(this.course != null) return true;
-		return false;
-	}
-	
+		
 }

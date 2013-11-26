@@ -3,106 +3,100 @@
 
 <!DOCTYPE html>
 <html lang="de">
-<head>
-<title>HTW.plus()</title>
-<!-- Bootstrap -->
-<link rel="stylesheet" href="@routes.Assets.at("bootstrap/css/bootstrap.css")">
-<link rel="stylesheet" href="@routes.Assets.at("bootstrap/css/bootstrap-responsive.css")">
-<!-- Own -->
-<link rel="stylesheet" media="all" href="@routes.Assets.at("stylesheets/background.css")">
-<link rel="stylesheet" media="all" href="@routes.Assets.at("stylesheets/ajax.css")">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-</head>
+	<head>
+		<title>HTW.plus()</title>
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="@routes.Assets.at("bootstrap/css/bootstrap.min.css")">
+		<!-- Own -->
+		<link rel="stylesheet" media="all" href="@routes.Assets.at("stylesheets/background.css")">
+		<link rel="stylesheet" media="all" href="@routes.Assets.at("stylesheets/bootstrap-prettyfile.css")">
+		<link rel="stylesheet" media="all" href="@routes.Assets.at("stylesheets/ajax.css")">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	</head>
 
-@if(user != null){
-<body id="smallHead">
-} else {
-<body>
-}
+	@if(user != null){
+		<body id="smallHead">
+			@views.html.snippets.navi()
+		
+	} else {
+		<body id="@title">
+	}
 
-	<header>
 		<div class="container">
-			<div class="span9">
-				<div id="logo"></div>
-			</div>
-		</div>
-	</header>
-
-	<div class="container">
-		<div class="row">
-			<div class="span9">
-				<div id="right">
-					<div id="topRight"></div>
-					<div id="bottomRight"></div>
-					<div id="left">
-						<div id="topLeft"></div>
-						<div id="bottomLeft"></div>
-						<!-- Content -->
-						<div id="top">
-							<div id="bottom">
-								<div id="content">
-									@if(user != null){
-										<br />
-										@views.html.snippets.breadcrumb()
-									}
-									@if(flash.containsKey("success")) {
-										<div class="alert alert-success fade in">
-											<button type="button" class="close" data-dismiss="alert">x</button>
-											@flash.get("success")
-										</div>
-									} 
-									@if(flash.containsKey("info")) {
-										<div class="alert alert-info fade in">
-											<button type="button" class="close" data-dismiss="alert">x</button>
-											@flash.get("info")
-										</div>
-									} 
-									@if(flash.containsKey("error")) {
-										<div class="alert alert-error fade in">
-											<button type="button" class="close" data-dismiss="alert">x</button>
-											@flash.get("error")
-										</div>
-									} 
-									
-                  					@content
-								</div>
-							</div>
+			<div class="row">
+				<div class="col-xs-9">
+					<div id="right">
+						<div id="topRight"></div>
+						<div id="bottomRight"></div>
+						<div id="left">
+							<div id="topLeft"></div>
+							<div id="bottomLeft"></div>
+							<div id="top">
+								<div id="bottom">
+									<div id="content">
+										@if(user != null){
+											<br />
+											@views.html.snippets.breadcrumb()
+										}
+										@if(flash.containsKey("success")) {
+											<div class="alert alert-success fade in">
+												<button type="button" class="close" data-dismiss="alert">&times;</button>
+												@flash.get("success")
+											</div>
+										} 
+										@if(flash.containsKey("info")) {
+											<div class="alert alert-info fade in">
+												<button type="button" class="close" data-dismiss="alert">&times;</button>
+												@flash.get("info")
+											</div>
+										} 
+										@if(flash.containsKey("error")) {
+											<div class="alert alert-danger fade in">
+												<button type="button" class="close" data-dismiss="alert">&times;</button>
+												@flash.get("error")
+											</div>
+										} 
+											
+		                  				@content
+									</div> <!-- /content -->
+								</div> <!-- /bottom -->
+							</div> <!-- /top -->
+						</div> <!-- /left -->
+					</div> <!-- /right -->
+				</div> <!-- /col-xs-9 -->
+		
+				<!-- if logged out -->
+				@if(user != null){
+				} else {
+					@controllers.Component.loginForm()
+				}
+				<!-- /if logged out -->
+		
+			</div> <!-- /row -->
+		</div> <!-- /container -->
+	
+		<footer>
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-9">
+						<div id="htw">
+							@views.html.snippets.impressumModal()
+							<a href="#impressumModal" data-toggle="modal">Impressum</a>
 						</div>
-						<!-- Ende Content -->
 					</div>
 				</div>
 			</div>
+		</footer>
+	
+		<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.at("bootstrap/js/bootstrap.min.js")"></script>
+		<script type="text/javascript" src="@routes.Application.javascriptRoutes()"></script>
+	    <script type="text/javascript" src="@routes.Assets.at("javascripts/ajax.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.at("javascripts/application.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap-prettyfile.js")"></script>
 
-			<!-- Navigation -->
-			@if(user != null){
-					@views.html.snippets.navi(title)
-			} else {
-					@controllers.Component.loginForm()
-			}
-			<!-- End Navigation -->
-
-		</div>
-	</div>
-
-	<footer>
-		<div class="container">
-			<div class="span9">
-				<div id="htw">
-					@views.html.snippets.impressumModal()
-					<a href="#impressumModal" data-toggle="modal">Impressum</a>
-				</div>
-			</div>
-		</div>
-	</footer>
-
-	<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.10.0.js")"></script>
-	<script type="text/javascript" src="@routes.Assets.at("bootstrap/js/bootstrap.js")"></script>
-	<script type="text/javascript" src="@routes.Application.javascriptRoutes()"></script>
-    <script type="text/javascript" src="@routes.Assets.at("javascripts/ajax.js")"></script>
-	<script type="text/javascript" src="@routes.Assets.at("javascripts/application.js")"></script>
-
-</body>
+	</body>
 </html>
 
 }

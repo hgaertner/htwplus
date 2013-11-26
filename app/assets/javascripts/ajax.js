@@ -217,32 +217,10 @@ $(document).ready(function () {
 		});
 		
 	});
-	
-	
-	
 	/*
 	 * END GROUP SEARCH
 	 */
-	
-	/*
-	 * COURSE SEARCH
-	 */
-	$('#courseSearchSubmit').click(function(){
-		var keyword = $('#courseSearchQuery').val();
-		$.ajax({
-			url: "/course/searchForCourse/" + keyword,
-			type: "GET",
-			success: function(data){
-				$('#searchCourseResults').replaceWith(data)
-			
-			}
-		});
 		
-	});
-	/*
-	 *END COURSE SEARCH 
-	 */
-	
 	/*
 	 * ACCOUNT SEARCH
 	 */

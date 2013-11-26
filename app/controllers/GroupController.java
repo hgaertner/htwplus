@@ -9,13 +9,14 @@ import java.util.Set;
 import org.codehaus.jackson.node.ObjectNode;
 
 
-import controllers.Navigation.Level;
 
+
+import controllers.Navigation.Level;
 import play.*;
 import play.libs.Json;
 import play.mvc.*;
+import play.api.data.Field;
 import play.data.*;
-
 import models.Account;
 import models.Group;
 import models.GroupAccount;
@@ -23,7 +24,6 @@ import models.Media;
 import models.Post;
 import models.enums.GroupType;
 import models.enums.LinkType;
-
 import play.Logger;
 import play.data.Form;
 import play.db.jpa.Transactional;
@@ -34,7 +34,7 @@ import views.html.Group.media;
 import views.html.Group.view;
 import views.html.Group.create;
 import views.html.Group.edit;
-import views.html.Group.snippets.tokenForm;
+import views.html.Group.token;
 import views.html.Group.searchresult;
 
 
@@ -52,8 +52,9 @@ public class GroupController extends BaseController {
 		Account account = Component.currentAccount();
 		List<Group> groupAccounts = GroupAccount.findEstablished(account);
 		List<GroupAccount> groupRequests = GroupAccount.findRequests(account);
-								
-		return ok(index.render(groupAccounts,groupRequests,groupForm));
+		final List<Group> courseAccounts = GroupAccount.findCoursesEstablished(account);
+		
+		return ok(index.render(groupAccounts, courseAccounts,groupRequests,groupForm));
 	}
 		
 	@Transactional(readOnly=true)
@@ -76,16 +77,13 @@ public class GroupController extends BaseController {
 	public static Result media(Long id) {
 		Form<Media> mediaForm = Form.form(Media.class);
 		Group group = Group.findById(id);
-		if(!Secured.isMemberOfGroup(group, Component.currentAccount())){
-			flash("info","Bitte tritt der Gruppe erst bei.");
-			return view(id);
-		}
+		Account account = Component.currentAccount();
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
 			Navigation.set(Level.GROUPS, "Media", group.title, routes.GroupController.view(group.id));
 			List<Media> mediaSet = group.media; 
-			return ok(media.render(group, mediaForm, mediaSet));
+			return ok(media.render(group, mediaForm, mediaSet, Secured.isMemberOfGroup(group, account)));
 		}
 	}
 	
@@ -105,11 +103,14 @@ public class GroupController extends BaseController {
 			return badRequest(create.render(filledForm));
 		} else {
 			Group group = filledForm.get();
-			int groupType = Integer.parseInt(filledForm.data().get("optionsRadios"));
-			
-			if(filledForm.data().get("optionsRadios").equals("1")){
-				group.isClosed = true;
+			int groupType;
+			try {
+				groupType = Integer.parseInt(filledForm.data().get("visibility"));
+			} catch (NumberFormatException ex){
+				filledForm.reject("visibility","Bitte eine Sichtbarkeit wählen!");
+				return ok(create.render(filledForm));
 			}
+			
 			switch(groupType){
 				case 0: group.groupType = GroupType.open; break;
 				case 1: group.groupType = GroupType.close; break;
@@ -118,10 +119,13 @@ public class GroupController extends BaseController {
 					filledForm.reject("Nicht möglich!");
 					return ok(create.render(filledForm));
 			}
-			
+			if(groupType == 1){
+				group.isClosed = true;
+			}
 			if(groupType == 2){
-				if(filledForm.data().get("token").equals("")){
-					filledForm.reject("token","Bitte token eingeben!");
+				String token = filledForm.data().get("token");
+				if(token.equals("") || token.length() < 4 || token.length() > 45){
+					filledForm.reject("token","Bitte einen Token zwischen 4 und 45 Zeichen eingeben!");
 					return ok(create.render(filledForm));
 				}
 			}
@@ -200,6 +204,7 @@ public class GroupController extends BaseController {
 			if (entry.getKey().equals("keyword")) {
 				final String keyword = entry.getValue()[0];
 				Logger.debug("Value of key" + keyword);
+				Navigation.set(Level.GROUPS, "Suchergebnisse");
 				result = Group.searchForGroupByKeyword(keyword);
 				if (result != null && result.size() > 1) {
 					Logger.debug("Found " + result.size()
@@ -212,63 +217,59 @@ public class GroupController extends BaseController {
 		return ok(searchresult.render(result));
 	}
 	
-	public static Result enterToken(long groupId) {
-		Account account = Component.currentAccount();
-		ObjectNode result = Json.newObject();
+	public static Result token(Long groupId) {
 		Group group = Group.findById(groupId);
+		return ok(token.render(group, groupForm));
+	}
+	
+	public static Result validateToken(Long groupId) {
+		Group group = Group.findById(groupId);
+		
 		Form<Group> filledForm = groupForm.bindFromRequest();
-		String token = filledForm.data().get("token");
-		if(token.equals(group.token)){
+		String enteredToken = filledForm.data().get("token");
+		
+		if(enteredToken.equals(group.token)){
+			Account account = Component.currentAccount();
 			GroupAccount groupAccount = new GroupAccount(account, group, LinkType.establish);
 			groupAccount.create();
-			result.put("status", "redirect");
-			result.put("url", routes.GroupController.view(groupId).toString());
-			flash("success", "Gruppe erfolgreich beigetreten!");
+			flash("success", "Kurs erfolgreich beigetreten!");
+			return redirect(routes.GroupController.view(groupId));
 		} else {
-			result.put("status", "response");
-			filledForm.reject("token","Der Token ist falsch.");
-			String form = tokenForm.render(group, filledForm).toString();
-			
-			result.put("payload", form);
+			flash("error", "Der Token ist falsch.");
+			return badRequest(token.render(group, filledForm));
 		}
-		
-		return ok(result);
 	}
 	
 	
 	public static Result join(long id){
 		Account account = Component.currentAccount();
 		Group group = Group.findById(id);
+		Logger.info("Found group with id: " + group.id);
 		ObjectNode result = Json.newObject();
 		GroupAccount groupAccount;
 		
 		if(Secured.isMemberOfGroup(group, account)){
-			result.put("status", "redirect");
-			result.put("url", routes.GroupController.view(id).toString());
-			flash("info", "Du bist bereits Mitglied dieser Gruppe!");
+			Logger.debug("User is already member of group or course");
+			flash("error", "Du bist bereits Mitglied dieser Gruppe!");
+			return redirect(routes.GroupController.view(id));
 		}
 		
-		if(group.groupType.equals(GroupType.open)){
+		else if(group.groupType.equals(GroupType.open)){
 			groupAccount = new GroupAccount(account, group, LinkType.establish);
 			groupAccount.create();
-			result.put("status", "redirect");
-			result.put("url", routes.GroupController.view(id).toString());
 			flash("success", "Gruppe erfolgreich beigetreten!");
+			return redirect(routes.GroupController.view(id));
 		}
 		
-		if(group.groupType.equals(GroupType.close)){
+		else if(group.groupType.equals(GroupType.close)){
 			groupAccount = new GroupAccount(account, group, LinkType.request);
 			groupAccount.create();
-			result.put("status", "redirect");
-			result.put("url", routes.GroupController.index().toString());
 			flash("success", "Deine Anfrage wurde erfolgreich übermittelt!");
+			return redirect(routes.GroupController.view(id));
 		}
 		
-		if(group.groupType.equals(GroupType.course)){
-			
-			result.put("status", "response");
-			String form = tokenForm.render(group, groupForm).toString();
-			result.put("payload", form);
+		else if(group.groupType.equals(GroupType.course)){
+			return redirect(routes.GroupController.token(id));
 		}
 				
 		return ok(result);

@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import controllers.Navigation.Level;
 import models.Account;
 import models.LDAPConnector;
 import models.LDAPConnector.LDAPConnectorException;
@@ -165,7 +166,7 @@ public class AccountController extends BaseController {
 			}
 
 		}
-
+		Navigation.set(Level.FRIENDS, "Suchergebnisse");
 		return ok(searchresult.render(result));
 	}
 

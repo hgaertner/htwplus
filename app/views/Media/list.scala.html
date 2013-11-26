@@ -4,7 +4,7 @@
 
 <!-- Start confirmDeleteMediaModal -->
 @for(m <- mediaList) {
-	<div id="confirmDeleteMedia@m.id" class="modal hide fade" tabindex="-1" role="dialog">
+	<div class="modal fade" id="confirmDeleteMedia@m.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
 		@views.html.Media.snippets.deleteMediaModal(m)
 	</div>
 }
@@ -17,11 +17,11 @@
        <col width="45%">
        <col width="20%">
        <col width="15%">
-       <col width="15">
+       <col width="15%">
 	</colgroup>
 	<thead>
        <tr>
-		   <th><input type="checkbox" rel="tooltip" data-original-title="alles aus-, abwählen" onclick="toggleMediaSelection(this)"></th>
+		   <th><input type="checkbox" rel="tooltip" data-original-title="alles aus-, abwählen" data-container="body" onclick="toggleMediaSelection(this)"></th>
            <th>Dateiname</th>
            <th>Datum</th>
            <th>Dateigröße</th>
@@ -29,28 +29,23 @@
        </tr>
 	</thead>
     <tbody id="mediaList" >
-
-@form(action = routes.MediaController.multiView(target,id)) {
-
-@for(m <- mediaList) {
- 	 <tr>
- 	 	 <td><input name="selection" value="@m.id" type="checkbox"></td>
-         <td><a href="@routes.MediaController.view(m.id)" rel="tooltip" data-delay="500" data-original-title="von @m.owner.name">@m.title</a></td>
-         <td>@m.createdAt.format("dd. MMM yyyy")</td>
-         <td>@m.size Bytes</td>
-         <td><a href="#confirmDeleteMedia@m.id" rel="tooltip" data-toggle="modal" data-original-title="Datei entfernen"><i class="icon-trash"></i></a></td>
-     </tr>
-                                        	
-}
+	@form(action = routes.MediaController.multiView(target,id)) {
+		@for(m <- mediaList) {
+		<tr>
+			<td><input name="selection" value="@m.id" type="checkbox"></td>
+	        <td><a href="@routes.MediaController.view(m.id)" rel="tooltip" data-delay="500" data-original-title="von @m.owner.name">@m.title</a></td>
+	        <td>@m.createdAt.format("dd. MMM yyyy")</td>
+	        <td>@m.size Bytes</td>
+	        <td><a href="#confirmDeleteMedia@m.id" rel="tooltip" data-toggle="modal" data-original-title="Datei entfernen"><span class="glyphicon glyphicon-trash"></span></a></td>
+	    </tr>
+		}
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="4">
-            	<button class="btn btn-warning btn-small">Auswahl herunterladen</button>
+            <td colspan="5">
+            	<button type="button" class="btn btn-warning btn-sm">Auswahl herunterladen</button>
             </td>
         </tr>
     </tfoot>
-    
-
 </table>
 }

@@ -3,7 +3,6 @@ package controllers;
 import java.util.List;
 
 import models.Account;
-import models.Course;
 import models.Group;
 import models.Media;
 import models.Notification;
@@ -25,8 +24,8 @@ public class PostController extends BaseController {
 	
 	/**
 	 * @author Iven
-	 * @param anyId - can be a accountId, groupId or courseId
-	 * @param target - define target stream: profile-stream, group-stream or course-stream
+	 * @param anyId - can be a accountId or groupId
+	 * @param target - define target stream: profile-stream, group-stream
 	 * @return
 	 */
 	public static Result addPost(Long anyId, String target) {
@@ -51,9 +50,6 @@ public class PostController extends BaseController {
 			return redirect(routes.GroupController.view(group.id));
 		}
 		
-		if(target.equals(Post.COURSE)) {
-			Logger.info("Ich poste in den Course");		
-		}
 		if(target.equals(Post.PROFILE)) {
 			Account profile = Account.findById(anyId);
 			if(Secured.isFriend(profile) || profile.equals(account)){

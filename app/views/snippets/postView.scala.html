@@ -12,11 +12,12 @@
 				<h4 class="media-heading">
 					@views.html.snippets.userLink(post.owner)
 					@if(post.belongsToGroup && currentView != "group"){schrieb in <a href="@routes.GroupController.view(post.group.id)">@post.group.title</a>}
-					@if(post.belongsToCourse && currentView != "course"){schrieb in <a href="@routes.CourseController.view(post.course.id)">@post.course.title</a>}
 					@if(post.belongsToAccount && user != post.account && post.account != post.owner){&rarr; <a href="@routes.ProfileController.view(post.account.id)">@post.account.name</a>} 
 					@if(post.owner != null && post.account != null){
 						@if(post.owner.id == user.id || user.id == post.account.id){
-                			<a href="#confirmModalDeletePost@post.id" data-toggle="modal" rel="tooltip" data-original-title="Post löschen"><i class="icon-trash"></i></a>
+                			<a href="#confirmModalDeletePost@post.id" data-toggle="modal" rel="tooltip" data-original-title="Post löschen">
+                				<span class="glyphicon glyphicon-trash"></span>
+                			</a>
                 		}
                 	}
 				</h4>
@@ -37,9 +38,9 @@
 	 				@views.html.snippets.postComment(comment)
 	 			}
 	 		}
-			@form(routes.PostController.addComment(post.id), 'class -> "addComment") {
-					@textarea(postForm("Content"), '_label -> "", 'id -> "commentContent", 'placeholder -> "Schreibe ein Kommentar...")
-					<button class="btn btn-small btn-warning commentSubmit" type="submit">Kommentieren</button>
+			@form(routes.PostController.addComment(post.id), 'class -> "form-inline addComment") {
+					@textarea(postForm("Content"), '_label -> "", 'class -> "form-control", 'id -> "commentContent", 'placeholder -> "Schreibe ein Kommentar...")
+					<button type="submit" class="btn btn-sm btn-warning commentSubmit">Kommentieren</button>
 			}
 		</div>
 		<div class="clear"></div>
