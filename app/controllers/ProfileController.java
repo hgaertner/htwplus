@@ -29,6 +29,8 @@ public class ProfileController extends BaseController {
 
 	static Form<Account> accountForm = Form.form(Account.class);
 	static Form<Post> postForm = Form.form(Post.class);
+	static final int limit = 10;
+	static final int offset = 0;
 
 	public static Result me() {
 		Navigation.set(Level.PROFILE);
@@ -70,7 +72,7 @@ public class ProfileController extends BaseController {
 		// case for friends and own profile
 		if (Friendship.alreadyFriendly(Component.currentAccount(), account)
 				|| Component.currentAccount().equals(account)) {
-			return ok(stream.render(account, Post.getFriendStream(account),
+			return ok(stream.render(account, Post.getFriendStream(account, limit, offset),
 					postForm));
 		}
 		// case for visitors

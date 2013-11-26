@@ -1,8 +1,19 @@
-@(currentUser: Account, posts:List[Post], postForm: Form[Post])
+@(currentUser: Account, posts:List[Post], postForm: Form[Post], count: Integer)
 @main("Newsstream") {
     
 	<h1>Mein Newsstream</h1>
   	<br />
+
+	
+	 <ul class="pagination">
+	 	
+        @for(i <- 0 until count){
+            @if(i % 10 == 0){
+            	<li><a  href="@routes.Application.stream(i)">@i</a></li>
+            }            
+        }
+        
+    </ul>
   
 	@views.html.snippets.postForm(currentUser.id, models.Post.PROFILE, postForm)
 		

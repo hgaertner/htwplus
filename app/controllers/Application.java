@@ -18,6 +18,8 @@ import play.db.jpa.*;
 public class Application extends BaseController {
 	
 	static Form<Post> postForm = Form.form(Post.class);
+	static final int limit = 10;
+	static final int offset = 0;
 	
 	public static Result javascriptRoutes() {
 		response().setContentType("text/javascript");
@@ -32,7 +34,14 @@ public class Application extends BaseController {
 	public static Result index() {
 		Navigation.set(Level.STREAM);
 		Account currentAccount = Component.currentAccount();
-		return ok(stream.render(currentAccount,Post.getStream(currentAccount),postForm));
+		return ok(stream.render(currentAccount,Post.getStream(currentAccount, limit, offset),postForm,Post.countStream(currentAccount)));
+	}
+	
+	@Security.Authenticated(Secured.class)
+	public static Result stream(int offset) {
+		Navigation.set(Level.STREAM);
+		Account currentAccount = Component.currentAccount();
+		return ok(stream.render(currentAccount,Post.getStream(currentAccount, limit, offset),postForm,Post.countStream(currentAccount)));
 	}
 		
 	public static Result defaultRoute(String path) {
