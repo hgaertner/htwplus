@@ -36,24 +36,10 @@ td {
 }
 
 .logo {
+	width: 125px;
 	margin-left: 10px;
-	margin-right: 5px;
-	margin-top: 7px;
-}
-
-#logo {
-	position: relative;
-	margin-left: 65px;
-	margin-top: 30px;
-	text-align: center;
-	z-index: 1000;
-}
-
-#logo img {
-	max-width: 100%;
-	transform: translateY(42.7%);
-	-ms-transform: translateY(42.7%);
-	-webkit-transform: translateY(42.7%);
+	margin-right: 15px;
+	margin-top: 15px;
 }
 
 body#smallHead #logo {
@@ -69,6 +55,7 @@ body#smallHead #logo img {
 #htw {
 	height: 46px;
 	margin-left: 65px;
+	margin-right: 39px;
 	background-image: url(../images/background.png);
 	background-repeat: no-repeat;
 	background-position: right -130px;
@@ -81,14 +68,13 @@ body#smallHead #logo img {
 
 #right  {
 	position: relative;
-	margin-right: -217px;
-	background-image: url(../images/repeatY.png);
+	background-image: url(../images/vertical.png);
 	background-repeat: repeat-y;
 	background-position: right 0px;
 }
 
 #topRight {
-	width: 197px;
+	width: 48px;
 	height: 15px;
 	position: absolute;
 	top: 0;
@@ -99,7 +85,7 @@ body#smallHead #logo img {
 }
 
 #bottomRight {
-	width: 197px;
+	width: 48px;
 	height: 22px;
 	position: absolute;
 	bottom: 0;
@@ -110,7 +96,7 @@ body#smallHead #logo img {
 }
 
 #left  {
-	margin-right: 197px;
+	margin-right: 24px;
 	background-image: url(../images/repeatY.png);
 	background-repeat: repeat-y;
 	background-position: 0px 15px;
