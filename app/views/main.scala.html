@@ -15,12 +15,10 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	</head>
 
+	<body>
+	
 	@if(user != null){
-		<body id="smallHead">
-			@views.html.snippets.navi()
-		
-	} else {
-		<body id="@title">
+		@views.html.snippets.navi()
 	}
 
 		<div class="container">
@@ -57,22 +55,21 @@
 												@flash.get("error")
 											</div>
 										} 
-											
-		                  				@content
+										@if(user == null){
+											<div class="col-xs-12 col-xs-offset-0 col-sm-8 col-sm-offset-2" style="text-align:center;">
+												<img class="logo" src="@routes.Assets.at("images/logo.svg")" />
+												<h2 class="pull-left">Anmelden</h2>
+												@controllers.Component.loginForm()
+											</div>
+										} else {
+			                  				@content
+			                  			}
 									</div> <!-- /content -->
 								</div> <!-- /bottom -->
 							</div> <!-- /top -->
 						</div> <!-- /left -->
 					</div> <!-- /right -->
 				</div> <!-- /col-xs-9 -->
-		
-				<!-- if logged out -->
-				@if(user != null){
-				} else {
-					@controllers.Component.loginForm()
-				}
-				<!-- /if logged out -->
-		
 			</div> <!-- /row -->
 		</div> <!-- /container -->
 	
