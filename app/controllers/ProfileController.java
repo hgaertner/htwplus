@@ -29,8 +29,8 @@ public class ProfileController extends BaseController {
 
 	static Form<Account> accountForm = Form.form(Account.class);
 	static Form<Post> postForm = Form.form(Post.class);
-	static final int limit = 10;
-	static final int offset = 0;
+	static final int LIMIT = 10;
+	static final int PAGE = 1;
 
 	public static Result me() {
 		Navigation.set(Level.PROFILE);
@@ -58,7 +58,7 @@ public class ProfileController extends BaseController {
 		}
 	}
 
-	public static Result stream(Long accountId) {
+	public static Result stream(Long accountId, int page) {
 		Account account = Account.findById(accountId);
 		Account currentUser = Component.currentAccount();
 
@@ -72,8 +72,8 @@ public class ProfileController extends BaseController {
 		// case for friends and own profile
 		if (Friendship.alreadyFriendly(Component.currentAccount(), account)
 				|| Component.currentAccount().equals(account)) {
-			return ok(stream.render(account, Post.getFriendStream(account, limit, offset),
-					postForm));
+			return ok(stream.render(account, Post.getFriendStream(account, LIMIT, page),
+					postForm,Post.countStream(account), LIMIT));
 		}
 		// case for visitors
 		flash("info", "Du kannst nur den Stream deiner Freunde betrachten!");

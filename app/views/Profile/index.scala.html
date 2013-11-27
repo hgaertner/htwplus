@@ -7,7 +7,7 @@
 <h2>
 	@user.name
 	<div class="btn-group">
-		<a type="button" href="@routes.ProfileController.stream(user.id)" class="btn btn-default" rel="tooltip" data-original-title="Newsstream" data-container="body"><span class="glyphicon glyphicon-comment"></span></a>
+		<a type="button" href="@routes.ProfileController.stream(user.id)" class="btn btn-default" rel="tooltip" data-original-title="öfftl. Newsstream" data-container="body"><span class="glyphicon glyphicon-comment"></span></a>
 		@if(curUser.id == user.id) {
 		<a type="button" href="@routes.ProfileController.edit(user.id)" class="btn btn-default" rel="tooltip" title="Profil bearbeiten" data-container="body"><span class="glyphicon glyphicon-pencil"></span></a> 
 		<a type="button" href="@routes.ProfileController.editPassword(user.id)" class="btn btn-default" rel="tooltip" title="Passwort ändern" data-container="body"><span class="glyphicon glyphicon-wrench"></span></a>

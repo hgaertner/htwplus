@@ -1,0 +1,11 @@
+@(count: Integer, limit: Integer)
+
+<ul class="pagination">
+ 	
+       @for(i <- 0 until count){
+           @if(i % 10 == 0){
+           	<li><a  href="@routes.Application.stream(i/limit+1)">@{i/limit+1}</a></li>
+           }            
+       }
+       
+</ul>

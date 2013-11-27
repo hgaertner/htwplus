@@ -19,6 +19,7 @@ public class Post extends BaseModel {
 	
 	public static String GROUP = "group";
 	public static String PROFILE = "profile";
+	public static String STREAM = "stream";
 
 	@Required
 	@Column(length=2000)
@@ -177,11 +178,12 @@ public class Post extends BaseModel {
 	 * @param account - Account (usually current user)
 	 * @return List of Posts
 	 */
-	public static List<Post> getStream(Account account, int limit, int offset) {
+	public static List<Post> getStream(Account account, int limit, int page) {
 		// find friends and groups of given account
 		List<Account> friendList = Friendship.findFriends(account);
 		List<Group> groupList = GroupAccount.findEstablished(account);
 		
+		int offset = (page * limit) - limit;
 		return findStreamForAccount(account, groupList, friendList, false, limit, offset);
 	}
 	
@@ -204,11 +206,26 @@ public class Post extends BaseModel {
 	 * @param account - Account (usually a friends)
 	 * @return List of Posts
 	 */
-	public static List<Post> getFriendStream(Account friend, int limit, int offset) {
+	public static List<Post> getFriendStream(Account friend, int limit, int page) {
 		// find friends and non closed-groups of given account
-		List<Group> groupList = GroupAccount.findPublicEstablished(friend);
 		List<Account> friendList = Friendship.findFriends(friend);
+		List<Group> groupList = GroupAccount.findPublicEstablished(friend);
 			
+		int offset = (page * limit) - limit;
 		return findStreamForAccount(friend, groupList, friendList, false, limit, offset);
+	}
+	
+	/**
+	 * @author Iven
+	 * @param account - Account (usually a friend)
+	 * @return 
+	 * @return Number of Posts
+	 */
+	public static int countFriendStream(Account account){
+		// find friends and groups of given account
+		List<Group> groupList = GroupAccount.findPublicEstablished(account);
+		List<Account> friendList = Friendship.findFriends(account);
+		
+		return countStreamForAccount(account, groupList, friendList, false);
 	}
 }
