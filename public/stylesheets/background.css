@@ -469,3 +469,8 @@ table .img-polaroid {
 	width: 25px;
 	height: 25px;
 }
+
+.dropdown-news {
+	width: 500px;
+	left: -150px;
+}
