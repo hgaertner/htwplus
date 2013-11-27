@@ -7,6 +7,7 @@ import models.Account;
 import models.Friendship;
 import models.Post;
 import play.Logger;
+import play.Play;
 import play.Routes;
 import play.mvc.*;
 import views.html.*;
@@ -18,7 +19,7 @@ import play.db.jpa.*;
 public class Application extends BaseController {
 	
 	static Form<Post> postForm = Form.form(Post.class);
-	static final int LIMIT = 10;
+	static final int LIMIT = Integer.parseInt(Play.application().configuration().getString("htwplus.post.limit"));
 	static final int PAGE = 1;
 	
 	public static Result javascriptRoutes() {

@@ -12,6 +12,7 @@ import models.Studycourse;
 import org.codehaus.jackson.node.ObjectNode;
 
 import play.Logger;
+import play.Play;
 import play.data.Form;
 import play.db.jpa.Transactional;
 import play.libs.Json;
@@ -29,7 +30,7 @@ public class ProfileController extends BaseController {
 
 	static Form<Account> accountForm = Form.form(Account.class);
 	static Form<Post> postForm = Form.form(Post.class);
-	static final int LIMIT = 10;
+	static final int LIMIT = Integer.parseInt(Play.application().configuration().getString("htwplus.post.limit"));
 	static final int PAGE = 1;
 
 	public static Result me() {
