@@ -495,3 +495,10 @@ table .img-polaroid {
 	width: 25px;
 	height: 25px;
 }
+.centered {
+	text-align: center;
+}
+.pagination a.active {
+	background: #76b900;
+	color: white;	
+}

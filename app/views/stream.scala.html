@@ -1,11 +1,13 @@
-@(currentUser: Account, posts:List[Post], postForm: Form[Post], count: Integer, limit: Integer)
+@(currentUser: Account, posts:List[Post], postForm: Form[Post], count: Integer, limit: Integer, currentPage: Integer)
 @main("Newsstream") {
     
 	<h1>Mein Newsstream
 		<a type="button" href="@routes.ProfileController.stream(currentUser.id)" class="btn" rel="tooltip" data-original-title="öfftl. Newsstream"><span class="glyphicon glyphicon-comment"></span></a>
 	</h1>
   	<br />
-
+	
+	
+	
 	@views.html.snippets.postForm(currentUser.id, models.Post.STREAM, postForm)
 		
 	@if(posts != null) {
@@ -14,5 +16,5 @@
 		}
 	}
 	
-	@views.html.snippets.pagination(count, limit, routes.Application.stream)
+	@views.html.pagination(count, limit, currentPage, routes.Application.stream)
 }

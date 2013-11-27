@@ -35,14 +35,14 @@ public class Application extends BaseController {
 	public static Result index() {
 		Navigation.set(Level.STREAM);
 		Account currentAccount = Component.currentAccount();
-		return ok(stream.render(currentAccount,Post.getStream(currentAccount, LIMIT, PAGE),postForm,Post.countStream(currentAccount), LIMIT));
+		return ok(stream.render(currentAccount,Post.getStream(currentAccount, LIMIT, PAGE),postForm,Post.countStream(currentAccount), LIMIT, PAGE));
 	}
 	
 	@Security.Authenticated(Secured.class)
 	public static Result stream(int page) {
 		Navigation.set(Level.STREAM);
 		Account currentAccount = Component.currentAccount();
-		return ok(stream.render(currentAccount,Post.getStream(currentAccount, LIMIT, page),postForm,Post.countStream(currentAccount), LIMIT));
+		return ok(stream.render(currentAccount,Post.getStream(currentAccount, LIMIT, page),postForm,Post.countStream(currentAccount), LIMIT, page));
 	}
 		
 	public static Result defaultRoute(String path) {
