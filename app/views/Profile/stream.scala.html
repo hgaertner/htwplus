@@ -1,4 +1,4 @@
-@(user: Account, posts:List[Post], postForm: Form[Post])
+@(user: Account, posts:List[Post], postForm: Form[Post], count: Integer, limit: Integer)
 
 @main("Newsstream") {
 @defining(Component.currentAccount()) { curUser =>
@@ -33,4 +33,14 @@
 			@views.html.snippets.postView(post, postForm, models.Post.PROFILE)
 		}
 	}
+	
+	<ul class="pagination">
+ 	
+       @for(i <- 0 until count){
+           @if(i % 10 == 0){
+           	<li><a  href="@routes.ProfileController.stream(user.id,i/limit+1)">@{i/limit+1}</a></li>
+           }            
+       }
+       
+	</ul>
 }
