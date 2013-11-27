@@ -474,3 +474,11 @@ table .img-polaroid {
 	width: 500px;
 	left: -150px;
 }
+
+.centered {
+	text-align: center;
+}
+.pagination a.active {
+	background: #76b900;
+	color: white;	
+}
