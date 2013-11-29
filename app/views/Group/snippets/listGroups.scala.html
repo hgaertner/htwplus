@@ -1,0 +1,49 @@
+@(groups: List[Group], user: Account)
+@import models.enums.GroupType
+
+<table class="table table-hover">
+	<colgroup>
+		<col width="60%">
+		<col width="20%">
+		<col width="20%">
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Gruppenname</th>
+			<th>Erstellt von</th>
+			<th>Optionen</th>
+		</tr>
+	</thead>
+	<tbody>
+		@for(group <- groups) {
+		<tr>
+			<td>
+				@{group.groupType match {
+					case GroupType.open => {<i class="glyphicon glyphicon-globe"></i>}
+					case GroupType.close => {<i class="glyphicon glyphicon-lock"></i>}
+				} }
+				<a href="@routes.GroupController.view(group.id)">@if(Secured.isOwnerOfGroup(group, user)) {
+					<b> @group.title</b></a>
+					} else { @group.title}
+				</a>
+			</td>
+			<td>
+				@views.html.snippets.userLink(group.owner)
+			</td>
+			<td>
+				<a href="#infoModal@group.id" rel="tooltip" data-toggle="modal" data-original-title="Gruppeninfo" data-container="body">
+					<i class="glyphicon glyphicon-info-sign"></i>
+				</a>
+				@if(Secured.isOwnerOfGroup(group, user)) {
+					<a href="@routes.GroupController.edit(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Gruppe bearbeiten" data-container="body"><i class="glyphicon glyphicon-pencil"></i></a>
+					<a href="#confirmDeleteGroup@group.id" rel="tooltip" data-toggle="modal" data-original-title="Gruppe löschen" data-container="body"><i class="glyphicon glyphicon-trash"></i></a>
+				} else {
+					<a href="@routes.GroupController.removeMember(group.id, user.id)" rel="tooltip" data-toggle="modal" data-original-title="Gruppe verlassen" data-container="body">
+						<i class="glyphicon glyphicon-remove"></i>
+					</a>
+				}
+			</td>
+		</tr>
+		}
+	</tbody>
+</table>
