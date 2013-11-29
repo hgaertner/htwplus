@@ -1,22 +1,11 @@
 package controllers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.codehaus.jackson.node.ObjectNode;
-
-
-
 
 import controllers.Navigation.Level;
-import play.*;
-import play.libs.Json;
-import play.mvc.*;
-import play.api.data.Field;
-import play.data.*;
 import models.Account;
 import models.Group;
 import models.GroupAccount;
@@ -244,14 +233,19 @@ public class GroupController extends BaseController {
 	public static Result join(long id){
 		Account account = Component.currentAccount();
 		Group group = Group.findById(id);
-		Logger.info("Found group with id: " + group.id);
-		ObjectNode result = Json.newObject();
 		GroupAccount groupAccount;
-		
+				
 		if(Secured.isMemberOfGroup(group, account)){
 			Logger.debug("User is already member of group or course");
 			flash("error", "Du bist bereits Mitglied dieser Gruppe!");
 			return redirect(routes.GroupController.view(id));
+		}
+		
+		// is already requested?
+		groupAccount = GroupAccount.find(account, group);
+		if(groupAccount != null && groupAccount.linkType.equals(LinkType.request)){
+			flash("info", "Deine Beitrittsanfrage wurde bereits verschickt!");
+			return redirect(routes.GroupController.index());
 		}
 		
 		else if(group.groupType.equals(GroupType.open)){
@@ -271,8 +265,8 @@ public class GroupController extends BaseController {
 		else if(group.groupType.equals(GroupType.course)){
 			return redirect(routes.GroupController.token(id));
 		}
-				
-		return ok(result);
+						
+		return redirect(routes.GroupController.index());
 	}
 		
 	public static Result removeMember(long groupId, long accountId){
