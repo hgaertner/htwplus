@@ -39,19 +39,19 @@
 										}
 										@if(flash.containsKey("success")) {
 											<div class="alert alert-success fade in">
-												<button type="button" class="close" data-dismiss="alert">&times;</button>
+												<button type="button" class="close fade out" data-dismiss="alert">&times;</button>
 												@flash.get("success")
 											</div>
 										} 
 										@if(flash.containsKey("info")) {
 											<div class="alert alert-info fade in">
-												<button type="button" class="close" data-dismiss="alert">&times;</button>
+												<button type="button" class="close fade out" data-dismiss="alert">&times;</button>
 												@flash.get("info")
 											</div>
 										} 
 										@if(flash.containsKey("error")) {
 											<div class="alert alert-danger fade in">
-												<button type="button" class="close" data-dismiss="alert">&times;</button>
+												<button type="button" class="close fade out" data-dismiss="alert">&times;</button>
 												@flash.get("error")
 											</div>
 										} 

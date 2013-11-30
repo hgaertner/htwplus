@@ -21,63 +21,21 @@
 		}
 		<!-- Ende infoModal -->
 	
-		<br>
+		<br />
+		
 		@defining(Component.currentAccount()) { user =>
-		<div class="noModal">
-			<table class="table table-hover">
-				<colgroup>
-					<col width="45%">
-					<col width="40%">
-					<col width="15%">
-				</colgroup>
-				<thead>
-					<tr>
-						<th>Kursname</th>
-						<th>Erstellt von</th>
-						<th>Optionen</th>
-					</tr>
-				</thead>
-				<tbody>
-					@for(group <- groups){
-						@if(group.groupType == GroupType.course) {
-							<tr>
-								<td>
-									<i class="glyphicon glyphicon-briefcase"></i>
-									<a href="@routes.GroupController.view(group.id)">@if(Secured.isOwnerOfGroup(group, user)) {
-										<b> @group.title</b></a> <small>(gegründet)</small>
-										} else { @group.title}
-									</a>
-								</td>
-								<td>
-									@views.html.snippets.userLink(group.owner)
-								</td>
-								<td>
-									<a href="#infoModal@group.id" rel="tooltip" data-toggle="modal" data-original-title="Kursinfo" data-container="body">
-										<i class="glyphicon glyphicon-info-sign"></i>
-									</a>
-									@if(Secured.isMemberOfGroup(group, user) && !Secured.isOwnerOfGroup(group, user)) {
-										<a href="@routes.GroupController.removeMember(group.id, user.id)" rel="tooltip" data-toggle="modal" data-original-title="Kurs verlassen" data-container="body">
-											<i class="glyphicon glyphicon-remove"></i>
-										</a>
-									}
-									@if(Secured.isOwnerOfGroup(group, user)) {
-										<a href="@routes.GroupController.edit(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Kurs bearbeiten" data-container="body"><i class="glyphicon glyphicon-pencil"></i></a>
-										<a href="#confirmDeleteGroup@group.id" rel="tooltip" data-toggle="modal" data-original-title="Kurs löschen" data-container="body"><i class="glyphicon glyphicon-trash"></i></a>
-									} else {
-										<a href="@routes.GroupController.join(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Kurs beitreten" data-container="body"><i class="glyphicon glyphicon-ok"></i></a>
-									}
-								</td>
-							</tr>
-						}
-	
-					}
-				</tbody>
-			</table>
+
+			<!-- list all found courses -->
+			@views.html.Group.snippets.listCourses(groups, user)
 			</br>
+			<!-- list all found groups -->
 			@views.html.Group.snippets.listGroups(groups, user)
-		</div> <!-- /noModal -->
-		}  
+			
+		}
+		
 	} else {
 	  	<h2>Keine Suchergebnisse</h2>
 	  }
+	  
+	<br />
 } 

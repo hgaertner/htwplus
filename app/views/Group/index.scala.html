@@ -5,7 +5,7 @@
 @main("Gruppen") {
 
 	<!-- Start infoModal -->
-	@for(group <- approvedGroups) {
+	@for(group <- approvedGroups ++ approvedCourses) {
 	<div class="modal fade" id="infoModal@group.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
 		@views.html.Group.snippets.infoModal(group)
 	</div>
@@ -14,7 +14,7 @@
 	
 	
 	<!-- Start confirmDeleteGroupModal -->
-	@for(group <- approvedGroups) {
+	@for(group <- approvedGroups ++ approvedCourses) {
 	<div class="modal fade" id="confirmDeleteGroup@group.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
 		@views.html.Group.snippets.deleteGroupModal(group)
 	</div>
@@ -71,7 +71,6 @@
 		<p><i>Keine Anfragen vorhanden.</i></p>
 		}
 		<hr />
-		<br />
 		
 		<h2>
 			<span rel="tooltip" data-original-title="Hier findest du alle Gruppen die du gegründet hast oder denen du beigetreten bist." data-delay="500" data-container="body">
@@ -81,15 +80,14 @@
 				<span class="glyphicon glyphicon-plus"></span>
 			</a>
 		</h2>
-		
-		<br />
-		
+				
 		@if(!approvedGroups.isEmpty){
 			@views.html.Group.snippets.listGroups(approvedGroups, user)
 		} else {
 		<p><i>Noch keiner Gruppe beigetreten.</i></p>
 		}
 		
+		<br />
 		
 		<h2>
 			<span rel="tooltip" data-original-title="Hier findest du alle Gruppen die du gegründet hast oder denen du beigetreten bist." data-delay="500" data-container="body">
@@ -100,48 +98,13 @@
 			</a>
 		</h2>
 		
-		<br />
+		
 		@if(!approvedCourses.isEmpty){
-			<table class="table table-hover">
-				<colgroup>
-					<col width="75%">
-					<col width="25%">
-				</colgroup>
-				<thead>
-					<tr>
-						<th>Kursname</th>
-						<th>Optionen</th>
-					</tr>
-				</thead>
-				<tbody>
-					@for(course <- approvedCourses) {
-					<tr>
-						<td>
-						@if(course.groupType.equals(GroupType.course)) { <span class="glyphicon glyphicon-briefcase"></span>}
-							<a href="@routes.GroupController.view(course.id)">@if(Secured.isOwnerOfGroup(course, user)) {
-								<b> @course.title</b></a> <small>(gegründet)</small>
-								} else { @course.title}
-							</a>
-						</td>
-						<td>
-							<a href="#infoModal@course.id" rel="tooltip" data-toggle="modal" data-original-title="Kursinfo" data-container="body">
-								<span class="glyphicon glyphicon-info-sign"></span>
-							</a>
-							@if(Secured.isOwnerOfGroup(course, user)) {
-								<a href="@routes.GroupController.edit(course.id)" rel="tooltip" data-toggle="modal" data-original-title="Kurs bearbeiten" data-container="body"><i class="glyphicon glyphicon-pencil"></i></a>
-								<a href="#confirmDeleteGroup@course.id" rel="tooltip" data-toggle="modal" data-original-title="Kurs löschen" data-container="body"><i class="glyphicon glyphicon-trash"></i></a>
-							} else {
-								<a href="@routes.GroupController.removeMember(course.id, user.id)" rel="tooltip" data-toggle="modal" data-original-title="Kurs verlassen" data-container="body">
-									<i class="glyphicon glyphicon-remove"></i>
-								</a>
-							}
-						</td>
-					</tr>
-					}
-				</tbody>
-			</table>
+			@views.html.Group.snippets.listCourses(approvedCourses, user)
 		} else {
 		<p><i>Noch keinen Kursen beigetreten.</i></p>
 		}
+		
+		<br />
 	}
 }
