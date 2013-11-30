@@ -41,9 +41,9 @@ public class GroupController extends BaseController {
 		Account account = Component.currentAccount();
 		List<Group> groupAccounts = GroupAccount.findEstablished(account);
 		List<GroupAccount> groupRequests = GroupAccount.findRequests(account);
-		final List<Group> courseAccounts = GroupAccount.findCoursesEstablished(account);
+		List<Group> courseAccounts = GroupAccount.findCoursesEstablished(account);
 		
-		return ok(index.render(groupAccounts, courseAccounts,groupRequests,groupForm));
+		return ok(index.render(groupAccounts,courseAccounts,groupRequests,groupForm));
 	}
 		
 	@Transactional(readOnly=true)
@@ -100,27 +100,34 @@ public class GroupController extends BaseController {
 				return ok(create.render(filledForm));
 			}
 			
+			String successMsg;
 			switch(groupType){
-				case 0: group.groupType = GroupType.open; break;
-				case 1: group.groupType = GroupType.close; break;
-				case 2: group.groupType = GroupType.course; break;
+			
+				case 0: group.groupType = GroupType.open; 
+						group.isClosed = true; 
+						successMsg = "Öffentliche Gruppe"; 
+						break;
+						
+				case 1: group.groupType = GroupType.close; 
+						successMsg = "Geschlossene Gruppe";
+						break;
+						
+				case 2: group.groupType = GroupType.course;
+						successMsg = "Kurs";
+						String token = filledForm.data().get("token");
+						if(token.equals("") || token.length() < 4 || token.length() > 45){
+							filledForm.reject("token","Bitte einen Token zwischen 4 und 45 Zeichen eingeben!");
+							return ok(create.render(filledForm));
+						}
+						break;
+						
 				default: 
 					filledForm.reject("Nicht möglich!");
 					return ok(create.render(filledForm));
 			}
-			if(groupType == 1){
-				group.isClosed = true;
-			}
-			if(groupType == 2){
-				String token = filledForm.data().get("token");
-				if(token.equals("") || token.length() < 4 || token.length() > 45){
-					filledForm.reject("token","Bitte einen Token zwischen 4 und 45 Zeichen eingeben!");
-					return ok(create.render(filledForm));
-				}
-			}
 			
 			group.createWithGroupAccount(Component.currentAccount());
-			flash("success", "Neue Gruppe erstellt!");
+			flash("success", successMsg+" erstellt!");
 			return redirect(routes.GroupController.index());
 		}
 	}
@@ -163,7 +170,7 @@ public class GroupController extends BaseController {
 		}
 		group.description = description;
 		group.update();
-		flash("info", "Gruppe " + group.title + " erfolgreich bearbeitet!");
+		flash("info", "'" + group.title + "' erfolgreich bearbeitet!");
 		return redirect(routes.GroupController.view(groupId));
 		
 	}
@@ -173,7 +180,7 @@ public class GroupController extends BaseController {
 		Account account = Component.currentAccount();
 		if(Secured.isOwnerOfGroup(group, account)){
 			group.delete();
-			flash("info", "Gruppe " + group.title + " erfolgreich gelöscht!");
+			flash("info", "'" + group.title + "' wurde erfolgreich gelöscht!");
 		} else {
 			flash("error", "Dazu hast du keine Berechtigung!");
 		}
@@ -251,7 +258,7 @@ public class GroupController extends BaseController {
 		else if(group.groupType.equals(GroupType.open)){
 			groupAccount = new GroupAccount(account, group, LinkType.establish);
 			groupAccount.create();
-			flash("success", "Gruppe erfolgreich beigetreten!");
+			flash("success", "'" + group.title + " erfolgreich beigetreten!");
 			return redirect(routes.GroupController.view(id));
 		}
 		
