@@ -43,7 +43,7 @@ public class PostController extends BaseController {
 					p.owner = Component.currentAccount();
 					p.group = group;
 					p.create();
-					Notification.newGroupNotification(NotificationType.POST_NEW_COMMENT, group, account);
+					Notification.newGroupNotification(NotificationType.GROUP_NEW_POST, group, account);
 				}
 			} else {
 				flash("info","Bitte tritt der Gruppe erst bei.");
@@ -101,6 +101,9 @@ public class PostController extends BaseController {
 			post.owner = account;
 			post.parent = parent;
 			post.create();
+			if(parent.belongsToGroup()) {
+				Notification.newPostNotification(NotificationType.POST_GROUP_NEW_COMMENT, parent, account);
+			}
 			return ok(views.html.snippets.postComment.render(post));
 		}
 	}

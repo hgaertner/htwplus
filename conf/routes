@@ -65,9 +65,8 @@ GET		/media/:id							controllers.MediaController.view(id:Long)
 GET 	/media/:id/delete					controllers.MediaController.delete(id:Long)
 
 #Notification
-GET		/notification/user/:id				controllers.NotificationController.viewForUser(id:Long)
-GET		/notification/:id					controllers.NotificationController.forward(id:Long)
-GET		/notification/:id					controllers.NotificationController.forwardByString(id:Long,url:String)
+GET		/notification/delete				controllers.NotificationController.deleteAll(url:String)
+GET		/notification/:id					controllers.NotificationController.forward(id:Long,url:String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               		controllers.Assets.at(path="/public", file)

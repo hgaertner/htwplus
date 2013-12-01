@@ -24,13 +24,9 @@
 					<li class="@status"><a href="@Navigation.getLevelRoute(Navigation.Level.GROUPS)">@Navigation.getLevelTitle(Navigation.Level.GROUPS)</a></li>
 				}
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Neuigkeiten <span class="badge">5</span> <b class="caret"></b></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Neuigkeiten <span class="badge">@models.Notification.countForAccount(user)</span> <b class="caret"></b></a>
 					<ul class="dropdown-menu dropdown-news">
-						<li><a href="#">Neue Medien in Gruppe <b>Das ist keine Magie</b></a></li>
-						<li><a href="#">Neue Freundschaftsanfrage von <b>Iven Z.</b></a></li>
-						<li><a href="#">Neuer Post in Kurs <b>Das ist keine Magie</b></a></li>
-						<li><a href="#"><b>Fabian K.</b> hat deine Freundschaftsanfrage bestätigt</a></li>
-						<li><a href="#"><b>Anne H.</b> hat deine Freundschaftsanfrage abgelehnt</a></li>
+							@controllers.NotificationController.view()
 					</ul>
 				</li>
 			</ul>
