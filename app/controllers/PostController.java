@@ -21,6 +21,7 @@ import views.html.index;
 public class PostController extends BaseController {
 	
 	static Form<Post> postForm = Form.form(Post.class);
+	static final int PAGE = 1;
 	
 	/**
 	 * @author Iven
@@ -61,10 +62,27 @@ public class PostController extends BaseController {
 					p.owner = account;
 					p.create();
 				}
-				return redirect(routes.ProfileController.stream(anyId));
+				return redirect(routes.ProfileController.stream(anyId, PAGE));
 			}
 			flash("info","Du kannst nur Freunden auf den Stream schreiben!");
-			return redirect(routes.ProfileController.stream(anyId));
+			return redirect(routes.ProfileController.stream(anyId, PAGE));
+		}
+		
+		if(target.equals(Post.STREAM)) {
+			Account profile = Account.findById(anyId);
+			if(profile.equals(account)){
+				if (filledForm.hasErrors()) {
+					flash("error", "Jo, fast. Probiere es noch einmal mit Inhalt ;-)");
+				} else {
+					Post p = filledForm.get();
+					p.account = profile;
+					p.owner = account;
+					p.create();
+				}
+				return redirect(routes.Application.stream(PAGE));
+			}
+			flash("info","Du kannst nur dir oder Freunden auf den Stream schreiben!");
+			return redirect(routes.Application.stream(PAGE));
 		}
 		return redirect(routes.Application.index());
 	}

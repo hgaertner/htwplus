@@ -1,4 +1,4 @@
-@(user: Account, posts:List[Post], postForm: Form[Post])
+@(user: Account, posts:List[Post], postForm: Form[Post], count: Integer, limit: Integer, currentPage: Integer)
 
 @main("Newsstream") {
 @defining(Component.currentAccount()) { curUser =>
@@ -16,7 +16,7 @@
 			}}
 		</div>
 	</h2>
-	
+		
 	<!-- confirmDeleteFriendModal -->
 	<div id="confirmDeleteFriend" class="modal hide fade" tabindex="-1" role="dialog">@views.html.Friends.snippets.deleteFriendModal(user)</div>
 	<!-- Ende confirmDeleteFriendModal -->
@@ -33,4 +33,6 @@
 			@views.html.snippets.postView(post, postForm, models.Post.PROFILE)
 		}
 	}
+	
+	@views.html.Profile.pagination(count, limit, user.id, currentPage)
 }

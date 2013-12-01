@@ -1,27 +1,11 @@
 @(loginForm: Form[Login], signupForm: Form[Account])
 
-<div class="col-xs-3">
-	<div class="navi" data-spy="affix" data-offset-top="65" data-offset-bottom="83">
-		<div class="postit" id="register">
-			<div class="postitHeader active"></div>
-			<div class="postitBody active">
-			
-				@helper.form(routes.AccountController.authenticate) {
-				
-				<div class="form-group">
-					<label for="loginUser">Mat-Nr./E-Mail</label>
-					<input type="text" class="form-control" id="loginUser" name="email" placeholder="s0123456" value="@loginForm("email").value">
-				</div>
-				<div class="form-group">
-					<label for="loginPassword">Passwort</label>
-					<input type="password" class="form-control" id="loginPassword" name="password" placeholder="Passwort">
-				</div>
-				<button type="submit" class="btn btn-warning">Anmelden</button>
-					
-				}
-				
-			</div>
-			<div class="postitFooter active"></div>
-		</div>
+@helper.form(routes.AccountController.authenticate) {
+	<div class="form-group">
+		<input type="text" class="form-control input-lg" id="loginUser" name="email" placeholder="Matrikelnummer" value="@loginForm("email").value">
 	</div>
-</div>
+	<div class="form-group">
+		<input type="password" class="form-control input-lg" id="loginPassword" name="password" placeholder="Passwort">
+	</div>
+	<button type="submit" class="btn btn-warning btn-lg pull-right">Anmelden</button>
+}

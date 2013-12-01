@@ -7,6 +7,7 @@ import models.Account;
 import models.Friendship;
 import models.Post;
 import play.Logger;
+import play.Play;
 import play.Routes;
 import play.mvc.*;
 import views.html.*;
@@ -18,6 +19,8 @@ import play.db.jpa.*;
 public class Application extends BaseController {
 	
 	static Form<Post> postForm = Form.form(Post.class);
+	static final int LIMIT = Integer.parseInt(Play.application().configuration().getString("htwplus.post.limit"));
+	static final int PAGE = 1;
 	
 	public static Result javascriptRoutes() {
 		response().setContentType("text/javascript");
@@ -32,7 +35,14 @@ public class Application extends BaseController {
 	public static Result index() {
 		Navigation.set(Level.STREAM);
 		Account currentAccount = Component.currentAccount();
-		return ok(stream.render(currentAccount,Post.getStream(currentAccount),postForm));
+		return ok(stream.render(currentAccount,Post.getStream(currentAccount, LIMIT, PAGE),postForm,Post.countStream(currentAccount), LIMIT, PAGE));
+	}
+	
+	@Security.Authenticated(Secured.class)
+	public static Result stream(int page) {
+		Navigation.set(Level.STREAM);
+		Account currentAccount = Component.currentAccount();
+		return ok(stream.render(currentAccount,Post.getStream(currentAccount, LIMIT, page),postForm,Post.countStream(currentAccount), LIMIT, page));
 	}
 		
 	public static Result defaultRoute(String path) {
