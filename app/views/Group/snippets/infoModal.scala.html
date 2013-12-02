@@ -1,4 +1,6 @@
 @(group: Group)
+@import helper._
+
 <div class="modal-dialog">
 	<div class="modal-content">
 		<div class="modal-header">
@@ -9,7 +11,7 @@
 				} else {
 				<span class="glyphicon glyphicon-globe"></span>
 				}
-				@group.title
+				@truncate(group.title,30)
 			</h4>
 		</div>
 		<div class="modal-body">
