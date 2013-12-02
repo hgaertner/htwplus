@@ -1,3 +1,4 @@
+@import helper._
 
 <ul class="breadcrumb">
 	<li><a href="@routes.Application.index()">Home</a></li>
@@ -9,10 +10,10 @@
 	}
 
 	@if(Navigation.getParentTitle() != null){
-	<li><a href="@Navigation.getParentCall()">@Navigation.getParentTitle()</a></li>
+	<li><a href="@Navigation.getParentCall()">@truncate(Navigation.getParentTitle(),30)</a></li>
 	}
 	@if(Navigation.getTitle() != null){
-	<li>@Navigation.getTitle()</li>
+	<li>@truncate(Navigation.getTitle(),30)</li>
 	}
 
 </ul>

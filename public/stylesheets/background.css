@@ -10,14 +10,6 @@ hr {
 	border-bottom: 1px solid #ffffff
 }
 
-#truncated {
-	float: left;
-	max-width: 55%;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	
-}
-
 table {
 	table-layout: fixed;
 }
@@ -28,7 +20,7 @@ td {
 }
 
 .miniMenue {
-	padding-top: 10px;
+	padding-top: 15px;
 }
 
 .clear {

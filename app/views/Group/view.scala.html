@@ -19,7 +19,7 @@
 	
 	<div class="clear">
 	@if(group.groupType != GroupType.close || Secured.isMemberOfGroup(group, Component.currentAccount)) {
-		<h2 id="truncated">@group.title</h2>
+		<h2 class="pull-left">@truncate(group.title,30)</h2>
 		<div class="miniMenue">
 			@{group.groupType match {
 				case GroupType.open => {<i class="glyphicon glyphicon-globe"></i>}
