@@ -384,7 +384,7 @@ textarea {
 	margin-left: 50px;
 }
 
-.addComment textarea {
+.hp-comment-form textarea {
 	margin-bottom: 0px;
 }
 
@@ -392,13 +392,13 @@ textarea {
       margin-top: 15px;
 }
 
-#addPost label,
-#addComment label {
+.hp-post-form label,
+.hp-comment-form label {
 	display: none;
 }
 
-#addPost dl, dd,
-#addComment dl, dd {
+.hp-post-form dl, dd,
+.hp-comment-form dl, dd {
 	margin: 0;
 }
 
@@ -420,9 +420,6 @@ textarea {
 }
 
 #commentContent{
-	margin-right: 10px;
-	width: 70%;
-	float: left;
 	height: 31px;
     transition: height 0.5s ease 0.2s;
 	-webkit-transition: height 0.5s ease 0.2s;
@@ -482,4 +479,17 @@ table .img-polaroid {
 .pagination a.active {
 	background: #76b900;
 	color: white;	
+}
+
+.hp-horizontal-form {
+	padding: 0;
+}
+
+.hp-horizontal-form .input-group-btn {
+	padding-left: 10px;
+}
+
+.hp-horizontal-form textarea,
+.hp-horizontal-form button {
+	border-radius: 4px!important;
 }

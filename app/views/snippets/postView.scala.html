@@ -38,9 +38,15 @@
 	 				@views.html.snippets.postComment(comment)
 	 			}
 	 		}
-			@form(routes.PostController.addComment(post.id), 'class -> "form-inline addComment") {
-					@textarea(postForm("Content"), '_label -> "", 'class -> "form-control", 'id -> "commentContent", 'placeholder -> "Schreibe ein Kommentar...")
-					<button type="submit" class="btn btn-sm btn-warning commentSubmit">Kommentieren</button>
+			@form(routes.PostController.addComment(post.id), 'class -> "hp-comment-form", 'id -> "addComment-@post.id") {
+				<div class="hp-horizontal-form col-xs-12">
+					<div class="input-group">
+						@textarea(postForm("Content"), 'class -> "form-control", 'id -> "commentContent", 'placeholder -> "Erstelle ein Kommentar...")
+						<span class="input-group-btn">
+							<button type="submit" class="btn btn-sm btn-warning commentSubmit">Kommentieren</button> 
+						</span>
+					</div>
+				</div>
 			}
 		</div>
 		<div class="clear"></div>
