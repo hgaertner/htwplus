@@ -11,8 +11,8 @@
 			@if(group.groupType.equals(GroupType.close)) { <span class="glyphicon glyphicon-lock"></span>}
 			@if(group.groupType.equals(GroupType.course)) { <span class="glyphicon glyphicon-briefcase"></span>}
 			<div class="btn-group">
-				<a href="@routes.GroupController.view(group.id)" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Gruppennewsstream" data-container="body"><span class="glyphicon glyphicon-comment"></span></a>
-				<a href="@routes.GroupController.media(group.id)" role="button" class="btn btn-default" rel="tooltip" data-original-title="Gruppenmedien" data-container="body"><span class="glyphicon glyphicon-file"></span></a>
+				<a href="@routes.GroupController.view(group.id)" role="button" class="btn btn-default" rel="tooltip" data-original-title="Gruppennewsstream" data-container="body"><span class="glyphicon glyphicon-comment"></span></a>
+				<a href="@routes.GroupController.media(group.id)" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Gruppenmedien" data-container="body"><span class="glyphicon glyphicon-file"></span></a>
 			@defining(Component.currentAccount()) { user => @if(group.owner.id == user.id) {
 				<a href="@routes.GroupController.edit(group.id)" role="button" class="btn btn-default" rel="tooltip" data-original-title="Gruppe bearbeiten" data-container="body"><span class="glyphicon glyphicon-pencil"></span></a>
 				<a href="#confirmDeleteGroup" role="button" class="btn btn-default" rel="tooltip" data-toggle="modal" data-original-title="Gruppe löschen" data-container="body"><span class="glyphicon glyphicon-trash"></span></a>
