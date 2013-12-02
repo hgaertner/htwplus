@@ -295,7 +295,7 @@ div #content  {
 }
 
 textarea {
-  	resize: vertical;
+  	resize: none;
 }
 
 .collapse {
