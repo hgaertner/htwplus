@@ -10,6 +10,11 @@ hr {
 	border-bottom: 1px solid #ffffff
 }
 
+.truncated {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 table {
 	table-layout: fixed;
 }
