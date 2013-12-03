@@ -27,7 +27,7 @@
 		<br />
 		<div class="truncate" id="@post.id">@post.content</div>
 		<hr />
-		<div class="comment" id="comments-@post.id">
+		<div class="hp-comments" id="comments-@post.id">
 
 			@if(post.getCountComments() > 2) {
 				<a href="#collapse-@post.id" class="olderComments unloaded">Alle Kommentare anzeigen...</a>
@@ -41,7 +41,7 @@
 			@form(routes.PostController.addComment(post.id), 'class -> "hp-comment-form", 'id -> "addComment-@post.id") {
 				<div class="hp-horizontal-form col-xs-12">
 					<div class="input-group">
-						@textarea(postForm("Content"), 'class -> "form-control", 'id -> "commentContent", 'placeholder -> "Erstelle ein Kommentar...")
+						@textarea(postForm("Content"), 'class -> "form-control", 'id -> "hp-new-comment-content", 'placeholder -> "Erstelle ein Kommentar...")
 						<span class="input-group-btn">
 							<button type="submit" class="btn btn-sm btn-warning commentSubmit">Kommentieren</button> 
 						</span>

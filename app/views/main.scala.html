@@ -24,15 +24,15 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1">
-					<div id="right">
-						<div id="topRight"></div>
-						<div id="bottomRight"></div>
-						<div id="left">
-							<div id="topLeft"></div>
-							<div id="bottomLeft"></div>
-							<div id="top">
-								<div id="bottom">
-									<div id="content">
+					<div id="hp-right">
+						<div id="hp-topRight"></div>
+						<div id="hp-bottomRight"></div>
+						<div id="hp-left">
+							<div id="hp-topLeft"></div>
+							<div id="hp-bottomLeft"></div>
+							<div id="hp-top">
+								<div id="hp-bottom">
+									<div id="hp-content">
 										@if(user != null){
 											<br />
 											@views.html.snippets.breadcrumb()
@@ -57,7 +57,7 @@
 										} 
 										@if(user == null){
 											<div class="col-xs-12 col-xs-offset-0 col-sm-8 col-sm-offset-2">
-												<div class="logo">
+												<div class="hp-logo">
 													<img src="@routes.Assets.at("images/logo.svg")" />
 												</div>
 												@controllers.Component.loginForm()
@@ -78,7 +78,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1">
-						<div id="htw">
+						<div id="hp-htw-logo">
 							@views.html.snippets.impressumModal()
 							<a href="#impressumModal" data-toggle="modal">Impressum</a>
 						</div>
