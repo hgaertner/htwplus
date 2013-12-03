@@ -203,13 +203,10 @@ public class GroupController extends BaseController {
 				final String keyword = entry.getValue()[0];
 				Logger.debug("Value of key" + keyword);
 				Navigation.set(Level.GROUPS, "Suchergebnisse");
-				groupResults = Group.searchForGroupByKeyword(keyword);
 				courseResults = Group.searchForCourseByKeyword(keyword);
+				groupResults = Group.searchForGroupByKeyword(keyword);
+				
 				accResults = Account.searchForAccountByKeyword(keyword);
-				if (groupResults != null && groupResults.size() > 1) {
-					Logger.debug("Found " + groupResults.size()
-							+ " groups with the keyword: " + keyword);
-				}
 			}
 
 		}

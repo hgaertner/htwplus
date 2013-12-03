@@ -23,6 +23,7 @@ import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.TermQuery;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
@@ -219,6 +220,7 @@ public class Group extends BaseModel {
 		criteria.add(Restrictions.or(
 				Restrictions.eq("groupType", GroupType.open),
 				Restrictions.eq("groupType", GroupType.close)));
+		criteria.setReadOnly(true);
 		// wrap Lucene query in a javax.persistence.Query
 		FullTextQuery fullTextQuery = fullTextEntityManager
 				.createFullTextQuery(luceneQuery, Group.class);
@@ -228,7 +230,7 @@ public class Group extends BaseModel {
 		List<Group> result = fullTextQuery.getResultList(); // The result...
 		Logger.info("Found " + result.size() + " groups with keyword: "
 				+ keyword);
-
+		session.clear();
 		return result;
 	}
 
@@ -242,19 +244,21 @@ public class Group extends BaseModel {
 		
 		Session session = fullTextEntityManager
 				.unwrap(org.hibernate.Session.class);
-		Criteria criteria = session.createCriteria(Group.class);
-		criteria.add(Restrictions.eq("groupType", GroupType.course));
-
+		
+		Criteria courseCriteria = session.createCriteria(Group.class);
+		courseCriteria.add(Restrictions.eq("groupType", GroupType.course));
 		org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword()
 				.wildcard().onField("title")
 				.matching("*" + keyword.toLowerCase() + "*").createQuery();
 		// wrap Lucene query in a javax.persistence.Query
 		FullTextQuery fullTextQuery = fullTextEntityManager
 				.createFullTextQuery(luceneQuery, Group.class);
-		fullTextQuery.setCriteriaQuery(criteria);
+		
+		fullTextQuery.setCriteriaQuery(courseCriteria);
 		List<Group> courses = fullTextQuery.getResultList();
 		Logger.info("Found " + courses.size() + " courses with keyword: "
 				+ keyword);
+		session.clear();
 		return courses;
 	}
 }
