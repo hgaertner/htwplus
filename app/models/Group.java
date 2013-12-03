@@ -11,15 +11,22 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import models.GroupAccount;
 import models.base.BaseModel;
+import models.enums.GroupType;
+import models.enums.LinkType;
 
-import org.hibernate.search.annotations.Index;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.TermQuery;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -28,16 +35,8 @@ import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
 
 import play.Logger;
-import play.api.data.validation.ValidationError;
-import play.data.validation.Constraints.*;
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.Length;
-
-import models.base.BaseModel;
-import models.enums.GroupType;
-import models.enums.LinkType;
-import play.db.jpa.*;
+import play.data.validation.Constraints.Required;
+import play.db.jpa.JPA;
 
 @Indexed
 @Entity
@@ -61,7 +60,7 @@ public class Group extends BaseModel {
 
 	@Enumerated(EnumType.STRING)
 	public GroupType groupType;
-	
+
 	public String token;
 
 	@OneToMany(mappedBy = "group")
@@ -202,27 +201,60 @@ public class Group extends BaseModel {
 	 */
 	@SuppressWarnings("unchecked")
 	public static List<Group> searchForGroupByKeyword(String keyword) {
-		Logger.info("Group model searchForGroupByKeyWord: "
+		Logger.info("Group model searchForGroupByKeyword: "
 				+ keyword.toLowerCase());
 		FullTextEntityManager fullTextEntityManager = Search
 				.getFullTextEntityManager(JPA.em());
+
 		// Create a querybuilder for the group entity
 		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
 				.buildQueryBuilder().forEntity(Group.class).get();
-		// Sets the field we want to search on and tries to match with the given
-		// keyword
 		org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword()
 				.wildcard().onField("title")
 				.matching("*" + keyword.toLowerCase() + "*").createQuery();
-
+		//Create a criteria because we just want to search for groups
+		Session session = fullTextEntityManager
+				.unwrap(org.hibernate.Session.class);
+		Criteria criteria = session.createCriteria(Group.class);
+		criteria.add(Restrictions.or(
+				Restrictions.eq("groupType", GroupType.open),
+				Restrictions.eq("groupType", GroupType.close)));
 		// wrap Lucene query in a javax.persistence.Query
 		FullTextQuery fullTextQuery = fullTextEntityManager
 				.createFullTextQuery(luceneQuery, Group.class);
+		//fullTextQuery.setMaxResults(10); // Max result to 10
 
+		fullTextQuery.setCriteriaQuery(criteria);
 		List<Group> result = fullTextQuery.getResultList(); // The result...
 		Logger.info("Found " + result.size() + " groups with keyword: "
 				+ keyword);
 
 		return result;
+	}
+
+	public static List<Group> searchForCourseByKeyword(String keyword) {
+		Logger.info("Group model searchForCourseByKeyword: "
+				+ keyword.toLowerCase());
+		FullTextEntityManager fullTextEntityManager = Search
+				.getFullTextEntityManager(JPA.em());
+		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
+				.buildQueryBuilder().forEntity(Group.class).get();
+		
+		Session session = fullTextEntityManager
+				.unwrap(org.hibernate.Session.class);
+		Criteria criteria = session.createCriteria(Group.class);
+		criteria.add(Restrictions.eq("groupType", GroupType.course));
+
+		org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword()
+				.wildcard().onField("title")
+				.matching("*" + keyword.toLowerCase() + "*").createQuery();
+		// wrap Lucene query in a javax.persistence.Query
+		FullTextQuery fullTextQuery = fullTextEntityManager
+				.createFullTextQuery(luceneQuery, Group.class);
+		fullTextQuery.setCriteriaQuery(criteria);
+		List<Group> courses = fullTextQuery.getResultList();
+		Logger.info("Found " + courses.size() + " courses with keyword: "
+				+ keyword);
+		return courses;
 	}
 }
