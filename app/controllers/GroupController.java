@@ -193,7 +193,9 @@ public class GroupController extends BaseController {
 	
 	
 	public static Result searchForGroupByKeyword(){
-		List<Group> result = null;
+		List<Group> groupResults = null;
+		List<Group> courseResults = null;
+		List<Account> accResults = null;
 		final Set<Map.Entry<String, String[]>> entries = request()
 				.queryString().entrySet();
 		for (Map.Entry<String, String[]> entry : entries) {
@@ -201,16 +203,15 @@ public class GroupController extends BaseController {
 				final String keyword = entry.getValue()[0];
 				Logger.debug("Value of key" + keyword);
 				Navigation.set(Level.GROUPS, "Suchergebnisse");
-				result = Group.searchForGroupByKeyword(keyword);
-				if (result != null && result.size() > 1) {
-					Logger.debug("Found " + result.size()
-							+ " groups with the keyword: " + keyword);
-				}
+				courseResults = Group.searchForCourseByKeyword(keyword);
+				groupResults = Group.searchForGroupByKeyword(keyword);
+				
+				accResults = Account.searchForAccountByKeyword(keyword);
 			}
 
 		}
 
-		return ok(searchresult.render(result));
+		return ok(searchresult.render(groupResults, courseResults, accResults));
 	}
 	
 	public static Result token(Long groupId) {

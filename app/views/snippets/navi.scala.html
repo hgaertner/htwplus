@@ -43,12 +43,6 @@
 				</div>
 				<button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
 			</form>
-			<form class="navbar-form navbar-left" role="search" action="@routes.AccountController.searchByKeyword" method="GET">
-				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Person" id="accountSearchQuery"  name="keyword">
-				</div>
-				<button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
-			</form>
 			
 			<ul class="nav navbar-nav navbar-right">
 				<li><img alt="avatar" src="@Component.currentAccount().getAvatarUrl()" height="50px"/></li>
