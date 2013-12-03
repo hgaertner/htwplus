@@ -6,6 +6,22 @@
 	@if(groups != null && groups.size != 0) {
 
 		<!-- Start confirmDeleteGroupModal -->
+		@for(course <- courses) {
+			<div class="modal fade" id="confirmDeleteGroup@course.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+				@views.html.Group.snippets.deleteGroupModal(course)
+			</div>
+		}
+		<!-- End confirmDeleteGroupModal -->
+		
+		<!-- Start infoModal -->
+		@for(course <- courses) {
+		<div class="modal fade" id="infoModal@course.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+			@views.html.Group.snippets.infoModal(course)
+		</div>
+		}
+		<!-- Ende infoModal -->
+		
+		<!-- Start confirmDeleteGroupModal -->
 		@for(group <- groups) {
 			<div class="modal fade" id="confirmDeleteGroup@group.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
 				@views.html.Group.snippets.deleteGroupModal(group)
@@ -26,10 +42,13 @@
 		@defining(Component.currentAccount()) { user =>
 
 			<!-- list all found courses -->
-			@views.html.Group.snippets.listCourses(groups, user)
+			@views.html.Group.snippets.listCourses(courses, user)
 			</br>
 			<!-- list all found groups -->
 			@views.html.Group.snippets.listGroups(groups, user)
+			</br>
+			<!-- list all found groups -->
+			@views.html.Group.snippets.listAccounts(users)
 			
 		}
 		
