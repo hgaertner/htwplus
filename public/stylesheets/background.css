@@ -389,8 +389,8 @@ textarea {
 	margin-left: 50px;
 }
 
-.hp-comment-form textarea {
-	margin-bottom: 0px;
+.hp-comment-form {
+	margin-top: 15px;
 }
 
 .collapse .media:first-child {
