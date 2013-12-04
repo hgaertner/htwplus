@@ -2,6 +2,10 @@
 
 /*============================== General ==============================*/
 
+body {
+	margin-top: 70px;
+}
+
 a {
 	outline: none!important;
 }
@@ -24,6 +28,16 @@ textarea {
   	resize: none;
 }
 
+button > .glyphicon,
+a > .glyphicon {
+	color: rgb(90,88,88);
+}
+
+button > .glyphicon:hover,
+a > .glyphicon:hover {
+	color: #76B900;
+}
+
 .hp-dropdown-news {
 	width: 500px;
 	left: -150px;
@@ -32,6 +46,20 @@ textarea {
 .hp-truncate {
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+
+/*============================== Navigation ==============================*/
+
+.hp-navbar .hp-search-form input {
+	padding-right: 20px;
+	background-color: #E0F2BF;
+}
+
+.hp-navbar .hp-search-form button {
+	background: transparent;
+	border: 0;
+	margin-left: -28px;
 }
 
 
@@ -47,7 +75,7 @@ textarea {
 	margin: 50px 0 70px;
 }
 
-.navbar .hp-logo img {
+.hp-navbar .hp-logo img {
 	width: 125px;
 	margin: 15px 15px 0 10px;
 }
@@ -323,6 +351,13 @@ div.hp-pagination {
 .hp-avatar {
 	width: 120px;
 	height: 120px;
+}
+
+.hp-navbar .hp-avatar {
+	height: 46px;
+	width: auto;
+	margin-top: 2px;
+	margin-right: 5px;
 }
 
 dl .hp-avatar {
