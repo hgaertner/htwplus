@@ -24,6 +24,16 @@ textarea {
   	resize: none;
 }
 
+.hp-dropdown-news {
+	width: 500px;
+	left: -150px;
+}
+
+.hp-truncate {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 
 /*============================== Logo ==============================*/
 
@@ -291,52 +301,37 @@ div.hp-pagination {
 }
 
 
-/*============================== Stuff ==============================*/
+/*============================== Avatare ==============================*/
 
-.btn-group {
-	position: absolute;
-	margin-left: 10px;
-}
-
-#avatars .img-thumbnail {
+#hp-avatars img {
 	margin-bottom: 8px;
 	margin-right: 8px;
-	width: 30%;
+	width: 64px;
 }
 
-#avatars .img-thumbnail:hover {
+#hp-avatars img:hover {
 	border-color: #5a5858;
 }
 
-#avatars .img-thumbnail.active {
+#hp-avatars img.active {
   border-color: rgba(255, 95, 0, 0.8);
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 95, 0, .6);
   -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 95, 0, .6);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 95, 0, .6);
 }
 
-.img-polaroid {
+.hp-avatar {
 	width: 120px;
 	height: 120px;
 }
 
-dl .img-polaroid {
+dl .hp-avatar {
 	width: 80px;
 	height: 80px;
 }
 
-.media .img-polaroid,
-table .img-polaroid {
+.media .hp-avatar,
+table .hp-avatar {
 	width: 25px;
 	height: 25px;
-}
-
-.dropdown-news {
-	width: 500px;
-	left: -150px;
-}
-
-.truncate {
-	overflow: hidden;
-	text-overflow: ellipsis;
 }

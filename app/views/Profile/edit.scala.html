@@ -75,7 +75,7 @@
 	</dl>
 	<dl>
 		<dt>Avatar</dt>
-		<dd id="avatars">
+		<dd id="hp-avatars">
 			<img id="a0" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a0.png")" alt="avatar" onclick="updateAvatar(this)" />
 			<img id="a1" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a1.png")" alt="avatar" onclick="updateAvatar(this)" />
 			<img id="a2" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a2.png")" alt="avatar" onclick="updateAvatar(this)" />
@@ -96,7 +96,7 @@
 	var aID = "@profile.avatar";
 	
 	function updateAvatar(parent) {
-		var childs = document.getElementById("avatars").getElementsByClassName("img-thumbnail");
+		var childs = document.getElementById("hp-avatars").getElementsByClassName("img-thumbnail");
 		for (i = 0; i < childs.length; i++) {
 			childs[i].className = "img-thumbnail";
 		}
