@@ -2,32 +2,35 @@
 	<nav class="hp-navbar navbar navbar-default navbar-fixed-top" role="navigation">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<div class="hp-logo">
-				<img src="@routes.Assets.at("images/logo-white.svg")">
-			</div>
+			@defining(if(Navigation.getLevel() == Navigation.Level.STREAM){"active"} else {"deactive"}) { status =>
+				<a href="@Navigation.getLevelRoute(Navigation.Level.STREAM)">
+					<div class="hp-logo @status">
+						<img id="normal" src="@routes.Assets.at("images/logo-white.svg")">
+						<img id="hover" src="@routes.Assets.at("images/logo-gray.svg")">
+					</div>
+				</a>
+			}
 		</div> <!-- /navbar-header -->
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="hp-nav nav navbar-nav">
-				@defining(if(Navigation.getLevel() == Navigation.Level.STREAM){"active"} else {"deactive"}) { status =>
-					<li class="@status"><a href="@Navigation.getLevelRoute(Navigation.Level.STREAM)">@Navigation.getLevelTitle(Navigation.Level.STREAM)</a></li>
-				}
 				@defining(if(Navigation.getLevel() == Navigation.Level.FRIENDS){"active"} else {"deactive"}) { status =>
-					<li class="@status"><a href="@Navigation.getLevelRoute(Navigation.Level.FRIENDS)">@Navigation.getLevelTitle(Navigation.Level.FRIENDS)</a></li>
+					<li class="@status">
+						<a class="visible-xs" href="@Navigation.getLevelRoute(Navigation.Level.STREAM)"><span class="glyphicon glyphicon-user"></span></a>
+						<a class="hidden-xs" href="@Navigation.getLevelRoute(Navigation.Level.FRIENDS)">@Navigation.getLevelTitle(Navigation.Level.FRIENDS)</a>
+					</li>
 				}
 				@defining(if(Navigation.getLevel() == Navigation.Level.GROUPS){"active"} else {"deactive"}) { status =>
-					<li class="@status"><a href="@Navigation.getLevelRoute(Navigation.Level.GROUPS)">@Navigation.getLevelTitle(Navigation.Level.GROUPS)</a></li>
+					<li class="@status">
+						<a class="visible-xs" href="@Navigation.getLevelRoute(Navigation.Level.GROUPS)"><span class="glyphicon glyphicon-globe"></span></a>
+						<a class="hidden-xs" href="@Navigation.getLevelRoute(Navigation.Level.GROUPS)">@Navigation.getLevelTitle(Navigation.Level.GROUPS)</a>
+					</li>
 				}
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Neuigkeiten <span class="badge">5</span> <b class="caret"></b></a>
-					<ul class="dropdown-menu hp-dropdown-news">
+					<a href="#" class="visible-xs dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bell"></span> <span class="badge">5</span> <b class="caret"></b></a>
+					<a href="#" class="hidden-xs dropdown-toggle" data-toggle="dropdown">Neuigkeiten <span class="badge">5</span> <b class="caret"></b></a>
+					<ul class="hp-dropdown-search dropdown-menu">
 						<li><a href="#">Neue Medien in Gruppe <b>Das ist keine Magie</b></a></li>
 						<li><a href="#">Neue Freundschaftsanfrage von <b>Iven Z.</b></a></li>
 						<li><a href="#">Neuer Post in Kurs <b>Das ist keine Magie</b></a></li>
@@ -35,19 +38,33 @@
 						<li><a href="#"><b>Anne H.</b> hat deine Freundschaftsanfrage abgelehnt</a></li>
 					</ul>
 				</li>
+				
+				<li class="visible-xs dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-search"></span> <b class="caret"></b></a>
+					<ul class="hp-dropdown-search dropdown-menu">
+						<form class="hp-search-form navbar-form navbar-left" role="search" action="@routes.GroupController.searchForGroupByKeyword" method="GET">
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="Suche" id="groupSearchQuery" name="keyword">
+							</div>
+							<button type="submit"><span class="glyphicon glyphicon-search"></span></button>
+						</form>
+					</ul>
+				</li>
 			</ul>
 			
-			<form class="hp-search-form navbar-form navbar-left" role="search" action="@routes.GroupController.searchForGroupByKeyword" method="GET">
+			<form class="hidden-xs hp-search-form navbar-form navbar-left" role="search" action="@routes.GroupController.searchForGroupByKeyword" method="GET">
 				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Gruppe oder Kurs" id="groupSearchQuery"  name="keyword">
+					<input type="text" class="form-control" placeholder="Suche" id="groupSearchQuery" name="keyword">
 				</div>
-				<button type="submit"><i class="glyphicon glyphicon-search"></i></button>
+				<button type="submit"><span class="glyphicon glyphicon-search"></span></button>
 			</form>
 			
-			<ul class="nav navbar-nav navbar-right">
-				<li><img class="hp-avatar" alt="avatar" src="@Component.currentAccount().getAvatarUrl()" /></li>
+			<ul class="nav navbar-nav pull-right">
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">@Component.currentAccount().firstname @Component.currentAccount().lastname<b class="caret"></b></a>
+					<a href="#" class="hp-nav-user dropdown-toggle" data-toggle="dropdown">
+						<img class="hp-avatar" alt="avatar" src="@Component.currentAccount().getAvatarUrl()" />
+						<b class="caret"></b>
+					</a>
 					<ul class="dropdown-menu">
 						<li><a href="@routes.ProfileController.stream(user.id)">Mein Newsstream</a></li>
 						<li><a href="@Navigation.getLevelRoute(Navigation.Level.PROFILE)">Mein Profil ansehen</a></li>

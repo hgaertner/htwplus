@@ -38,11 +38,6 @@ a > .glyphicon:hover {
 	color: #76B900;
 }
 
-.hp-dropdown-news {
-	width: 500px;
-	left: -150px;
-}
-
 .hp-truncate {
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -52,6 +47,7 @@ a > .glyphicon:hover {
 /*============================== Navigation ==============================*/
 
 .hp-navbar .hp-search-form input {
+	width: 150px;
 	padding-right: 20px;
 	background-color: #E0F2BF;
 }
@@ -60,6 +56,58 @@ a > .glyphicon:hover {
 	background: transparent;
 	border: 0;
 	margin-left: -28px;
+	outline: none;
+}
+
+.hp-navbar li .glyphicon {
+	color: inherit!important;
+}
+
+.hp-nav-user {
+	padding: 0 10px !important;
+}
+
+.hp-dropdown-news,
+.hp-dropdown-search {
+	width: 500px;
+	max-height: 180px;
+	left: -150px;
+	overflow-y: auto;
+}
+
+@media (max-width: 767px) {
+	.hp-dropdown-news,
+	.hp-dropdown-search {
+		position: fixed;
+		width: auto;
+		top: 51px;
+		right: 1px;
+		left: 1px;
+	}
+}
+
+.hp-dropdown-search .hp-search-form {
+	width: 100%;
+	position: relative;
+}
+
+.hp-dropdown-search .hp-search-form .form-group {
+	margin-bottom: 0;
+}
+
+.hp-dropdown-search .hp-search-form input {
+	background-color: white;
+	width: 100%;
+}
+
+.hp-dropdown-search .hp-search-form button {
+	position: absolute;
+	top: 5px;
+	right: 11px;
+}
+
+.hp-dropdown-search button .glyphicon:hover {
+	color: #76B900 !important;
 }
 
 
@@ -72,12 +120,27 @@ a > .glyphicon:hover {
 
 .hp-logo img {
 	width: 90%;
+	height: auto;
 	margin: 50px 0 70px;
 }
 
 .hp-navbar .hp-logo img {
 	width: 125px;
 	margin: 15px 15px 0 10px;
+}
+
+.hp-navbar .hp-logo.active {
+	background-color: #4C680C;
+}
+
+.hp-navbar .hp-logo:hover #hover,
+.hp-navbar .hp-logo #normal {
+	display: inherit!important;
+}
+
+.hp-navbar .hp-logo #hover,
+.hp-navbar .hp-logo:hover #normal {
+	display: none!important;
 }
 
 div#hp-htw-logo {
@@ -168,9 +231,7 @@ div#hp-bottom {
 
 div#hp-content  {
 	min-height: 500px;
-	padding-left: 15px;
-	padding-right: 15px;
-	padding-top: 0px;
+	padding: 5px 10px 0;
 	background-color: white;
 	box-sizing: content-box;
 	-moz-box-sizing: content-box;
@@ -269,6 +330,7 @@ div.hp-pagination {
 
 .hp-horizontal-form {
 	padding: 0;
+	float: none !important;
 }
 
 .hp-horizontal-form .input-group-btn {
@@ -328,6 +390,11 @@ div.hp-pagination {
 	color: #999999;
 }
 
+.media-heading a[data-toggle = 'modal'] {
+	position: absolute;
+	margin-left: 5px; 
+}
+
 
 /*============================== Avatare ==============================*/
 
@@ -355,9 +422,8 @@ div.hp-pagination {
 
 .hp-navbar .hp-avatar {
 	height: 46px;
-	width: auto;
-	margin-top: 2px;
-	margin-right: 5px;
+	width: 46px;
+	margin: 2px 0;
 }
 
 dl .hp-avatar {
