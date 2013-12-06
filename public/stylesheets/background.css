@@ -46,6 +46,10 @@ a > .glyphicon:hover {
 
 /*============================== Navigation ==============================*/
 
+.hp-navbar .hp-search-form {
+	padding-right: 7px;
+}
+
 .hp-navbar .hp-search-form input {
 	width: 150px;
 	padding-right: 20px;
@@ -64,7 +68,11 @@ a > .glyphicon:hover {
 }
 
 .hp-nav-user {
-	padding: 0 10px !important;
+	padding: 9px 10px !important;
+}
+
+.hp-nav-user span {
+	display: inline-block !important;
 }
 
 .hp-dropdown-news,
@@ -89,6 +97,7 @@ a > .glyphicon:hover {
 .hp-dropdown-search .hp-search-form {
 	width: 100%;
 	position: relative;
+	padding-right: 10px;
 }
 
 .hp-dropdown-search .hp-search-form .form-group {
@@ -110,6 +119,10 @@ a > .glyphicon:hover {
 	color: #76B900 !important;
 }
 
+.hp-nav .dropdown {
+	height: 50px;
+}
+
 
 /*============================== Logo ==============================*/
 
@@ -124,9 +137,15 @@ a > .glyphicon:hover {
 	margin: 50px 0 70px;
 }
 
+.hp-navbar .hp-logo {
+	height: 50px;
+	padding: 15px 15px 12px 10px
+}
+
 .hp-navbar .hp-logo img {
-	width: 125px;
-	margin: 15px 15px 0 10px;
+	height: 23px;
+	width: auto;
+	margin: 0;
 }
 
 .hp-navbar .hp-logo.active {
@@ -421,9 +440,8 @@ div.hp-pagination {
 }
 
 .hp-navbar .hp-avatar {
-	height: 46px;
-	width: 46px;
-	margin: 2px 0;
+	height: 32px;
+	width: 32px;
 }
 
 dl .hp-avatar {
