@@ -14,7 +14,8 @@
    height="90"
    id="svg2985"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="logo-white-small.svg">
+   sodipodi:docname="logo-gray-small.svg"
+   viewBox="0 0 126 90">
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -27,7 +28,7 @@
      inkscape:window-width="1366"
      inkscape:window-height="715"
      id="namedview19"
-     showgrid="true"
+     showgrid="false"
      inkscape:zoom="3.0205761"
      inkscape:cx="72.72901"
      inkscape:cy="56.045434"
@@ -54,7 +55,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
