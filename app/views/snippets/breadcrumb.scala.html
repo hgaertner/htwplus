@@ -1,7 +1,7 @@
 @import helper._
 
 <ul class="breadcrumb">
-	<li><a href="@routes.Application.index()">Home</a></li>
+	<li><a href="@routes.Application.index()"><span class="glyphicon glyphicon-home"></span></a></li>
 	@if(Navigation.getLevel() != null && Navigation.getTitle() == null){
 	<li>@Navigation.getLevelTitle(Navigation.getLevel())</li>
 	}
