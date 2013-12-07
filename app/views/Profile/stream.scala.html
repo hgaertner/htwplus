@@ -2,7 +2,7 @@
 
 @main("Newsstream") {
 @defining(Component.currentAccount()) { curUser =>
-    
+    @views.html.Profile.snippets.navTabs(user)
 	<h2>
 		@user.name's Newsstream
 		<div class="btn-group">

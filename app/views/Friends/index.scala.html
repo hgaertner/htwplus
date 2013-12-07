@@ -44,7 +44,7 @@
 				@if(request.linkType.equals(models.enums.LinkType.request)){ in Bearbeitung } 
 			</td>
 			<td>
-				<a href="@routes.FriendshipController.cancelFriendRequest(request.id)" data-toggle="modal" rel="tooltip" title="Anfrage zurückziehen">
+				<a href="@routes.FriendshipController.cancelFriendRequest(request.id)" data-toggle="modal" rel="tooltip" title="@if(request.linkType.equals(models.enums.LinkType.reject)) {löschen} else {Anfrage zurückziehen}">
 					<span class="glyphicon glyphicon-remove"></span>
 				</a>
 			</td>

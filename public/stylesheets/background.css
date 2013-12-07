@@ -123,6 +123,9 @@ a > .glyphicon:hover {
 	height: 50px;
 }
 
+.dropdown-menu > li {
+	padding: 3px 20px;
+}
 
 /*============================== Nav-Tabs ==============================*/
 
