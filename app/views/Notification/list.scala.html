@@ -12,54 +12,58 @@
 
 @for(note <- notification){
 
-	@if(note.noteType == NotificationType.GROUP_NEW_POST) {		
+	@note.noteType match {
+		
+		case NotificationType.GROUP_NEW_POST => {
 			@defining(Group.findById(note.objectId)) { group =>
 				@element(forward(note.id,GroupController.view(group.id).toString()).toString()){
 					Neuer Post in Gruppe @truncate(group.title,20)
 				}
 			}
-	}
-	
-	@if(note.noteType == NotificationType.GROUP_NEW_MEDIA) {
+		} 	
+		
+		case NotificationType.GROUP_NEW_MEDIA => {
 			@defining(Group.findById(note.objectId)) { group =>
 				@element(forward(note.id,GroupController.media(group.id).toString()).toString()){
 					Neue Medien in Gruppe @truncate(group.title,20)
 				}
 			}
-	}
-	
-	@if(note.noteType == NotificationType.GROUP_NEW_REQUEST) {
+		}	
+		
+		case NotificationType.GROUP_NEW_REQUEST => {
 			@defining(Group.findById(note.objectId)) { group =>
 				@element(forward(note.id,GroupController.index().toString()).toString()){
 					Neue Anfrage für die Gruppe @truncate(group.title,20)
 				}
 			}
-	}
-	
-	@if(note.noteType == NotificationType.GROUP_REQUEST_SUCCESS) {
+		}
+		
+		case NotificationType.GROUP_REQUEST_SUCCESS => {
 			@defining(Group.findById(note.objectId)) { group =>
 				@element(forward(note.id,GroupController.view(group.id).toString()).toString()){
 					Deine Anfrage für die Gruppe @truncate(group.title,20) wurde akzeptiert
 				}
 			}
-	}
-	
-	@if(note.noteType == NotificationType.GROUP_REQUEST_DECLINE) {
+		}
+		
+		case NotificationType.GROUP_REQUEST_DECLINE => {
 			@defining(Group.findById(note.objectId)) { group =>
 				@element(forward(note.id,GroupController.index().toString()).toString()){
 					Deine Anfrage für die Gruppe @truncate(group.title,20) wurde abgelehnt
 				}
 			}
-	}
-	
-	@if(note.noteType == NotificationType.POST_GROUP_NEW_COMMENT) {
+		}
+		
+		case NotificationType.POST_GROUP_NEW_COMMENT => {
 			@defining(Post.findById(note.objectId)) { post =>
 				@element(forward(note.id,GroupController.view(post.group.id).toString()).toString()){
 					Neuer Kommentar zum Post @truncate(post.content,20) in der Gruppe @truncate(post.group.title,20)
 				}
 			}
-	}
+		}
 	
+	}
+
 }
 
 <li><a href="@routes.NotificationController.deleteAll(request.path)"><b>Alle löschen</b></a></li>

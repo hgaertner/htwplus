@@ -1,6 +1,7 @@
 package models;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.lang.Exception;
 
 import javax.persistence.Column;
@@ -14,6 +15,8 @@ import javax.persistence.UniqueConstraint;
 import play.Logger;
 import play.data.validation.Constraints.Required;
 import play.db.jpa.JPA;
+import play.libs.Akka;
+import play.libs.F.Promise;
 import models.base.BaseModel;
 
 @Entity
@@ -66,23 +69,47 @@ public class Notification extends BaseModel {
 	}
 	
 	// GROUP NOTIFICATIONS
-	public static void newGroupNotification(NotificationType noteType, Group group, Account sender) {
+	public static void newGroupNotification(final NotificationType noteType, final Group group, final Account sender) {
 		// Get all accounts for that group
-		List<Account> accounts =  GroupAccount.findAccountsByGroup(group);
-		NotificationType type = noteType;
+		
+		Akka.future(
+		  new Callable<Void>() {
+		    public Void call() {
+		    	Logger.info("Async test");
+		    	Notification.newNotification(NotificationType.FRIEND_NEW_REQUEST, (long) 123, sender);
+		    	List<Account> accounts =  GroupAccount.findAccountsByGroup(group);
+		    	Logger.info("Size:" + String.valueOf(accounts.size()));
+				NotificationType type = noteType;
 
-		for (Account account : accounts) {
-			if(!account.equals(sender)){
-				if(Notification.findUnique(type, account, group.id) == null) {
-					Notification notf = new Notification();
-					notf.account = account;
-					notf.noteType = type;
-					notf.objectId = group.id;
-					notf.create();
-					Logger.info("Created new Notification for User: " + account.id.toString());
+		    	for (Account account : accounts) {
+					if(!account.equals(sender)){
+						if(Notification.findUnique(type, account, group.id) == null) {
+							Notification notf = new Notification();
+							notf.account = account;
+							notf.noteType = type;
+							notf.objectId = group.id;
+							notf.create();
+							Logger.info("Created new Notification for User: " + account.id.toString());
+						}
+					}
 				}
-			}
-		}
+				return null;
+		    }
+		  }
+		);
+		
+//		for (Account account : accounts) {
+//			if(!account.equals(sender)){
+//				if(Notification.findUnique(type, account, group.id) == null) {
+//					Notification notf = new Notification();
+//					notf.account = account;
+//					notf.noteType = type;
+//					notf.objectId = group.id;
+//					notf.create();
+//					Logger.info("Created new Notification for User: " + account.id.toString());
+//				}
+//			}
+//		}
 	}
 	
 	// GROUP POST NOTIFICATIONS
