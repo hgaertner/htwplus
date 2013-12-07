@@ -36,11 +36,12 @@
 					<a href="@routes.GroupController.edit(course.id)" rel="tooltip" data-toggle="modal" data-original-title="Kurs bearbeiten" data-container="body"><i class="glyphicon glyphicon-pencil"></i></a>
 					<a href="#confirmDeleteGroup@course.id" rel="tooltip" data-toggle="modal" data-original-title="Kurs löschen" data-container="body"><i class="glyphicon glyphicon-trash"></i></a>
 				} 
-				@if(Secured.isMemberOfGroup(course, Component.currentAccount)) {
+				@if(Secured.isMemberOfGroup(course, Component.currentAccount) && !Secured.isOwnerOfGroup(course,Component.currentAccount)) {
 					<a href="@routes.GroupController.removeMember(course.id, user.id)" rel="tooltip" data-toggle="modal" data-original-title="Kurs verlassen" data-container="body">
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
-				} else {
+				} 
+				@if(!Secured.isMemberOfGroup(course, Component.currentAccount)){
 					<a href="@routes.GroupController.join(course.id)" rel="tooltip" data-original-title="Beitreten" data-container="body">
 						<span class="glyphicon glyphicon-ok"></span>
 					</a>

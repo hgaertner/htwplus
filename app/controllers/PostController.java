@@ -94,9 +94,9 @@ public class PostController extends BaseController {
 		Account account = Component.currentAccount();
 		Form<Post> filledForm = postForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
-			System.out.println(filledForm.errors());
+			Logger.error("Comment form has errors");
 			flash("error", "Error in Form!");
-		return badRequest();
+			return redirect(routes.GroupController.view(parent.group.id));
 		} else {
 			Post post = filledForm.get();
 			post.owner = account;
