@@ -135,11 +135,23 @@ public class PostController extends BaseController {
 	
 	@Transactional
 	public static Result deletePost(final Long postId) {
-		
-		// verify redirect after deletion
-		Call routesTo = routes.Application.index();
-		
 		final Post post = Post.findById(postId);
+		// verify redirect after deletion
+		Call routesTo = null;
+		if(post.group != null){
+			routesTo = routes.GroupController.view(post.group.id);
+		}
+		else if(post.account != null){
+			routesTo = routes.Application.index();
+		}
+		else if(post.parent != null)
+		{
+			if(post.parent.group != null){
+				routesTo = routes.GroupController.view(post.parent.group.id);
+			}else if(post.account != null) {
+				routesTo = routes.Application.index();
+			}
+		}
 		final Account account = Component.currentAccount();
 		if (Secured.isAllowedToDeletePost(post, account)) {
 			post.delete();

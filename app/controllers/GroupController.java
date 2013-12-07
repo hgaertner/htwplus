@@ -205,8 +205,8 @@ public class GroupController extends BaseController {
 				Navigation.set("Suchergebnisse");
 				courseResults = Group.searchForCourseByKeyword(keyword);
 				groupResults = Group.searchForGroupByKeyword(keyword);
-				
 				accResults = Account.searchForAccountByKeyword(keyword);
+				Logger.info("Sizes: " + "Groups: " +groupResults.size() + " Courses: " + courseResults.size() + " Account: " +accResults.size());
 			}
 
 		}
