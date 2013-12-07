@@ -17,6 +17,11 @@
 		}
 		
 	}
+	@if(Secured.isFriend(user)) {
+		@defining(if(Navigation.getTitle().equals("Editieren")){"active"} else {"deactive"}) { status =>
+			<li class="@status"><a href="#confirmDeleteFriend" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Freundschaft beenden" data-container="body"><span class="glyphicon glyphicon-trash"></span></a></li>
+		}
+	}
 	@if(Secured.isOwnerOfAccount(user.id)) {
 		@defining(if(Navigation.getTitle().equals("Editieren")){"active"} else {"deactive"}) { status =>
 			<li class="@status"><a href="@routes.ProfileController.edit(user.id)" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Profil bearbeiten" data-container="body"><span class="glyphicon glyphicon-pencil"></span></a></li>
