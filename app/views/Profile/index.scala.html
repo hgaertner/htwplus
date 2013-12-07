@@ -3,20 +3,11 @@
 
 @main("Profil") {
 @defining(Component.currentAccount()) { curUser =>
+@views.html.Profile.snippets.navTabs(user)
 
 <h2>
 	@user.name
-	<div class="btn-group">
-		<a type="button" href="@routes.ProfileController.stream(user.id)" class="btn btn-default" rel="tooltip" data-original-title="öfftl. Newsstream" data-container="body"><span class="glyphicon glyphicon-comment"></span></a>
-		@if(curUser.id == user.id) {
-		<a type="button" href="@routes.ProfileController.edit(user.id)" class="btn btn-default" rel="tooltip" title="Profil bearbeiten" data-container="body"><span class="glyphicon glyphicon-pencil"></span></a> 
-		<a type="button" href="@routes.ProfileController.editPassword(user.id)" class="btn btn-default" rel="tooltip" title="Passwort ändern" data-container="body"><span class="glyphicon glyphicon-wrench"></span></a>
-		} else { @if(Friendship.alreadyFriendly(curUser, user)) {
-		<a type="button" href="#confirmDeleteFriend" class="btn btn-default" data-toggle="modal" rel="tooltip" title="Freundschaft beenden" data-container="body"><span class="glyphicon glyphicon-trash"></span></a>
-		} else {
-		<a type="button" href="@routes.FriendshipController.requestFriend(user.id)" class="btn btn-default" rel="tooltip" title="Einladung senden" data-container="body"><span class="glyphicon glyphicon-plus"></span></a>
-		}}
-	</div>
+	
 </h2>
 <br />
 <img alt="avatar" src="@user.getAvatarUrl()" class="img-thumbnail" />

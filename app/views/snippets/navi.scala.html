@@ -21,7 +21,7 @@
 			<ul class="hp-nav nav navbar-nav">
 				@defining(if(Navigation.getLevel() == Navigation.Level.FRIENDS){"active"} else {"deactive"}) { status =>
 					<li class="@status">
-						<a class="visible-xs" href="@Navigation.getLevelRoute(Navigation.Level.STREAM)"><span class="glyphicon glyphicon-user"></span></a>
+						<a class="visible-xs" href="@Navigation.getLevelRoute(Navigation.Level.FRIENDS)"><span class="glyphicon glyphicon-user"></span></a>
 						<a class="hidden-xs" href="@Navigation.getLevelRoute(Navigation.Level.FRIENDS)">@Navigation.getLevelTitle(Navigation.Level.FRIENDS)</a>
 					</li>
 				}
