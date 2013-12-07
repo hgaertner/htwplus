@@ -13,12 +13,10 @@
 					@views.html.snippets.userLink(post.owner)
 					@if(post.belongsToGroup && currentView != "group"){schrieb in <a href="@routes.GroupController.view(post.group.id)">@post.group.title</a>}
 					@if(post.belongsToAccount && user != post.account && post.account != post.owner){&rarr; <a href="@routes.ProfileController.view(post.account.id)">@post.account.name</a>} 
-					@if(post.owner != null || post.account != null){
-						@if(post.owner.id == user.id || user.id == post.account.id){
+					@if(Secured.isAllowedToDeletePost(post, user)){
                 			<a href="#confirmModalDeletePost@post.id" data-toggle="modal" rel="tooltip" data-original-title="Post löschen">
                 				<span class="glyphicon glyphicon-trash"></span>
                 			</a>
-                		}
                 	}
 				</h4>
 				<small>@post.createdAt.format("dd. MMM yyyy HH:mm")</small>

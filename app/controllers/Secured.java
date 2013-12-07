@@ -94,4 +94,5 @@ public class Secured extends Security.Authenticator {
 			return false;
 		}
 	}
+	
 }
