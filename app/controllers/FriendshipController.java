@@ -3,9 +3,10 @@ package controllers;
 import java.util.List;
 
 import controllers.Navigation.Level;
-
 import models.Account;
 import models.Friendship;
+import models.Notification;
+import models.Notification.NotificationType;
 import models.enums.LinkType;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
@@ -38,7 +39,7 @@ public class FriendshipController extends BaseController {
 		
 		Friendship friendship = new Friendship(currentUser,potentialFriend,LinkType.request);
 		friendship.create();
-
+		Notification.newNotification(NotificationType.FRIEND_NEW_REQUEST, currentUser.id, potentialFriend);
 		flash("success","Deine Einladung wurde verschickt!");
 		
 		return redirect(routes.FriendshipController.index());
@@ -84,7 +85,7 @@ public class FriendshipController extends BaseController {
 			
 			// and create new friend-connection between currentAccount and requester
 			new Friendship(currentUser,potentialFriend,LinkType.establish).create();
-			
+			Notification.newNotification(NotificationType.FRIEND_REQUEST_SUCCESS, currentUser.id, potentialFriend);
 			flash("success","Freundschaft erfolgreich hergestellt!");
 		}
 		
@@ -98,8 +99,10 @@ public class FriendshipController extends BaseController {
 		if(requestLink != null){
 			requestLink.linkType = LinkType.reject;
 			requestLink.update();
+			Notification.newNotification(NotificationType.FRIEND_REQUEST_DECLINE, requestLink.friend.id, requestLink.account);
 		}
-
+		
+		
 		return redirect(routes.FriendshipController.index());
 	}
 	
