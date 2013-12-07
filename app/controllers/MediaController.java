@@ -115,7 +115,7 @@ public class MediaController extends BaseController {
     
     private static File createZIP(List<Media> media, String fileName) throws IOException {
     	
-    	cleanUpTemp();
+       	cleanUpTemp(); // JUST FOR DEVELOPMENT, DO NOT USE IN PRODUCTION
 	    String path = Play.application().path().toString();
 	    String tmpPath = Play.application().configuration().getString("media.tempPath");
     	File file = File.createTempFile(tempPrefix, ".tmp", new File(path + "/" + tmpPath));
