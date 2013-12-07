@@ -144,15 +144,22 @@ $(document).ready(function () {
 	$('.hp-comment-form').each(function(){
 		var context = $(this);
 		$(".commentSubmit", this).click(function(){
-			$.ajax({
-				url: context.attr('action'),
-				type: "POST",
-				data: context.serialize(),
-				success: function(data){
-					context.before(data);
-					context[0].reset();
-				}
-			});
+			if(context.serializeArray()[0].value == ""){
+				$(context).find('textarea').animate({opacity:0},200,"linear",function(){
+					  $(this).animate({opacity:1},200);
+					  $(this).focus();
+				});
+			} else {
+				$.ajax({
+					url: context.attr('action'),
+					type: "POST",
+					data: context.serialize(),
+					success: function(data){
+						context.before(data);
+						context[0].reset();
+					}
+				});
+			}
 			return false;
 		});
 	});
