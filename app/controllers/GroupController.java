@@ -41,7 +41,7 @@ public class GroupController extends BaseController {
 	
 	
 	public static Result index() {
-		Navigation.set(Level.GROUPS);
+		Navigation.set(Level.GROUPS, "Index");
 		Account account = Component.currentAccount();
 		List<Group> groupAccounts = GroupAccount.findEstablished(account);
 		List<GroupAccount> groupRequests = GroupAccount.findRequests(account);
