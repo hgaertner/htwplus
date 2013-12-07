@@ -2,58 +2,68 @@
 @import models.enums._
 
 @main("Searchresult"){
-	@if(groups != null && groups.size != 0) {
 
-		<!-- Start confirmDeleteGroupModal -->
-		@for(course <- courses) {
-			<div class="modal fade" id="confirmDeleteGroup@course.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-				@views.html.Group.snippets.deleteGroupModal(course)
-			</div>
-		}
-		<!-- End confirmDeleteGroupModal -->
-		
-		<!-- Start infoModal -->
-		@for(course <- courses) {
-		<div class="modal fade" id="infoModal@course.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-			@views.html.Group.snippets.infoModal(course)
-		</div>
-		}
-		<!-- Ende infoModal -->
-		
-		<!-- Start confirmDeleteGroupModal -->
-		@for(group <- groups) {
-			<div class="modal fade" id="confirmDeleteGroup@group.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-				@views.html.Group.snippets.deleteGroupModal(group)
-			</div>
-		}
-		<!-- End confirmDeleteGroupModal -->
-		
-		<!-- Start infoModal -->
-		@for(group <- groups) {
-		<div class="modal fade" id="infoModal@group.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-			@views.html.Group.snippets.infoModal(group)
-		</div>
-		}
-		<!-- Ende infoModal -->
+	@defining(Component.currentAccount()) { user =>
 	
-		<br />
+		@if(courses != null && courses.size != 0) {
 		
-		@defining(Component.currentAccount()) { user =>
-
+			<!-- Start confirmDeleteGroupModal -->
+			@for(group <- groups) {
+				<div class="modal fade" id="confirmDeleteGroup@group.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+					@views.html.Group.snippets.deleteGroupModal(group)
+				</div>
+			}
+			<!-- End confirmDeleteGroupModal -->
+			
+			<!-- Start infoModal -->
+			@for(group <- groups) {
+			<div class="modal fade" id="infoModal@group.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+				@views.html.Group.snippets.infoModal(group)
+			</div>
+			}
+			<!-- Ende infoModal -->
+			
 			<!-- list all found courses -->
 			@views.html.Group.snippets.listCourses(courses, user)
 			</br>
-			<!-- list all found groups -->
-			@views.html.Group.snippets.listGroups(groups, user)
-			</br>
-			<!-- list all found groups -->
-			@views.html.Group.snippets.listAccounts(users)
 			
 		}
 		
-	} else {
-	  	<h2>Keine Suchergebnisse</h2>
-	  }
-	  
-	<br />
+		@if(groups != null && groups.size != 0) {
+		
+			<!-- Start confirmDeleteGroupModal -->
+			@for(course <- courses) {
+				<div class="modal fade" id="confirmDeleteGroup@course.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+					@views.html.Group.snippets.deleteGroupModal(course)
+				</div>
+			}
+			<!-- End confirmDeleteGroupModal -->
+			
+			<!-- Start infoModal -->
+			@for(course <- courses) {
+			<div class="modal fade" id="infoModal@course.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+				@views.html.Group.snippets.infoModal(course)
+			</div>
+			}
+			<!-- Ende infoModal -->
+			
+			<!-- list all found groups -->
+			@views.html.Group.snippets.listGroups(groups, user)
+			</br>
+		
+		}
+		
+		@if(users != null && users.size != 0) {
+		
+			<!-- list all found groups -->
+			@views.html.snippets.listAccounts(users)
+		
+		}
+		
+		@if(courses.size == 0 && groups.size == 0 && users.size == 0) {
+		
+			<h4><i>Dazu konnten wir leider nichts finden :-(</i></h4>
+		}
+	
+	}
 } 
