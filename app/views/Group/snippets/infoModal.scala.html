@@ -1,15 +1,19 @@
 @(group: Group)
 @import helper._
-
+@import models.enums.GroupType
 <div class="modal-dialog">
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			<h4 class="modal-title" id="confirmModalLabel">
-				@if(group.isClosed) {
-				<span class="glyphicon glyphicon-lock"></span>
-				} else {
-				<span class="glyphicon glyphicon-globe"></span>
+				@if(group.groupType == GroupType.close) {
+					<span class="glyphicon glyphicon-lock"></span>
+				} 
+				@if(group.groupType == GroupType.open) {
+					<span class="glyphicon glyphicon-globe"></span>
+				}
+				@if(group.groupType == GroupType.course) {
+					<span class="glyphicon glyphicon-briefcase"></span>
 				}
 				@group.title
 			</h4>
