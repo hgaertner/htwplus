@@ -3,19 +3,7 @@
 @main("Newsstream") {
 @defining(Component.currentAccount()) { curUser =>
     @views.html.Profile.snippets.navTabs(user)
-	<h2>
-		@user.name's Newsstream
-		<div class="btn-group">
-			<a type="button" href="@routes.ProfileController.view(user.id)" class="btn btn-default" rel="tooltip" data-original-title="Profil" data-container="body"><span class="glyphicon glyphicon-user"></span></a>
-			@if(curUser.equals(user)) {
-			<a type="button" href="@routes.ProfileController.edit(user.id)" class="btn btn-default" rel="tooltip" data-original-title="Profil bearbeiten" data-container="body"><span class="glyphicon glyphicon-pencil"></span></a> 
-			} else { @if(Friendship.alreadyFriendly(curUser, user)) {
-			<a type="button" href="#confirmDeleteFriend" class="btn btn-default" data-toggle="modal" rel="tooltip" data-original-title="Freundschaft beenden" data-container="body"><span class="glyphicon glyphicon-trash"></span></a>
-			} else {
-			<a type="button" href="@routes.FriendshipController.requestFriend(user.id)" class="btn btn-default" rel="tooltip" data-original-title="Einladung senden" data-container="body"><span class="glyphicon glyphicon-plus"></span></a>
-			}}
-		</div>
-	</h2>
+	<h2>@user.name's Newsstream</h2>
 		
 	<!-- confirmDeleteFriendModal -->
 	<div id="confirmDeleteFriend" class="modal hide fade" tabindex="-1" role="dialog">@views.html.Friends.snippets.deleteFriendModal(user)</div>

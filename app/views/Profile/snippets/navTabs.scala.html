@@ -1,12 +1,21 @@
 @(user: Account)
 @import helper._
 
-<ul class="nav nav-tabs nav-top pull-right">
-	@defining(if(Navigation.getTitle().equals("Newsstream")){"active"} else {"deactive"}) { status =>
-		<li class="@status"><a href="@routes.ProfileController.stream(user.id)" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Mein Newsstream" data-container="body"><span class="glyphicon glyphicon-comment"></span></a></li>
+<ul class="nav nav-tabs hp-nav-tabs pull-right">
+	@if(Secured.isFriend(user)) {
+		@defining(if(Navigation.getTitle().equals("Newsstream")){"active"} else {"deactive"}) { status =>
+			<li class="@status"><a href="@routes.ProfileController.stream(user.id)" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Newsstream" data-container="body"><span class="glyphicon glyphicon-comment"></span></a></li>
+		}
+	} else {
+		<li><a href="@routes.FriendshipController.requestFriend(user.id)" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Einladung senden" data-container="body"><span class="glyphicon glyphicon-envelope"></span></a></li>
 	}
 	@defining(if(Navigation.getTitle().equals("Profil")){"active"} else {"deactive"}) { status =>
 		<li class="@status"><a href="@routes.ProfileController.view(user.id)" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Profil ansehen" data-container="body"><span class="glyphicon glyphicon-file"></span></a></li>
+	}
+	@if(Secured.isOwnerOfAccount(user.id)) {
+		@defining(if(Navigation.getTitle().equals("Editieren")){"active"} else {"deactive"}) { status =>
+			<li class="@status"><a href="@routes.ProfileController.edit(user.id)" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Profil bearbeiten" data-container="body"><span class="glyphicon glyphicon-pencil"></span></a></li>
+		}
 	}
 	@if(Secured.isOwnerOfAccount(user.id)) {
 		@defining(if(Navigation.getTitle().equals("Editieren")){"active"} else {"deactive"}) { status =>

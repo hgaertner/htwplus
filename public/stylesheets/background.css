@@ -129,23 +129,23 @@ a > .glyphicon:hover {
 
 /*============================== Nav-Tabs ==============================*/
 
-.nav-top {
+.hp-nav-tabs {
 	margin-top: -40px;
 }
 
-.nav-top > li {
+.hp-nav-tabs > li {
 	width: 50px;
 }
 
-.nav-top > li > a,
-.nav-top > li > a:hover,
-.nav-top > li > a:focus {
+.hp-nav-tabs > li > a,
+.hp-nav-tabs > li > a:hover,
+.hp-nav-tabs > li > a:focus {
 	background-color: #76b900;
 	border: 1px solid #dddddd;
 	padding: 4px 2px 0px 2px;
 }
 
-.nav-top .glyphicon:hover {
+.hp-nav-tabs .glyphicon:hover {
 	color: #5a5858;
 }
 
