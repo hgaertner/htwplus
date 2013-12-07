@@ -1,7 +1,7 @@
 @(group: Group)
 @import helper._
 
-<ul class="nav nav-tabs nav-top pull-right">
+<ul class="nav nav-tabs hp-nav-tabs pull-right">
 	@defining(if(Navigation.getTitle().equals("Newsstream")){"active"} else {"deactive"}) { status =>
 		<li class="@status"><a href="@routes.GroupController.view(group.id)" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Gruppennewsstream" data-container="body"><span class="glyphicon glyphicon-comment"></span></a></li>
 	}

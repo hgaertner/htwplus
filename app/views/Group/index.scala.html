@@ -3,6 +3,7 @@
 @import models.enums._
 
 @main("Gruppen") {
+	@views.html.Group.snippets.navTabsAdd()
 
 	<!-- Start infoModal -->
 	@for(group <- approvedGroups ++ approvedCourses) {
@@ -76,9 +77,6 @@
 			<span rel="tooltip" data-original-title="Hier findest du alle Gruppen die du gegründet hast oder denen du beigetreten bist." data-delay="500" data-container="body">
 				Meine Gruppen
 			</span>
-			<a href="@routes.GroupController.create" role="button" class="btn btn-default" rel="tooltip" title="Neue Gruppe erstellen" data-container="body">
-				<span class="glyphicon glyphicon-plus"></span>
-			</a>
 		</h2>
 				
 		@if(!approvedGroups.isEmpty){
@@ -93,9 +91,6 @@
 			<span rel="tooltip" data-original-title="Hier findest du alle Gruppen die du gegründet hast oder denen du beigetreten bist." data-delay="500" data-container="body">
 				Meine Kurse
 			</span>
-			<a href="@routes.GroupController.create" role="button" class="btn btn-default" rel="tooltip" title="Neuen Kurs erstellen" data-container="body">
-				<span class="glyphicon glyphicon-plus"></span>
-			</a>
 		</h2>
 		
 		
