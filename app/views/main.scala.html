@@ -22,8 +22,12 @@
 	}
 
 		<div class="container">
+		
 			<div class="row">
 				<div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1">
+				@if(user != null){
+						@views.html.snippets.breadcrumb()
+					}
 					<div id="hp-right">
 						<div id="hp-topRight"></div>
 						<div id="hp-bottomRight"></div>
@@ -33,9 +37,6 @@
 							<div id="hp-top">
 								<div id="hp-bottom">
 									<div id="hp-content">
-										@if(user != null){
-											@views.html.snippets.breadcrumb()
-										}
 										@if(flash.containsKey("success")) {
 											<div class="alert alert-success fade in">
 												<button type="button" class="close fade out" data-dismiss="alert">&times;</button>

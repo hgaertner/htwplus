@@ -1,0 +1,16 @@
+@(group: Group)
+@import models.enums.GroupType
+@import helper._
+
+<ul class="nav nav-tabs nav-top pull-right">
+	<li class="active"><a href="@routes.GroupController.view(group.id)" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Gruppennewsstream" data-container="body"><span class="glyphicon glyphicon-comment"></span></a></li>
+	<li><a href="@routes.GroupController.media(group.id)" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Gruppenmedien" data-container="body"><span class="glyphicon glyphicon-file"></span></a></li>
+	@if(Secured.isOwnerOfGroup(group, Component.currentAccount)) {
+		<li><a href="@routes.GroupController.edit(group.id)" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Gruppe bearbeiten" data-container="body"><span class="glyphicon glyphicon-pencil"></span></a></li>
+		<li><a href="#confirmDeleteGroup" role="button" class="btn btn-default active" rel="tooltip" data-toggle="modal" data-original-title="Gruppe löschen" data-container="body"><span class="glyphicon glyphicon-trash"></span></a></li>
+	}
+	@if(!Secured.isMemberOfGroup(group, Component.currentAccount)) {
+		<li><a href="@routes.GroupController.join(group.id)" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Beitreten" data-container="body"><span class="glyphicon glyphicon-ok"></span></a></li>
+	}
+	<li><a href="#infoModal" role="button" class="btn btn-default active" data-toggle="modal" rel="tooltip" data-original-title="Gruppeninfo" data-container="body"><span class="glyphicon glyphicon-info-sign"></span></a></li>
+</ul>
