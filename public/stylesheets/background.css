@@ -67,6 +67,11 @@ a > .glyphicon:hover {
 	color: inherit!important;
 }
 
+.hp-navbar-container {
+	max-width: 1000px;
+	margin: 0 auto;
+}
+
 .hp-nav-user {
 	padding: 9px 10px !important;
 }
