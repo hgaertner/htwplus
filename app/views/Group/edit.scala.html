@@ -1,6 +1,6 @@
 @(group: Group, groupForm: Form[Group])
 @import helper._
-
+@import models.enums.GroupType
 @main("Gruppe bearbeiten") {
 
 	<!-- Start infoModal -->
@@ -35,13 +35,13 @@
 			<dd>
 				<div class="radio">
 					<label>
-						<input type="radio" name="optionsRadios" id="optionsRadios2" value="0" @if(!group.isClosed) {checked}>
+						<input type="radio" name="optionsRadios" id="optionsRadios2" value="0" @if(group.groupType == GroupType.open) {checked}>
 						<span class="glyphicon glyphicon-globe"></span> Öffentliche Gruppe
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type="radio" name="optionsRadios" id="optionsRadios1" value="1" @if(group.isClosed) {checked}>
+						<input type="radio" name="optionsRadios" id="optionsRadios1" value="1" @if(group.groupType == GroupType.close) {checked}>
 						<span class="glyphicon glyphicon-lock"></span> Private Gruppe
 					</label>
 				</div>
