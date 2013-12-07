@@ -124,6 +124,28 @@ a > .glyphicon:hover {
 }
 
 
+/*============================== Nav-Tabs ==============================*/
+
+.nav-top {
+	margin-top: -40px;
+}
+
+.nav-top > li {
+	width: 50px;
+}
+
+.nav-top > li > a,
+.nav-top > li > a:hover,
+.nav-top > li > a:focus {
+	background-color: #76b900;
+	border: 1px solid #dddddd;
+	padding: 4px 2px 0px 2px;
+}
+
+.nav-top .glyphicon:hover {
+	color: #5a5858;
+}
+
 /*============================== Logo ==============================*/
 
 .hp-logo {
@@ -179,6 +201,7 @@ div#hp-right  {
 	background-repeat: repeat-y;
 	background-position: right 0px;
 	margin: 0 -10px;
+	margin-top: 40px;
 }
 
 div#hp-topRight {
@@ -250,7 +273,7 @@ div#hp-bottom {
 
 div#hp-content  {
 	min-height: 500px;
-	padding: 5px 10px 0;
+	padding: 5px 30px 0;
 	background-color: white;
 	box-sizing: content-box;
 	-moz-box-sizing: content-box;
