@@ -6,6 +6,8 @@
 	@defining(Component.currentAccount()) { user =>
 	
 		@if(courses != null && courses.size != 0) {
+			
+			<h3>Gefundene Kurse:</h3>
 		
 			<!-- Start confirmDeleteGroupModal -->
 			@for(group <- groups) {
@@ -31,6 +33,8 @@
 		
 		@if(groups != null && groups.size != 0) {
 		
+			<h3>Gefundene Gruppen:</h3>
+		
 			<!-- Start confirmDeleteGroupModal -->
 			@for(course <- courses) {
 				<div class="modal fade" id="confirmDeleteGroup@course.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
@@ -54,7 +58,9 @@
 		}
 		
 		@if(users != null && users.size != 0) {
-		
+			
+			<h3>Gefundene Personen:</h3>
+			
 			<!-- list all found groups -->
 			@views.html.snippets.listAccounts(users)
 		
