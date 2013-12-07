@@ -102,6 +102,9 @@ public class Account extends BaseModel {
      * Retrieve a User from email.
      */
     public static Account findByEmail(String email) {
+    	if(email.isEmpty()) {
+    		return null;
+    	}
     	try{
 	    	return (Account) JPA.em()
 					.createQuery("from Account a where a.email = :email")
