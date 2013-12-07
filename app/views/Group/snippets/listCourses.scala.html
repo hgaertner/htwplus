@@ -4,12 +4,14 @@
 
 <table class="table table-hover">
 	<colgroup>
-		<col width="55%">
+		<col width = "5%">
+		<col width="50%">
 		<col width="30%">
 		<col width="15%">
 	</colgroup>
 	<thead>
 		<tr>
+			<th></th>
 			<th>Kursname</th>
 			<th>Erstellt von</th>
 			<th>Optionen</th>
@@ -19,7 +21,9 @@
 		@for(course <- courses) {
 		<tr>
 			<td>
-				<span class="glyphicon glyphicon-briefcase"></span>			
+				<span class="glyphicon glyphicon-briefcase"></span>
+			</td>
+			<td>		
 				<a href="@routes.GroupController.view(course.id)">@if(Secured.isOwnerOfGroup(course, user)) {
 					<b> @course.title </b>
 					} else { @course.title }

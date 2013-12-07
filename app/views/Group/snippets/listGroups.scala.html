@@ -4,12 +4,14 @@
 
 <table class="table table-hover">
 	<colgroup>
-		<col width="55%">
+		<col width = "5%">
+		<col width="50%">
 		<col width="30%">
 		<col width="15%">
 	</colgroup>
 	<thead>
 		<tr>
+			<th></th>
 			<th>Gruppenname</th>
 			<th>Erstellt von</th>
 			<th>Optionen</th>
@@ -21,7 +23,8 @@
 			<td>
 				@if(group.groupType.equals(GroupType.open)) { <span class="glyphicon glyphicon-globe"></span> }
 				@if(group.groupType.equals(GroupType.close)) { <span class="glyphicon glyphicon-lock"></span> }
-					
+			</td>
+			<td>		
 				<a href="@routes.GroupController.view(group.id)">
 					@if(Secured.isOwnerOfGroup(group, user)) {
 						<b> @group.title</b>
