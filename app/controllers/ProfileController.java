@@ -34,7 +34,7 @@ public class ProfileController extends BaseController {
 	static final int PAGE = 1;
 
 	public static Result me() {
-		Navigation.set(Level.PROFILE);
+		Navigation.set(Level.PROFILE,"Ich");
 		Account account = Component.currentAccount();
 		if (account == null) {
 			flash("info", "Dieses Profil gibt es nicht.");

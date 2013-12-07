@@ -5,8 +5,13 @@
 	@defining(if(Navigation.getTitle().equals("Newsstream")){"active"} else {"deactive"}) { status =>
 		<li class="@status"><a href="@routes.ProfileController.stream(user.id)" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Mein Newsstream" data-container="body"><span class="glyphicon glyphicon-comment"></span></a></li>
 	}
-	@defining(if(Navigation.getTitle().equals("Profil")){"active"} else {"deactive"}) { status =>
-		<li class="@status"><a href="@routes.ProfileController.view(user.id)" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Profil ansehen" data-container="body"><span class="glyphicon glyphicon-file"></span></a></li>
+	@defining(if(Navigation.getTitle().equals("Profil") || Navigation.getTitle().equals("Ich")){"active"} else {"deactive"}) { status =>
+		@if(Component.currentAccount() == user){
+			<li class="@status"><a href="@routes.ProfileController.me()" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Profil ansehen" data-container="body"><span class="glyphicon glyphicon-file"></span></a></li>
+		} else {
+			<li class="@status"><a href="@routes.ProfileController.view(user.id)" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Profil ansehen" data-container="body"><span class="glyphicon glyphicon-file"></span></a></li>
+		}
+		
 	}
 	@if(Secured.isOwnerOfAccount(user.id)) {
 		@defining(if(Navigation.getTitle().equals("Editieren")){"active"} else {"deactive"}) { status =>
