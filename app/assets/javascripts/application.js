@@ -41,3 +41,27 @@ $(window).resize(function() {
 resizeRings();
 $('[rel="tooltip"]').tooltip();
 $('[rel="popover"]').popover();
+
+
+/*
+ *  Token
+ */
+$(document).ready(function () {
+
+	var preSelection = $("input:radio[name=visibility]:checked").val();
+	if(preSelection == 2) {
+		$("#token-input").show();
+	}
+	
+	$("input:radio[name=visibility]").click(function() {
+		var selection = $(this).val();
+		if(selection == 2) {
+			$("#token-input").fadeIn();
+		} else {
+			$("#token-input").fadeOut();
+		}
+		
+	});
+	
+});
+

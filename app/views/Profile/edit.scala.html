@@ -18,18 +18,6 @@
 @form(routes.ProfileController.update(profile.id), 'class -> "ajaxForm") {
 
 	@inputText(
-		profileForm("firstname"),
-		'class -> "form-control",
-		'_label -> "Vorname *",
-		'placeholder -> "Max" 
-    )
-	@inputText(
-		profileForm("lastname"),
-		'class -> "form-control",
-		'_label -> "Nachname *",
-		'placeholder -> "Mustermann"
-	)
-	@inputText(
 		profileForm("email"),
 		'class -> "form-control",
 		'_label -> "Email *",

@@ -19,7 +19,7 @@
 	
 		
 	
-	@if(!group.isClosed || isMember) {
+	@if(Secured.viewGroup(group)) {
 		@views.html.Group.snippets.navTabs(group)
 		<div class="clear">
 		<h2 class="hp-truncate">@group.title</h2>
@@ -34,8 +34,10 @@
  		}
 		<hr />
 		<br />
+		@if(Secured.uploadMedia(group)) {
+		 	@views.html.Media.upload(mediaForm,models.Media.GROUP,group.id)
+		}
 
- 		@views.html.Media.upload(mediaForm,models.Media.GROUP,group.id)
  		
 	} else {
 		<h2>
