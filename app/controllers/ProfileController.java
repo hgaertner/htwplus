@@ -34,7 +34,7 @@ public class ProfileController extends BaseController {
 	static final int PAGE = 1;
 
 	public static Result me() {
-		Navigation.set(Level.PROFILE);
+		Navigation.set(Level.PROFILE,"Ich");
 		Account account = Component.currentAccount();
 		if (account == null) {
 			flash("info", "Dieses Profil gibt es nicht.");
@@ -177,6 +177,8 @@ public class ProfileController extends BaseController {
 		// Remove expected errors
 		filledForm.errors().remove("password");
 		filledForm.errors().remove("studycourse");
+		filledForm.errors().remove("firstname");
+		filledForm.errors().remove("lastname");
 
 		// Custom Validations
 		Account exisitingAccount = Account.findByEmail(filledForm.field("email").value());
@@ -192,10 +194,13 @@ public class ProfileController extends BaseController {
 
 			// Fill an and update the model manually 
 			// because the its just a partial form
-			account.firstname = filledForm.field("firstname").value();
-			account.lastname = filledForm.field("lastname").value();
 			account.avatar = filledForm.field("avatar").value();
-			account.email = filledForm.field("email").value();
+			
+			if(!((String)filledForm.field("email").value()).isEmpty()){
+				account.email = filledForm.field("email").value();
+			} else {
+				account.email = null;
+			}
 
 			if (filledForm.field("degree").value().equals("null")) {
 				account.degree = null;

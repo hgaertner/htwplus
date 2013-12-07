@@ -41,7 +41,7 @@ public class GroupController extends BaseController {
 	
 	
 	public static Result index() {
-		Navigation.set(Level.GROUPS);
+		Navigation.set(Level.GROUPS, "Index");
 		Account account = Component.currentAccount();
 		List<Group> groupAccounts = GroupAccount.findEstablished(account);
 		List<GroupAccount> groupRequests = GroupAccount.findRequests(account);
@@ -122,6 +122,11 @@ public class GroupController extends BaseController {
 						if(token.equals("") || token.length() < 4 || token.length() > 45){
 							filledForm.reject("token","Bitte einen Token zwischen 4 und 45 Zeichen eingeben!");
 							return ok(create.render(filledForm));
+						}
+						
+						if(!Secured.createCourse()) {
+							flash("error", "Du darfst leider keinen Kurs erstellen");
+							return badRequest(create.render(filledForm));
 						}
 						break;
 						

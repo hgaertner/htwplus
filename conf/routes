@@ -39,7 +39,7 @@ GET		/post/:postId/deletePost			controllers.PostController.deletePost(postId:Lon
 POST    /signup                 			controllers.AccountController.submit()
 
 #User
-GET		/profil								controllers.ProfileController.me()
+GET		/profile							controllers.ProfileController.me()
 GET		/user/:id							controllers.ProfileController.view(id:Long)
 GET		/user/:id/edit						controllers.ProfileController.edit(id:Long)
 GET		/user/:id/editPassword				controllers.ProfileController.editPassword(id:Long)

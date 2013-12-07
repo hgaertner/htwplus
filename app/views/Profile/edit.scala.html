@@ -3,24 +3,13 @@
 @import models._
 
 @main("Editieren") {
+@views.html.Profile.snippets.navTabs(profile)
 <h2>Profil bearbeiten</h2>
 <br>
 <div class="noModal">
 
 @form(routes.ProfileController.update(profile.id), 'class -> "ajaxForm") {
 
-	@inputText(
-		profileForm("firstname"),
-		'class -> "form-control",
-		'_label -> "Vorname *",
-		'placeholder -> "Max" 
-    )
-	@inputText(
-		profileForm("lastname"),
-		'class -> "form-control",
-		'_label -> "Nachname *",
-		'placeholder -> "Mustermann"
-	)
 	@inputText(
 		profileForm("email"),
 		'class -> "form-control",
