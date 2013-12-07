@@ -5,7 +5,7 @@ import play.*;
 import play.mvc.*;
 import play.mvc.Http.*;
 import views.html.index;
-
+import views.html.Group.create;
 import models.*;
 import models.enums.*;
 
@@ -90,6 +90,49 @@ public class Secured extends Security.Authenticator {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	public static boolean createCourse() {
+		Account current = Component.currentAccount();
+		if(current.role == AccountRole.TUTOR || current.role == AccountRole.ADMIN) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public static boolean viewGroup(Group group) {
+		Account current = Component.currentAccount();
+		switch(group.groupType){
+		
+		case open:
+			return true;
+				
+		case close: 
+			if(Secured.isMemberOfGroup(group, current) || current.role == AccountRole.ADMIN) {
+				return true;
+			} 
+		case course: 
+			if(Secured.isMemberOfGroup(group, current) || current.role == AccountRole.ADMIN) {
+				return true;
+			} 
+		default: 
+				return false;
+		}
+		
+	}
+	
+	public static boolean uploadMedia(Group group) {
+		Account current = Component.currentAccount();
+		if(group.groupType == GroupType.course) {
+			if(current.role == AccountRole.TUTOR || current.role == AccountRole.ADMIN) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return true;
 		}
 	}
 	

@@ -477,3 +477,9 @@ table .hp-avatar {
 	width: 25px;
 	height: 25px;
 }
+
+/*============================== Token ==============================*/
+
+#token-input {
+	display:none;
+}

@@ -123,6 +123,11 @@ public class GroupController extends BaseController {
 							filledForm.reject("token","Bitte einen Token zwischen 4 und 45 Zeichen eingeben!");
 							return ok(create.render(filledForm));
 						}
+						
+						if(!Secured.createCourse()) {
+							flash("error", "Du darfst leider keinen Kurs erstellen");
+							return badRequest(create.render(filledForm));
+						}
 						break;
 						
 				default: 
