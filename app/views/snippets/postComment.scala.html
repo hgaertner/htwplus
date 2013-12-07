@@ -1,7 +1,9 @@
 @(comment: Post)
 @views.html.snippets.deleteCommentModal(comment.id)
 <div class="media">
-	<a class="pull-left" href="@routes.ProfileController.view(comment.owner.id)"> <img alt="avatar" src="@comment.owner.getAvatarUrl()" class="img-polaroid" /></a>
+	<a class="pull-left" href="@routes.ProfileController.view(comment.owner.id)">
+		<img alt="avatar" src="@comment.owner.getAvatarUrl()" class="hp-avatar" />
+	</a>
 	<div class="media-body">
 		<h5 class="media-heading">
 			<a href="@routes.ProfileController.view(comment.owner.id)" data-placement="top" data-original-title="@comment.owner.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover">@comment.owner.name</a>
@@ -12,6 +14,6 @@
                	</a>
 			}
 		</h5>
-		@comment.content
+		<div class="hp-truncate">@comment.content</div>
 	</div>
 </div>

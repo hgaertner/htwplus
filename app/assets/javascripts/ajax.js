@@ -141,7 +141,7 @@ $(document).ready(function () {
 	 * GROUP COMMENTS
 	 */
 	
-	$('.addComment').each(function(){
+	$('.hp-comment-form').each(function(){
 		var context = $(this);
 		$(".commentSubmit", this).click(function(){
 			$.ajax({
@@ -191,6 +191,8 @@ $(document).ready(function () {
 				$(context).addClass('open');
 				$(context).removeClass('unloaded');
 			}
+			
+			window.setTimeout("resizeRings()", 400);
 			
 			return false;
 		});

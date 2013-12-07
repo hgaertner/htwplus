@@ -1,4 +1,6 @@
 @(group: Group)
+@import helper._
+
 <div class="modal-dialog">
 	<div class="modal-content">
 		<div class="modal-header">
@@ -9,13 +11,13 @@
 				} else {
 				<span class="glyphicon glyphicon-globe"></span>
 				}
-				@group.title
+				group.title
 			</h4>
 		</div>
 		<div class="modal-body">
 		    <dl>
 				<dt>Gruppengründer</dt>
-				<dd>@group.owner.firstname @group.owner.lastname</dd>
+				<dd>@group.owner</dd>
 			</dl>
 			<dl>
 				<dt>Erstellt am</dt>

@@ -10,21 +10,12 @@ function getCurrentStyle (element, cssPropertyName) {
    }
 }
 
-function changeText(id, parent) {
-	var heightBefore = parseInt(getCurrentStyle(document.getElementById(id), "height").replace(/[a-z]/g, ""));
-	if (heightBefore > 0)
-		parent.innerHTML = "ältere Kommentare anzeigen...";
-	else
-		parent.innerHTML = "ältere Kommentare ausblenden...";
-	window.setTimeout("resizeRings()", 400);
-}
-
 function resizeRings() {
-	var offset = $("#content").height() % 12;
+	var offset = $("#hp-content").height() % 12;
 	if (offset != 0)
-		$("#content").css('padding-bottom', (12 - offset) + "px");
+		$("#hp-content").css('padding-bottom', (12 - offset) + "px");
 	else
-		$("#content").css('padding-bottom', '0');
+		$("#hp-content").css('padding-bottom', '0');
 }
 
 function toggleMediaSelection(parent) {

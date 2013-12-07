@@ -28,18 +28,23 @@ import models.base.BaseModel;
 		}))
 public class Notification extends BaseModel {
 	
+	/**
+	 * Each notification type is associated with a model,
+	 * which ID is the objectId. Query the right entity by
+	 * using the objectID for the corresponding model. 
+	 */
 	public enum NotificationType {
-		GROUP_NEW_POST,
-		GROUP_NEW_MEDIA,
-		GROUP_NEW_REQUEST,
-		GROUP_REQUEST_SUCCESS,
-		GROUP_REQUEST_DECLINE,
-		POST_GROUP_NEW_COMMENT,
-		PROFILE_NEW_POST,
-		POST_PROFILE_NEW_COMMENT,
-		FRIEND_NEW_REQUEST,
-		FRIEND_REQUEST_SUCESS,
-		FRIEND_REQUEST_DECLINE,
+		GROUP_NEW_POST, // Group Model
+		GROUP_NEW_MEDIA, // Group Model
+		GROUP_NEW_REQUEST, // Group Model
+		GROUP_REQUEST_SUCCESS, // Group Model
+		GROUP_REQUEST_DECLINE, // Group Model
+		POST_GROUP_NEW_COMMENT, // Post Model
+		PROFILE_NEW_POST, // Account Model
+		POST_PROFILE_NEW_COMMENT, // Post Model
+		FRIEND_NEW_REQUEST, // Account Model
+		FRIEND_REQUEST_SUCCESS, // Account Model
+		FRIEND_REQUEST_DECLINE, // Account Model
 	}
 	
 	@Required
@@ -69,47 +74,48 @@ public class Notification extends BaseModel {
 	}
 	
 	// GROUP NOTIFICATIONS
-	public static void newGroupNotification(final NotificationType noteType, final Group group, final Account sender) {
+	public static void newGroupNotification(NotificationType type, Group group, Account sender) {
 		// Get all accounts for that group
-		
-		Akka.future(
-		  new Callable<Void>() {
-		    public Void call() {
-		    	Logger.info("Async test");
-		    	Notification.newNotification(NotificationType.FRIEND_NEW_REQUEST, (long) 123, sender);
-		    	List<Account> accounts =  GroupAccount.findAccountsByGroup(group);
-		    	Logger.info("Size:" + String.valueOf(accounts.size()));
-				NotificationType type = noteType;
-
-		    	for (Account account : accounts) {
-					if(!account.equals(sender)){
-						if(Notification.findUnique(type, account, group.id) == null) {
-							Notification notf = new Notification();
-							notf.account = account;
-							notf.noteType = type;
-							notf.objectId = group.id;
-							notf.create();
-							Logger.info("Created new Notification for User: " + account.id.toString());
-						}
-					}
-				}
-				return null;
-		    }
-		  }
-		);
-		
-//		for (Account account : accounts) {
-//			if(!account.equals(sender)){
-//				if(Notification.findUnique(type, account, group.id) == null) {
-//					Notification notf = new Notification();
-//					notf.account = account;
-//					notf.noteType = type;
-//					notf.objectId = group.id;
-//					notf.create();
-//					Logger.info("Created new Notification for User: " + account.id.toString());
+    	List<Account> accounts =  GroupAccount.findAccountsByGroup(group);
+	
+//		Akka.future(
+//		  new Callable<Void>() {
+//		    public Void call() {
+//		    	Logger.info("Async test");
+//		    	Notification.newNotification(NotificationType.FRIEND_NEW_REQUEST, (long) 123, sender);
+//		    	List<Account> accounts =  GroupAccount.findAccountsByGroup(group);
+//		    	Logger.info("Size:" + String.valueOf(accounts.size()));
+//				NotificationType type = noteType;
+//
+//		    	for (Account account : accounts) {
+//					if(!account.equals(sender)){
+//						if(Notification.findUnique(type, account, group.id) == null) {
+//							Notification notf = new Notification();
+//							notf.account = account;
+//							notf.noteType = type;
+//							notf.objectId = group.id;
+//							notf.create();
+//							Logger.info("Created new Notification for User: " + account.id.toString());
+//						}
+//					}
 //				}
-//			}
-//		}
+//				return null;
+//		    }
+//		  }
+//		);
+		
+		for (Account account : accounts) {
+			if(!account.equals(sender)){
+				if(Notification.findUnique(type, account, group.id) == null) {
+					Notification notf = new Notification();
+					notf.account = account;
+					notf.noteType = type;
+					notf.objectId = group.id;
+					notf.create();
+					Logger.info("Created new Notification for User: " + account.id.toString());
+				}
+			}
+		}
 	}
 	
 	// GROUP POST NOTIFICATIONS

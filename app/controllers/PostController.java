@@ -61,6 +61,7 @@ public class PostController extends BaseController {
 					p.account = profile;
 					p.owner = account;
 					p.create();
+					Notification.newNotification(NotificationType.PROFILE_NEW_POST, account.id, profile);
 				}
 				return redirect(routes.ProfileController.stream(anyId, PAGE));
 			}
@@ -103,6 +104,9 @@ public class PostController extends BaseController {
 			post.create();
 			if(parent.belongsToGroup()) {
 				Notification.newPostNotification(NotificationType.POST_GROUP_NEW_COMMENT, parent, account);
+			}
+			if(parent.belongsToAccount()) {
+				Notification.newNotification(NotificationType.POST_PROFILE_NEW_COMMENT, parent.id, parent.account);
 			}
 			return ok(views.html.snippets.postComment.render(post));
 		}

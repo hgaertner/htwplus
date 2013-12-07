@@ -1,5 +1,6 @@
 @(groups: List[Group], user: Account)
 @import models.enums.GroupType
+@import helper._
 
 <table class="table table-hover">
 	<colgroup>
@@ -18,14 +19,14 @@
 		@for(group <- groups) {
 		<tr>
 			<td>
-			@if(group.groupType.equals(GroupType.open)) { <span class="glyphicon glyphicon-globe"></span> }
-			@if(group.groupType.equals(GroupType.close)) { <span class="glyphicon glyphicon-lock"></span> }
-				
-			<a href="@routes.GroupController.view(group.id)">
-				@if(Secured.isOwnerOfGroup(group, user)) {
-					<b> @group.title</b>
-				} else { @group.title } 
-			</a>
+				@if(group.groupType.equals(GroupType.open)) { <span class="glyphicon glyphicon-globe"></span> }
+				@if(group.groupType.equals(GroupType.close)) { <span class="glyphicon glyphicon-lock"></span> }
+					
+				<a href="@routes.GroupController.view(group.id)">
+					@if(Secured.isOwnerOfGroup(group, user)) {
+						<b> @group.title</b>
+					} else { @group.title } 
+				</a>
 			</td>
 			<td>
 				@views.html.snippets.userLink(group.owner)

@@ -6,10 +6,6 @@
 @import routes._
 @import helper._
 
-@if(notification.length == 0) {
-	<li>Nichts neues passiert</li>
-}
-
 @for(note <- notification){
 
 	@note.noteType match {
@@ -58,6 +54,46 @@
 			@defining(Post.findById(note.objectId)) { post =>
 				@element(forward(note.id,GroupController.view(post.group.id).toString()).toString()){
 					Neuer Kommentar zum Post @truncate(post.content,20) in der Gruppe @truncate(post.group.title,20)
+				}
+			}
+		}
+
+		case NotificationType.PROFILE_NEW_POST => {
+			@defining(Account.findById(note.objectId)) { account =>
+				@element(forward(note.id,ProfileController.stream(Component.currentAccount().id).toString()).toString()){
+					Neuer Post von @account.name auf deinem Stream
+				}
+			}
+		}
+		
+		case NotificationType.POST_PROFILE_NEW_COMMENT => {
+			@defining(Post.findById(note.objectId)) { post =>
+				@element(forward(note.id,ProfileController.stream(Component.currentAccount().id).toString()).toString()){
+					Neuer Kommentar zum Post @truncate(post.content,20) auf deinem Newsstream
+				}
+			}
+		}
+		
+		case NotificationType.FRIEND_NEW_REQUEST => {
+			@defining(Account.findById(note.objectId)) { account =>
+				@element(forward(note.id,FriendshipController.index().toString()).toString()){
+					Neue Freundschaftsanfrage von @account.name
+				}
+			}
+		}
+		
+		case NotificationType.FRIEND_REQUEST_SUCCESS => {
+			@defining(Account.findById(note.objectId)) { account =>
+				@element(forward(note.id,ProfileController.stream(account.id).toString()).toString()){
+					 @account.name hat deine Freundschaftsanfrage angenommen
+				}
+			}
+		}
+		
+		case NotificationType.FRIEND_REQUEST_DECLINE => {
+			@defining(Account.findById(note.objectId)) { account =>
+				@element(forward(note.id,FriendshipController.index().toString()).toString()){
+					 @account.name hat deine Freundschaftsanfrage abgelehnt
 				}
 			}
 		}
