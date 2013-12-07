@@ -202,7 +202,7 @@ public class GroupController extends BaseController {
 			if (entry.getKey().equals("keyword")) {
 				final String keyword = entry.getValue()[0];
 				Logger.debug("Value of key" + keyword);
-				Navigation.set(Level.GROUPS, "Suchergebnisse");
+				Navigation.set("Suchergebnisse");
 				courseResults = Group.searchForCourseByKeyword(keyword);
 				groupResults = Group.searchForGroupByKeyword(keyword);
 				

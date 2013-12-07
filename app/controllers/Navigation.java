@@ -39,6 +39,10 @@ public class Navigation {
 		Navigation.set(level,null,null,null);
 	}
 	
+	public static void set(String title) {
+		Navigation.set(null,title,null,null);
+	}
+	
 	public static void set(Level level, String title) {
 		Navigation.set(level,title,null,null);
 	}
