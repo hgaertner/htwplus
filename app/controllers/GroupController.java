@@ -5,11 +5,15 @@ import java.util.Map;
 import java.util.Set;
 
 
+
+
 import controllers.Navigation.Level;
 import models.Account;
 import models.Group;
 import models.GroupAccount;
 import models.Media;
+import models.Notification;
+import models.Notification.NotificationType;
 import models.Post;
 import models.enums.GroupType;
 import models.enums.LinkType;
@@ -266,6 +270,7 @@ public class GroupController extends BaseController {
 		else if(group.groupType.equals(GroupType.close)){
 			groupAccount = new GroupAccount(account, group, LinkType.request);
 			groupAccount.create();
+			Notification.newNotification(NotificationType.GROUP_NEW_REQUEST, group.id, group.owner);
 			flash("success", "Deine Anfrage wurde erfolgreich übermittelt!");
 			return redirect(routes.GroupController.view(id));
 		}
@@ -310,6 +315,7 @@ public class GroupController extends BaseController {
 				groupAccount.update();
 			}
 		}
+		Notification.newNotification(NotificationType.GROUP_REQUEST_SUCCESS, groupId, account);
 		return redirect(routes.GroupController.index());
 	}
 	
@@ -322,6 +328,7 @@ public class GroupController extends BaseController {
 				groupAccount.linkType = LinkType.reject;
 			}
 		}
+		Notification.newNotification(NotificationType.GROUP_REQUEST_DECLINE, groupId, account);
 		return redirect(routes.GroupController.index());
 	}
 }

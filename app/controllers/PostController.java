@@ -5,6 +5,8 @@ import java.util.List;
 import models.Account;
 import models.Group;
 import models.Media;
+import models.Notification;
+import models.Notification.NotificationType;
 import models.Post;
 import play.Logger;
 import play.Play;
@@ -41,6 +43,7 @@ public class PostController extends BaseController {
 					p.owner = Component.currentAccount();
 					p.group = group;
 					p.create();
+					Notification.newGroupNotification(NotificationType.GROUP_NEW_POST, group, account);
 				}
 			} else {
 				flash("info","Bitte tritt der Gruppe erst bei.");
@@ -58,6 +61,7 @@ public class PostController extends BaseController {
 					p.account = profile;
 					p.owner = account;
 					p.create();
+					Notification.newNotification(NotificationType.PROFILE_NEW_POST, account.id, profile);
 				}
 				return redirect(routes.ProfileController.stream(anyId, PAGE));
 			}
@@ -98,6 +102,12 @@ public class PostController extends BaseController {
 			post.owner = account;
 			post.parent = parent;
 			post.create();
+			if(parent.belongsToGroup()) {
+				Notification.newPostNotification(NotificationType.POST_GROUP_NEW_COMMENT, parent, account);
+			}
+			if(parent.belongsToAccount()) {
+				Notification.newNotification(NotificationType.POST_PROFILE_NEW_COMMENT, parent.id, parent.account);
+			}
 			return ok(views.html.snippets.postComment.render(post));
 		}
 	}

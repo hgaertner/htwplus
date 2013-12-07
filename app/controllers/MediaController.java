@@ -21,6 +21,7 @@ import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.data.*;
 import models.*;
+import models.Notification.NotificationType;
 import views.html.Media.*;
 import play.db.jpa.*;
 import scala.annotation.meta.param;
@@ -167,6 +168,7 @@ public class MediaController extends BaseController {
 		// Where to put the media
 		if(target.equals(Media.GROUP)) {
 			group = Group.findById(id);
+			Notification.newGroupNotification(NotificationType.GROUP_NEW_MEDIA, group, Component.currentAccount());
 			ret = routes.GroupController.media(id);
 		} else {
 			return redirect(ret);

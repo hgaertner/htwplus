@@ -86,4 +86,13 @@ public class Secured extends Security.Authenticator {
 			return false;
 		}
 	}
+	
+	public static boolean viewNotification(Account account) {
+		if(Component.currentAccount().equals(account)){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 }
