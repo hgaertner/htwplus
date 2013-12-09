@@ -4,12 +4,6 @@
 
 @main("Editieren") {
 
-<!-- confirmDeleteFriendModal -->
-<div class="modal fade" id="confirmDeleteFriend@profile.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-	@views.html.Friends.snippets.deleteFriendModal(profile)
-</div>
-<!-- Ende confirmDeleteFriendModal -->
-
 @views.html.Profile.snippets.navTabs(profile)
 <h2>Profil bearbeiten</h2>
 <br>
@@ -20,7 +14,7 @@
 	@inputText(
 		profileForm("email"),
 		'class -> "form-control",
-		'_label -> "Email *",
+		'_label -> "Email",
 		'placeholder -> "max.mustermann@muster.de"
 	)
 	<dl>
