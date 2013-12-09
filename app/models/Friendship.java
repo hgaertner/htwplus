@@ -61,7 +61,16 @@ public class Friendship extends BaseModel {
 
 	public static Friendship findRequest(Account me, Account potentialFriend) {
 		try{
-			return (Friendship) JPA.em().createQuery("SELECT fs FROM Friendship fs WHERE fs.account.id = ?1 and fs.friend.id = ?2 AND fs.linkType = ?3")
+			return (Friendship) JPA.em().createQuery("SELECT fs FROM Friendship fs WHERE fs.account.id = ?1 AND fs.friend.id = ?2 AND fs.linkType = ?3")
+			.setParameter(1, me.id).setParameter(2, potentialFriend.id).setParameter(3, LinkType.request).getSingleResult();
+		} catch (NoResultException exp) {
+			return null;
+		}
+	}
+	
+	public static Friendship findReverseRequest(Account me, Account potentialFriend) {
+		try{
+			return (Friendship) JPA.em().createQuery("SELECT fs FROM Friendship fs WHERE fs.friend.id = ?1 AND fs.account.id = ?2 AND fs.linkType = ?3")
 			.setParameter(1, me.id).setParameter(2, potentialFriend.id).setParameter(3, LinkType.request).getSingleResult();
 		} catch (NoResultException exp) {
 			return null;
