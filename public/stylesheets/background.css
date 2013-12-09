@@ -182,10 +182,6 @@ h1 {
 	margin: 0;
 }
 
-.hp-navbar .hp-logo.active {
-	background-color: #4C680C;
-}
-
 .hp-navbar .hp-logo:hover #hover,
 .hp-navbar .hp-logo #normal {
 	display: inherit!important;
