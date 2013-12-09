@@ -1,11 +1,6 @@
 package controllers;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-
-
 
 import controllers.Navigation.Level;
 import models.Account;
@@ -28,7 +23,6 @@ import views.html.Group.view;
 import views.html.Group.create;
 import views.html.Group.edit;
 import views.html.Group.token;
-import views.html.Group.searchresult;
 
 
 @Transactional
@@ -198,29 +192,6 @@ public class GroupController extends BaseController {
 	
 	public static List<Group> showAll() {
 		return Group.all();
-	}
-	
-	
-	public static Result searchForGroupByKeyword(){
-		List<Group> groupResults = null;
-		List<Group> courseResults = null;
-		List<Account> accResults = null;
-		final Set<Map.Entry<String, String[]>> entries = request()
-				.queryString().entrySet();
-		for (Map.Entry<String, String[]> entry : entries) {
-			if (entry.getKey().equals("keyword")) {
-				final String keyword = entry.getValue()[0];
-				Logger.debug("Value of key" + keyword);
-				Navigation.set("Suchergebnisse");
-				courseResults = Group.searchForCourseByKeyword(keyword);
-				groupResults = Group.searchForGroupByKeyword(keyword);
-				accResults = Account.searchForAccountByKeyword(keyword);
-				Logger.info("Sizes: " + "Groups: " +groupResults.size() + " Courses: " + courseResults.size() + " Account: " +accResults.size());
-			}
-
-		}
-
-		return ok(searchresult.render(groupResults, courseResults, accResults));
 	}
 	
 	public static Result token(Long groupId) {

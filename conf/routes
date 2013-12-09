@@ -5,6 +5,7 @@
 # Home page
 GET     /                       			controllers.Application.index()
 GET     /stream                    			controllers.Application.stream(page: Integer ?= 1)
+GET		/search								controllers.Application.search()
 POST    /login                  			controllers.AccountController.authenticate()
 GET     /logout                 			controllers.AccountController.logout()
 
@@ -25,7 +26,6 @@ GET 	/group/:id/join						controllers.GroupController.join(id:Long)
 GET 	/group/:groupId/remove/:accountId	controllers.GroupController.removeMember(groupId:Long, accountId: Long)
 GET 	/group/:groupId/accept/:accountId	controllers.GroupController.acceptRequest(groupId:Long, accountId: Long)
 GET 	/group/:groupId/decline/:accountId	controllers.GroupController.declineRequest(groupId:Long, accountId: Long)
-GET		/group/searchForGroup/				controllers.GroupController.searchForGroupByKeyword()
 GET		/group/:id/token					controllers.GroupController.token(id:Long)
 POST	/group/:id/validate				    controllers.GroupController.validateToken(id:Long)
 

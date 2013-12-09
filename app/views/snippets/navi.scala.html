@@ -63,9 +63,9 @@
 				<li class="visible-xs dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-search"></span> <b class="caret"></b></a>
 					<ul class="hp-dropdown-search dropdown-menu">
-						<form class="hp-search-form navbar-form navbar-left" role="search" action="@routes.GroupController.searchForGroupByKeyword" method="GET">
+						<form class="hp-search-form navbar-form navbar-left" role="search" action="@routes.Application.search" method="GET">
 							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Suche" id="groupSearchQuery" name="keyword">
+								<input type="text" class="form-control" placeholder="Suche" id="searchQuery" name="keyword">
 							</div>
 							<button type="submit"><span class="glyphicon glyphicon-search"></span></button>
 						</form>
@@ -73,9 +73,9 @@
 				</li>
 			</ul>
 			
-			<form class="hidden-xs hp-search-form navbar-form navbar-left" role="search" action="@routes.GroupController.searchForGroupByKeyword" method="GET">
+			<form class="hidden-xs hp-search-form navbar-form navbar-left" role="search" action="@routes.Application.search" method="GET">
 				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Suche" id="groupSearchQuery" name="keyword">
+					<input type="text" class="form-control" placeholder="Suche" id="searchQuery" name="keyword">
 				</div>
 				<button type="submit"><span class="glyphicon glyphicon-search"></span></button>
 			</form>
