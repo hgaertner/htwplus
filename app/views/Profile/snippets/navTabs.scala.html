@@ -19,7 +19,7 @@
 	}
 	@if(Secured.isFriend(user)) {
 		@defining(if(Navigation.getTitle().equals("Editieren")){"active"} else {"deactive"}) { status =>
-			<li class="@status"><a href="#confirmDeleteFriend" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Freundschaft beenden" data-container="body"><span class="glyphicon glyphicon-trash"></span></a></li>
+			<li class="@status"><a href="#confirmDeleteFriend@user.id" role="button" class="btn btn-default active" rel="tooltip" data-original-title="Freundschaft beenden" data-container="body" data-toggle="modal"><span class="glyphicon glyphicon-remove"></span></a></li>
 		}
 	}
 	@if(Secured.isOwnerOfAccount(user.id)) {

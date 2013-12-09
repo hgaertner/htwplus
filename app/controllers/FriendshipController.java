@@ -62,6 +62,7 @@ public class FriendshipController extends BaseController {
 		} else {
 			friendshipLink.delete();
 			reverseLink.delete();
+			flash("success","Tja, das war es dann wohl :-/");
 		}
 		
 		return redirect(routes.FriendshipController.index());
