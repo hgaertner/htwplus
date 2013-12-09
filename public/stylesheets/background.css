@@ -43,6 +43,10 @@ a > .glyphicon:hover {
 	text-overflow: ellipsis;
 }
 
+h1 {
+	text-align: center;
+}
+
 
 /*============================== Navigation ==============================*/
 
