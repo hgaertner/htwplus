@@ -94,9 +94,9 @@ public class Post extends BaseModel {
 	
 	
 	@SuppressWarnings("unchecked")
-	public static List<Post> findStreamForAccount(Account account, List<Group> groupList, List<Account> friendList, boolean isVisitor, int limit, int offset){
+	public static List<Post> findStreamForAccount(Account account, List<Group> groupList, boolean isVisitor, int limit, int offset){
 		
-		Query query = streamForAccount("SELECT p ", account, groupList, friendList, isVisitor, "ORDER BY p.id DESC");
+		Query query = streamForAccount("SELECT p ", account, groupList, isVisitor, "ORDER BY p.id DESC");
 
 		// set limit and offset
 		query = limit(query, limit, offset);
@@ -104,9 +104,9 @@ public class Post extends BaseModel {
 		return posts;
 	}
 	
-	public static int countStreamForAccount(Account account, List<Group> groupList, List<Account> friendList, boolean isVisitor){
+	public static int countStreamForAccount(Account account, List<Group> groupList, boolean isVisitor){
 		
-		Query query = streamForAccount("SELECT COUNT(p)", account, groupList, friendList, isVisitor,"");
+		Query query = streamForAccount("SELECT COUNT(p)", account, groupList, isVisitor,"");
 		
 		int count = ((Number) query.getSingleResult()).intValue();
 		
@@ -121,34 +121,27 @@ public class Post extends BaseModel {
 	 * @return List of Posts
 	 */
 	@SuppressWarnings("unchecked")
-	public static Query streamForAccount(String selectClause, Account account, List<Group> groupList, List<Account> friendList, boolean isVisitor, String orderByClause){
+	public static Query streamForAccount(String selectClause, Account account, List<Group> groupList, boolean isVisitor, String orderByClause){
 		// since JPA is unable to handle empty lists (eg. groupList, friendList) we need to assemble our query.
 		String groupListClause = "";
-		String friendListClause = "";
 		String visitorClause = "";
 		
 		// add additional clauses if not null or empty
 		if(groupList != null && !groupList.isEmpty()){
 			groupListClause = " OR p.group IN :groupList ";
 		}
-		if(friendList != null && !friendList.isEmpty()){
-			friendListClause = " OR p.account IN :friendList ";
-		}
 		if(isVisitor){
 			visitorClause = " AND p.owner = :currentAccount ";
 		}
 		
 		// create Query. 
-		Query query = JPA.em().createQuery(selectClause+" FROM Post p WHERE p.account = :currentAccount "+visitorClause+groupListClause+friendListClause+orderByClause);
+		Query query = JPA.em().createQuery(selectClause+" FROM Post p WHERE p.account = :currentAccount "+visitorClause+groupListClause+orderByClause);
 		query.setParameter("currentAccount", account);
 		
 		
 		// add parameter as needed
 		if(groupList != null && !groupList.isEmpty()){
 			query.setParameter("groupList", groupList);
-		}
-		if(friendList != null && !friendList.isEmpty()){
-			query.setParameter("friendList", friendList);
 		}
 		
 		return query;
@@ -179,12 +172,11 @@ public class Post extends BaseModel {
 	 * @return List of Posts
 	 */
 	public static List<Post> getStream(Account account, int limit, int page) {
-		// find friends and groups of given account
-		List<Account> friendList = Friendship.findFriends(account);
+		// find groups of given account
 		List<Group> groupList = GroupAccount.findEstablished(account);
 		
 		int offset = (page * limit) - limit;
-		return findStreamForAccount(account, groupList, friendList, false, limit, offset);
+		return findStreamForAccount(account, groupList, false, limit, offset);
 	}
 	
 	/**
@@ -194,11 +186,10 @@ public class Post extends BaseModel {
 	 * @return Number of Posts
 	 */
 	public static int countStream(Account account){
-		// find friends and groups of given account
-		List<Account> friendList = Friendship.findFriends(account);
+		// find groups of given account
 		List<Group> groupList = GroupAccount.findEstablished(account);
 			
-		return countStreamForAccount(account, groupList, friendList, false);
+		return countStreamForAccount(account, groupList, false);
 	}
 	
 	/**
@@ -207,12 +198,11 @@ public class Post extends BaseModel {
 	 * @return List of Posts
 	 */
 	public static List<Post> getFriendStream(Account friend, int limit, int page) {
-		// find friends and non closed-groups of given account
-		List<Account> friendList = Friendship.findFriends(friend);
+		// find non closed-groups of given account
 		List<Group> groupList = GroupAccount.findPublicEstablished(friend);
 			
 		int offset = (page * limit) - limit;
-		return findStreamForAccount(friend, groupList, friendList, false, limit, offset);
+		return findStreamForAccount(friend, groupList, false, limit, offset);
 	}
 	
 	/**
@@ -222,10 +212,9 @@ public class Post extends BaseModel {
 	 * @return Number of Posts
 	 */
 	public static int countFriendStream(Account account){
-		// find friends and groups of given account
+		// find groups of given account
 		List<Group> groupList = GroupAccount.findPublicEstablished(account);
-		List<Account> friendList = Friendship.findFriends(account);
 		
-		return countStreamForAccount(account, groupList, friendList, false);
+		return countStreamForAccount(account, groupList, false);
 	}
 }
