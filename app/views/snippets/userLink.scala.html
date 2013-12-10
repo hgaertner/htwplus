@@ -3,7 +3,7 @@
 @import models.enums.AccountRole;
 
 
-<a href="@routes.ProfileController.view(user.id)" data-placement="@place" data-original-title="@user.name"
+<a href="@if(Secured.isFriend(user)) { @routes.ProfileController.view(user.id)/stream } else { @routes.ProfileController.view(user.id) }" data-placement="@place" data-original-title="@user.name"
 	@if(user.role == AccountRole.STUDENT) {
 	data-content="Rolle: Student @if(user.studycourse != null){<br />Studiengang: @user.studycourse.title<br />}@if(user.semester != null){@user.semester. Semester }@if(user.degree != null){@user.degree}"
 	} else { @if(user.role == AccountRole.TUTOR) {
