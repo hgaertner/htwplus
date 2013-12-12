@@ -8,6 +8,7 @@ GET     /stream                    			controllers.Application.stream(page: Integ
 GET		/search								controllers.Application.search()
 POST    /login                  			controllers.AccountController.authenticate()
 GET     /logout                 			controllers.AccountController.logout()
+GET		/404								controllers.Application.error()
 
 # JavaScript Routes
 GET		/assets/javascripts/routes			controllers.Application.javascriptRoutes()
@@ -69,6 +70,8 @@ GET		/notification/:id					controllers.NotificationController.forward(id:Long,ur
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               		controllers.Assets.at(path="/public", file)
+
+
 
 # No route found? take this
 GET     /*path                  			controllers.Application.defaultRoute(path: String)

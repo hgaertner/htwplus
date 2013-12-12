@@ -12,6 +12,7 @@ import play.Logger;
 import play.Play;
 import play.Routes;
 import play.mvc.*;
+import views.html.error;
 import views.html.searchresult;
 import views.html.stream;
 import play.data.Form;
@@ -68,6 +69,11 @@ public class Application extends BaseController {
 		}
 
 		return ok(searchresult.render(groupResults, courseResults, accResults));
+	}
+	
+	public static Result error() {
+		Navigation.set("404");
+		return ok(error.render());
 	}
 		
 	public static Result defaultRoute(String path) {
