@@ -102,7 +102,6 @@ public class GroupController extends BaseController {
 			switch(groupType){
 			
 				case 0: group.groupType = GroupType.open; 
-						group.isClosed = true; 
 						successMsg = "Öffentliche Gruppe"; 
 						break;
 						
@@ -158,11 +157,7 @@ public class GroupController extends BaseController {
 		Form<Group> filledForm = groupForm.bindFromRequest();
 		int groupType = Integer.parseInt(filledForm.data().get("optionsRadios"));
 		String description = filledForm.data().get("description");
-		if(filledForm.data().get("optionsRadios").equals("1")){
-			group.isClosed = true;
-		} else {
-			group.isClosed = false;
-		}
+
 		switch(groupType){
 			case 0: group.groupType = GroupType.open; break;
 			case 1: group.groupType = GroupType.close; break;

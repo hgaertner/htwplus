@@ -54,8 +54,6 @@ public class Group extends BaseModel {
 	@OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
 	public Set<GroupAccount> groupAccounts;
 
-	public Boolean isClosed = false;
-
 	@ManyToOne
 	public Account owner;
 
@@ -84,14 +82,6 @@ public class Group extends BaseModel {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Boolean getIsClosed() {
-		return isClosed;
-	}
-
-	public void setIsClosed(Boolean isClosed) {
-		this.isClosed = isClosed;
 	}
 
 	public Account getOwner() {
