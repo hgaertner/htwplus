@@ -1,7 +1,7 @@
 @(post: Post, postForm: Form[Post], currentView: String)
 @import helper._
 
-@defining(Component.currentAccount()) { user =>
+@defining(Component.currentAccount()) { currentUser =>
 	<br />
 	@views.html.snippets.deletePostModal(post.id)
 
@@ -12,8 +12,9 @@
 				<h4 class="media-heading">
 					@views.html.snippets.userLink(post.owner)
 					@if(post.belongsToGroup && currentView != "group"){schrieb in <a href="@routes.GroupController.view(post.group.id)">@post.group.title</a>}
-					@if(post.belongsToAccount && user != post.account && post.account != post.owner){&rarr; <a href="@routes.ProfileController.view(post.account.id)">@post.account.name</a>} 
-					@if(Secured.isAllowedToDeletePost(post, user)){
+					@if(post.belongsToAccount && currentUser != post.account && post.account != post.owner){&rarr; @views.html.snippets.userLink(post.account)} 
+					@if(post.belongsToAccount && currentUser == post.account && post.account != post.owner){schrieb Dir} 
+					@if(Secured.isAllowedToDeletePost(post, currentUser)){
                 			<a href="#confirmModalDeletePost@post.id" data-toggle="modal" rel="tooltip" data-original-title="Post löschen">
                 				<span class="glyphicon glyphicon-trash"></span>
                 			</a>

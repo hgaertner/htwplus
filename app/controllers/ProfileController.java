@@ -74,7 +74,7 @@ public class ProfileController extends BaseController {
 		if (Friendship.alreadyFriendly(Component.currentAccount(), account)
 				|| Component.currentAccount().equals(account)) {
 			return ok(stream.render(account, Post.getFriendStream(account, LIMIT, page),
-					postForm,Post.countStream(account), LIMIT, page));
+					postForm,Post.countFriendStream(account), LIMIT, page));
 		}
 		// case for visitors
 		flash("info", "Du kannst nur den Stream deiner Freunde betrachten!");

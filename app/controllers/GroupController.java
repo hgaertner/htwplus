@@ -35,10 +35,10 @@ public class GroupController extends BaseController {
 	
 	
 	public static Result index() {
-		Navigation.set(Level.GROUPS, "Index");
+		Navigation.set(Level.GROUPS, "Übersicht");
 		Account account = Component.currentAccount();
-		List<Group> groupAccounts = GroupAccount.findEstablished(account);
 		List<GroupAccount> groupRequests = GroupAccount.findRequests(account);
+		List<Group> groupAccounts = GroupAccount.findGroupsEstablished(account);
 		List<Group> courseAccounts = GroupAccount.findCoursesEstablished(account);
 		
 		return ok(index.render(groupAccounts,courseAccounts,groupRequests,groupForm));
