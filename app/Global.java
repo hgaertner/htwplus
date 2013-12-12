@@ -8,6 +8,7 @@ import models.Group;
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;
+import play.api.Play;
 import play.db.jpa.JPA;
 import play.mvc.Http.RequestHeader;
 
@@ -32,7 +33,13 @@ public class Global extends GlobalSettings {
 	@Override
 	public play.mvc.Result onError(RequestHeader rh, Throwable t) {
 		Logger.info("onError "+ rh + " " + t);
-		return play.mvc.Results.redirect(routes.Application.error());
+		
+		// prod mode? return 404 page
+		if(Play.mode(play.api.Play.current()).toString().equals("Prod")){
+			return play.mvc.Results.redirect(routes.Application.error());
+		}
+
+		return super.onError(rh, t);
 	}
 	
 
