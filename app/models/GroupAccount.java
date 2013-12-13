@@ -77,7 +77,7 @@ public class GroupAccount extends BaseModel {
 		List<Group> groupAccounts = JPA
 				.em()
 				.createQuery(
-						"SELECT ga.group FROM GroupAccount ga WHERE ga.account.id = ?1 AND ga.linkType = ?2 AND ga.group.groupType != ?3")
+						"SELECT ga.group FROM GroupAccount ga WHERE ga.account.id = ?1 AND ga.linkType = ?2 AND ga.group.groupType != ?3 ORDER BY ga.group.title ASC")
 				.setParameter(1, account.id)
 				.setParameter(2, LinkType.establish)
 				.setParameter(3, GroupType.course).getResultList();
@@ -93,7 +93,7 @@ public class GroupAccount extends BaseModel {
 		List<Group> courseAccounts = JPA
 				.em()
 				.createQuery(
-						"SELECT ga.group FROM GroupAccount ga WHERE ga.account.id = ?1 AND ga.linkType = ?2 AND ga.group.groupType = ?3")
+						"SELECT ga.group FROM GroupAccount ga WHERE ga.account.id = ?1 AND ga.linkType = ?2 AND ga.group.groupType = ?3  ORDER BY ga.group.title ASC")
 				.setParameter(1, account.id)
 				.setParameter(2, LinkType.establish)
 				.setParameter(3, GroupType.course).getResultList();
