@@ -36,6 +36,7 @@ import org.hibernate.search.query.dsl.QueryBuilder;
 import play.Logger;
 import play.data.validation.Constraints.Required;
 import play.db.jpa.JPA;
+import views.html.Group.edit;
 
 @Indexed
 @Entity
@@ -103,6 +104,14 @@ public class Group extends BaseModel {
 			return "Der Titel ist bereits vergeben";
 		}
 		return null;
+	}
+	
+	public static boolean validateToken(String token) {
+		if(token.equals("") || token.length() < 4 || token.length() > 45){
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public void createWithGroupAccount(Account account) {
