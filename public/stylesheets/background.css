@@ -241,7 +241,7 @@ div#hp-topRight {
 	position: absolute;
 	top: 0;
 	right: 0;
-	background-image: url(../images/background.png);
+	background-image: url(../images/backgrounds.png);
 	background-repeat: no-repeat;
 	background-position: -50px -15px;
 }
@@ -252,14 +252,14 @@ div#hp-bottomRight {
 	position: absolute;
 	bottom: 0;
 	right: 0;
-	background-image: url(../images/background.png);
+	background-image: url(../images/backgrounds.png);
 	background-repeat: no-repeat;
 	background-position: -50px -30px;
 }
 
 div#hp-left  {
 	margin-right: 24px;
-	background-image: url(../images/repeatY.png);
+	background-image: url(../images/vertical.png);
 	background-repeat: repeat-y;
 	background-position: 0px 15px;
 }
@@ -271,7 +271,7 @@ div#hp-topLeft {
 	position: absolute;
 	top: 0;
 	left: 0;
-	background-image: url(../images/background.png);
+	background-image: url(../images/backgrounds.png);
 	background-repeat: no-repeat;
 	background-position: 0px -15px;
 }
@@ -282,7 +282,7 @@ div#hp-bottomLeft {
 	position: absolute;
 	bottom: 0;
 	left: 0;
-	background-image: url(../images/background.png);
+	background-image: url(../images/backgrounds.png);
 	background-repeat: no-repeat;
 	background-position: 0px -30px;
 }
@@ -290,14 +290,14 @@ div#hp-bottomLeft {
 div#hp-top {
 	margin-left: 50px;
 	padding-top: 15px;
-	background-image: url(../images/background.png);
+	background-image: url(../images/backgrounds.png);
 	background-repeat: repeat-x;
 	background-position: 0px top;
 }
 
 div#hp-bottom {
 	padding-bottom: 22px;
-	background-image: url(../images/background.png);
+	background-image: url(../images/backgrounds.png);
 	background-repeat: repeat-x;
 	background-position: 0px bottom;
 }
@@ -322,9 +322,9 @@ div#hp-footer-links {
 div#hp-footer-logo {
 	height: 46px;
 	width: 200px;
-	background-image: url(../images/background.png);
+	background-image: url(../images/backgrounds.png);
 	background-repeat: no-repeat;
-	background-position: right -130px;
+	background-position: right -52px;
 	float: right;
 }
 
