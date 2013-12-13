@@ -108,7 +108,7 @@ public class Friendship extends BaseModel {
 	
 	@SuppressWarnings("unchecked")
 	public static List<Account> findFriends(Account account){
-		return (List<Account>) JPA.em().createQuery("SELECT fs.friend FROM Friendship fs WHERE fs.account.id = ?1 AND fs.linkType = ?2")
+		return (List<Account>) JPA.em().createQuery("SELECT fs.friend FROM Friendship fs WHERE fs.account.id = ?1 AND fs.linkType = ?2 ORDER BY fs.friend.firstname ASC")
 				.setParameter(1, account.id).setParameter(2, LinkType.establish).getResultList();
 	}
 	

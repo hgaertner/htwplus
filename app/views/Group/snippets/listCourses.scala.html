@@ -30,7 +30,7 @@
 					@if(course.groupType.equals(GroupType.open)) {
 						<a href="@routes.GroupController.view(course.id)"> <b>@course.title</b></a>
 					} else {
-						<a href="#" class="no-drop"> @course.title</a>
+						<a class="no-drop" rel="tooltip" data-original-title="Du musst dem Kurs erst beitreten" data-container="body"> @course.title</a>
 					}
 				}
 			</td>

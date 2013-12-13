@@ -11,6 +11,7 @@ GET		/search/groups						controllers.Application.searchForGroups(keyword:String)
 GET		/search/courses						controllers.Application.searchForCourses(keyword:String)
 POST    /login                  			controllers.AccountController.authenticate()
 GET     /logout                 			controllers.AccountController.logout()
+GET     /help                 				controllers.Application.help()
 GET		/404								controllers.Application.error()
 
 # JavaScript Routes

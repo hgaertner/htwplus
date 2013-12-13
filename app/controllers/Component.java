@@ -7,7 +7,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import models.Account;
-import models.Group;
 import models.Login;
 import play.Logger;
 import play.api.templates.Html;

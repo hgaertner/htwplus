@@ -4,19 +4,14 @@ import java.util.List;
 
 import models.Account;
 import models.Group;
-import models.Media;
 import models.Notification;
 import models.Notification.NotificationType;
 import models.Post;
-import play.Logger;
 import play.Play;
 import play.api.mvc.Call;
-import play.api.templates.Html;
 import play.data.Form;
 import play.db.jpa.Transactional;
-import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.index;
 
 public class PostController extends BaseController {
 	

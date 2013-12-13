@@ -1,13 +1,17 @@
 package controllers;
 
 
-import play.*;
-import play.mvc.*;
-import play.mvc.Http.*;
+import models.Account;
+import models.Friendship;
+import models.Group;
+import models.Media;
+import models.Post;
+import models.enums.AccountRole;
+import models.enums.GroupType;
+import play.mvc.Http.Context;
+import play.mvc.Result;
+import play.mvc.Security;
 import views.html.index;
-import views.html.Group.create;
-import models.*;
-import models.enums.*;
 
 public class Secured extends Security.Authenticator {
 

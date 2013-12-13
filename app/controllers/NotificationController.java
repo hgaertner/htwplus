@@ -2,12 +2,8 @@ package controllers;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.springframework.context.annotation.CommonAnnotationBeanPostProcessor;
-
 import models.Account;
 import models.Notification;
-import models.Notification.NotificationType;
 import play.Logger;
 import play.api.templates.Html;
 import play.db.jpa.Transactional;
