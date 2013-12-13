@@ -39,12 +39,12 @@ $('[rel="popover"]').popover();
  */
 $(document).ready(function () {
 
-	var preSelection = $("input:radio[name=visibility]:checked").val();
+	var preSelection = $("input:radio[name=groupType]:checked").val();
 	if(preSelection == 2) {
 		$("#token-input").show();
 	}
 	
-	$("input:radio[name=visibility]").click(function() {
+	$("input:radio[name=groupType]").click(function() {
 		var selection = $(this).val();
 		if(selection == 2) {
 			$("#token-input").fadeIn();

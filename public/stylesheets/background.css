@@ -322,17 +322,8 @@ div#hp-footer-logo {
 
 /*============================== no Modal ==============================*/
 
-.noModal {
-	padding-left: 10%;
-	padding-right: 10%;
-}
-
 .noModal label {
 	font-weight: bold;
-}
-
-.noModal input, select, textarea {
-	width: 100%;
 }
 
 .noModal input[type="text"]:not(.search-query),
@@ -345,40 +336,7 @@ div#hp-footer-logo {
 }
 
 .noModal input[type="radio"] {
-	width: auto;
 	margin-top: 2px;
-}
-
-.noModal dd i {
-	margin-top: 0px;
-}
-
-.noModal dd input {
-	margin-top: -5px;
-}
-
-.noModal dd button {
-	margin-top: -5px;
-}
-
-.noModal dl {
-	height: 20px;
-}
-
-.noModal dl dd:last-child {
-	padding-bottom: 8px;
-}
-
-.noModal dt {
-   float:left;
-   clear: both;
-   width: 30%;
-}
-
-.noModal dd {
-   float: right;
-   width: 68%;
-   margin-bottom: 8px;
 }
 
 .noModal dd.error {
@@ -387,6 +345,37 @@ div#hp-footer-logo {
 }
 
 .noModal dd.info {
+	display: none;
+}
+
+form dl dt {
+	text-align: left !important;
+}
+
+form dl dd {
+	margin-bottom: 15px;
+}
+
+form dl dd > .checkbox,
+form dl dd > .radio {
+	margin-top: 0px;
+}
+
+form dl dd > .checkbox:last-child,
+form dl dd > .radio:last-child {
+	margin-bottom: 0px;
+}
+
+form dl dd > .radio input {
+	margin-top: 2px;
+}
+
+form dd.error {
+	text-shadow: 1px 1px 1px rgba(185, 74, 72, 0.5);
+	color: #b94a48;
+}
+
+form dd.info {
 	display: none;
 }
 
