@@ -71,20 +71,6 @@
 		} else {
 		<p><i>Keine Anfragen vorhanden.</i></p>
 		}
-		<hr />
-		
-		<h2>
-			<span rel="tooltip" data-original-title="Hier findest du alle Gruppen die du gegründet hast oder denen du beigetreten bist." data-delay="500" data-container="body">
-				Meine Gruppen
-			</span>
-		</h2>
-				
-		@if(!approvedGroups.isEmpty){
-			@views.html.Group.snippets.listGroups(approvedGroups, user)
-		} else {
-		<p><i>Noch keiner Gruppe beigetreten.</i></p>
-		}
-		
 		<br />
 		
 		<h2>
@@ -98,6 +84,20 @@
 			@views.html.Group.snippets.listCourses(approvedCourses, user)
 		} else {
 		<p><i>Noch keinen Kursen beigetreten.</i></p>
+		}
+		
+		</br>
+		
+		<h2>
+			<span rel="tooltip" data-original-title="Hier findest du alle Gruppen die du gegründet hast oder denen du beigetreten bist." data-delay="500" data-container="body">
+				Meine Gruppen
+			</span>
+		</h2>
+				
+		@if(!approvedGroups.isEmpty){
+			@views.html.Group.snippets.listGroups(approvedGroups, user)
+		} else {
+		<p><i>Noch keiner Gruppe beigetreten.</i></p>
 		}
 		
 		<br />

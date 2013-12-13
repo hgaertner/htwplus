@@ -31,7 +31,7 @@
 					@if(group.groupType.equals(GroupType.open)) {
 						<a href="@routes.GroupController.view(group.id)"> <b>@group.title</b></a>
 					} else {
-						<a href="#" class="no-drop"> @group.title</a>
+						<a class="no-drop" rel="tooltip" data-original-title="Du musst der Gruppe erst beitreten" data-container="body"> @group.title</a>
 					}
 				}
 			</td>
