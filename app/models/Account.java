@@ -9,6 +9,9 @@ import javax.jws.Oneway;
 import javax.persistence.*;
 import javax.validation.ConstraintViolationException;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -224,23 +227,28 @@ public class Account extends BaseModel {
 	 * @return List of accounts which matches with the keyword
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Account> searchForAccountByKeyword(String keyword) {
-		Logger.info("Account model searchForAccountByKeyWord: " + keyword.toLowerCase());
-		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
+	public static List<Account> searchForAccountByKeyword(String keyword, final boolean setMaxResult) {
+		final FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
 		//Create a querybuilder for the group entity 
-		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
+		final QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
 				.buildQueryBuilder().forEntity(Account.class).get();
+		//Create a criteria because we just want to search for accounts
+		final Session session = fullTextEntityManager
+				.unwrap(org.hibernate.Session.class);
+		final Criteria criteria = session.createCriteria(Account.class);
+		criteria.addOrder(Order.asc("name"));
 		//Sets the field we want to search on and tries to match with the given keyword
-		org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword().wildcard()
+		final org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword().wildcard()
 				.onField("name").matching("*"+keyword.toLowerCase()+"*").createQuery();
 		// wrap Lucene query in a javax.persistence.Query
-		FullTextQuery fullTextQuery = fullTextEntityManager
+		final FullTextQuery fullTextQuery = fullTextEntityManager
 				.createFullTextQuery(luceneQuery, Account.class);
-
+		if(setMaxResult) {
+			criteria.setMaxResults(10);
+		}
+		fullTextQuery.setCriteriaQuery(criteria);
 		List<Account> result = fullTextQuery.getResultList(); //The result...
-		Logger.info("Found " +result.size() +" accounts with keyword: " +keyword);
-
-
+		session.clear();
 		return result;
 	}
 }
