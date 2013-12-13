@@ -48,6 +48,25 @@ h1 {
 	text-align: center;
 }
 
+#hp-bug {
+	font-weight: bold;
+	font-size: 12pt;
+	padding: 5px;
+	padding-left: 9px;
+	position: fixed;
+	left: -5px;
+	z-index: 1500;
+}
+
+#hp-bug img {
+	width: 20px;
+}
+
+#hp-bug-icon {
+	color: white !important;
+	margin: 10px;
+	font-size: 14pt;
+}
 
 /*============================== Navigation ==============================*/
 
