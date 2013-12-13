@@ -25,11 +25,15 @@
 				@if(group.groupType.equals(GroupType.close)) { <span class="glyphicon glyphicon-lock"></span> }
 			</td>
 			<td>		
-				<a href="@routes.GroupController.view(group.id)">
-					@if(Secured.isOwnerOfGroup(group, user)) {
-						<b> @group.title</b>
-					} else { @group.title } 
-				</a>
+				@if(Secured.isOwnerOfGroup(group, user)) {
+					<a href="@routes.GroupController.view(group.id)"> <b>@group.title</b></a>
+				} else {
+					@if(group.groupType.equals(GroupType.open)) {
+						<a href="@routes.GroupController.view(group.id)"> <b>@group.title</b></a>
+					} else {
+						<a href="#" class="no-drop"> @group.title</a>
+					}
+				}
 			</td>
 			<td>
 				@views.html.snippets.userLink(group.owner)
@@ -48,8 +52,12 @@
 					</a>
 				} 
 				@if(!Secured.isMemberOfGroup(group, Component.currentAccount)) {
-					<a href="@routes.GroupController.join(group.id)" rel="tooltip" data-original-title="Beitreten" data-container="body">
-						<span class="glyphicon glyphicon-ok"></span>
+					
+						@if(group.groupType.equals(GroupType.open)) {
+							<a href="@routes.GroupController.join(group.id)" rel="tooltip" data-original-title="Beitreten" data-container="body"> <span class="glyphicon glyphicon-ok"></span>
+						} else { 
+							<a href="@routes.GroupController.join(group.id)" rel="tooltip" data-original-title="Anfrage senden" data-container="body"> <span class="glyphicon glyphicon-envelope"></span>
+						}
 					</a>
 				  }
 			</td>

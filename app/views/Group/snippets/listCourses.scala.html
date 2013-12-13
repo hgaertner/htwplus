@@ -24,10 +24,15 @@
 				<span class="glyphicon glyphicon-briefcase"></span>
 			</td>
 			<td>		
-				<a href="@routes.GroupController.view(course.id)">@if(Secured.isOwnerOfGroup(course, user)) {
-					<b> @course.title </b>
-					} else { @course.title }
-				</a>
+				@if(Secured.isOwnerOfGroup(course, user)) {
+					<a href="@routes.GroupController.view(course.id)"> <b>@course.title</b></a>
+				} else {
+					@if(course.groupType.equals(GroupType.open)) {
+						<a href="@routes.GroupController.view(course.id)"> <b>@course.title</b></a>
+					} else {
+						<a href="#" class="no-drop"> @course.title</a>
+					}
+				}
 			</td>
 			<td>
 				@views.html.snippets.userLink(course.owner)

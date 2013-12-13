@@ -53,7 +53,7 @@
 					@if(accountGroup.account.equals(user)) {
 						<td><a href="@routes.GroupController.view(accountGroup.group.id)">@truncate(accountGroup.group.title,30)</a></td>
 						<td><a href="@routes.ProfileController.view(accountGroup.account.id)">Dir</a></td>
-						<td>@if(accountGroup.linkType.equals(models.enums.LinkType.reject)) {abgelehnt} else {in Bearabeitung}</td>
+						<td>@if(accountGroup.linkType.equals(models.enums.LinkType.reject)) {abgelehnt} else {in Bearbeitung}</td>
 						<td><a href="@routes.GroupController.removeMember(accountGroup.group.id, accountGroup.account.id)" rel="tooltip" data-original-title="@if(accountGroup.linkType.equals(models.enums.LinkType.reject)) {löschen} else {Anfrage zurückziehen}" data-container="body"><span class="glyphicon glyphicon-remove"></span></a></td>
 					} else {
 						<td><a href="@routes.GroupController.view(accountGroup.group.id)">@truncate(accountGroup.group.title,30)</a></td>
