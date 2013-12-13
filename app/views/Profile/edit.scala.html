@@ -7,17 +7,15 @@
 @views.html.Profile.snippets.navTabs(profile)
 <h2>Profil bearbeiten</h2>
 <br>
-<div class="noModal">
 
 @form(routes.ProfileController.update(profile.id), 'class -> "ajaxForm") {
-
-	@inputText(
-		profileForm("email"),
-		'class -> "form-control",
-		'_label -> "Email",
-		'placeholder -> "max.mustermann@muster.de"
-	)
-	<dl>
+	<dl class="dl-horizontal">
+		@inputText(
+			profileForm("email"),
+			'class -> "form-control",
+			'_label -> "Email",
+			'placeholder -> "max.mustermann@muster.de"
+		)
 		<dt>Studiengang</dt>
 		<dd>
 			<select class="form-control" name="studycourse">
@@ -31,8 +29,6 @@
 				}
 			</select>
 		</dd>
-	</dl>
-	<dl>
 		<dt>Semester</dt>
 		<dd>
 			<select class="form-control" name="semester">
@@ -62,8 +58,6 @@
 				<option value="Diplom" @if(profile.degree !=null && profile.degree.equals("Diplom")){selected="selected"}>Diplom</option>
 			</select>
 		</dd>
-	</dl>
-	<dl>
 		<dt>Avatar</dt>
 		<dd id="hp-avatars">
 			<img id="a0" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a0.png")" alt="avatar" onclick="updateAvatar(this)" />
@@ -82,27 +76,23 @@
 	<input type="submit" class="btn btn-warning" value="Speichern">
 
 	<script type="text/javascript">
+		var aID = "@profile.avatar";
 	
-	var aID = "@profile.avatar";
-	
-	function updateAvatar(parent) {
-		var childs = document.getElementById("hp-avatars").getElementsByClassName("img-thumbnail");
-		for (i = 0; i < childs.length; i++) {
-			childs[i].className = "img-thumbnail";
+		function updateAvatar(parent) {
+			var childs = document.getElementById("hp-avatars").getElementsByClassName("img-thumbnail");
+			for (i = 0; i < childs.length; i++) {
+				childs[i].className = "img-thumbnail";
+			}
+			parent.className = "img-thumbnail active";
+			document.getElementById("avatar").value = parent.id;
 		}
-		parent.className = "img-thumbnail active";
-		document.getElementById("avatar").value = parent.id;
-	}
-	
-	function setAvatar(id) {
-		document.getElementById(id).className = "img-thumbnail active";
-		document.getElementById("avatar").value = id;
-	}
-	
-	setAvatar(aID);
-	
+		
+		function setAvatar(id) {
+			document.getElementById(id).className = "img-thumbnail active";
+			document.getElementById("avatar").value = id;
+		}
+		
+		setAvatar(aID);
 	</script>
-
 }
-</div>
 }
