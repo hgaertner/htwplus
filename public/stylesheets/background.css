@@ -48,6 +48,10 @@ h1 {
 	text-align: center;
 }
 
+.no-drop {
+	cursor: no-drop;
+}
+
 
 /*============================== Navigation ==============================*/
 
