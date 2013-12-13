@@ -129,7 +129,7 @@ public class Post extends BaseModel {
 			groupListClause = " OR p.group IN :groupList ";
 		}
 		if(friendList != null && !friendList.isEmpty()){
-			friendListClause = " OR p.account IN :friendList ";
+			friendListClause = " OR p.owner IN :friendList ";
 		}
 		if(isVisitor){
 			visitorClause = " AND p.owner = :account ";
