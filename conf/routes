@@ -5,8 +5,10 @@
 # Home page
 GET     /                       			controllers.Application.index()
 GET     /stream                    			controllers.Application.stream(page: Integer ?= 1)
+GET		/search								controllers.Application.search()
 POST    /login                  			controllers.AccountController.authenticate()
 GET     /logout                 			controllers.AccountController.logout()
+GET		/404								controllers.Application.error()
 
 # JavaScript Routes
 GET		/assets/javascripts/routes			controllers.Application.javascriptRoutes()
@@ -25,7 +27,6 @@ GET 	/group/:id/join						controllers.GroupController.join(id:Long)
 GET 	/group/:groupId/remove/:accountId	controllers.GroupController.removeMember(groupId:Long, accountId: Long)
 GET 	/group/:groupId/accept/:accountId	controllers.GroupController.acceptRequest(groupId:Long, accountId: Long)
 GET 	/group/:groupId/decline/:accountId	controllers.GroupController.declineRequest(groupId:Long, accountId: Long)
-GET		/group/searchForGroup/				controllers.GroupController.searchForGroupByKeyword()
 GET		/group/:id/token					controllers.GroupController.token(id:Long)
 POST	/group/:id/validate				    controllers.GroupController.validateToken(id:Long)
 
@@ -46,7 +47,6 @@ GET		/user/:id/editPassword				controllers.ProfileController.editPassword(id:Lon
 POST	/user/:id/updatePassword			controllers.ProfileController.updatePassword(id:Long)
 POST	/user/:id/edit						controllers.ProfileController.update(id:Long)
 GET		/user/:id/stream					controllers.ProfileController.stream(id:Long,page: Integer ?= 1)
-GET		/user/searchForAccount/				controllers.AccountController.searchByKeyword()
 
 
 #Friends
@@ -70,6 +70,8 @@ GET		/notification/:id					controllers.NotificationController.forward(id:Long,ur
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               		controllers.Assets.at(path="/public", file)
+
+
 
 # No route found? take this
 GET     /*path                  			controllers.Application.defaultRoute(path: String)

@@ -3,6 +3,7 @@
 @import models._
 
 @main("Editieren") {
+
 @views.html.Profile.snippets.navTabs(profile)
 <h2>Profil bearbeiten</h2>
 <br>
@@ -13,7 +14,7 @@
 	@inputText(
 		profileForm("email"),
 		'class -> "form-control",
-		'_label -> "Email *",
+		'_label -> "Email",
 		'placeholder -> "max.mustermann@muster.de"
 	)
 	<dl>

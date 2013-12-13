@@ -53,7 +53,7 @@
                        @if(countNotification > 0) {
                          		@controllers.NotificationController.view()
                        } else {
-                       			<li>Nichts neues passiert</li>
+                       			<li class="hp-notification">Nichts neues passiert</li>
                        }
                       </ul>
                 </li>
@@ -63,9 +63,9 @@
 				<li class="visible-xs dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-search"></span> <b class="caret"></b></a>
 					<ul class="hp-dropdown-search dropdown-menu">
-						<form class="hp-search-form navbar-form navbar-left" role="search" action="@routes.GroupController.searchForGroupByKeyword" method="GET">
+						<form class="hp-search-form navbar-form navbar-left" role="search" action="@routes.Application.search" method="GET">
 							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Suche" id="groupSearchQuery" name="keyword">
+								<input type="text" class="form-control" placeholder="Suche" id="searchQuery" name="keyword">
 							</div>
 							<button type="submit"><span class="glyphicon glyphicon-search"></span></button>
 						</form>
@@ -73,9 +73,9 @@
 				</li>
 			</ul>
 			
-			<form class="hidden-xs hp-search-form navbar-form navbar-left" role="search" action="@routes.GroupController.searchForGroupByKeyword" method="GET">
+			<form class="hidden-xs hp-search-form navbar-form navbar-left" role="search" action="@routes.Application.search" method="GET">
 				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Suche" id="groupSearchQuery" name="keyword">
+					<input type="text" class="form-control" placeholder="Suche" id="searchQuery" name="keyword">
 				</div>
 				<button type="submit"><span class="glyphicon glyphicon-search"></span></button>
 			</form>
@@ -88,7 +88,7 @@
 						<b class="caret"></b>
 					</a>
 					<ul class="dropdown-menu">
-						<li><a href="@routes.ProfileController.stream(user.id)">Mein Newsstream</a></li>
+						<li><a href="@routes.ProfileController.stream(user.id)">Mein öffentlicher Newsstream</a></li>
 						<li><a href="@Navigation.getLevelRoute(Navigation.Level.PROFILE)">Mein Profil ansehen</a></li>
 						<li><a href="@routes.ProfileController.edit(user.id)">Mein Profil bearbeiten</a></li>
 						<li class="divider"></li>

@@ -3,20 +3,17 @@
 
 @main("Profil") {
 @defining(Component.currentAccount()) { curUser =>
-@views.html.Profile.snippets.navTabs(user)
-
-<h2>
-	@user.name
 	
-</h2>
-<br />
-<img alt="avatar" src="@user.getAvatarUrl()" class="img-thumbnail" />
-<br />
+	@views.html.Profile.snippets.navTabs(user)
+	
+	<div class="modal fade" id="confirmDeleteFriend@user.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+		@views.html.Friends.snippets.deleteFriendModal(user)
+	</div>
 
-<!-- confirmDeleteFriendModal -->
-<div id="confirmDeleteFriend" class="modal hide fade" tabindex="-1" role="dialog">@views.html.Friends.snippets.deleteFriendModal(user)</div>
-<!-- Ende confirmDeleteFriendModal -->
-
+	<h2>@user.name</h2>
+	<br />
+	<img alt="avatar" src="@user.getAvatarUrl()" class="img-thumbnail" />
+	<br />
 }
 
 <br />

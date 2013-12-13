@@ -2,13 +2,15 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 
 import controllers.Component;
+import controllers.routes;
 import models.Account;
 import models.Group;
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;
+import play.api.Play;
 import play.db.jpa.JPA;
-import play.db.jpa.Transactional;
+import play.mvc.Http.RequestHeader;
 
 
 public class Global extends GlobalSettings {
@@ -27,6 +29,19 @@ public class Global extends GlobalSettings {
 		//Doesn't work!!!
 		InitialData.insert(app);
 	}
+	
+	@Override
+	public play.mvc.Result onError(RequestHeader rh, Throwable t) {
+		Logger.info("onError "+ rh + " " + t);
+		
+		// prod mode? return 404 page
+		if(Play.mode(play.api.Play.current()).toString().equals("Prod")){
+			return play.mvc.Results.redirect(routes.Application.error());
+		}
+
+		return super.onError(rh, t);
+	}
+	
 
 	static class InitialData {
 

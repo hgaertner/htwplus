@@ -3,11 +3,12 @@
 
 @main("Searchresult"){
 
+	<h1>Suchergebnisse</h1>
+	<br />
+
 	@defining(Component.currentAccount()) { user =>
 	
 		@if(courses != null && courses.size != 0) {
-			
-			<h3>Gefundene Kurse:</h3>
 		
 			<!-- Start confirmDeleteGroupModal -->
 			@for(group <- groups) {
@@ -33,8 +34,6 @@
 		
 		@if(groups != null && groups.size != 0) {
 		
-			<h3>Gefundene Gruppen:</h3>
-		
 			<!-- Start confirmDeleteGroupModal -->
 			@for(course <- courses) {
 				<div class="modal fade" id="confirmDeleteGroup@course.id" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
@@ -59,16 +58,14 @@
 		
 		@if(users != null && users.size != 0) {
 			
-			<h3>Gefundene Personen:</h3>
-			
-			<!-- list all found groups -->
+			<!-- list all found persons -->
 			@views.html.snippets.listAccounts(users)
 		
 		}
 		
 		@if(courses.size == 0 && groups.size == 0 && users.size == 0) {
 		
-			<h4><i>Dazu konnten wir leider nichts finden :-(</i></h4>
+			<h4><i>Uff, ne. <br />Ich habe mich ja bemüht, aber irgendwie konnte ich nichts finden :-/</i></h4>
 		}
 	
 	}

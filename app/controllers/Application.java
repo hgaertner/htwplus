@@ -1,16 +1,20 @@
 package controllers;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import controllers.Navigation.Level;
 import models.Account;
-import models.Friendship;
+import models.Group;
 import models.Post;
 import play.Logger;
 import play.Play;
 import play.Routes;
 import play.mvc.*;
-import views.html.*;
+import views.html.error;
+import views.html.searchresult;
+import views.html.stream;
 import play.data.Form;
 import play.db.jpa.*;
 
@@ -43,6 +47,33 @@ public class Application extends BaseController {
 		Navigation.set(Level.STREAM);
 		Account currentAccount = Component.currentAccount();
 		return ok(stream.render(currentAccount,Post.getStream(currentAccount, LIMIT, page),postForm,Post.countStream(currentAccount), LIMIT, page));
+	}
+	
+	public static Result search(){
+		List<Group> groupResults = null;
+		List<Group> courseResults = null;
+		List<Account> accResults = null;
+		final Set<Map.Entry<String, String[]>> entries = request()
+				.queryString().entrySet();
+		for (Map.Entry<String, String[]> entry : entries) {
+			if (entry.getKey().equals("keyword")) {
+				final String keyword = entry.getValue()[0];
+				Logger.debug("Value of key" + keyword);
+				Navigation.set("Suchergebnisse");
+				courseResults = Group.searchForCourseByKeyword(keyword);
+				groupResults = Group.searchForGroupByKeyword(keyword);
+				accResults = Account.searchForAccountByKeyword(keyword);
+				Logger.info("Sizes: " + "Groups: " +groupResults.size() + " Courses: " + courseResults.size() + " Account: " +accResults.size());
+			}
+
+		}
+
+		return ok(searchresult.render(groupResults, courseResults, accResults));
+	}
+	
+	public static Result error() {
+		Navigation.set("404");
+		return ok(error.render());
 	}
 		
 	public static Result defaultRoute(String path) {

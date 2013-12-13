@@ -62,6 +62,7 @@ public class FriendshipController extends BaseController {
 		} else {
 			friendshipLink.delete();
 			reverseLink.delete();
+			flash("success","Tja, das war es dann wohl :-/");
 		}
 		
 		return redirect(routes.FriendshipController.index());
@@ -129,10 +130,16 @@ public class FriendshipController extends BaseController {
 			return true;
 		}
 		
+		if(Friendship.findReverseRequest(currentUser,potentialFriend) != null){
+			flash("info","Du hast bereits eine Freundschaftsanfrage von diesem User. Schau mal nach ;-)");
+			return true;
+		}
+		
 		if(Friendship.alreadyFriendly(currentUser,potentialFriend)){
 			flash("info","Ihr seid bereits Freunde!");
 			return true;
 		}
+		
 		return false;
 	}
 

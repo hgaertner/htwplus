@@ -1,21 +1,26 @@
 @(group: Group)
 @import helper._
+@import models.enums.GroupType
 
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h4 class="modal-title hp-truncate" id="confirmModalLabel">
-					@if(group.isClosed) {
+					@if(group.groupType == GroupType.close) {
 					<span class="glyphicon glyphicon-lock"></span>
-					} else {
-					<span class="glyphicon glyphicon-globe"></span>
+					} 
+					@if(group.groupType == GroupType.open) {
+						<span class="glyphicon glyphicon-globe"></span>
 					}
-					Gruppe löschen
+					@if(group.groupType == GroupType.course) {
+						<span class="glyphicon glyphicon-briefcase"></span>
+					}
+					@truncate(group.title,30) löschen
 				</h4>
 			</div>
 			<div class="modal-body">
-				Möchtest du <b>@truncate(group.title,30)</b> wirklich löschen?<br />
+				Möchtest Du <b>@truncate(group.title,30)</b> wirklich löschen?<br />
 				Alle dazugehörigen Post, Kommentare, Mitglieder, Medien werden ebenfalls gelöscht!
 			</div>
 			<div class="modal-footer">

@@ -135,12 +135,12 @@ public class Post extends BaseModel {
 			friendListClause = " OR p.account IN :friendList ";
 		}
 		if(isVisitor){
-			visitorClause = " AND p.owner = :currentAccount ";
+			visitorClause = " AND p.owner = :account ";
 		}
 		
 		// create Query. 
-		Query query = JPA.em().createQuery(selectClause+" FROM Post p WHERE p.account = :currentAccount "+visitorClause+groupListClause+friendListClause+orderByClause);
-		query.setParameter("currentAccount", account);
+		Query query = JPA.em().createQuery(selectClause+" FROM Post p WHERE p.account = :account "+groupListClause+friendListClause+visitorClause+orderByClause);
+		query.setParameter("account", account);
 		
 		
 		// add parameter as needed
@@ -175,7 +175,7 @@ public class Post extends BaseModel {
 
 	/**
 	 * @author Iven
-	 * @param account - Account (usually current user)
+	 * @param currentUser - Account (current user)
 	 * @return List of Posts
 	 */
 	public static List<Post> getStream(Account account, int limit, int page) {
@@ -189,7 +189,7 @@ public class Post extends BaseModel {
 	
 	/**
 	 * @author Iven
-	 * @param account - Account (usually current user)
+	 * @param currentUser - Account (current user)
 	 * @return 
 	 * @return Number of Posts
 	 */
@@ -203,29 +203,27 @@ public class Post extends BaseModel {
 	
 	/**
 	 * @author Iven
-	 * @param account - Account (usually a friends)
+	 * @param friend - Account (a friends account)
 	 * @return List of Posts
 	 */
 	public static List<Post> getFriendStream(Account friend, int limit, int page) {
-		// find friends and non closed-groups of given account
-		List<Account> friendList = Friendship.findFriends(friend);
+		// find open groups for given account
 		List<Group> groupList = GroupAccount.findPublicEstablished(friend);
 			
 		int offset = (page * limit) - limit;
-		return findStreamForAccount(friend, groupList, friendList, false, limit, offset);
+		return findStreamForAccount(friend, groupList, null, true, limit, offset);
 	}
 	
 	/**
 	 * @author Iven
-	 * @param account - Account (usually a friend)
+	 * @param friend - Account (a friends account)
 	 * @return 
 	 * @return Number of Posts
 	 */
-	public static int countFriendStream(Account account){
-		// find friends and groups of given account
-		List<Group> groupList = GroupAccount.findPublicEstablished(account);
-		List<Account> friendList = Friendship.findFriends(account);
+	public static int countFriendStream(Account friend){
+		// find groups of given account
+		List<Group> groupList = GroupAccount.findPublicEstablished(friend);
 		
-		return countStreamForAccount(account, groupList, friendList, false);
+		return countStreamForAccount(friend, groupList, null, true);
 	}
 }

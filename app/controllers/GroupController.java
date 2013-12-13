@@ -1,11 +1,6 @@
 package controllers;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-
-
 
 import controllers.Navigation.Level;
 import models.Account;
@@ -28,7 +23,6 @@ import views.html.Group.view;
 import views.html.Group.create;
 import views.html.Group.edit;
 import views.html.Group.token;
-import views.html.Group.searchresult;
 
 
 @Transactional
@@ -41,10 +35,10 @@ public class GroupController extends BaseController {
 	
 	
 	public static Result index() {
-		Navigation.set(Level.GROUPS, "Index");
+		Navigation.set(Level.GROUPS, "Übersicht");
 		Account account = Component.currentAccount();
-		List<Group> groupAccounts = GroupAccount.findEstablished(account);
 		List<GroupAccount> groupRequests = GroupAccount.findRequests(account);
+		List<Group> groupAccounts = GroupAccount.findGroupsEstablished(account);
 		List<Group> courseAccounts = GroupAccount.findCoursesEstablished(account);
 		
 		return ok(index.render(groupAccounts,courseAccounts,groupRequests,groupForm));
@@ -108,7 +102,6 @@ public class GroupController extends BaseController {
 			switch(groupType){
 			
 				case 0: group.groupType = GroupType.open; 
-						group.isClosed = true; 
 						successMsg = "Öffentliche Gruppe"; 
 						break;
 						
@@ -164,11 +157,7 @@ public class GroupController extends BaseController {
 		Form<Group> filledForm = groupForm.bindFromRequest();
 		int groupType = Integer.parseInt(filledForm.data().get("optionsRadios"));
 		String description = filledForm.data().get("description");
-		if(filledForm.data().get("optionsRadios").equals("1")){
-			group.isClosed = true;
-		} else {
-			group.isClosed = false;
-		}
+
 		switch(groupType){
 			case 0: group.groupType = GroupType.open; break;
 			case 1: group.groupType = GroupType.close; break;
@@ -198,29 +187,6 @@ public class GroupController extends BaseController {
 	
 	public static List<Group> showAll() {
 		return Group.all();
-	}
-	
-	
-	public static Result searchForGroupByKeyword(){
-		List<Group> groupResults = null;
-		List<Group> courseResults = null;
-		List<Account> accResults = null;
-		final Set<Map.Entry<String, String[]>> entries = request()
-				.queryString().entrySet();
-		for (Map.Entry<String, String[]> entry : entries) {
-			if (entry.getKey().equals("keyword")) {
-				final String keyword = entry.getValue()[0];
-				Logger.debug("Value of key" + keyword);
-				Navigation.set("Suchergebnisse");
-				courseResults = Group.searchForCourseByKeyword(keyword);
-				groupResults = Group.searchForGroupByKeyword(keyword);
-				accResults = Account.searchForAccountByKeyword(keyword);
-				Logger.info("Sizes: " + "Groups: " +groupResults.size() + " Courses: " + courseResults.size() + " Account: " +accResults.size());
-			}
-
-		}
-
-		return ok(searchresult.render(groupResults, courseResults, accResults));
 	}
 	
 	public static Result token(Long groupId) {

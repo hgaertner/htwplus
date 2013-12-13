@@ -2,12 +2,7 @@ package controllers;
 
 import static play.data.Form.form;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.Set;
-
-import controllers.Navigation.Level;
 import models.Account;
 import models.LDAPConnector;
 import models.LDAPConnector.LDAPConnectorException;
@@ -18,7 +13,6 @@ import play.data.Form;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 import views.html.index;
-import views.html.Friends.searchresult;
 import views.html.snippets.signup;
 import views.html.snippets.signupSuccess;
 
@@ -142,32 +136,4 @@ public class AccountController extends BaseController {
 			return ok(signupSuccess.render());
 		}
 	}
-
-	/**
-	 * Search for a user by the given keyword
-	 * 
-	 * @param keyword
-	 * @return Returns an result object
-	 */
-	public static Result searchByKeyword() {
-		List<Account> result = null;
-		final Set<Map.Entry<String, String[]>> entries = request()
-				.queryString().entrySet();
-		for (Map.Entry<String, String[]> entry : entries) {
-			if (entry.getKey().equals("keyword")) {
-				final String keyword = entry.getValue()[0];
-				Logger.debug("Value of key" + keyword);
-				result = Account
-						.searchForAccountByKeyword(keyword);
-				if (result != null && result.size() > 1) {
-					Logger.debug("Found " + result.size()
-							+ " users with the keyword: " + keyword);
-				}
-			}
-
-		}
-		Navigation.set(Level.FRIENDS, "Suchergebnisse");
-		return ok(searchresult.render(result));
-	}
-
 }

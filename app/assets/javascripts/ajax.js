@@ -210,40 +210,4 @@ $(document).ready(function () {
 	 * END GROUP COMMENTS
 	 */
 
-		
-	/*
-	 * GROUP SEARCH
-	 */
-	$('#groupSearchSubmit').click(function(){
-		var keyword = $('#groupSearchQuery').val();
-		$.ajax({
-			url: "/gruppe/searchForGroup/" + keyword,
-			type: "GET",
-			success: function(data){
-				$('#searchGroupResults').replaceWith(data)
-			
-			}
-		});
-		
-	});
-	/*
-	 * END GROUP SEARCH
-	 */
-		
-	/*
-	 * ACCOUNT SEARCH
-	 */
-	$('#accountSearchSubmit').click(function(){
-		var keyword = $('#accountSearchQuery').val();
-		$.ajax({
-			url: "/user/searchForAccount/" + keyword,
-			type: "GET",
-			succes: function(data){
-				$('#searchAccountResults').replaceWith(data)
-			}
-		})
-	})
-	/*
-	 * END ACCOUNT SEARCH
-	 */
 });
