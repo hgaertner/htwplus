@@ -43,8 +43,12 @@ public class ProfileController extends BaseController {
 			flash("info", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());
 		} else {
-			Navigation.set(Level.FRIENDS, "Profil", account.name,
-					routes.ProfileController.view(account.id));
+			if(Secured.isFriend(account)) {
+				Navigation.set(Level.FRIENDS, "Profil", account.name, routes.ProfileController.view(account.id));
+			} else {
+				Navigation.set(Level.USER, "Profil", account.name, routes.ProfileController.view(account.id));
+			}
+	
 			return ok(index.render(account, postForm));
 			// return ok(index.render(account));
 		}

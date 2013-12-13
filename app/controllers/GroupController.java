@@ -92,9 +92,9 @@ public class GroupController extends BaseController {
 			Group group = filledForm.get();
 			int groupType;
 			try {
-				groupType = Integer.parseInt(filledForm.data().get("groupType"));
+				groupType = Integer.parseInt(filledForm.data().get("type"));
 			} catch (NumberFormatException ex){
-				filledForm.reject("groupType", "Bitte eine Sichtbarkeit wählen!");
+				filledForm.reject("type", "Bitte eine Sichtbarkeit wählen!");
 				return ok(create.render(filledForm));
 			}
 			

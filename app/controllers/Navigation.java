@@ -8,7 +8,7 @@ import play.mvc.*;
 
 public class Navigation {
 
-	public static enum Level {PROFILE,STREAM,FRIENDS,GROUPS,COURSES,HELP}
+	public static enum Level {PROFILE,STREAM,FRIENDS,GROUPS,COURSES,HELP,USER}
 	
 	private static Map<Level,Call> callMapping = new HashMap<Navigation.Level, Call>();
 	static
@@ -18,6 +18,7 @@ public class Navigation {
 		callMapping.put(Level.FRIENDS, routes.FriendshipController.index());
 		callMapping.put(Level.GROUPS, routes.GroupController.index());
 		callMapping.put(Level.HELP, routes.Application.help());
+		callMapping.put(Level.USER, routes.Application.searchForAccounts(""));
 	}
 	
 	private static Map<Level,String> titleMapping = new HashMap<Navigation.Level, String>();
@@ -28,6 +29,7 @@ public class Navigation {
 		titleMapping.put(Level.FRIENDS, "Freunde");
 		titleMapping.put(Level.GROUPS, "Gruppen & Kurse");
 		titleMapping.put(Level.HELP, "Hilfe");
+		titleMapping.put(Level.USER, "User");
 	}
 	
 	private static Call fallbackCall = routes.Application.index();
