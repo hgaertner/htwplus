@@ -21,37 +21,28 @@
 	<h2 class="hp-truncate">@group.title</h2>		
 	</br>
     </br>
-    <div class="noModal">
-		<dl>
+	@form(routes.GroupController.update(group.id), 'id -> "editGroupForm") {
+		<dl class="dl-horizontal">
 			<dt>Gruppengründer</dt>
 			<dd>@group.owner.firstname @group.owner.lastname</dd>
-		</dl>
-		<dl>
 			<dt>Erstellt am</dt>
 			<dd>@group.createdAt.format("dd. MMM yyyy")</dd>
-		</dl>
-	@form(routes.GroupController.update(group.id), 'id -> "editGroupForm") {
-		@textarea(groupForm("description"), 'class -> "form-control", '_label -> "Beschreibung", 'rows -> "5")
-		<dl>
+			@textarea(groupForm("description"), 'class -> "form-control", '_label -> "Beschreibung", 'rows -> "5")
 			<dt>Sichtbarkeit</dt>
 			<dd>
 				<div class="radio">
 					<label>
-						<input type="radio" name="optionsRadios" id="optionsRadios2" value="0" @if(group.groupType == GroupType.open) {checked}>
+						<input type="radio" name="groupType" id="optionsRadios0" value="0" @if(group.groupType == GroupType.open) {checked}>
 						<span class="glyphicon glyphicon-globe"></span> Öffentliche Gruppe
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type="radio" name="optionsRadios" id="optionsRadios1" value="1" @if(group.groupType == GroupType.close) {checked}>
+						<input type="radio" name="groupType" id="optionsRadios1" value="1" @if(group.groupType == GroupType.close) {checked}>
 						<span class="glyphicon glyphicon-lock"></span> Private Gruppe
 					</label>
 				</div>
 			</dd>
-		</dl>
-		<button type="submit" class="btn btn-warning">Speichern</button>
-	}
-		<dl>
 			<dt>Mitglieder</dt>
 			<dd>
 				<table class="table table-hover table-condensed">
@@ -86,6 +77,6 @@
 				</table>
 			</dd>
 		</dl>
-		
-	</div>
+		<button type="submit" class="btn btn-warning">Speichern</button>
+	}
 }

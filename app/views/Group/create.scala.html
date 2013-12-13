@@ -4,28 +4,38 @@
 @main("Gruppe erstellen	") {
 	<h2>Gruppe erstellen</h2>
 	<br>
-	<div class="noModal">
-
+	
     @form(routes.GroupController.add()) {
-
-	@inputText(groupForm("title"), 'class -> "form-control", '_label -> "Titel")
-	@textarea(groupForm("description"), 'class -> "form-control", '_label -> "Beschreibung")
-	
-	@if(Secured.createCourse()) {
-		@inputRadioGroup(groupForm("visibility"),
-					 options = options("0"->"Öffentliche Gruppe","1"->"Private Gruppe","2"->"Kurs"),
-          			 '_label -> "Typ")
-	} else {
-		@inputRadioGroup(groupForm("visibility"),
-					 options = options("0"->"Öffentliche Gruppe","1"->"Private Gruppe"),
-          			 '_label -> "Typ")
+		<dl class="dl-horizontal">
+			@inputText(groupForm("title"), 'class -> "form-control", '_label -> "Titel")
+			@textarea(groupForm("description"), 'class -> "form-control", '_label -> "Beschreibung", 'rows -> "5")
+			<dt>Sichtbarkeit</dt>
+			<dd>
+				<div class="radio">
+					<label>
+						<input type="radio" name="groupType" id="optionsRadios0" value="0">
+						<span class="glyphicon glyphicon-globe"></span> Öffentliche Gruppe
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="groupType" id="optionsRadios1" value="1">
+						<span class="glyphicon glyphicon-lock"></span> Private Gruppe
+					</label>
+				</div>
+				@if(Secured.createCourse()) {
+				<div class="radio">
+					<label>
+						<input type="radio" name="groupType" id="optionsRadios2" value="2">
+						<span class="glyphicon glyphicon-briefcase"></span> Kurs
+					</label>
+				</div>
+				}
+			</dd>
+			<div id="token-input">
+				@inputText(groupForm("token"), 'class -> "form-control", '_label -> "Token")
+			</div>
+		</dl>
+		<button type="submit" class="btn btn-warning">Gruppe erstellen</button>
 	}
-	<div id="token-input">
-	@inputText(groupForm("token"), 'class -> "form-control", '_label -> "Token")
-	</div>
-	
-	<button type="submit" class="btn btn-warning">Gruppe erstellen</button>
-	}
-	
-    </div>
 }

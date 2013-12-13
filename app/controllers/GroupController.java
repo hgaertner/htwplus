@@ -92,9 +92,9 @@ public class GroupController extends BaseController {
 			Group group = filledForm.get();
 			int groupType;
 			try {
-				groupType = Integer.parseInt(filledForm.data().get("visibility"));
+				groupType = Integer.parseInt(filledForm.data().get("groupType"));
 			} catch (NumberFormatException ex){
-				filledForm.reject("visibility","Bitte eine Sichtbarkeit wählen!");
+				filledForm.reject("groupType", "Bitte eine Sichtbarkeit wählen!");
 				return ok(create.render(filledForm));
 			}
 			
@@ -155,7 +155,7 @@ public class GroupController extends BaseController {
 		}
 		
 		Form<Group> filledForm = groupForm.bindFromRequest();
-		int groupType = Integer.parseInt(filledForm.data().get("optionsRadios"));
+		int groupType = Integer.parseInt(filledForm.data().get("groupType"));
 		String description = filledForm.data().get("description");
 
 		switch(groupType){

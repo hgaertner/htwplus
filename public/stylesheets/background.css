@@ -48,6 +48,28 @@ h1 {
 	text-align: center;
 }
 
+#hp-bug {
+	font-weight: bold;
+	font-size: 12pt;
+	padding: 5px;
+	padding-left: 9px;
+	position: fixed;
+	left: -5px;
+	top: 50%;
+	margin-top: -105px;
+	z-index: 1500;
+}
+
+#hp-bug img {
+	width: 20px;
+}
+
+#hp-bug-icon {
+	color: white !important;
+	margin: 10px;
+	font-size: 14pt;
+}
+
 .hp-green {
 	color: #76B900;
 	font-weight: bold;
@@ -56,9 +78,6 @@ h1 {
 .no-drop {
 	cursor: no-drop;
 }
-
-
-
 
 /*============================== Navigation ==============================*/
 
@@ -204,14 +223,6 @@ h1 {
 	display: none!important;
 }
 
-div#hp-htw-logo {
-	height: 46px;
-	margin: 5px 29px 0 55px;
-	background-image: url(../images/background.png);
-	background-repeat: no-repeat;
-	background-position: right -130px;
-}
-
 
 /*============================== Notepad ==============================*/
 
@@ -300,20 +311,28 @@ div#hp-content  {
 	-webkit-box-sizing: content-box;
 }
 
+div#hp-footer {
+	margin: 5px 44px 0 69px;
+}
+
+div#hp-footer-links {
+	float: left;
+}
+
+div#hp-footer-logo {
+	height: 46px;
+	width: 200px;
+	background-image: url(../images/background.png);
+	background-repeat: no-repeat;
+	background-position: right -130px;
+	float: right;
+}
+
 
 /*============================== no Modal ==============================*/
 
-.noModal {
-	padding-left: 10%;
-	padding-right: 10%;
-}
-
 .noModal label {
 	font-weight: bold;
-}
-
-.noModal input, select, textarea {
-	width: 100%;
 }
 
 .noModal input[type="text"]:not(.search-query),
@@ -326,40 +345,7 @@ div#hp-content  {
 }
 
 .noModal input[type="radio"] {
-	width: auto;
 	margin-top: 2px;
-}
-
-.noModal dd i {
-	margin-top: 0px;
-}
-
-.noModal dd input {
-	margin-top: -5px;
-}
-
-.noModal dd button {
-	margin-top: -5px;
-}
-
-.noModal dl {
-	height: 20px;
-}
-
-.noModal dl dd:last-child {
-	padding-bottom: 8px;
-}
-
-.noModal dt {
-   float:left;
-   clear: both;
-   width: 30%;
-}
-
-.noModal dd {
-   float: right;
-   width: 68%;
-   margin-bottom: 8px;
 }
 
 .noModal dd.error {
@@ -368,6 +354,37 @@ div#hp-content  {
 }
 
 .noModal dd.info {
+	display: none;
+}
+
+form dl dt {
+	text-align: left !important;
+}
+
+form dl dd {
+	margin-bottom: 15px;
+}
+
+form dl dd > .checkbox,
+form dl dd > .radio {
+	margin-top: 0px;
+}
+
+form dl dd > .checkbox:last-child,
+form dl dd > .radio:last-child {
+	margin-bottom: 0px;
+}
+
+form dl dd > .radio input {
+	margin-top: 2px;
+}
+
+form dd.error {
+	text-shadow: 1px 1px 1px rgba(185, 74, 72, 0.5);
+	color: #b94a48;
+}
+
+form dd.info {
 	display: none;
 }
 
