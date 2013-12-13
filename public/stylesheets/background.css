@@ -53,6 +53,12 @@ h1 {
 	font-weight: bold;
 }
 
+.no-drop {
+	cursor: no-drop;
+}
+
+
+
 
 /*============================== Navigation ==============================*/
 

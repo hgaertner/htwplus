@@ -53,22 +53,42 @@ public class Application extends BaseController {
 		List<Group> groupResults = null;
 		List<Group> courseResults = null;
 		List<Account> accResults = null;
+		String keyword = "";
 		final Set<Map.Entry<String, String[]>> entries = request()
 				.queryString().entrySet();
 		for (Map.Entry<String, String[]> entry : entries) {
 			if (entry.getKey().equals("keyword")) {
-				final String keyword = entry.getValue()[0];
-				Logger.debug("Value of key" + keyword);
+				keyword = entry.getValue()[0];
+				Logger.info("Keyword: " +keyword.isEmpty());
 				Navigation.set("Suchergebnisse");
-				courseResults = Group.searchForCourseByKeyword(keyword);
-				groupResults = Group.searchForGroupByKeyword(keyword);
-				accResults = Account.searchForAccountByKeyword(keyword);
+				courseResults = Group.searchForCourseByKeyword(keyword, true);
+				groupResults = Group.searchForGroupByKeyword(keyword, true);
+				accResults = Account.searchForAccountByKeyword(keyword, true);
 				Logger.info("Sizes: " + "Groups: " +groupResults.size() + " Courses: " + courseResults.size() + " Account: " +accResults.size());
 			}
 
 		}
 
-		return ok(searchresult.render(groupResults, courseResults, accResults));
+		return ok(searchresult.render(groupResults, courseResults, accResults, keyword));
+	}
+	
+	public static Result searchForAccounts(final String keyword){
+		List<Account> accounts = null;
+		accounts = Account.searchForAccountByKeyword(keyword, false);
+		return ok(searchresult.render(null, null, accounts,null));
+	}
+	
+	public static Result searchForGroups(final String keyword){
+		Logger.info("Keyword: " +keyword);
+		List<Group> groups = null;
+		groups = Group.searchForGroupByKeyword(keyword, false);
+		return ok(searchresult.render(groups, null, null,null));
+	}
+	
+	public static Result searchForCourses(final String keyword){
+		List<Group> courses = null;
+		courses = Group.searchForCourseByKeyword(keyword, false);
+		return ok(searchresult.render(null, courses, null,null));
 	}
 	
 	public static Result error() {
