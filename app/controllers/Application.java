@@ -60,9 +60,9 @@ public class Application extends BaseController {
 				final String keyword = entry.getValue()[0];
 				Logger.debug("Value of key" + keyword);
 				Navigation.set("Suchergebnisse");
-				courseResults = Group.searchForCourseByKeyword(keyword);
-				groupResults = Group.searchForGroupByKeyword(keyword);
-				accResults = Account.searchForAccountByKeyword(keyword);
+				courseResults = Group.searchForCourseByKeyword(keyword, true);
+				groupResults = Group.searchForGroupByKeyword(keyword, true);
+				accResults = Account.searchForAccountByKeyword(keyword, true);
 				Logger.info("Sizes: " + "Groups: " +groupResults.size() + " Courses: " + courseResults.size() + " Account: " +accResults.size());
 			}
 
