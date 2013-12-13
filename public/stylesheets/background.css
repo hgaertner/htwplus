@@ -70,6 +70,15 @@ h1 {
 	font-size: 14pt;
 }
 
+.hp-green {
+	color: #76B900;
+	font-weight: bold;
+}
+
+.no-drop {
+	cursor: no-drop;
+}
+
 /*============================== Navigation ==============================*/
 
 .hp-navbar .hp-search-form {
@@ -108,7 +117,7 @@ h1 {
 
 .hp-dropdown-news,
 .hp-dropdown-search {
-	width: 500px;
+	width: 600px;
 	max-height: 180px;
 	left: -150px;
 	overflow-y: auto;

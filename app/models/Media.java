@@ -3,26 +3,19 @@ package models;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
-import play.Logger;
-import play.Play;
-import play.data.validation.Constraints.*;
-import play.data.format.Formats.*;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import models.base.BaseModel;
-
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.URL;
-
-import controllers.routes;
-
-import play.db.jpa.*;
-import play.mvc.Result;
+import play.Play;
+import play.data.validation.Constraints.Required;
+import play.db.jpa.JPA;
 import scala.reflect.io.FileOperationException;
-
-import java.util.UUID;
 
 @Entity
 public class Media extends BaseModel {

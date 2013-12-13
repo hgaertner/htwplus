@@ -24,10 +24,15 @@
 				<span class="glyphicon glyphicon-briefcase"></span>
 			</td>
 			<td>		
-				<a href="@routes.GroupController.view(course.id)">@if(Secured.isOwnerOfGroup(course, user)) {
-					<b> @course.title </b>
-					} else { @course.title }
-				</a>
+				@if(Secured.isOwnerOfGroup(course, user)) {
+					<a href="@routes.GroupController.view(course.id)"> <b>@course.title</b></a>
+				} else {
+					@if(course.groupType.equals(GroupType.open)) {
+						<a href="@routes.GroupController.view(course.id)"> <b>@course.title</b></a>
+					} else {
+						<a class="no-drop" rel="tooltip" data-original-title="Du musst dem Kurs erst beitreten" data-container="body"> @course.title</a>
+					}
+				}
 			</td>
 			<td>
 				@views.html.snippets.userLink(course.owner)
@@ -36,6 +41,14 @@
 				<a href="#infoModal@course.id" rel="tooltip" data-toggle="modal" data-original-title="Kursinfo" data-container="body">
 					<span class="glyphicon glyphicon-info-sign"></span>
 				</a>
+				@if(Secured.isOwnerOfGroup(course, user) || Secured.isMemberOfGroup(course, Component.currentAccount)) {
+					<a href="@routes.GroupController.view(course.id)" rel="tooltip" data-toggle="modal" data-original-title="Newsstream" data-container="body">
+						<span class="glyphicon glyphicon-comment"></span>
+					</a>
+					<a href="@routes.GroupController.media(course.id)" rel="tooltip" data-toggle="modal" data-original-title="Medien" data-container="body">
+						<span class="glyphicon glyphicon-file"></span>
+					</a>
+				}
 				@if(Secured.isOwnerOfGroup(course, user)) {
 					<a href="@routes.GroupController.edit(course.id)" rel="tooltip" data-toggle="modal" data-original-title="Kurs bearbeiten" data-container="body"><i class="glyphicon glyphicon-pencil"></i></a>
 					<a href="#confirmDeleteGroup@course.id" rel="tooltip" data-toggle="modal" data-original-title="Kurs löschen" data-container="body"><i class="glyphicon glyphicon-trash"></i></a>

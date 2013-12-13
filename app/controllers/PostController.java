@@ -4,19 +4,14 @@ import java.util.List;
 
 import models.Account;
 import models.Group;
-import models.Media;
 import models.Notification;
 import models.Notification.NotificationType;
 import models.Post;
-import play.Logger;
 import play.Play;
 import play.api.mvc.Call;
-import play.api.templates.Html;
 import play.data.Form;
 import play.db.jpa.Transactional;
-import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.index;
 
 public class PostController extends BaseController {
 	
@@ -104,7 +99,12 @@ public class PostController extends BaseController {
 				Notification.newPostNotification(NotificationType.POST_GROUP_NEW_COMMENT, parent, account);
 			}
 			if(parent.belongsToAccount()) {
-				Notification.newNotification(NotificationType.POST_PROFILE_NEW_COMMENT, parent.id, parent.account);
+				if(!account.equals(parent.owner)) {
+					Notification.newNotification(NotificationType.POST_PROFILE_NEW_COMMENT, parent.id, parent.owner);
+				}	
+				if(!account.equals(parent.account)) {
+					Notification.newNotification(NotificationType.POST_MY_PROFILE_NEW_COMMENT, parent.id, parent.account);
+				}				
 			}
 			return ok(views.html.snippets.postComment.render(post));
 		}

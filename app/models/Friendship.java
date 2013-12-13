@@ -96,9 +96,19 @@ public class Friendship extends BaseModel {
 		return true;
 	}
 	
+	public static boolean alreadyRejected(Account me, Account potentialFriend) {
+		try {
+			JPA.em().createQuery("SELECT fs FROM Friendship fs WHERE fs.account.id = ?1 and fs.friend.id = ?2 AND fs.linkType = ?3")
+			.setParameter(1, me.id).setParameter(2, potentialFriend.id).setParameter(3, LinkType.reject).getSingleResult();
+		} catch (NoResultException exp) {
+	    	return false;
+		}
+		return true;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static List<Account> findFriends(Account account){
-		return (List<Account>) JPA.em().createQuery("SELECT fs.friend FROM Friendship fs WHERE fs.account.id = ?1 AND fs.linkType = ?2")
+		return (List<Account>) JPA.em().createQuery("SELECT fs.friend FROM Friendship fs WHERE fs.account.id = ?1 AND fs.linkType = ?2 ORDER BY fs.friend.firstname ASC")
 				.setParameter(1, account.id).setParameter(2, LinkType.establish).getResultList();
 	}
 	

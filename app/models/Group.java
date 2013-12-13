@@ -17,13 +17,11 @@ import models.base.BaseModel;
 import models.enums.GroupType;
 import models.enums.LinkType;
 
-import org.apache.lucene.index.Term;
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
@@ -141,6 +139,9 @@ public class Group extends BaseModel {
 		for (Media media : this.media) {
 			media.delete();
 		}
+		
+		// Delete Notifications
+		Notification.deleteByObject(this.id);
 		JPA.em().remove(this);
 	}
 
@@ -191,7 +192,7 @@ public class Group extends BaseModel {
 	 * @return List of groups wich matches with the keyword
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Group> searchForGroupByKeyword(String keyword) {
+	public static List<Group> searchForGroupByKeyword(String keyword, final boolean setMaxResult) {
 		Logger.info("Group model searchForGroupByKeyword: "
 				+ keyword.toLowerCase());
 		FullTextEntityManager fullTextEntityManager = Search
@@ -210,21 +211,23 @@ public class Group extends BaseModel {
 		criteria.add(Restrictions.or(
 				Restrictions.eq("groupType", GroupType.open),
 				Restrictions.eq("groupType", GroupType.close)));
-		criteria.setReadOnly(true);
+		criteria.addOrder(Order.asc("title"));
+		
 		// wrap Lucene query in a javax.persistence.Query
 		FullTextQuery fullTextQuery = fullTextEntityManager
 				.createFullTextQuery(luceneQuery, Group.class);
-		//fullTextQuery.setMaxResults(10); // Max result to 10
-
+		if(setMaxResult){
+			criteria.setMaxResults(10); // Max result to 10
+		}
+		criteria.setReadOnly(true);
 		fullTextQuery.setCriteriaQuery(criteria);
+		fullTextQuery.setSort(new Sort(new SortField("title", SortField.STRING)));
 		List<Group> result = fullTextQuery.getResultList(); // The result...
-		Logger.info("Found " + result.size() + " groups with keyword: "
-				+ keyword);
 		session.clear();
 		return result;
 	}
 
-	public static List<Group> searchForCourseByKeyword(String keyword) {
+	public static List<Group> searchForCourseByKeyword(String keyword, boolean setMaxResult) {
 		Logger.info("Group model searchForCourseByKeyword: "
 				+ keyword.toLowerCase());
 		FullTextEntityManager fullTextEntityManager = Search
@@ -237,17 +240,18 @@ public class Group extends BaseModel {
 		
 		Criteria courseCriteria = session.createCriteria(Group.class);
 		courseCriteria.add(Restrictions.eq("groupType", GroupType.course));
+		courseCriteria.addOrder(Order.asc("title"));
 		org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword()
 				.wildcard().onField("title")
 				.matching("*" + keyword.toLowerCase() + "*").createQuery();
 		// wrap Lucene query in a javax.persistence.Query
 		FullTextQuery fullTextQuery = fullTextEntityManager
 				.createFullTextQuery(luceneQuery, Group.class);
-		
+		if(setMaxResult) {
+			courseCriteria.setMaxResults(10);
+		}
 		fullTextQuery.setCriteriaQuery(courseCriteria);
 		List<Group> courses = fullTextQuery.getResultList();
-		Logger.info("Found " + courses.size() + " courses with keyword: "
-				+ keyword);
 		session.clear();
 		return courses;
 	}

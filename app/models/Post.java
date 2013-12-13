@@ -1,18 +1,15 @@
 package models;
 
-import java.util.*;
+import java.util.List;
 
-import play.Logger;
-import play.data.validation.Constraints.*;
-import play.data.format.Formats.*;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Query;
 
 import models.base.BaseModel;
-
-import org.hibernate.validator.constraints.Length;
-
-import play.db.jpa.*;
-import views.html.Group.view;
+import play.data.validation.Constraints.Required;
+import play.db.jpa.JPA;
 
 @Entity
 public class Post extends BaseModel {
@@ -55,7 +52,7 @@ public class Post extends BaseModel {
 		for(Post comment : comments){
 			comment.delete();
 		}
-		
+		Notification.deleteByObject(this.id);
 		JPA.em().remove(this);
 	}
 	

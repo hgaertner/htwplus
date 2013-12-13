@@ -6,8 +6,12 @@
 GET     /                       			controllers.Application.index()
 GET     /stream                    			controllers.Application.stream(page: Integer ?= 1)
 GET		/search								controllers.Application.search()
+GET		/search/accounts					controllers.Application.searchForAccounts(keyword:String)
+GET		/search/groups						controllers.Application.searchForGroups(keyword:String)
+GET		/search/courses						controllers.Application.searchForCourses(keyword:String)
 POST    /login                  			controllers.AccountController.authenticate()
 GET     /logout                 			controllers.AccountController.logout()
+GET     /help                 				controllers.Application.help()
 GET		/404								controllers.Application.error()
 
 # JavaScript Routes
