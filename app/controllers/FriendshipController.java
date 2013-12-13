@@ -8,6 +8,7 @@ import models.Friendship;
 import models.Notification;
 import models.Notification.NotificationType;
 import models.enums.LinkType;
+import play.Logger;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -41,8 +42,8 @@ public class FriendshipController extends BaseController {
 		friendship.create();
 		Notification.newNotification(NotificationType.FRIEND_NEW_REQUEST, currentUser.id, potentialFriend);
 		flash("success","Deine Einladung wurde verschickt!");
-		
 		return redirect(routes.FriendshipController.index());
+		
 	}
 	
 	public static Result deleteFriend(long friendId){
@@ -139,6 +140,12 @@ public class FriendshipController extends BaseController {
 			flash("info","Ihr seid bereits Freunde!");
 			return true;
 		}
+		
+		if(Friendship.alreadyRejected(currentUser, potentialFriend)) {
+			flash("info","Deine Freundschaftsanfrage wurde bereits abgelehnt. "
+					+ "Bestätige die Ablehnung und dann kannst du es noch einmal versuchen.");
+			return true;
+		} 
 		
 		return false;
 	}
