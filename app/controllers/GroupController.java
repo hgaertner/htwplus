@@ -243,7 +243,7 @@ public class GroupController extends BaseController {
 			groupAccount.create();
 			Notification.newNotification(NotificationType.GROUP_NEW_REQUEST, group.id, group.owner);
 			flash("success", "Deine Anfrage wurde erfolgreich übermittelt!");
-			return redirect(routes.GroupController.view(id));
+			return redirect(routes.GroupController.index());
 		}
 		
 		else if(group.groupType.equals(GroupType.course)){

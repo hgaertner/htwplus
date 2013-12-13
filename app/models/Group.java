@@ -141,6 +141,9 @@ public class Group extends BaseModel {
 		for (Media media : this.media) {
 			media.delete();
 		}
+		
+		// Delete Notifications
+		Notification.deleteByObject(this.id);
 		JPA.em().remove(this);
 	}
 

@@ -45,6 +45,7 @@ public class Notification extends BaseModel {
 		FRIEND_NEW_REQUEST, // Account Model
 		FRIEND_REQUEST_SUCCESS, // Account Model
 		FRIEND_REQUEST_DECLINE, // Account Model
+		POST_MY_PROFILE_NEW_COMMENT, // Post Model
 	}
 	
 	@Required
@@ -163,6 +164,11 @@ public class Notification extends BaseModel {
 	public static void deleteByUser(Account account) {
 		JPA.em().createQuery("DELETE FROM Notification n WHERE n.account.id = :account")
 				.setParameter("account", account.id).executeUpdate();
+	}
+	
+	public static void deleteByObject(Long objectId) {
+		JPA.em().createQuery("DELETE FROM Notification n WHERE n.objectId = :object_id")
+				.setParameter("object_id", objectId).executeUpdate();
 	}
 	
 	public static int countForAccount(Account account){

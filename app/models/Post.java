@@ -55,7 +55,7 @@ public class Post extends BaseModel {
 		for(Post comment : comments){
 			comment.delete();
 		}
-		
+		Notification.deleteByObject(this.id);
 		JPA.em().remove(this);
 	}
 	

@@ -48,6 +48,11 @@ h1 {
 	text-align: center;
 }
 
+.hp-green {
+	color: #76B900;
+	font-weight: bold;
+}
+
 
 /*============================== Navigation ==============================*/
 
@@ -87,7 +92,7 @@ h1 {
 
 .hp-dropdown-news,
 .hp-dropdown-search {
-	width: 500px;
+	width: 600px;
 	max-height: 180px;
 	left: -150px;
 	overflow-y: auto;
