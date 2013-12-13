@@ -1,27 +1,18 @@
 package controllers;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 import models.Account;
 import models.Friendship;
 import models.Post;
 import models.Studycourse;
-
-import org.codehaus.jackson.node.ObjectNode;
-
-import play.Logger;
 import play.Play;
 import play.data.Form;
 import play.db.jpa.Transactional;
-import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Security;
 import views.html.Profile.edit;
+import views.html.Profile.editPassword;
 import views.html.Profile.index;
 import views.html.Profile.stream;
-import views.html.Profile.editPassword;
 import controllers.Navigation.Level;
 
 @Transactional

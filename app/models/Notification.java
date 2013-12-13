@@ -1,23 +1,18 @@
 package models;
 
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.lang.Exception;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NoResultException;
 import javax.persistence.OneToOne;
-import javax.persistence.Query;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import models.base.BaseModel;
 import play.Logger;
 import play.data.validation.Constraints.Required;
 import play.db.jpa.JPA;
-import play.libs.Akka;
-import play.libs.F.Promise;
-import models.base.BaseModel;
 
 @Entity
 @Table(uniqueConstraints=

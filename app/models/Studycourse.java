@@ -4,12 +4,10 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OrderBy;
-
-import play.data.validation.Constraints.Required;
-import play.db.jpa.JPA;
 
 import models.base.BaseModel;
+import play.data.validation.Constraints.Required;
+import play.db.jpa.JPA;
 
 @Entity
 public class Studycourse extends BaseModel {

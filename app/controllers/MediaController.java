@@ -2,31 +2,29 @@ package controllers;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
-import play.*;
-import play.mvc.*;
+import models.Group;
+import models.Media;
+import models.Notification;
+import models.Notification.NotificationType;
+import play.Play;
+import play.data.Form;
+import play.db.jpa.Transactional;
+import play.mvc.Call;
+import play.mvc.Http;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
-import play.data.*;
-import models.*;
-import models.Notification.NotificationType;
-import views.html.Media.*;
-import play.db.jpa.*;
-import scala.annotation.meta.param;
-import scala.collection.generic.BitOperations.Int;
-import scala.reflect.internal.Trees.This;
+import play.mvc.Result;
+import play.mvc.Security;
 
 @Security.Authenticated(Secured.class)
 public class MediaController extends BaseController {
@@ -142,7 +140,6 @@ public class MediaController extends BaseController {
     }
     
     public static void cleanUpTemp() {
-	    String path = Play.application().path().toString();
 	    String tmpPath = Play.application().configuration().getString("media.tempPath");
 	    File dir = new File(tmpPath);
 

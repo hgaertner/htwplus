@@ -4,19 +4,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import controllers.Navigation.Level;
 import models.Account;
 import models.Group;
 import models.Post;
 import play.Logger;
 import play.Play;
 import play.Routes;
-import play.mvc.*;
+import play.data.Form;
+import play.db.jpa.Transactional;
+import play.mvc.Result;
+import play.mvc.Security;
 import views.html.error;
+import views.html.help;
 import views.html.searchresult;
 import views.html.stream;
-import play.data.Form;
-import play.db.jpa.*;
+import controllers.Navigation.Level;
 
 
 @Transactional
@@ -40,6 +42,11 @@ public class Application extends BaseController {
 		Navigation.set(Level.STREAM);
 		Account currentAccount = Component.currentAccount();
 		return ok(stream.render(currentAccount,Post.getStream(currentAccount, LIMIT, PAGE),postForm,Post.countStream(currentAccount), LIMIT, PAGE));
+	}
+	
+	public static Result help() {
+		Navigation.set(Level.HELP);
+		return ok(help.render());
 	}
 	
 	@Security.Authenticated(Secured.class)

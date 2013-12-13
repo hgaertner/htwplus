@@ -1,13 +1,18 @@
 package models;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
-import play.Logger;
-import play.data.validation.Constraints.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.NoResultException;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PersistenceException;
 
-import javax.jws.Oneway;
-import javax.persistence.*;
-import javax.validation.ConstraintViolationException;
+import models.base.BaseModel;
+import models.enums.AccountRole;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -21,15 +26,12 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
-import org.hibernate.validator.constraints.Length;
 
+import play.data.validation.Constraints.Email;
+import play.data.validation.Constraints.Required;
+import play.db.jpa.JPA;
 import controllers.Component;
 import controllers.routes;
-import models.base.BaseModel;
-import models.enums.AccountRole;
-import play.db.jpa.*;
-
-import java.util.Set;
 
 @Entity
 @Indexed
