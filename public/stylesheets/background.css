@@ -55,6 +55,8 @@ h1 {
 	padding-left: 9px;
 	position: fixed;
 	left: -5px;
+	top: 50%;
+	margin-top: -105px;
 	z-index: 1500;
 }
 
@@ -212,14 +214,6 @@ h1 {
 	display: none!important;
 }
 
-div#hp-htw-logo {
-	height: 46px;
-	margin: 5px 29px 0 55px;
-	background-image: url(../images/background.png);
-	background-repeat: no-repeat;
-	background-position: right -130px;
-}
-
 
 /*============================== Notepad ==============================*/
 
@@ -306,6 +300,23 @@ div#hp-content  {
 	box-sizing: content-box;
 	-moz-box-sizing: content-box;
 	-webkit-box-sizing: content-box;
+}
+
+div#hp-footer {
+	margin: 5px 44px 0 69px;
+}
+
+div#hp-footer-links {
+	float: left;
+}
+
+div#hp-footer-logo {
+	height: 46px;
+	width: 200px;
+	background-image: url(../images/background.png);
+	background-repeat: no-repeat;
+	background-position: right -130px;
+	float: right;
 }
 
 

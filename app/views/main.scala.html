@@ -15,8 +15,12 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	</head>
-
+	
+@if(user == null){
+	<body style="margin-top:0px!important;">
+} else {
 	<body>
+}
 	
 	@if(user != null){
 		@views.html.snippets.navi()
@@ -80,13 +84,16 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1">
-						<div id="hp-htw-logo">
-							@views.html.snippets.impressumModal()
-							<a href="#impressumModal" data-toggle="modal">Impressum</a>
+						<div id="hp-footer">
+							<div id="hp-footer-links">
+								<a href="#impressumModal" data-toggle="modal">Impressum</a>
+							</div>
+							<div id="hp-footer-logo"></div>
 						</div>
 					</div>
 				</div>
 			</div>
+			@views.html.snippets.impressumModal()
 		</footer>
 	
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.js")"></script>
