@@ -11,9 +11,9 @@
 			<div class="media-body">
 				<h4 class="media-heading">
 					@views.html.snippets.userLink(post.owner)
-					@if(post.belongsToGroup && currentView != "group"){schrieb in <a href="@routes.GroupController.view(post.group.id)">@post.group.title</a>}
+					@if(post.belongsToGroup && currentView != "group"){schrieb in <a href="@routes.GroupController.view(post.group.id)">@truncate(post.group.title,50)</a>}
 					@if(post.belongsToAccount && currentUser != post.account && post.account != post.owner){&rarr; @views.html.snippets.userLink(post.account)} 
-					@if(post.belongsToAccount && currentUser == post.account && post.account != post.owner){schrieb Dir} 
+					@if(post.belongsToAccount && currentUser == post.account && post.account != post.owner){&rarr; @views.html.snippets.userLink(currentUser)} 
 					@if(Secured.isAllowedToDeletePost(post, currentUser)){
                 			<a href="#confirmModalDeletePost@post.id" data-toggle="modal" rel="tooltip" data-original-title="Post löschen">
                 				<span class="glyphicon glyphicon-trash"></span>
