@@ -130,8 +130,8 @@ public class Post extends BaseModel {
 			groupListClause = " OR p.group IN :groupList ";
 		}
 		if(friendList != null && !friendList.isEmpty()){
-			// finds all stream-posts of my friends
-			friendListClause = " OR p.account IN :friendList AND p.owner IN :friendList ";
+			// finds all own stream-posts of my friends
+			friendListClause = " OR p.account IN :friendList AND p.account = p.owner";
 		}
 		if(isVisitor){
 			visitorClause = " AND p.owner = :account ";
