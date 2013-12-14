@@ -45,7 +45,7 @@ public class Secured extends Security.Authenticator {
 			if(isOwnerOfPost(post, account) || post.account.equals(account)){
 				return true;
 			}
-		}else if(post != null && post.parent.account != null){
+		}else if(post != null && post.parent != null && post.parent.account != null){
 			if (isOwnerOfPost(post, account) || post.parent.account.equals(account)){
 				return true;
 			}

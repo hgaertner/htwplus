@@ -93,7 +93,7 @@ public class Post extends BaseModel {
 	@SuppressWarnings("unchecked")
 	public static List<Post> findStreamForAccount(Account account, List<Group> groupList, List<Account> friendList, boolean isVisitor, int limit, int offset){
 		
-		Query query = streamForAccount("SELECT p ", account, groupList, friendList, isVisitor, "ORDER BY p.id DESC");
+		Query query = streamForAccount("SELECT p ", account, groupList, friendList, isVisitor, " ORDER BY p.id DESC");
 
 		// set limit and offset
 		query = limit(query, limit, offset);
@@ -126,10 +126,12 @@ public class Post extends BaseModel {
 		
 		// add additional clauses if not null or empty
 		if(groupList != null && !groupList.isEmpty()){
+			// finds all stream-post of groups
 			groupListClause = " OR p.group IN :groupList ";
 		}
 		if(friendList != null && !friendList.isEmpty()){
-			friendListClause = " OR p.owner IN :friendList ";
+			// finds all stream-posts of my friends
+			friendListClause = " OR p.account IN :friendList AND p.owner IN :friendList ";
 		}
 		if(isVisitor){
 			visitorClause = " AND p.owner = :account ";
@@ -184,6 +186,7 @@ public class Post extends BaseModel {
 		return findStreamForAccount(account, groupList, friendList, false, limit, offset);
 	}
 	
+	
 	/**
 	 * @author Iven
 	 * @param currentUser - Account (current user)
@@ -223,4 +226,6 @@ public class Post extends BaseModel {
 		
 		return countStreamForAccount(friend, groupList, null, true);
 	}
+	
+	
 }
