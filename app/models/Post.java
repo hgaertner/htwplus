@@ -120,6 +120,7 @@ public class Post extends BaseModel {
 	public static Query streamForAccount(String selectClause, Account account, List<Group> groupList, List<Account> friendList, boolean isVisitor, String orderByClause){
 		
 		// since JPA is unable to handle empty lists (eg. groupList, friendList) we need to assemble our query.
+		String myPostsClause = "";
 		String groupListClause = "";
 		String friendListClause = "";
 		String visitorClause = "";
@@ -131,7 +132,7 @@ public class Post extends BaseModel {
 		 *  2. if i'm post.owner, i posted somewhere (yep, we want this too => 'p.owner = :account')
 		 *  BUT, if i'm the owner and post.parent is set, it's only a comment. so => 'p.parent = NULL'
 		 */
-		String myPostsClause = " p.account = :account OR (p.owner = :account AND p.parent = NULL) ";
+		myPostsClause = " p.account = :account OR (p.owner = :account AND p.parent = NULL) ";
 		
 		// add additional clauses if not null or empty
 		
@@ -150,11 +151,14 @@ public class Post extends BaseModel {
 			groupListClause = " OR p.group IN :groupList ";
 		}
 		
-		/**
-		 * if a visitor wants to see a friends newsstream
-		 * show only posts where he (the friend) is owner of
-		 */
 		if(isVisitor){
+			/**
+			 * if a visitor wants to see a friends newsstream
+			 * show only posts where he (the friend) is owner of => 'p.owner = :account'
+			 * since 'myPostsClause' includes posts where the given account posted to someone ('OR (p.owner = :account AND p.parent = NULL)').
+			 * we have to modify 'myPostsClause' (cut it out).
+			 */
+			myPostsClause = " p.account = :account ";
 			visitorClause = " AND p.owner = :account ";
 		}
 		
