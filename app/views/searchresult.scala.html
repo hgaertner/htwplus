@@ -5,7 +5,7 @@
 
 	<h1>Suchergebnisse @keyword</h1>
 	<br />
-
+	
 	@defining(Component.currentAccount()) { user =>
 	
 		@if(courses != null && courses.size != 0) {
@@ -59,7 +59,7 @@
 			@views.html.Group.snippets.listGroups(groups, user)
 			</br>
 			@if(groups.size() == 10 && keyword != null){
-				<a href="@routes.Application.searchForGroups(keyword)">Weitere Ergebnisse f�r Gruppen</a>
+				<a href="@routes.Application.searchForGroups(keyword)">Weitere Ergebnisse für Gruppen</a>
 			}
 		}
 		
