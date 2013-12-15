@@ -33,10 +33,13 @@
                                          options = options("0"->"Öffentliche Gruppe","1"->"Private Gruppe","2"->"Kurs"),
                                    '_label -> "Typ")
       		} else {
-                @inputRadioGroup(groupForm("type"),
+                @helper.inputGroupType(groupForm("type"),
                                          options = options("0"->"Öffentliche Gruppe","1"->"Private Gruppe"),
                                    '_label -> "Typ")
         	}
+        	<div id="token-input">
+				@inputText(groupForm("token"), 'class -> "form-control", '_label -> "Token")
+			</div>
 			<dt>Mitglieder</dt>
 			<dd>
 				<table class="table table-hover table-condensed">

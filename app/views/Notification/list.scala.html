@@ -12,96 +12,121 @@
 		
 		case NotificationType.GROUP_NEW_POST => {
 			@defining(Group.findById(note.objectId)) { group =>
-				@element(forward(note.id,GroupController.view(group.id).toString()).toString()){
-					Es gibt etwas Neues auf dem Newsstream der Gruppe <span class="hp-green">@truncate(group.title,20)</span>
+				@if(group != null) {
+					@element(forward(note.id,GroupController.view(group.id).toString()).toString()){
+						Es gibt etwas Neues auf dem Newsstream der Gruppe <span class="hp-green">@truncate(group.title,20)</span>
+					}
 				}
 			}
 		} 	
 		
 		case NotificationType.GROUP_NEW_MEDIA => {
 			@defining(Group.findById(note.objectId)) { group =>
-				@element(forward(note.id,GroupController.media(group.id).toString()).toString()){
-					Es gibt etwas Neues bei den Medien der Gruppe <span class="hp-green">@truncate(group.title,20)</span>
+				@if(group != null) {
+					@element(forward(note.id,GroupController.media(group.id).toString()).toString()){
+						Es gibt etwas Neues bei den Medien der Gruppe <span class="hp-green">@truncate(group.title,20)</span>
+					}
 				}
 			}
 		}	
 		
 		case NotificationType.GROUP_NEW_REQUEST => {
 			@defining(Group.findById(note.objectId)) { group =>
-				@element(forward(note.id,GroupController.index().toString()).toString()){
-					Neue Anfrage für die Gruppe <span class="hp-green">@truncate(group.title,20)</span>
+				@if(group != null) {
+					@element(forward(note.id,GroupController.index().toString()).toString()){
+						Neue Anfrage für die Gruppe <span class="hp-green">@truncate(group.title,20)</span>
+					}
+				
 				}
 			}
 		}
 		
 		case NotificationType.GROUP_REQUEST_SUCCESS => {
 			@defining(Group.findById(note.objectId)) { group =>
-				@element(forward(note.id,GroupController.view(group.id).toString()).toString()){
-					Deine Anfrage für die Gruppe <span class="hp-green">@truncate(group.title,20)</span> wurde akzeptiert
+				@if(group != null) {
+					@element(forward(note.id,GroupController.view(group.id).toString()).toString()){
+						Deine Anfrage für die Gruppe <span class="hp-green">@truncate(group.title,20)</span> wurde akzeptiert
+					}
 				}
 			}
 		}
 		
 		case NotificationType.GROUP_REQUEST_DECLINE => {
 			@defining(Group.findById(note.objectId)) { group =>
-				@element(forward(note.id,GroupController.index().toString()).toString()){
-					Deine Anfrage für die Gruppe <span class="hp-green">@truncate(group.title,20)</span> wurde abgelehnt
+				@if(group != null) {
+					@element(forward(note.id,GroupController.index().toString()).toString()){
+						Deine Anfrage für die Gruppe <span class="hp-green">@truncate(group.title,20)</span> wurde abgelehnt
+					}
 				}
 			}
 		}
 		
 		case NotificationType.POST_GROUP_NEW_COMMENT => {
 			@defining(Post.findById(note.objectId)) { post =>
-				@element(forward(note.id,GroupController.view(post.group.id).toString()).toString()){
-					Neuer Kommentar zum Post <span class="hp-green">@truncate(post.content,20)</span> in der Gruppe <span class="hp-green">@truncate(post.group.title,20)</span>
+				@if(post != null && post.group != null) {
+					@element(forward(note.id,GroupController.view(post.group.id).toString()).toString()){
+						Neuer Kommentar zum Post <span class="hp-green">@truncate(post.content,20)</span> in der Gruppe <span class="hp-green">@truncate(post.group.title,20)</span>
+					}
 				}
 			}
 		}
 
 		case NotificationType.PROFILE_NEW_POST => {
 			@defining(Account.findById(note.objectId)) { account =>
-				@element(forward(note.id,ProfileController.stream(Component.currentAccount().id).toString()).toString()){
-					Neuer Post von <span class="hp-green">@account.name</span> auf deinem Stream
+				@if(account != null) {
+					@element(forward(note.id,ProfileController.stream(Component.currentAccount().id).toString()).toString()){
+						Neuer Post von <span class="hp-green">@account.name</span> auf deinem Stream
+					}
 				}
 			}
 		}
 		
 		case NotificationType.POST_PROFILE_NEW_COMMENT => {
 			@defining(Post.findById(note.objectId)) { post =>
-				@element(forward(note.id,ProfileController.stream(post.account.id).toString()).toString()){
-					Neuer Kommentar zu deinem Post <span class="hp-green">@truncate(post.content,20)</span> auf dem Newstream von <span class="hp-green">@post.account.name</span>
+				@if(post != null) {
+					@element(forward(note.id,ProfileController.stream(post.account.id).toString()).toString()){
+						Neuer Kommentar zu deinem Post <span class="hp-green">@truncate(post.content,20)</span> auf dem Newstream von <span class="hp-green">@post.account.name</span>
+					}
 				}
 			}
 		}
 		
 		case NotificationType.FRIEND_NEW_REQUEST => {
 			@defining(Account.findById(note.objectId)) { account =>
-				@element(forward(note.id,FriendshipController.index().toString()).toString()){
-					Neue Freundschaftsanfrage von <span class="hp-green">@account.name</span> 
+				@if(account != null) {
+					@element(forward(note.id,FriendshipController.index().toString()).toString()){
+						Neue Freundschaftsanfrage von <span class="hp-green">@account.name</span> 
+					}
 				}
 			}
 		}
 		
 		case NotificationType.FRIEND_REQUEST_SUCCESS => {
 			@defining(Account.findById(note.objectId)) { account =>
-				@element(forward(note.id,ProfileController.stream(account.id).toString()).toString()){
-					 <span class="hp-green">@account.name</span> hat deine Freundschaftsanfrage angenommen
+				@if(account != null) {
+					@element(forward(note.id,ProfileController.stream(account.id).toString()).toString()){
+						 <span class="hp-green">@account.name</span> hat deine Freundschaftsanfrage angenommen
+					}
 				}
 			}
 		}
 		
 		case NotificationType.FRIEND_REQUEST_DECLINE => {
 			@defining(Account.findById(note.objectId)) { account =>
-				@element(forward(note.id,FriendshipController.index().toString()).toString()){
-					 <span class="hp-green">@account.name</span> hat deine Freundschaftsanfrage abgelehnt
+				@if(account != null) {
+					@element(forward(note.id,FriendshipController.index().toString()).toString()){
+						 <span class="hp-green">@account.name</span> hat deine Freundschaftsanfrage abgelehnt
+					}
 				}
 			}
 		}
 		
 		case NotificationType.POST_MY_PROFILE_NEW_COMMENT => {
 			@defining(Post.findById(note.objectId)) { post =>
-				@element(forward(note.id,ProfileController.stream(post.account.id).toString()).toString()){
-					Neuer Kommentar zum Post <span class="hp-green">@truncate(post.content,20)</span> auf deinem Newsstream
+				@if(post != null) {
+					@element(forward(note.id,ProfileController.stream(post.account.id).toString()).toString()){
+						Neuer Kommentar zum Post <span class="hp-green">@truncate(post.content,20)</span> auf deinem Newsstream
+					}
 				}
 			}
 		}

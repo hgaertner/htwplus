@@ -26,12 +26,12 @@
 			</td>
 			<td>	
 				@if(Secured.isOwnerOfGroup(group, user)) {
-					<a href="@routes.GroupController.view(group.id)"> <b>@group.title</b></a>
+					<a href="@routes.GroupController.view(group.id)"><b>@group.title</b></a>
 				} else {
-					@if(group.groupType.equals(GroupType.open)) {
-						<a href="@routes.GroupController.view(group.id)"> <b>@group.title</b></a>
+					@if(Secured.isMemberOfGroup(group, user)) {
+						<a href="@routes.GroupController.view(group.id)">@group.title</a>
 					} else {
-						<a class="no-drop" rel="tooltip" data-original-title="Du musst der Gruppe erst beitreten" data-container="body"> @group.title</a>
+						<a class="no-drop" rel="tooltip" data-original-title="Du musst der Gruppe erst beitreten" data-container="body">@group.title</a>
 					}
 				}
 			</td>

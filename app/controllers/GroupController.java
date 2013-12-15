@@ -112,7 +112,7 @@ public class GroupController extends BaseController {
 				case 2: group.groupType = GroupType.course;
 						successMsg = "Kurs";
 						String token = filledForm.data().get("token");
-						if(token.equals("") || token.length() < 4 || token.length() > 45){
+						if(!Group.validateToken(token)){
 							filledForm.reject("token","Bitte einen Token zwischen 4 und 45 Zeichen eingeben!");
 							return ok(create.render(filledForm));
 						}
@@ -141,30 +141,47 @@ public class GroupController extends BaseController {
 			return redirect(routes.GroupController.index());
 		} else {
 			Navigation.set(Level.GROUPS, "Bearbeiten", group.title, routes.GroupController.view(group.id));
-			return ok(edit.render(group, groupForm.fill(group)));
+			Form<Group> groupForm = Form.form(Group.class).fill(group);
+			groupForm.data().put("type", String.valueOf(group.groupType.ordinal()));
+			return ok(edit.render(group, groupForm));
 		}
 	}
 	
 	@Transactional
 	public static Result update(Long groupId) {
 		Group group = Group.findById(groupId);
-				
+		Navigation.set(Level.GROUPS, "Bearbeiten", group.title, routes.GroupController.view(group.id));		
 		// Check rights
 		if(!Secured.isOwnerOfGroup(group, Component.currentAccount())) {
 			return redirect(routes.Application.index());
 		}
 		
 		Form<Group> filledForm = groupForm.bindFromRequest();
-		int groupType = Integer.parseInt(filledForm.data().get("groupType"));
+		int groupType = Integer.parseInt(filledForm.data().get("type"));
 		String description = filledForm.data().get("description");
 
 		switch(groupType){
-			case 0: group.groupType = GroupType.open; break;
-			case 1: group.groupType = GroupType.close; break;
-			case 2: group.groupType = GroupType.course; break;
+			case 0: group.groupType = GroupType.open; 
+					group.token = null;
+					break;
+			case 1: group.groupType = GroupType.close; 
+					group.token = null;
+					break;
+			case 2: group.groupType = GroupType.course; 
+					String token = filledForm.data().get("token");
+					if(!Group.validateToken(token)){
+						filledForm.reject("token","Bitte einen Token zwischen 4 und 45 Zeichen eingeben!");
+						return ok(edit.render(group, filledForm));
+					}					
+					if(!Secured.createCourse()) {
+						flash("error", "Du darfst leider keinen Kurs erstellen");
+						return badRequest(edit.render(group, filledForm));
+					}	
+					group.token = token;
+					break;
 			default:
 				filledForm.reject("Nicht möglich!");
-				return ok(create.render(filledForm));
+				return ok(edit.render(group, filledForm));
 		}
 		group.description = description;
 		group.update();

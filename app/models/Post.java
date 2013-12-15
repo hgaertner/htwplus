@@ -93,7 +93,7 @@ public class Post extends BaseModel {
 	@SuppressWarnings("unchecked")
 	public static List<Post> findStreamForAccount(Account account, List<Group> groupList, List<Account> friendList, boolean isVisitor, int limit, int offset){
 		
-		Query query = streamForAccount("SELECT p ", account, groupList, friendList, isVisitor, "ORDER BY p.id DESC");
+		Query query = streamForAccount("SELECT p ", account, groupList, friendList, isVisitor, " ORDER BY p.id DESC");
 
 		// set limit and offset
 		query = limit(query, limit, offset);
@@ -113,30 +113,57 @@ public class Post extends BaseModel {
 	/**
 	 * @author Iven
 	 * @param account - Account (current user, profile or a friend)
-	 * @param groupList - a list containing all groups of given account
-	 * @param friendList - a list containing all friends of given account
+	 * @param groupList - a list containing all groups we want to search in
+	 * @param friendList - a list containing all friends we want to search in
 	 * @return List of Posts
 	 */
-	@SuppressWarnings("unchecked")
 	public static Query streamForAccount(String selectClause, Account account, List<Group> groupList, List<Account> friendList, boolean isVisitor, String orderByClause){
+		
 		// since JPA is unable to handle empty lists (eg. groupList, friendList) we need to assemble our query.
+		String myPostsClause = "";
 		String groupListClause = "";
 		String friendListClause = "";
 		String visitorClause = "";
 		
+		/**
+		 *  finds all stream-post for account. 
+		 *  e.g account = myself
+		 *  1. if i'm mentioned in post.account, somebody posted me. (yep, we want this => 'p.account = :account') 
+		 *  2. if i'm post.owner, i posted somewhere (yep, we want this too => 'p.owner = :account')
+		 *  BUT, if i'm the owner and post.parent is set, it's only a comment. so => 'p.parent = NULL'
+		 */
+		myPostsClause = " p.account = :account OR (p.owner = :account AND p.parent = NULL) ";
+		
 		// add additional clauses if not null or empty
+		
+		if(friendList != null && !friendList.isEmpty()){
+			/**
+			 *  finds all own stream-posts of my friends.
+			 *  e.g account = a friend of mine
+			 *  1. if my friend is mentioned in p.account, somebody posted him => 'p.account IN :friendList'
+			 *  BUT, we only want his/her own posts. so he has to be the owner as well => 'p.account = p.owner'
+			 */
+			friendListClause = " OR p.account IN :friendList AND p.account = p.owner";
+		}
+		
 		if(groupList != null && !groupList.isEmpty()){
+			// finds all stream-post of groups
 			groupListClause = " OR p.group IN :groupList ";
 		}
-		if(friendList != null && !friendList.isEmpty()){
-			friendListClause = " OR p.account IN :friendList ";
-		}
+		
 		if(isVisitor){
+			/**
+			 * if a visitor wants to see a friends newsstream
+			 * show only posts where he (the friend) is owner of => 'p.owner = :account'
+			 * since 'myPostsClause' includes posts where the given account posted to someone ('OR (p.owner = :account AND p.parent = NULL)').
+			 * we have to modify 'myPostsClause' (cut it out).
+			 */
+			myPostsClause = " p.account = :account ";
 			visitorClause = " AND p.owner = :account ";
 		}
 		
 		// create Query. 
-		Query query = JPA.em().createQuery(selectClause+" FROM Post p WHERE p.account = :account "+groupListClause+friendListClause+visitorClause+orderByClause);
+		Query query = JPA.em().createQuery(selectClause+" FROM Post p WHERE "+myPostsClause+groupListClause+friendListClause+visitorClause+orderByClause);
 		query.setParameter("account", account);
 		
 		
@@ -184,6 +211,7 @@ public class Post extends BaseModel {
 		return findStreamForAccount(account, groupList, friendList, false, limit, offset);
 	}
 	
+	
 	/**
 	 * @author Iven
 	 * @param currentUser - Account (current user)
@@ -223,4 +251,6 @@ public class Post extends BaseModel {
 		
 		return countStreamForAccount(friend, groupList, null, true);
 	}
+	
+	
 }

@@ -16,7 +16,7 @@
                                          options = options("0"->"Öffentliche Gruppe","1"->"Private Gruppe","2"->"Kurs"),
                                    '_label -> "Typ")
       		} else {
-                @inputRadioGroup(groupForm("type"),
+                @helper.inputGroupType(groupForm("type"),
                                          options = options("0"->"Öffentliche Gruppe","1"->"Private Gruppe"),
                                    '_label -> "Typ")
         	}

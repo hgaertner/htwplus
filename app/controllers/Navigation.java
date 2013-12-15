@@ -1,6 +1,8 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import play.mvc.Http.Context;
@@ -98,5 +100,69 @@ public class Navigation {
 	public static Call getParentCall() {
 		return (Call)Context.current().args.get(parentCallIdent);
 	}
+		
+	public static Map<String, Object> calcPagination(int count, int limit, int page) {
+		Map<String, Object> m = new HashMap<String, Object>();
+		Boolean first = true;
+		Boolean last = true;
+		int lastPage = (int)Math.ceil(count/(double)limit);
+		
+		if(page < 1) {
+			page = 1;
+		} else if(page > lastPage) {
+			page = lastPage;
+		}
+		
+		List<Integer> pages = new ArrayList<Integer>();
+		int show = 5; // SHOULD BE ODD!
+		int edge = lastPage - show + 1;
+		
+		if(page < show){
+			for(int i=0;i<show;i++){
+				if(i == lastPage){
+					break;
+				}
+				pages.add(i+1);
+			}
+			first = false;
+		} else if (page > edge) {
+			for(int i=edge;i<=lastPage;i++){
+				pages.add(i);
+			}
+			first = true;
+			last = false;
+		} else if (page >= show) {
+			int pitch = show / 2;
+			for(int i=0;i<show;i++){
+				pages.add(page - pitch + i);
+			}
+			first = true;
+			last = true;
+		}
+		
+		if(lastPage <= show) {
+			first = false;
+			last = false;
+		}
+		
+		Boolean firstDots = false;
+		if(pages.get(0) - 1 !=1 ){
+			firstDots = true;
+		}
+		
+		Boolean lastDots = false;
+		if(lastPage != pages.get(pages.size()-1) + 1){
+			lastDots = true;
+		}
+		
+		m.put("first", first);
+		m.put("last", last);
+		m.put("firstDots", firstDots);
+		m.put("lastDots", lastDots);
+		m.put("lastPage", lastPage);
+		m.put("pages", pages);
+		return m;
+	}
+	
 	
 }
