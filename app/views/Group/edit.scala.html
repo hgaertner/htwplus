@@ -28,21 +28,15 @@
 			<dt>Erstellt am</dt>
 			<dd>@group.createdAt.format("dd. MMM yyyy")</dd>
 			@textarea(groupForm("description"), 'class -> "form-control", '_label -> "Beschreibung", 'rows -> "5")
-			<dt>Sichtbarkeit</dt>
-			<dd>
-				<div class="radio">
-					<label>
-						<input type="radio" name="groupType" id="optionsRadios0" value="0" @if(group.groupType == GroupType.open) {checked}>
-						<span class="glyphicon glyphicon-globe"></span> Öffentliche Gruppe
-					</label>
-				</div>
-				<div class="radio">
-					<label>
-						<input type="radio" name="groupType" id="optionsRadios1" value="1" @if(group.groupType == GroupType.close) {checked}>
-						<span class="glyphicon glyphicon-lock"></span> Private Gruppe
-					</label>
-				</div>
-			</dd>
+			@if(Secured.createCourse()) {
+                @helper.inputGroupType(groupForm("type"),
+                                         options = options("0"->"Öffentliche Gruppe","1"->"Private Gruppe","2"->"Kurs"),
+                                   '_label -> "Typ")
+      		} else {
+                @inputRadioGroup(groupForm("type"),
+                                         options = options("0"->"Öffentliche Gruppe","1"->"Private Gruppe"),
+                                   '_label -> "Typ")
+        	}
 			<dt>Mitglieder</dt>
 			<dd>
 				<table class="table table-hover table-condensed">
