@@ -7,7 +7,7 @@
 	<div class="media-body">
 		<h5 class="media-heading">
 			<a href="@routes.ProfileController.view(comment.owner.id)" data-placement="top" data-original-title="@comment.owner.name" data-content="Rolle: Student &lt;br /&gt; Studiengang: Angewandte Informatik" data-delay="500" data-trigger="hover" data-html="true" rel="popover">@comment.owner.name</a>
-			<small>(@comment.createdAt.format("dd. MMM yyyy HH:mm"))</small>
+			<small>(@comment.createdAt.format("dd.MM.yyyy HH:mm"))</small>
 			@if(comment.owner.id == Component.currentAccount.id){
                	<a href="#confirmModalDeleteComment@comment.id" data-toggle="modal" rel="tooltip" data-original-title="Post löschen">
                		<span class="glyphicon glyphicon-trash"></span>

@@ -26,7 +26,7 @@
 			<dt>Gruppengründer</dt>
 			<dd>@group.owner.firstname @group.owner.lastname</dd>
 			<dt>Erstellt am</dt>
-			<dd>@group.createdAt.format("dd. MMM yyyy")</dd>
+			<dd>@group.createdAt.format("dd.MM.yyyy")</dd>
 			@textarea(groupForm("description"), 'class -> "form-control", '_label -> "Beschreibung", 'rows -> "5")
 			@if(Secured.createCourse()) {
                 @helper.inputGroupType(groupForm("type"),
