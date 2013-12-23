@@ -140,4 +140,13 @@ public class Secured extends Security.Authenticator {
 		}
 	}
 	
+	public static boolean isAdmin(){
+		Account current = Component.currentAccount();
+		if(current.role == AccountRole.ADMIN){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 }

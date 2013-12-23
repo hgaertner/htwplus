@@ -40,8 +40,6 @@ GET		/post/olderComments				    controllers.PostController.getOlderComments(id:L
 POST	/:target/:id/addPost				controllers.PostController.addPost(id:Long, target:String)
 GET		/post/:postId/deletePost			controllers.PostController.deletePost(postId:Long)
 
-# Signup
-POST    /signup                 			controllers.AccountController.submit()
 
 #User
 GET		/profile							controllers.ProfileController.me()
@@ -75,7 +73,10 @@ GET		/notification/:id					controllers.NotificationController.forward(id:Long,ur
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               		controllers.Assets.at(path="/public", file)
 
-
+# Admin
+GET		/admin								controllers.AdminController.index()
+GET		/admin/user/create					controllers.AdminController.createAccountForm()
+POST	/admin/user/create					controllers.AdminController.createAccount()
 
 # No route found? take this
 GET     /*path                  			controllers.Application.defaultRoute(path: String)

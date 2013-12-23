@@ -5,12 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import play.Logger;
 import play.mvc.Http.Context;
 import play.mvc.*;
 
 public class Navigation {
 
-	public static enum Level {PROFILE,STREAM,FRIENDS,GROUPS,COURSES,HELP,USER}
+	public static enum Level {PROFILE,STREAM,FRIENDS,GROUPS,COURSES,HELP,USER,ADMIN}
 	
 	private static Map<Level,Call> callMapping = new HashMap<Navigation.Level, Call>();
 	static
@@ -21,6 +22,7 @@ public class Navigation {
 		callMapping.put(Level.GROUPS, routes.GroupController.index());
 		callMapping.put(Level.HELP, routes.Application.help());
 		callMapping.put(Level.USER, routes.Application.searchForAccounts(""));
+		callMapping.put(Level.ADMIN, routes.AdminController.index());
 	}
 	
 	private static Map<Level,String> titleMapping = new HashMap<Navigation.Level, String>();
@@ -32,6 +34,7 @@ public class Navigation {
 		titleMapping.put(Level.GROUPS, "Gruppen & Kurse");
 		titleMapping.put(Level.HELP, "Hilfe");
 		titleMapping.put(Level.USER, "User");
+		titleMapping.put(Level.ADMIN, "Control Center");
 	}
 	
 	private static Call fallbackCall = routes.Application.index();
@@ -106,6 +109,10 @@ public class Navigation {
 		Boolean first = true;
 		Boolean last = true;
 		int lastPage = (int)Math.ceil(count/(double)limit);
+
+		if(lastPage == 0){
+			lastPage = 1;
+		}
 		
 		if(page < 1) {
 			page = 1;
@@ -146,15 +153,17 @@ public class Navigation {
 		}
 		
 		Boolean firstDots = false;
+		Boolean lastDots = false;
+		
+
 		if(pages.get(0) - 1 !=1 ){
 			firstDots = true;
 		}
-		
-		Boolean lastDots = false;
+
 		if(lastPage != pages.get(pages.size()-1) + 1){
 			lastDots = true;
 		}
-		
+
 		m.put("first", first);
 		m.put("last", last);
 		m.put("firstDots", firstDots);

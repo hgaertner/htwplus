@@ -5,6 +5,7 @@ import controllers.Component;
 import controllers.routes;
 import models.Account;
 import models.Group;
+import models.enums.AccountRole;
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;
@@ -52,14 +53,28 @@ public class Global extends GlobalSettings {
 				
 				@Override
 				public void invoke() throws Throwable {
+					Account admin = Account.findByEmail("admin@htwplus.de");
+					if(admin == null){
+						admin = new Account();
+						admin.email = "admin@htwplus.de";
+						admin.firstname = "Admin";
+						admin.lastname = "Plus";
+						admin.role = AccountRole.ADMIN;
+						admin.avatar = "a1";
+						admin.password = Component.md5("123456");
+						admin.create();
+					}
+					
 					Account account = null;
 					if (Account.all().size() <= 0) {
 						account = new Account();
 						account.email = "test@example.de";
 						account.firstname = "test";
 						account.lastname = "test";
+						account.avatar = "a1";
+						account.role = AccountRole.STUDENT;
 						account.password = Component.md5("123456");
-						account.create();
+						account.create();	
 					}else {
 						account = Account.all().get(0);
 					}

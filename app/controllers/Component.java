@@ -22,7 +22,6 @@ public class Component extends Action.Simple {
 	@Transactional
     public Result call(Context ctx) throws Throwable {
 		String sessionId = ctx.session().get("id");
-		
 		if(sessionId != null) {
 			Long id = Long.parseLong(ctx.session().get("id"));
 			Account account = Account.findById(id);

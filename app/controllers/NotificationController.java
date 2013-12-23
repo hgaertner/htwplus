@@ -15,8 +15,7 @@ import scala.collection.mutable.StringBuilder;
 
 @Transactional
 @Security.Authenticated(Secured.class)
-@With(Component.class)
-public class NotificationController extends Controller {
+public class NotificationController extends BaseController{
 	
 	public static Html view() {
 		Account account = Component.currentAccount();
