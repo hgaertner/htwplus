@@ -243,8 +243,13 @@ public class GroupController extends BaseController {
 		
 		// is already requested?
 		groupAccount = GroupAccount.find(account, group);
-		if(groupAccount != null && groupAccount.linkType.equals(LinkType.request)){
+		if(groupAccount != null && groupAccount.linkType.equals(LinkType.request) ){
 			flash("info", "Deine Beitrittsanfrage wurde bereits verschickt!");
+			return redirect(routes.GroupController.index());
+		}
+		
+		if(groupAccount != null && groupAccount.linkType.equals(LinkType.reject)){
+			flash("error", "Deine Beitrittsanfrage wurde bereits abgelehnt!");
 			return redirect(routes.GroupController.index());
 		}
 		
