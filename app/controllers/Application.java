@@ -55,6 +55,7 @@ public class Application extends BaseController {
 		return ok(stream.render(currentAccount,Post.getStream(currentAccount, LIMIT, page),postForm,Post.countStream(currentAccount), LIMIT, page));
 	}
 	
+	@Security.Authenticated(Secured.class)
 	public static Result search(){
 		List<Group> groupResults = null;
 		List<Group> courseResults = null;
@@ -74,16 +75,18 @@ public class Application extends BaseController {
 			}
 
 		}
-
+		Logger.info("search");
 		return ok(searchresult.render(groupResults, courseResults, accResults, keyword));
 	}
 	
+	@Security.Authenticated(Secured.class)
 	public static Result searchForAccounts(final String keyword){
 		List<Account> accounts = null;
 		accounts = Account.searchForAccountByKeyword(keyword, false);
 		return ok(searchresult.render(null, null, accounts,null));
 	}
 	
+	@Security.Authenticated(Secured.class)
 	public static Result searchForGroups(final String keyword){
 		Logger.info("Keyword: " +keyword);
 		List<Group> groups = null;
@@ -91,6 +94,7 @@ public class Application extends BaseController {
 		return ok(searchresult.render(groups, null, null,null));
 	}
 	
+	@Security.Authenticated(Secured.class)
 	public static Result searchForCourses(final String keyword){
 		List<Group> courses = null;
 		courses = Group.searchForCourseByKeyword(keyword, false);

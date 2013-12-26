@@ -55,6 +55,9 @@ public class MediaController extends BaseController {
     	Call ret = routes.Application.index();
     	if(media.belongsToGroup()){
     		Group group = media.group;
+    		if(!Secured.deleteMedia(media)){
+				return redirect(routes.Application.index());
+    		}
     		ret = routes.GroupController.media(group.id);
     	} 
     	
@@ -72,6 +75,9 @@ public class MediaController extends BaseController {
 		
 		if(target.equals(Media.GROUP)) {
 			group = Group.findById(id);
+			if(!Secured.viewGroup(group)){
+				return redirect(routes.Application.index());
+			}
 			filename = createFileName(group.title);
 			ret = routes.GroupController.media(id);
 		} else {
@@ -165,6 +171,9 @@ public class MediaController extends BaseController {
 		// Where to put the media
 		if(target.equals(Media.GROUP)) {
 			group = Group.findById(id);
+			if(!Secured.uploadMedia(group)){
+				return redirect(routes.Application.index());
+			}
 			Notification.newGroupNotification(NotificationType.GROUP_NEW_MEDIA, group, Component.currentAccount());
 			ret = routes.GroupController.media(id);
 		} else {

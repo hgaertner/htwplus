@@ -19,7 +19,6 @@ GET		/assets/javascripts/routes			controllers.Application.javascriptRoutes()
 
 #Group
 GET 	/groups								controllers.GroupController.index()
-#GET 	/groups/user/:id					controllers.GroupController.indexByAccount(id:Long)
 POST	/group/create						controllers.GroupController.add()
 GET		/group/create						controllers.GroupController.create()
 GET		/group/:id							controllers.GroupController.view(id:Long)

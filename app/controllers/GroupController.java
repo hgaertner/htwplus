@@ -32,15 +32,12 @@ public class GroupController extends BaseController {
 	static Form<Group> groupForm = Form.form(Group.class);
 	static Form<Post> postForm = Form.form(Post.class);
 	
-	
-	
 	public static Result index() {
 		Navigation.set(Level.GROUPS, "Übersicht");
 		Account account = Component.currentAccount();
 		List<GroupAccount> groupRequests = GroupAccount.findRequests(account);
 		List<Group> groupAccounts = GroupAccount.findGroupsEstablished(account);
 		List<Group> courseAccounts = GroupAccount.findCoursesEstablished(account);
-		
 		return ok(index.render(groupAccounts,courseAccounts,groupRequests,groupForm));
 	}
 		
@@ -48,6 +45,11 @@ public class GroupController extends BaseController {
 	public static Result view(Long id) {
 		Logger.info("Show group with id: " +id);
 		Group group = Group.findById(id);
+		
+		if(!Secured.viewGroup(group)){
+			return redirect(routes.Application.index());
+		}
+		
 		Account account = Component.currentAccount();
 		if (group == null) {
 			Logger.error("No group found with id: " +id);
@@ -64,6 +66,11 @@ public class GroupController extends BaseController {
 	public static Result media(Long id) {
 		Form<Media> mediaForm = Form.form(Media.class);
 		Group group = Group.findById(id);
+		
+		if(!Secured.viewGroup(group)){
+			return redirect(routes.Application.index());
+		}
+		
 		Account account = Component.currentAccount();
 		if (group == null) {
 			return redirect(routes.GroupController.index());
