@@ -32,8 +32,6 @@ public class NotificationController extends BaseController{
 		return views.html.Notification.list.render(list);
 	}
 	
-	
-	
 	public static Result forward(Long notificationId, String url) {
 		Notification note = Notification.findById(notificationId);
 		Logger.info(url);
@@ -47,7 +45,6 @@ public class NotificationController extends BaseController{
 	}
 	
 	public static Result deleteAll(String url) {
-		
 		Notification.deleteByUser(Component.currentAccount());
 		flash("success", "Alle Neuigkeiten wurden gelöscht.");
 		return redirect(url);

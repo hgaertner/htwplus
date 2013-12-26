@@ -14,7 +14,7 @@
 			@defining(Group.findById(note.objectId)) { group =>
 				@if(group != null) {
 					@element(forward(note.id,GroupController.view(group.id).toString()).toString()){
-						Es gibt etwas Neues auf dem Newsstream der Gruppe <span class="hp-green">@truncate(group.title,20)</span>
+						Neues auf dem Newsstream der Gruppe <span class="hp-green">@truncate(group.title,20)</span>
 					}
 				}
 			}
@@ -24,7 +24,7 @@
 			@defining(Group.findById(note.objectId)) { group =>
 				@if(group != null) {
 					@element(forward(note.id,GroupController.media(group.id).toString()).toString()){
-						Es gibt etwas Neues bei den Medien der Gruppe <span class="hp-green">@truncate(group.title,20)</span>
+						Neues bei den Medien der Gruppe <span class="hp-green">@truncate(group.title,20)</span>
 					}
 				}
 			}
@@ -75,7 +75,7 @@
 			@defining(Account.findById(note.objectId)) { account =>
 				@if(account != null) {
 					@element(forward(note.id,ProfileController.stream(Component.currentAccount().id).toString()).toString()){
-						Neuer Post von <span class="hp-green">@account.name</span> auf deinem Stream
+						Neuer Post von <span class="hp-green">@account.name</span> auf deinem Newsstream
 					}
 				}
 			}

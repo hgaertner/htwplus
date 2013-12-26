@@ -151,7 +151,7 @@ public class Notification extends BaseModel {
 	@SuppressWarnings("unchecked")
 	public static List<Notification> findByUser(Account account) {
 		return (List<Notification>) JPA.em()
-				.createQuery("FROM Notification n WHERE n.account.id = :account")
+				.createQuery("FROM Notification n WHERE n.account.id = :account ORDER BY n.createdAt DESC")
 				.setParameter("account", account.id)
 				.getResultList();
 	}
