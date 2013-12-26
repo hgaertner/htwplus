@@ -28,7 +28,7 @@ public class AccountController extends BaseController {
 		if (username.contains("@")) {
 			return defaultAuthenticate();
 		} else if (username.length() == 0) {
-			flash("error", "Bitte gebe einen Benutzernamen ein!");
+			flash("error", "Also deine Matrikelnummer brauchen wir schon!");
 			return badRequest(index.render());
 		} else {
 			return LDAPAuthenticate();
@@ -36,7 +36,7 @@ public class AccountController extends BaseController {
 	}
 
 	private static Result LDAPAuthenticate() {
-		DynamicForm form = form().bindFromRequest();
+		Form<Login> form = form(Login.class).bindFromRequest();
 		String username = form.field("email").value();
 		String password = form.field("password").value();
 
@@ -45,6 +45,7 @@ public class AccountController extends BaseController {
 			ldap.connect(username, password);
 		} catch (LDAPConnectorException e) {
 			flash("error", e.getMessage());
+			Component.addToContext(Component.ContextIdent.loginForm, form);
 			return badRequest(index.render());
 		}
 
@@ -77,6 +78,7 @@ public class AccountController extends BaseController {
 		Form<Login> loginForm = form(Login.class).bindFromRequest();
 		if (loginForm.hasErrors()) {
 			flash("error", loginForm.globalError().message());
+			Component.addToContext(Component.ContextIdent.loginForm, loginForm);
 			return badRequest(index.render());
 		} else {
 			session().clear();
