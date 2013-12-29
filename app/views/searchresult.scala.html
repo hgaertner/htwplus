@@ -1,11 +1,11 @@
-@(groups: List[Group], courses: List[Group], users: List[Account], keyword: String)
+@(groups: List[Group], courses: List[Group], users: List[Account], keyword: String, courseCount: Integer, groupCount: Integer, accountCount: Integer, limit: Integer, currentPage: Integer)
 @import models.enums._
 
 @main("Searchresult"){
 
 	<h1>Suchergebnisse @keyword</h1>
 	<br />
-	
+
 	@defining(Component.currentAccount()) { user =>
 	
 		@if(courses != null && courses.size != 0) {
@@ -29,9 +29,11 @@
 			
 			<!-- list all found courses -->
 			@views.html.Group.snippets.listCourses(courses, user)
-			</br>
-			@if(courses.size() == 10 && keyword != null){
-				<a href="@routes.Application.searchForCourses(keyword)">Weitere Ergebnisse für Kurse</a>
+			@if(courseCount > 10 && keyword != null && groups != null && users != null){
+				<h4><a href="@routes.Application.searchForCourses(keyword)">Weitere Kurse (@{courseCount - limit}) anzeigen</a></h4><br />
+			} 
+			@if(groups == null && users == null){
+				@views.html.pagination(courseCount, limit, currentPage, routes.Application.searchForCourses(keyword).toString, "&")
 			}
 			
 		}
@@ -57,19 +59,25 @@
 			
 			<!-- list all found groups -->
 			@views.html.Group.snippets.listGroups(groups, user)
-			</br>
-			@if(groups.size() == 10 && keyword != null){
-				<a href="@routes.Application.searchForGroups(keyword)">Weitere Ergebnisse für Gruppen</a>
+			@if(groupCount > 10 && keyword != null && courses != null && users != null){
+				<h4><a href="@routes.Application.searchForGroups(keyword)">Weitere Gruppen (@{groupCount - limit}) anzeigen</a></h4><br />
 			}
+			@if(courses == null && users == null){
+				@views.html.pagination(groupCount, limit, currentPage, routes.Application.searchForGroups(keyword).toString, "&")
+			}
+			
+			
 		}
 		
 		@if(users != null && users.size != 0) {
 			
 			<!-- list all found persons -->
 			@views.html.snippets.listAccounts(users)
-		
-			@if(users.size() == 10 && keyword != null){
-				<a href="@routes.Application.searchForAccounts(keyword)">Weitere Ergebnisse für Benutzer</a>
+			@if(accountCount > 10 && keyword != null && courses != null && groups != null){
+				<h4><a href="@routes.Application.searchForAccounts(keyword)">Weitere Personen (@{accountCount - limit}) anzeigen</a></h4><br />
+			}
+			@if(courses == null && groups == null){
+				@views.html.pagination(accountCount, limit, currentPage, routes.Application.searchForAccounts(keyword).toString, "&")
 			}
 		}
 		

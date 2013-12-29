@@ -11,6 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.Query;
 import javax.persistence.Table;
 
 import models.base.BaseModel;
@@ -200,8 +201,8 @@ public class Group extends BaseModel {
 	 * @param keyword
 	 * @return List of groups wich matches with the keyword
 	 */
-	@SuppressWarnings("unchecked")
-	public static List<Group> searchForGroupByKeyword(String keyword, final boolean setMaxResult) {
+
+	public static FullTextQuery searchForGroupByKeyword(String keyword, int limit, int offset) {
 		Logger.info("Group model searchForGroupByKeyword: "
 				+ keyword.toLowerCase());
 		FullTextEntityManager fullTextEntityManager = Search
@@ -221,22 +222,42 @@ public class Group extends BaseModel {
 				Restrictions.eq("groupType", GroupType.open),
 				Restrictions.eq("groupType", GroupType.close)));
 		criteria.addOrder(Order.asc("title"));
+		criteria = limit(criteria,limit,offset);
+		
 		
 		// wrap Lucene query in a javax.persistence.Query
 		FullTextQuery fullTextQuery = fullTextEntityManager
 				.createFullTextQuery(luceneQuery, Group.class);
-		if(setMaxResult){
-			criteria.setMaxResults(10); // Max result to 10
-		}
+
 		criteria.setReadOnly(true);
 		fullTextQuery.setCriteriaQuery(criteria);
 		fullTextQuery.setSort(new Sort(new SortField("title", SortField.STRING)));
-		List<Group> result = fullTextQuery.getResultList(); // The result...
+		
 		session.clear();
-		return result;
+		return fullTextQuery;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Group> groupSearch(String keyword, int limit, int page) {
+		
+		// create offset
+		int offset = (page * limit) - limit;
+				
+		FullTextQuery fullTextQuery = searchForGroupByKeyword(keyword, limit, offset);
+		List<Group> groups = fullTextQuery.getResultList(); // The result...
+		return groups;
+	}
+	
+	public static int countGroupSearch(String keyword) {
+		
+		FullTextQuery fullTextQuery = searchForGroupByKeyword(keyword, 0, 0);
+		
+		// SearchException: HSEARCH000105: Cannot safely compute getResultSize() when a Criteria with restriction is used.
+		int count = fullTextQuery.getResultList().size();
+		return count;
 	}
 
-	public static List<Group> searchForCourseByKeyword(String keyword, boolean setMaxResult) {
+	public static FullTextQuery searchForCourseByKeyword(String keyword, int limit, int offset) {
 		Logger.info("Group model searchForCourseByKeyword: "
 				+ keyword.toLowerCase());
 		FullTextEntityManager fullTextEntityManager = Search
@@ -250,18 +271,48 @@ public class Group extends BaseModel {
 		Criteria courseCriteria = session.createCriteria(Group.class);
 		courseCriteria.add(Restrictions.eq("groupType", GroupType.course));
 		courseCriteria.addOrder(Order.asc("title"));
+		courseCriteria = limit(courseCriteria,limit,offset);
+		
 		org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword()
 				.wildcard().onField("title")
 				.matching("*" + keyword.toLowerCase() + "*").createQuery();
 		// wrap Lucene query in a javax.persistence.Query
 		FullTextQuery fullTextQuery = fullTextEntityManager
 				.createFullTextQuery(luceneQuery, Group.class);
-		if(setMaxResult) {
-			courseCriteria.setMaxResults(10);
-		}
+		
 		fullTextQuery.setCriteriaQuery(courseCriteria);
-		List<Group> courses = fullTextQuery.getResultList();
 		session.clear();
+		return fullTextQuery;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Group> courseSearch(String keyword, int limit, int page) {
+		
+		// create offset
+		int offset = (page * limit) - limit;
+				
+		FullTextQuery fullTextQuery = searchForCourseByKeyword(keyword, limit, offset);
+		List<Group> courses = fullTextQuery.getResultList(); // The result...
 		return courses;
+	}
+	
+	public static int countCourseSearch(String keyword) {
+		
+		FullTextQuery fullTextQuery = searchForCourseByKeyword(keyword, 0, 0);
+		
+		// SearchException: HSEARCH000105: Cannot safely compute getResultSize() when a Criteria with restriction is used.
+		int count = fullTextQuery.getResultList().size();
+		return count;
+	}
+	
+	
+	protected static Criteria limit(Criteria criteria, int limit, int offset) {
+		if (limit > 0) {
+			criteria.setMaxResults(limit);
+		}
+		if (offset >= 0) {
+			criteria.setFirstResult(offset);
+		}
+		return criteria;
 	}
 }

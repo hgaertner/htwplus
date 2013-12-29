@@ -23,5 +23,5 @@
 		}
 	}
 	
-	@views.html.pagination(count, limit, currentPage, routes.ProfileController.stream(user.id).toString)
+	@views.html.pagination(count, limit, currentPage, routes.ProfileController.stream(user.id).toString, "?")
 }

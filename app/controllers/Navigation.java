@@ -21,7 +21,6 @@ public class Navigation {
 		callMapping.put(Level.FRIENDS, routes.FriendshipController.index());
 		callMapping.put(Level.GROUPS, routes.GroupController.index());
 		callMapping.put(Level.HELP, routes.Application.help());
-		callMapping.put(Level.USER, routes.Application.searchForAccounts(""));
 		callMapping.put(Level.ADMIN, routes.AdminController.index());
 	}
 	

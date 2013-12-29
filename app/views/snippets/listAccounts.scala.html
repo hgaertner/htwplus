@@ -24,20 +24,20 @@
 		</tr>
 	</thead>
 	<tbody>
-		@for(user <- users){
-			@if(user != Component.currentAccount) {
-				<tr>
-					<td>@views.html.snippets.userLinkAvatar(user)</td>
-					<td>@views.html.snippets.userLink(user)</td>
-					<td>
-						@if(Friendship.alreadyFriendly(Component.currentAccount, user)) {
-							<a href="#confirmDeleteFriend@user.id" data-toggle="modal" rel="tooltip" title="Freundschaft beenden" data-container="body"><i class="glyphicon glyphicon-remove"></i></a>
-						} else {
-							<a href="@routes.FriendshipController.requestFriend(user.id)" rel="tooltip" title="Freundschaftsanfrage senden" data-container="body"><i class="glyphicon glyphicon-envelope"></i></a>
-						}
-					</td>
-				</tr>
-			}
+		@for(user <- users) {	
+			<tr>
+				<td>@views.html.snippets.userLinkAvatar(user)</td>
+				<td>@views.html.snippets.userLink(user)</td>
+				<td>
+				@if(user != Component.currentAccount) {
+					@if(Friendship.alreadyFriendly(Component.currentAccount, user)) {
+						<a href="#confirmDeleteFriend@user.id" data-toggle="modal" rel="tooltip" title="Freundschaft beenden" data-container="body"><i class="glyphicon glyphicon-remove"></i></a>
+					} else {
+						<a href="@routes.FriendshipController.requestFriend(user.id)" rel="tooltip" title="Freundschaftsanfrage senden" data-container="body"><i class="glyphicon glyphicon-envelope"></i></a>
+					}
+				}
+				</td>
+			</tr>
 		}
 	</tbody>
 </table>

@@ -26,6 +26,7 @@ public class Application extends BaseController {
 	
 	static Form<Post> postForm = Form.form(Post.class);
 	static final int LIMIT = Integer.parseInt(Play.application().configuration().getString("htwplus.post.limit"));
+	static final int SEARCH_LIMIT = Integer.parseInt(Play.application().configuration().getString("htwplus.search.limit"));
 	static final int PAGE = 1;
 	
 	public static Result javascriptRoutes() {
@@ -68,37 +69,38 @@ public class Application extends BaseController {
 				keyword = entry.getValue()[0];
 				Logger.info("Keyword: " +keyword.isEmpty());
 				Navigation.set("Suchergebnisse");
-				courseResults = Group.searchForCourseByKeyword(keyword, true);
-				groupResults = Group.searchForGroupByKeyword(keyword, true);
-				accResults = Account.searchForAccountByKeyword(keyword, true);
-				Logger.info("Sizes: " + "Groups: " +groupResults.size() + " Courses: " + courseResults.size() + " Account: " +accResults.size());
+				courseResults = Group.courseSearch(keyword, SEARCH_LIMIT, 0);
+				groupResults = Group.groupSearch(keyword, SEARCH_LIMIT, 0);
+				accResults = Account.accountSearch(keyword, 0, 0);
 			}
 
 		}
-		Logger.info("search");
-		return ok(searchresult.render(groupResults, courseResults, accResults, keyword));
+		return ok(searchresult.render(groupResults, courseResults, accResults, keyword,Group.countCourseSearch(keyword), Group.countGroupSearch(keyword), Account.countAccountSearch(keyword),SEARCH_LIMIT, 0));
 	}
 	
 	@Security.Authenticated(Secured.class)
-	public static Result searchForAccounts(final String keyword){
-		List<Account> accounts = null;
-		accounts = Account.searchForAccountByKeyword(keyword, false);
-		return ok(searchresult.render(null, null, accounts,null));
+	public static Result searchForCourses(final String keyword, int page){
+		Navigation.set("Suchergebnisse für Kurse");
+		List<Group> courses = null;
+		courses = Group.courseSearch(keyword, SEARCH_LIMIT, page);
+		return ok(searchresult.render(null, courses, null, keyword, Group.countCourseSearch(keyword), 0, 0, SEARCH_LIMIT, page));
 	}
-	
+
 	@Security.Authenticated(Secured.class)
-	public static Result searchForGroups(final String keyword){
+	public static Result searchForGroups(final String keyword, int page){
+		Navigation.set("Suchergebnisse für Gruppen");
 		Logger.info("Keyword: " +keyword);
 		List<Group> groups = null;
-		groups = Group.searchForGroupByKeyword(keyword, false);
-		return ok(searchresult.render(groups, null, null,null));
+		groups = Group.groupSearch(keyword, SEARCH_LIMIT, page);
+		return ok(searchresult.render(groups, null, null, keyword, 0, Group.countGroupSearch(keyword), 0, SEARCH_LIMIT, page));
 	}
 	
 	@Security.Authenticated(Secured.class)
-	public static Result searchForCourses(final String keyword){
-		List<Group> courses = null;
-		courses = Group.searchForCourseByKeyword(keyword, false);
-		return ok(searchresult.render(null, courses, null,null));
+	public static Result searchForAccounts(final String keyword, int page){
+		Navigation.set("Suchergebnisse für Personen");
+		List<Account> accounts = null;
+		accounts = Account.accountSearch(keyword, SEARCH_LIMIT, page);
+		return ok(searchresult.render(null, null, accounts, keyword, 0, 0, Account.countAccountSearch(keyword), SEARCH_LIMIT, page));
 	}
 	
 	public static Result error() {
