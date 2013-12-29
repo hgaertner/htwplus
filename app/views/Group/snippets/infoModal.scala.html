@@ -21,7 +21,7 @@
 		<div class="modal-body">
 		    <dl>
 				<dt>Gründer</dt>
-				<dd>@group.owner.name</dd>
+				<dd>@views.html.snippets.userLink(group.owner)</dd>
 			</dl>
 			<dl>
 				<dt>Erstellt am</dt>
@@ -33,19 +33,11 @@
 			</dl>
 			<dl>
 				<dt>Mitglieder</dt>
-				<dd>
-					<table class="table table-hover table-condensed">
-						<tbody>
-							@defining(GroupAccount.findAccountsByGroup(group)) { accounts =>
-					             @for(account <- accounts) {              
-		                            <tr>
-		                                <td>@views.html.snippets.userLink(account)</td>
-		                            </tr>
-		                         }
-		              		}
-						</tbody>
-					</table>
-				</dd>
+				@defining(GroupAccount.findAccountsByGroup(group)) { accounts =>
+			    	@for(account <- accounts) {
+                    	<dd> @views.html.snippets.userLink(account)</dd>  
+                    }
+              	}
 			</dl>
 		</div>
 		<div class="modal-footer">
