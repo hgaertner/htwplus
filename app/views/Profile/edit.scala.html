@@ -60,16 +60,9 @@
 		</dd>
 		<dt>Avatar</dt>
 		<dd id="hp-avatars">
-			<img id="a0" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a0.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a1" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a1.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a2" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a2.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a3" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a3.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a4" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a4.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a5" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a5.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a6" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a6.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a7" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a7.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a8" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a8.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a9" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a9.png")" alt="avatar" onclick="updateAvatar(this)" />
+			@for( i <- 0 to 29) {
+         		<img id="a@i" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a"+i+".png")" alt="avatar" onclick="updateAvatar(this)" />
+      		}
 		</dd>
 	</dl>
 	<input type="hidden" id="avatar" name="avatar" value="">
