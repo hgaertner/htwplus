@@ -5,7 +5,9 @@ import controllers.Component;
 import controllers.routes;
 import models.Account;
 import models.Group;
+import models.Post;
 import models.enums.AccountRole;
+import models.enums.GroupType;
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;
@@ -26,14 +28,29 @@ public class Global extends GlobalSettings {
 	public void onStart(Application app) {
 		Logger.info("Global - onStart");
 		super.onStart(app);
-		
-		//Doesn't work!!!
+	
 		InitialData.insert(app);
 	}
 	
 	@Override
-	public play.mvc.Result onError(RequestHeader rh, Throwable t) {
-		Logger.info("onError "+ rh + " " + t);
+	public play.mvc.Result onError(final RequestHeader rh, final Throwable t) {
+		Logger.error("onError "+ rh + " " + t);
+				
+		JPA.withTransaction(new play.libs.F.Callback0() {
+			
+			@Override
+			public void invoke() throws Throwable {
+				Group group = Group.findByTitle("HTWplus");
+				if(group != null){
+					Post p = new Post();
+					p.content = "Request: "+rh+"\nError: "+t;
+					p.owner = Account.findByEmail("admin@htwplus.de");
+					p.group = group;
+					p.create();
+				}
+			}
+		});
+		
 		
 		// prod mode? return 404 page
 		if(Play.mode(play.api.Play.current()).toString().equals("Prod")){
@@ -47,12 +64,14 @@ public class Global extends GlobalSettings {
 	static class InitialData {
 
 		public static void insert(Application app) {
-			//create account if none exists
 			
+			// Do some inital db stuff
 			JPA.withTransaction(new play.libs.F.Callback0() {
 				
 				@Override
 				public void invoke() throws Throwable {
+					
+					//create Admin account if none exists
 					Account admin = Account.findByEmail("admin@htwplus.de");
 					if(admin == null){
 						admin = new Account();
@@ -65,20 +84,16 @@ public class Global extends GlobalSettings {
 						admin.create();
 					}
 					
-					Account account = null;
-					if (Account.all().size() <= 0) {
-						account = new Account();
-						account.email = "test@example.de";
-						account.firstname = "test";
-						account.lastname = "test";
-						account.avatar = "a1";
-						account.role = AccountRole.STUDENT;
-						account.password = Component.md5("123456");
-						account.create();	
-					}else {
-						account = Account.all().get(0);
+					// create Admin group if none exists
+					Group group = Group.findByTitle("HTWplus");
+					if(group == null && admin != null){
+						group = new Group();
+						group.title = "HTWplus";
+						group.groupType = GroupType.close;
+						group.description = "reserved ...";
+						group.createWithGroupAccount(admin);
 					}
-					//Generate indexes
+					// Generate indexes
 					FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
 					try {
 						fullTextEntityManager.createIndexer(Group.class, Account.class).startAndWait();
