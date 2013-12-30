@@ -40,9 +40,12 @@ a > .glyphicon:hover {
 }
 
 .hp-truncate {
-	white-space: pre-line;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+.hp-white-space {
+	white-space: pre-line;
 }
 
 h1 {
