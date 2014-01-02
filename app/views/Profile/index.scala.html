@@ -3,6 +3,10 @@
 
 @main("Profil") {
 @defining(Component.currentAccount()) { curUser =>
+
+	<!-- confirmDeleteFriendModal -->
+	<div class="modal fade" id="confirmDeleteFriend@user.id" tabindex="-1" role="dialog">@views.html.Friends.snippets.deleteFriendModal(user)</div>
+	<!-- Ende confirmDeleteFriendModal -->
 	
 	@views.html.Profile.snippets.navTabs(user)
 	
