@@ -60,9 +60,9 @@
 							<div id="hp-top">
 								<div id="hp-bottom">
 									<div id="hp-content">
-										<a id="hp-bug" type="button" class="btn btn-danger" href="#">
-											<span id="hp-bug-icon" class="glyphicon glyphicon-bullhorn"></span><br />
-											<img src="@routes.Assets.at("images/bug.svg")">
+										<a id="hp-feedback" type="button" class="btn btn-danger" href="#feedbackModal" data-toggle="modal" data-original-title="Feedback">
+											<span id="hp-feedback-icon" class="glyphicon glyphicon-bullhorn"></span><br />
+											<div class="hp-easy-feedback">EasyFeedback™</div>
 										</a>
 			                  				@content
 									</div> <!-- /content -->
@@ -89,6 +89,7 @@
 				</div>
 			</div>
 			@views.html.snippets.impressumModal()
+			@views.html.snippets.feedbackModal()
 		</footer>
 	
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.js")"></script>
