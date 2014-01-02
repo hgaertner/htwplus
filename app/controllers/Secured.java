@@ -1,13 +1,19 @@
 package controllers;
 
 
-import play.*;
-import play.mvc.*;
-import play.mvc.Http.*;
+import models.Account;
+import models.Friendship;
+import models.Group;
+import models.Media;
+import models.Post;
+import models.enums.AccountRole;
+import models.enums.GroupType;
+import play.Logger;
+import play.mvc.Http.Context;
+import play.mvc.Result;
+import play.mvc.Security;
 import views.html.index;
-import views.html.Group.create;
-import models.*;
-import models.enums.*;
+import views.html.login;
 
 public class Secured extends Security.Authenticator {
 
@@ -18,7 +24,8 @@ public class Secured extends Security.Authenticator {
 	
 	@Override
     public Result onUnauthorized(Context ctx) {
-		return ok(index.render());
+		Logger.info("Unauthorized - Redirect to Login");
+		return ok(login.render());
     }
 		
 	//Access rights
@@ -35,13 +42,12 @@ public class Secured extends Security.Authenticator {
 		}
 	}
 
-	
 	public static boolean isAllowedToDeletePost(final Post post, final Account account){
 		if(post != null && post.account != null){
 			if(isOwnerOfPost(post, account) || post.account.equals(account)){
 				return true;
 			}
-		}else if(post != null && post.parent != null){
+		}else if(post != null && post.parent != null && post.parent.account != null){
 			if (isOwnerOfPost(post, account) || post.parent.account.equals(account)){
 				return true;
 			}
@@ -50,22 +56,14 @@ public class Secured extends Security.Authenticator {
 		}
 		return false;
 	}
+	
 	public static boolean isOwnerOfPost(Post post, Account account){
 		if(post != null){
 			return post.owner.equals(account);
 		}
 		return false;
 	}
-	
-	public static boolean viewMedia(Media media) {
-		if(media.group != null) {
-			if(Group.isMember(media.group, Component.currentAccount())){
-				return true;
-			}
-		}
-		return false;
-	}
-	
+		
 	public static boolean isOwnerOfMedia(final Long mediaId){
 		return Media.isOwner(mediaId, Component.currentAccount());
 	}
@@ -104,35 +102,92 @@ public class Secured extends Security.Authenticator {
 	
 	public static boolean viewGroup(Group group) {
 		Account current = Component.currentAccount();
+		
+		if(group == null){
+			return false;
+		}
+		
+		if(Secured.isAdmin()){
+			return true;
+		}
+		
 		switch(group.groupType){
 		
-		case open:
-			return true;
-				
-		case close: 
-			if(Secured.isMemberOfGroup(group, current) || current.role == AccountRole.ADMIN) {
+			case open:
 				return true;
-			} 
-		case course: 
-			if(Secured.isMemberOfGroup(group, current) || current.role == AccountRole.ADMIN) {
-				return true;
-			} 
-		default: 
-				return false;
+					
+			case close: 
+				if(Secured.isMemberOfGroup(group, current)) {
+					return true;
+				} 
+			case course: 
+				if(Secured.isMemberOfGroup(group, current)) {
+					return true;
+				} 
+			default: 
+					return false;
 		}
 		
 	}
 	
 	public static boolean uploadMedia(Group group) {
 		Account current = Component.currentAccount();
-		if(group.groupType == GroupType.course) {
-			if(current.role == AccountRole.TUTOR || current.role == AccountRole.ADMIN) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
+		
+		if(group == null) {
+			return false;
+		}
+		
+		if(Secured.isAdmin()){
 			return true;
+		}
+		
+		switch(group.groupType){
+			case open:
+				if(Secured.isMemberOfGroup(group, current)) {
+					return true;
+				} 
+					
+			case close: 
+				if(Secured.isMemberOfGroup(group, current)) {
+					return true;
+				} 
+			case course: 
+				if(Secured.isOwnerOfGroup(group, current)) {
+					return true;
+				} 
+			default: 
+					return false;
+		}
+	}
+	
+	public static boolean viewMedia(Media media) {
+		return Secured.viewGroup(media.group);
+	}
+	
+	public static boolean deleteMedia(Media media) {
+		Account current = Component.currentAccount();
+		Group group = media.group;
+		if(Secured.isAdmin()){
+			return true;
+		}
+		
+		if(Secured.isOwnerOfGroup(group, current)){
+			return true;
+		}
+		
+		if(media.owner.equals(current)){
+			return true;
+		}
+		
+		return false;
+	}
+		
+	public static boolean isAdmin(){
+		Account current = Component.currentAccount();
+		if(current.role == AccountRole.ADMIN){
+			return true;
+		} else {
+			return false;
 		}
 	}
 	

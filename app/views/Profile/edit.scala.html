@@ -7,17 +7,15 @@
 @views.html.Profile.snippets.navTabs(profile)
 <h2>Profil bearbeiten</h2>
 <br>
-<div class="noModal">
 
 @form(routes.ProfileController.update(profile.id), 'class -> "ajaxForm") {
-
-	@inputText(
-		profileForm("email"),
-		'class -> "form-control",
-		'_label -> "Email",
-		'placeholder -> "max.mustermann@muster.de"
-	)
-	<dl>
+	<dl class="dl-horizontal">
+		@inputText(
+			profileForm("email"),
+			'class -> "form-control",
+			'_label -> "Email",
+			'placeholder -> "max.mustermann@muster.de"
+		)
 		<dt>Studiengang</dt>
 		<dd>
 			<select class="form-control" name="studycourse">
@@ -31,8 +29,6 @@
 				}
 			</select>
 		</dd>
-	</dl>
-	<dl>
 		<dt>Semester</dt>
 		<dd>
 			<select class="form-control" name="semester">
@@ -50,7 +46,7 @@
 				<option value="7" @if(profile.semester !=null && profile.semester == 7){selected="selected"}>7. Semester</option>
 				<option value="8" @if(profile.semester !=null && profile.semester == 8){selected="selected"}>8. Semester</option>
 			</select>
-			
+			</br>
 			<select class="form-control" name="degree">
 				@if(profile.degree == null) {
 				<option value="null" selected="selected">Keine Angabe</option>
@@ -62,47 +58,35 @@
 				<option value="Diplom" @if(profile.degree !=null && profile.degree.equals("Diplom")){selected="selected"}>Diplom</option>
 			</select>
 		</dd>
-	</dl>
-	<dl>
 		<dt>Avatar</dt>
 		<dd id="hp-avatars">
-			<img id="a0" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a0.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a1" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a1.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a2" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a2.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a3" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a3.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a4" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a4.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a5" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a5.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a6" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a6.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a7" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a7.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a8" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a8.png")" alt="avatar" onclick="updateAvatar(this)" />
-			<img id="a9" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a9.png")" alt="avatar" onclick="updateAvatar(this)" />
+			@for( i <- 0 to 29) {
+         		<img id="a@i" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a"+i+".png")" alt="avatar" onclick="updateAvatar(this)" />
+      		}
 		</dd>
 	</dl>
 	<input type="hidden" id="avatar" name="avatar" value="">
 	<input type="submit" class="btn btn-warning" value="Speichern">
+	<a type="button" class="btn btn-default" href="@routes.ProfileController.me()">Abbrechen</a>
 
 	<script type="text/javascript">
+		var aID = "@profile.avatar";
 	
-	var aID = "@profile.avatar";
-	
-	function updateAvatar(parent) {
-		var childs = document.getElementById("hp-avatars").getElementsByClassName("img-thumbnail");
-		for (i = 0; i < childs.length; i++) {
-			childs[i].className = "img-thumbnail";
+		function updateAvatar(parent) {
+			var childs = document.getElementById("hp-avatars").getElementsByClassName("img-thumbnail");
+			for (i = 0; i < childs.length; i++) {
+				childs[i].className = "img-thumbnail";
+			}
+			parent.className = "img-thumbnail active";
+			document.getElementById("avatar").value = parent.id;
 		}
-		parent.className = "img-thumbnail active";
-		document.getElementById("avatar").value = parent.id;
-	}
-	
-	function setAvatar(id) {
-		document.getElementById(id).className = "img-thumbnail active";
-		document.getElementById("avatar").value = id;
-	}
-	
-	setAvatar(aID);
-	
+		
+		function setAvatar(id) {
+			document.getElementById(id).className = "img-thumbnail active";
+			document.getElementById("avatar").value = id;
+		}
+		
+		setAvatar(aID);
 	</script>
-
 }
-</div>
 }

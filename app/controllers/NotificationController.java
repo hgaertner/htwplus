@@ -2,12 +2,8 @@ package controllers;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.springframework.context.annotation.CommonAnnotationBeanPostProcessor;
-
 import models.Account;
 import models.Notification;
-import models.Notification.NotificationType;
 import play.Logger;
 import play.api.templates.Html;
 import play.db.jpa.Transactional;
@@ -19,8 +15,7 @@ import scala.collection.mutable.StringBuilder;
 
 @Transactional
 @Security.Authenticated(Secured.class)
-@With(Component.class)
-public class NotificationController extends Controller {
+public class NotificationController extends BaseController{
 	
 	public static Html view() {
 		Account account = Component.currentAccount();
@@ -37,8 +32,6 @@ public class NotificationController extends Controller {
 		return views.html.Notification.list.render(list);
 	}
 	
-	
-	
 	public static Result forward(Long notificationId, String url) {
 		Notification note = Notification.findById(notificationId);
 		Logger.info(url);
@@ -52,7 +45,6 @@ public class NotificationController extends Controller {
 	}
 	
 	public static Result deleteAll(String url) {
-		
 		Notification.deleteByUser(Component.currentAccount());
 		flash("success", "Alle Neuigkeiten wurden gelöscht.");
 		return redirect(url);

@@ -32,15 +32,12 @@ public class GroupController extends BaseController {
 	static Form<Group> groupForm = Form.form(Group.class);
 	static Form<Post> postForm = Form.form(Post.class);
 	
-	
-	
 	public static Result index() {
 		Navigation.set(Level.GROUPS, "Übersicht");
 		Account account = Component.currentAccount();
 		List<GroupAccount> groupRequests = GroupAccount.findRequests(account);
 		List<Group> groupAccounts = GroupAccount.findGroupsEstablished(account);
 		List<Group> courseAccounts = GroupAccount.findCoursesEstablished(account);
-		
 		return ok(index.render(groupAccounts,courseAccounts,groupRequests,groupForm));
 	}
 		
@@ -48,6 +45,11 @@ public class GroupController extends BaseController {
 	public static Result view(Long id) {
 		Logger.info("Show group with id: " +id);
 		Group group = Group.findById(id);
+		
+		if(!Secured.viewGroup(group)){
+			return redirect(routes.Application.index());
+		}
+		
 		Account account = Component.currentAccount();
 		if (group == null) {
 			Logger.error("No group found with id: " +id);
@@ -64,6 +66,11 @@ public class GroupController extends BaseController {
 	public static Result media(Long id) {
 		Form<Media> mediaForm = Form.form(Media.class);
 		Group group = Group.findById(id);
+		
+		if(!Secured.viewGroup(group)){
+			return redirect(routes.Application.index());
+		}
+		
 		Account account = Component.currentAccount();
 		if (group == null) {
 			return redirect(routes.GroupController.index());
@@ -92,9 +99,9 @@ public class GroupController extends BaseController {
 			Group group = filledForm.get();
 			int groupType;
 			try {
-				groupType = Integer.parseInt(filledForm.data().get("visibility"));
+				groupType = Integer.parseInt(filledForm.data().get("type"));
 			} catch (NumberFormatException ex){
-				filledForm.reject("visibility","Bitte eine Sichtbarkeit wählen!");
+				filledForm.reject("type", "Bitte eine Sichtbarkeit wählen!");
 				return ok(create.render(filledForm));
 			}
 			
@@ -112,7 +119,7 @@ public class GroupController extends BaseController {
 				case 2: group.groupType = GroupType.course;
 						successMsg = "Kurs";
 						String token = filledForm.data().get("token");
-						if(token.equals("") || token.length() < 4 || token.length() > 45){
+						if(!Group.validateToken(token)){
 							filledForm.reject("token","Bitte einen Token zwischen 4 und 45 Zeichen eingeben!");
 							return ok(create.render(filledForm));
 						}
@@ -141,30 +148,47 @@ public class GroupController extends BaseController {
 			return redirect(routes.GroupController.index());
 		} else {
 			Navigation.set(Level.GROUPS, "Bearbeiten", group.title, routes.GroupController.view(group.id));
-			return ok(edit.render(group, groupForm.fill(group)));
+			Form<Group> groupForm = Form.form(Group.class).fill(group);
+			groupForm.data().put("type", String.valueOf(group.groupType.ordinal()));
+			return ok(edit.render(group, groupForm));
 		}
 	}
 	
 	@Transactional
 	public static Result update(Long groupId) {
 		Group group = Group.findById(groupId);
-				
+		Navigation.set(Level.GROUPS, "Bearbeiten", group.title, routes.GroupController.view(group.id));		
 		// Check rights
 		if(!Secured.isOwnerOfGroup(group, Component.currentAccount())) {
 			return redirect(routes.Application.index());
 		}
 		
 		Form<Group> filledForm = groupForm.bindFromRequest();
-		int groupType = Integer.parseInt(filledForm.data().get("optionsRadios"));
+		int groupType = Integer.parseInt(filledForm.data().get("type"));
 		String description = filledForm.data().get("description");
 
 		switch(groupType){
-			case 0: group.groupType = GroupType.open; break;
-			case 1: group.groupType = GroupType.close; break;
-			case 2: group.groupType = GroupType.course; break;
+			case 0: group.groupType = GroupType.open; 
+					group.token = null;
+					break;
+			case 1: group.groupType = GroupType.close; 
+					group.token = null;
+					break;
+			case 2: group.groupType = GroupType.course; 
+					String token = filledForm.data().get("token");
+					if(!Group.validateToken(token)){
+						filledForm.reject("token","Bitte einen Token zwischen 4 und 45 Zeichen eingeben!");
+						return ok(edit.render(group, filledForm));
+					}					
+					if(!Secured.createCourse()) {
+						flash("error", "Du darfst leider keinen Kurs erstellen");
+						return badRequest(edit.render(group, filledForm));
+					}	
+					group.token = token;
+					break;
 			default:
 				filledForm.reject("Nicht möglich!");
-				return ok(create.render(filledForm));
+				return ok(edit.render(group, filledForm));
 		}
 		group.description = description;
 		group.update();
@@ -226,8 +250,13 @@ public class GroupController extends BaseController {
 		
 		// is already requested?
 		groupAccount = GroupAccount.find(account, group);
-		if(groupAccount != null && groupAccount.linkType.equals(LinkType.request)){
+		if(groupAccount != null && groupAccount.linkType.equals(LinkType.request) ){
 			flash("info", "Deine Beitrittsanfrage wurde bereits verschickt!");
+			return redirect(routes.GroupController.index());
+		}
+		
+		if(groupAccount != null && groupAccount.linkType.equals(LinkType.reject)){
+			flash("error", "Deine Beitrittsanfrage wurde bereits abgelehnt!");
 			return redirect(routes.GroupController.index());
 		}
 		
@@ -243,7 +272,7 @@ public class GroupController extends BaseController {
 			groupAccount.create();
 			Notification.newNotification(NotificationType.GROUP_NEW_REQUEST, group.id, group.owner);
 			flash("success", "Deine Anfrage wurde erfolgreich übermittelt!");
-			return redirect(routes.GroupController.view(id));
+			return redirect(routes.GroupController.index());
 		}
 		
 		else if(group.groupType.equals(GroupType.course)){

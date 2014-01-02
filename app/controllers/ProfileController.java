@@ -1,27 +1,18 @@
 package controllers;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 import models.Account;
 import models.Friendship;
 import models.Post;
 import models.Studycourse;
-
-import org.codehaus.jackson.node.ObjectNode;
-
-import play.Logger;
 import play.Play;
 import play.data.Form;
 import play.db.jpa.Transactional;
-import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Security;
 import views.html.Profile.edit;
+import views.html.Profile.editPassword;
 import views.html.Profile.index;
 import views.html.Profile.stream;
-import views.html.Profile.editPassword;
 import controllers.Navigation.Level;
 
 @Transactional
@@ -52,8 +43,12 @@ public class ProfileController extends BaseController {
 			flash("info", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());
 		} else {
-			Navigation.set(Level.FRIENDS, "Profil", account.name,
-					routes.ProfileController.view(account.id));
+			if(Secured.isFriend(account)) {
+				Navigation.set(Level.FRIENDS, "Profil", account.name, routes.ProfileController.view(account.id));
+			} else {
+				Navigation.set(Level.USER, "Profil", account.name, routes.ProfileController.view(account.id));
+			}
+	
 			return ok(index.render(account, postForm));
 			// return ok(index.render(account));
 		}

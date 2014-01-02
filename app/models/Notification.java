@@ -1,23 +1,18 @@
 package models;
 
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.lang.Exception;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NoResultException;
 import javax.persistence.OneToOne;
-import javax.persistence.Query;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import models.base.BaseModel;
 import play.Logger;
 import play.data.validation.Constraints.Required;
 import play.db.jpa.JPA;
-import play.libs.Akka;
-import play.libs.F.Promise;
-import models.base.BaseModel;
 
 @Entity
 @Table(uniqueConstraints=
@@ -45,6 +40,7 @@ public class Notification extends BaseModel {
 		FRIEND_NEW_REQUEST, // Account Model
 		FRIEND_REQUEST_SUCCESS, // Account Model
 		FRIEND_REQUEST_DECLINE, // Account Model
+		POST_MY_PROFILE_NEW_COMMENT, // Post Model
 	}
 	
 	@Required
@@ -155,7 +151,7 @@ public class Notification extends BaseModel {
 	@SuppressWarnings("unchecked")
 	public static List<Notification> findByUser(Account account) {
 		return (List<Notification>) JPA.em()
-				.createQuery("FROM Notification n WHERE n.account.id = :account")
+				.createQuery("FROM Notification n WHERE n.account.id = :account ORDER BY n.createdAt DESC")
 				.setParameter("account", account.id)
 				.getResultList();
 	}
@@ -163,6 +159,11 @@ public class Notification extends BaseModel {
 	public static void deleteByUser(Account account) {
 		JPA.em().createQuery("DELETE FROM Notification n WHERE n.account.id = :account")
 				.setParameter("account", account.id).executeUpdate();
+	}
+	
+	public static void deleteByObject(Long objectId) {
+		JPA.em().createQuery("DELETE FROM Notification n WHERE n.objectId = :object_id")
+				.setParameter("object_id", objectId).executeUpdate();
 	}
 	
 	public static int countForAccount(Account account){

@@ -44,14 +44,44 @@ a > .glyphicon:hover {
 	text-overflow: ellipsis;
 }
 
+.hp-white-space {
+	white-space: pre-line;
+}
+
 h1 {
 	text-align: center;
+}
+
+#hp-bug {
+	font-weight: bold;
+	font-size: 12pt;
+	padding: 5px;
+	padding-left: 9px;
+	position: fixed;
+	left: -5px;
+	top: 50%;
+	margin-top: -105px;
+	z-index: 1500;
+}
+
+#hp-bug img {
+	width: 20px;
+}
+
+#hp-bug-icon {
+	color: white !important;
+	margin: 10px;
+	font-size: 14pt;
+}
+
+.hp-green {
+	color: #76B900;
+	font-weight: bold;
 }
 
 .no-drop {
 	cursor: no-drop;
 }
-
 
 /*============================== Navigation ==============================*/
 
@@ -91,7 +121,7 @@ h1 {
 
 .hp-dropdown-news,
 .hp-dropdown-search {
-	width: 500px;
+	width: 600px;
 	max-height: 180px;
 	left: -150px;
 	overflow-y: auto;
@@ -197,14 +227,6 @@ h1 {
 	display: none!important;
 }
 
-div#hp-htw-logo {
-	height: 46px;
-	margin: 5px 29px 0 55px;
-	background-image: url(../images/background.png);
-	background-repeat: no-repeat;
-	background-position: right -130px;
-}
-
 
 /*============================== Notepad ==============================*/
 
@@ -223,7 +245,7 @@ div#hp-topRight {
 	position: absolute;
 	top: 0;
 	right: 0;
-	background-image: url(../images/background.png);
+	background-image: url(../images/backgrounds.png);
 	background-repeat: no-repeat;
 	background-position: -50px -15px;
 }
@@ -234,14 +256,14 @@ div#hp-bottomRight {
 	position: absolute;
 	bottom: 0;
 	right: 0;
-	background-image: url(../images/background.png);
+	background-image: url(../images/backgrounds.png);
 	background-repeat: no-repeat;
 	background-position: -50px -30px;
 }
 
 div#hp-left  {
 	margin-right: 24px;
-	background-image: url(../images/repeatY.png);
+	background-image: url(../images/vertical.png);
 	background-repeat: repeat-y;
 	background-position: 0px 15px;
 }
@@ -253,7 +275,7 @@ div#hp-topLeft {
 	position: absolute;
 	top: 0;
 	left: 0;
-	background-image: url(../images/background.png);
+	background-image: url(../images/backgrounds.png);
 	background-repeat: no-repeat;
 	background-position: 0px -15px;
 }
@@ -264,7 +286,7 @@ div#hp-bottomLeft {
 	position: absolute;
 	bottom: 0;
 	left: 0;
-	background-image: url(../images/background.png);
+	background-image: url(../images/backgrounds.png);
 	background-repeat: no-repeat;
 	background-position: 0px -30px;
 }
@@ -272,14 +294,14 @@ div#hp-bottomLeft {
 div#hp-top {
 	margin-left: 50px;
 	padding-top: 15px;
-	background-image: url(../images/background.png);
+	background-image: url(../images/backgrounds.png);
 	background-repeat: repeat-x;
 	background-position: 0px top;
 }
 
 div#hp-bottom {
 	padding-bottom: 22px;
-	background-image: url(../images/background.png);
+	background-image: url(../images/backgrounds.png);
 	background-repeat: repeat-x;
 	background-position: 0px bottom;
 }
@@ -293,74 +315,54 @@ div#hp-content  {
 	-webkit-box-sizing: content-box;
 }
 
-
-/*============================== no Modal ==============================*/
-
-.noModal {
-	padding-left: 10%;
-	padding-right: 10%;
+div#hp-footer {
+	margin: 5px 44px 0 69px;
 }
 
-.noModal label {
-	font-weight: bold;
+div#hp-footer-links {
+	float: left;
 }
 
-.noModal input, select, textarea {
-	width: 100%;
+div#hp-footer-logo {
+	height: 46px;
+	width: 200px;
+	background-image: url(../images/backgrounds.png);
+	background-repeat: no-repeat;
+	background-position: right -52px;
+	float: right;
 }
 
-.noModal input[type="text"]:not(.search-query),
-.noModal input[type="password"] {
-	height: auto !important;
-	line-height: 16px;
-	box-sizing: border-box;
-	-webkit-box-sizing:border-box;
-	-moz-box-sizing: border-box
+
+/*============================== dl-Form ==============================*/
+
+form dl dt {
+	text-align: left !important;
 }
 
-.noModal input[type="radio"] {
-	width: auto;
-	margin-top: 2px;
+form dl dd {
+	margin-bottom: 15px;
 }
 
-.noModal dd i {
+form dl dd > .checkbox,
+form dl dd > .radio {
 	margin-top: 0px;
 }
 
-.noModal dd input {
-	margin-top: -5px;
+form dl dd > .checkbox:last-child,
+form dl dd > .radio:last-child {
+	margin-bottom: 0px;
 }
 
-.noModal dd button {
-	margin-top: -5px;
+form dl dd > .radio input {
+	margin-top: 2px;
 }
 
-.noModal dl {
-	height: 20px;
-}
-
-.noModal dl dd:last-child {
-	padding-bottom: 8px;
-}
-
-.noModal dt {
-   float:left;
-   clear: both;
-   width: 30%;
-}
-
-.noModal dd {
-   float: right;
-   width: 68%;
-   margin-bottom: 8px;
-}
-
-.noModal dd.error {
+form dd.error {
 	text-shadow: 1px 1px 1px rgba(185, 74, 72, 0.5);
 	color: #b94a48;
 }
 
-.noModal dd.info {
+form dd.info {
 	display: none;
 }
 
@@ -390,6 +392,7 @@ div.hp-pagination {
 
 .hp-horizontal-form .input-group-btn {
 	padding-left: 10px;
+	vertical-align: top;
 }
 
 .hp-horizontal-form textarea,

@@ -1,13 +1,18 @@
 package models;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
-import play.Logger;
-import play.data.validation.Constraints.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.NoResultException;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PersistenceException;
 
-import javax.jws.Oneway;
-import javax.persistence.*;
-import javax.validation.ConstraintViolationException;
+import models.base.BaseModel;
+import models.enums.AccountRole;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -21,15 +26,12 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
-import org.hibernate.validator.constraints.Length;
 
+import play.data.validation.Constraints.Email;
+import play.data.validation.Constraints.Required;
+import play.db.jpa.JPA;
 import controllers.Component;
 import controllers.routes;
-import models.base.BaseModel;
-import models.enums.AccountRole;
-import play.db.jpa.*;
-
-import java.util.Set;
 
 @Entity
 @Indexed
@@ -227,7 +229,7 @@ public class Account extends BaseModel {
 	 * @return List of accounts which matches with the keyword
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Account> searchForAccountByKeyword(String keyword, final boolean setMaxResult) {
+	public static FullTextQuery searchForAccountByKeyword(String keyword, int limit, int offset) {
 		final FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
 		//Create a querybuilder for the group entity 
 		final QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
@@ -235,20 +237,49 @@ public class Account extends BaseModel {
 		//Create a criteria because we just want to search for accounts
 		final Session session = fullTextEntityManager
 				.unwrap(org.hibernate.Session.class);
-		final Criteria criteria = session.createCriteria(Account.class);
+		Criteria criteria = session.createCriteria(Account.class);
 		criteria.addOrder(Order.asc("name"));
+		criteria = limit(criteria,limit,offset);
+		
 		//Sets the field we want to search on and tries to match with the given keyword
 		final org.apache.lucene.search.Query luceneQuery = queryBuilder.keyword().wildcard()
 				.onField("name").matching("*"+keyword.toLowerCase()+"*").createQuery();
 		// wrap Lucene query in a javax.persistence.Query
 		final FullTextQuery fullTextQuery = fullTextEntityManager
 				.createFullTextQuery(luceneQuery, Account.class);
-		if(setMaxResult) {
-			criteria.setMaxResults(10);
-		}
+
 		fullTextQuery.setCriteriaQuery(criteria);
-		List<Account> result = fullTextQuery.getResultList(); //The result...
 		session.clear();
-		return result;
+		return fullTextQuery;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Account> accountSearch(String keyword, int limit, int page) {
+		
+		// create offset
+		int offset = (page * limit) - limit;
+				
+		FullTextQuery fullTextQuery = searchForAccountByKeyword(keyword, limit, offset);
+		List<Account> accounts = fullTextQuery.getResultList(); // The result...
+		return accounts;
+	}
+	
+	public static int countAccountSearch(String keyword) {
+		
+		FullTextQuery fullTextQuery = searchForAccountByKeyword(keyword, 0, 0);
+		
+		// SearchException: HSEARCH000105: Cannot safely compute getResultSize() when a Criteria with restriction is used.
+		int count = fullTextQuery.getResultList().size();
+		return count;
+	}
+	
+	protected static Criteria limit(Criteria criteria, int limit, int offset) {
+		if (limit > 0) {
+			criteria.setMaxResults(limit);
+		}
+		if (offset >= 0) {
+			criteria.setFirstResult(offset);
+		}
+		return criteria;
 	}
 }

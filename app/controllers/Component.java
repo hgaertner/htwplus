@@ -7,7 +7,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import models.Account;
-import models.Group;
 import models.Login;
 import play.Logger;
 import play.api.templates.Html;
@@ -16,6 +15,7 @@ import play.db.jpa.Transactional;
 import play.mvc.Action;
 import play.mvc.Http.Context;
 import play.mvc.Result;
+import views.html.snippets.loginForm;
 
 public class Component extends Action.Simple {
 	
@@ -23,7 +23,6 @@ public class Component extends Action.Simple {
 	@Transactional
     public Result call(Context ctx) throws Throwable {
 		String sessionId = ctx.session().get("id");
-		
 		if(sessionId != null) {
 			Long id = Long.parseLong(ctx.session().get("id"));
 			Account account = Account.findById(id);
@@ -39,17 +38,32 @@ public class Component extends Action.Simple {
 		
         return delegate.call(ctx);
     }
+	
+    public static class ContextIdent {
+        public static String loginForm = "loginForm";
+    }
+    
+    public static void addToContext(String ident, Object object) {
+        Context.current().args.put(ident, object);
+    }
+
+    public static Object getFromContext(String ident) {
+        return Context.current().args.get(ident);
+    }
 
     public static Account currentAccount() {
         return (Account)Context.current().args.get("account");
     }
     
-	public static Html loginForm() {
-		Form<Login> loginForm = form(Login.class);
-		Form<Account> signupForm = form(Account.class);
-		return views.html.snippets.loginForm.render(loginForm, signupForm);
-	}
-	
+    @SuppressWarnings("unchecked")
+    public static Html loginForm() {
+        Form<Login> form = form(Login.class);
+        if (Component.getFromContext(ContextIdent.loginForm) != null) {
+            form = (Form<Login>) Component.getFromContext(ContextIdent.loginForm);
+        }
+        return views.html.snippets.loginForm.render(form);
+    }
+    
     /**
      * Generates an md5 hash of a String.
      * @param input String value

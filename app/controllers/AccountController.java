@@ -13,8 +13,6 @@ import play.data.Form;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 import views.html.index;
-import views.html.snippets.signup;
-import views.html.snippets.signupSuccess;
 
 @Transactional
 public class AccountController extends BaseController {
@@ -30,7 +28,7 @@ public class AccountController extends BaseController {
 		if (username.contains("@")) {
 			return defaultAuthenticate();
 		} else if (username.length() == 0) {
-			flash("error", "Bitte gebe einen Benutzernamen ein!");
+			flash("error", "Also deine Matrikelnummer brauchen wir schon!");
 			return badRequest(index.render());
 		} else {
 			return LDAPAuthenticate();
@@ -38,7 +36,7 @@ public class AccountController extends BaseController {
 	}
 
 	private static Result LDAPAuthenticate() {
-		DynamicForm form = form().bindFromRequest();
+		Form<Login> form = form(Login.class).bindFromRequest();
 		String username = form.field("email").value();
 		String password = form.field("password").value();
 
@@ -47,6 +45,7 @@ public class AccountController extends BaseController {
 			ldap.connect(username, password);
 		} catch (LDAPConnectorException e) {
 			flash("error", e.getMessage());
+			Component.addToContext(Component.ContextIdent.loginForm, form);
 			return badRequest(index.render());
 		}
 
@@ -79,6 +78,7 @@ public class AccountController extends BaseController {
 		Form<Login> loginForm = form(Login.class).bindFromRequest();
 		if (loginForm.hasErrors()) {
 			flash("error", loginForm.globalError().message());
+			Component.addToContext(Component.ContextIdent.loginForm, loginForm);
 			return badRequest(index.render());
 		} else {
 			session().clear();
@@ -100,40 +100,4 @@ public class AccountController extends BaseController {
 		return redirect(routes.Application.index());
 	}
 
-	/**
-	 * Handle the form submission.
-	 */
-	@Transactional
-	public static Result submit() {
-		Form<Account> filledForm = signupForm.bindFromRequest();
-		System.out.println(filledForm.errors());
-		// Check Mail
-		if (!(Account.findByEmail(filledForm.field("email").value()) == null)) {
-			filledForm.reject("email", "Diese Mail wird bereits verwendet!");
-		}
-		// Check repeated password
-		if (!filledForm.field("password").valueOr("").isEmpty()) {
-			if (!filledForm.field("password").valueOr("")
-					.equals(filledForm.field("repeatPassword").value())) {
-				filledForm.reject("repeatPassword",
-						"Passwörter stimmen nicht überein");
-			}
-		}
-		if (filledForm.field("password").value().length() < 6) {
-			filledForm.reject("password",
-					"Das Passwort muss mindestens 6 Zeichen haben.");
-		}
-
-		if (filledForm.hasErrors()) {
-
-			return ok(signup.render(filledForm));
-		} else {
-			Account created = filledForm.get();
-			created.password = Component.md5(created.password);
-			Random generator = new Random();
-			created.avatar = "a" + generator.nextInt(10);
-			created.create();
-			return ok(signupSuccess.render());
-		}
-	}
 }
