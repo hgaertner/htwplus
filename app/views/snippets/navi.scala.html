@@ -65,7 +65,7 @@
 					<ul class="hp-dropdown-search dropdown-menu">
 						<form class="hp-search-form navbar-form navbar-left" role="search" action="@routes.Application.search" method="GET">
 							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Suche" id="searchQuery" name="keyword">
+								<input type="text" class="form-control" placeholder="EasySearch™" id="searchQuery" type="text" name="keyword" >
 							</div>
 							<button type="submit"><span class="glyphicon glyphicon-search"></span></button>
 						</form>
@@ -75,7 +75,7 @@
 			
 			<form class="hidden-xs hp-search-form navbar-form navbar-left" role="search" action="@routes.Application.search" method="GET">
 				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Suche" id="searchQuery" name="keyword">
+					<input rel="tooltip" data-placement="bottom" data-original-title="Sucht nach Personen, Gruppen und Kursen - gleichzeitig!" type="text" class="form-control" placeholder="EasySearch™" id="searchQuery" name="keyword">
 				</div>
 				<button type="submit"><span class="glyphicon glyphicon-search"></span></button>
 			</form>
