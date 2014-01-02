@@ -3,6 +3,9 @@
 @import models.enums.GroupType
 
 @main("Gruppe erstellen	") {
+
+	@views.html.Group.snippets.navTabsAdd()
+	
 	<h2>Gruppe erstellen</h2>
 	<br>
 
@@ -26,6 +29,9 @@
 			</div>
 			
 		</dl>
-		<button type="submit" class="btn btn-warning">Gruppe erstellen</button>
+		<div class="pull-right">
+			<button type="submit" class="btn btn-warning">Gruppe erstellen</button>
+			<a href="@Navigation.getLevelRoute(Navigation.Level.GROUPS)" class="btn btn-default">Abbrechen</a>
+		</div>
 	}
 }

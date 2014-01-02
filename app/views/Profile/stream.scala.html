@@ -3,12 +3,12 @@
 @main("Newsstream") {
 @defining(Component.currentAccount()) { curUser =>
 
+	<!-- confirmDeleteFriendModal -->
+	<div class="modal fade" id="confirmDeleteFriend@user.id" tabindex="-1" role="dialog">@views.html.Friends.snippets.deleteFriendModal(user)</div>
+	<!-- Ende confirmDeleteFriendModal -->
+
     @views.html.Profile.snippets.navTabs(user)
 	<h2>@user.name's Newsstream</h2>
-		
-	<!-- confirmDeleteFriendModal -->
-	<div id="confirmDeleteFriend" class="modal hide fade" tabindex="-1" role="dialog">@views.html.Friends.snippets.deleteFriendModal(user)</div>
-	<!-- Ende confirmDeleteFriendModal -->
 	
 	@if(curUser.equals(user)) {
 	<h5>(Das sehen deine Freunde)</h5>

@@ -52,11 +52,10 @@ h1 {
 	text-align: center;
 }
 
-#hp-bug {
-	font-weight: bold;
-	font-size: 12pt;
+#hp-feedback {
+	width: 50px;
+	height: 250px;
 	padding: 5px;
-	padding-left: 9px;
 	position: fixed;
 	left: -5px;
 	top: 50%;
@@ -64,14 +63,20 @@ h1 {
 	z-index: 1500;
 }
 
-#hp-bug img {
-	width: 20px;
-}
-
-#hp-bug-icon {
+#hp-feedback-icon {
 	color: white !important;
 	margin: 10px;
 	font-size: 14pt;
+}
+
+.hp-easy-feedback {
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	
+	transform: rotate(90deg);
+	font-size: 24px;
 }
 
 .hp-green {

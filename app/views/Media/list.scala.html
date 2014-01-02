@@ -37,6 +37,7 @@
 	        <td>@m.createdAt.format("dd.MM.yyyy")</td>
 	        <td>@m.size Bytes</td>
 	        <td>
+	        <a href="@routes.MediaController.view(m.id)" rel="tooltip" data-toggle="modal" data-original-title="Datei herunterladen"><span class="glyphicon glyphicon-download"></span></a>
 	        @if(Secured.deleteMedia(m)) {
 	          <a href="#confirmDeleteMedia@m.id" rel="tooltip" data-toggle="modal" data-original-title="Datei entfernen"><span class="glyphicon glyphicon-trash"></span></a>
 	        }

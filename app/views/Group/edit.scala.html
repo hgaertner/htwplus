@@ -18,7 +18,12 @@
 	 <!-- End confirmDeleteGroupModal -->
 	 
 	 @views.html.Group.snippets.navTabs(group)
-	<h2 class="hp-truncate">@group.title</h2>		
+	<h2 class="hp-truncate">
+		@if(group.groupType.equals(GroupType.open)) { <span class="glyphicon glyphicon-globe"></span> }
+		@if(group.groupType.equals(GroupType.close)) { <span class="glyphicon glyphicon-lock"></span> }
+		@if(group.groupType.equals(GroupType.course)) { <span class="glyphicon glyphicon-briefcase"></span> }
+		@group.title
+	</h2>		
 	</br>
     </br>
 	@form(routes.GroupController.update(group.id), 'id -> "editGroupForm") {
