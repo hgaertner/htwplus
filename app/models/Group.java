@@ -57,12 +57,10 @@ import play.db.jpa.JPA;
 @Indexed
 @Entity
 @Table(name = "Group_")
-@AnalyzerDef(name = "searchtokenanalyzer",tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
-filters = {
-  @TokenFilterDef(factory = StandardFilterFactory.class),
-  @TokenFilterDef(factory = LowerCaseFilterFactory.class),
-  @TokenFilterDef(factory = StopFilterFactory.class,params = { 
-      @Parameter(name = "ignoreCase", value = "true") }) })
+@AnalyzerDef(name = "searchtokenanalyzer", tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class), filters = {
+		@TokenFilterDef(factory = StandardFilterFactory.class),
+		@TokenFilterDef(factory = LowerCaseFilterFactory.class),
+		@TokenFilterDef(factory = StopFilterFactory.class, params = { @Parameter(name = "ignoreCase", value = "true") }) })
 @org.hibernate.search.annotations.Analyzer(definition = "searchtokenanalyzer")
 public class Group extends BaseModel {
 
@@ -235,15 +233,16 @@ public class Group extends BaseModel {
 		Analyzer analyzer = fullTextEntityManager.getSearchFactory().getAnalyzer("searchtokenanalyzer");
 		QueryParser parser = new QueryParser(Version.LUCENE_35, "title", analyzer);
 		String[] tokenized=null;
-		try {
-			Query query = parser.parse(keyword);
-			String cleanedText = query.toString("title");
-			Logger.info("[CLEANING] " + cleanedText);
-			tokenized = cleanedText.split("\\s");
+		if (!keyword.isEmpty()) {
+			try {
+				Query query = parser.parse(keyword);
+				String cleanedText = query.toString("title");
+				Logger.info("[CLEANING] " + cleanedText);
+				tokenized = cleanedText.split("\\s");
 
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			} catch (ParseException e) {
+				Logger.error(e.getMessage());
+			}
 		}
 
 	    
@@ -325,17 +324,17 @@ public class Group extends BaseModel {
 		QueryParser parser = new QueryParser(Version.LUCENE_35, "title",
 				analyzer);
 		String[] tokenized = null;
-		try {
-			Query query = parser.parse(keyword);
-			String cleanedText = query.toString("title");
-			Logger.info("[CLEANING] " + cleanedText);
-			tokenized = cleanedText.split("\\s");
+		if(!keyword.isEmpty()) {
+			try {
+				Query query = parser.parse(keyword);
+				String cleanedText = query.toString("title");
+				Logger.info("[CLEANING] " + cleanedText);
+				tokenized = cleanedText.split("\\s");
 
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			} catch (ParseException e) {
+				Logger.error(e.getMessage());
+			}
 		}
-
 		// Create a querybuilder for the group entity
 		QueryBuilder qBuilder = fullTextEntityManager.getSearchFactory()
 				.buildQueryBuilder().forEntity(Group.class).get();
