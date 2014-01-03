@@ -197,16 +197,20 @@ public class ProfileController extends BaseController {
 				account.email = null;
 			}
 
-			if (filledForm.field("degree").value().equals("null")) {
-				account.degree = null;
-			} else {
-				account.degree = filledForm.field("degree").value();
+			if(filledForm.data().containsKey("degree")){
+				if (filledForm.field("degree").value().equals("null")) {
+					account.degree = null;
+				} else {
+					account.degree = filledForm.field("degree").value();
+				}
 			}
 
-			if (filledForm.field("semester").value().equals("0")) {
-				account.semester = null;
-			} else {
-				account.semester = Integer.parseInt(filledForm.field("semester").value());
+			if(filledForm.data().containsKey("semester")){
+				if (filledForm.field("semester").value().equals("0")) {
+					account.semester = null;
+				} else {
+					account.semester = Integer.parseInt(filledForm.field("semester").value());
+				}
 			}
 
 			Long studycourseId = Long.parseLong(filledForm.field("studycourse").value());
