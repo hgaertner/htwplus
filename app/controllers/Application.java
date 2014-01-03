@@ -6,7 +6,9 @@ import java.util.Set;
 
 import models.Account;
 import models.Group;
+import models.Notification;
 import models.Post;
+import models.Notification.NotificationType;
 import play.Logger;
 import play.Play;
 import play.Routes;
@@ -18,6 +20,7 @@ import views.html.error;
 import views.html.help;
 import views.html.searchresult;
 import views.html.stream;
+import views.html.feedback;
 import controllers.Navigation.Level;
 
 
@@ -107,6 +110,35 @@ public class Application extends BaseController {
 		Navigation.set("404");
 		return ok(error.render());
 	}
+	
+	public static Result feedback() {
+		Navigation.set("Feedback");
+		return ok(feedback.render(postForm));
+		
+	}
+	
+	public static Result addFeedback() {
+		
+		Account account = Component.currentAccount();
+		Group group = Group.findByTitle("HTWplus");
+		
+		// Guest case
+		if(account == null) {
+			account = Account.findByEmail("admin@htwplus.de");
+		}
+		
+		Form<Post> filledForm = postForm.bindFromRequest();
+		
+		Post p = filledForm.get();
+		p.owner = account;
+		p.group = group;
+		p.create();
+		
+		flash("success","Vielen Dank für Dein Feedback!");
+		return redirect(routes.Application.index());
+	}
+	
+		
 		
 	public static Result defaultRoute(String path) {
 		Logger.info(path+" nicht gefunden");

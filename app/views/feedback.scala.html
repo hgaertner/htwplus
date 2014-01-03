@@ -1,0 +1,22 @@
+@(postForm: Form[Post])
+@import helper._
+
+@main("Feedback") {
+
+<h1>
+	<strong>Feedback</strong>
+</h1>
+
+<br />
+
+@form(routes.Application.addFeedback(), 'class -> "hp-post-form", 'id -> "addPost") {
+	<div class="hp-horizontal-form col-xs-12">
+		<div class="input-group">
+			@textarea(postForm("Content"), 'class -> "form-control", 'id -> "hp-feedback-content", 'placeholder -> "Bei Problemen bitte die E-Mail Adresse mit angeben!")
+			<span class="input-group-btn">
+				<button type="submit" class="btn btn-warning">Abschicken</button> 
+			</span>
+		</div>
+	</div>
+}
+}
