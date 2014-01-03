@@ -78,6 +78,11 @@ public class ProfileController extends BaseController {
 
 	public static Result editPassword(Long id) {
 		Account account = Account.findById(id);
+		// Check Access
+		if(!Secured.editAccount(account)) {
+			return redirect(routes.Application.index());
+		}
+		
 		Navigation.set(Level.PROFILE, "Editieren");
 		return ok(editPassword.render(account, accountForm.fill(account)));
 	}
@@ -146,6 +151,12 @@ public class ProfileController extends BaseController {
 
 	public static Result edit(Long id) {
 		Account account = Account.findById(id);
+		
+		// Check Access
+		if(!Secured.editAccount(account)) {
+			return redirect(routes.Application.index());
+		}
+		
 		if (account == null) {
 			flash("info", "Dieses Profil gibt es nicht.");
 			return redirect(routes.Application.index());

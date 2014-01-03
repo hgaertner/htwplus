@@ -5,6 +5,7 @@ import models.Account;
 import models.Friendship;
 import models.Group;
 import models.Media;
+import models.Notification;
 import models.Post;
 import models.enums.AccountRole;
 import models.enums.GroupType;
@@ -195,7 +196,6 @@ public class Secured extends Security.Authenticator {
 		if(post.parent != null) {
 			return Secured.isAllowedToDeletePost(post.parent, account);
 		}
-		Logger.info("Is Comment");
 		return false;
 		
 	}
@@ -387,8 +387,9 @@ public class Secured extends Security.Authenticator {
 	 * Notification
 	 */
 	
-	public static boolean viewNotification(Account account) {
-		if(Component.currentAccount().equals(account)){
+
+	public static boolean deleteNotification(Notification note) {
+		if(note.account.equals(Component.currentAccount())) {
 			return true;
 		} else {
 			return false;

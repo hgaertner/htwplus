@@ -24,10 +24,6 @@ public class NotificationController extends BaseController{
 			return new Html(new StringBuilder("Das wird nichts"));
 		}
 		
-		if(!Secured.viewNotification(account)){
-			return new Html(new StringBuilder("Das darfst du nicht!"));
-		}
-		
 		List<Notification> list = Notification.findByUser(account);
 		return views.html.Notification.list.render(list);
 	}
@@ -38,6 +34,10 @@ public class NotificationController extends BaseController{
 
 		if(note == null) {
 			return badRequest("Das gibts doch garnicht!");
+		}
+		
+		if(!Secured.deleteNotification(note)) {
+			return redirect(routes.Application.index());
 		}
 		
 		note.delete();		

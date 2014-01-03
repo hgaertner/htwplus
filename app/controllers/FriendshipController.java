@@ -98,7 +98,7 @@ public class FriendshipController extends BaseController {
 	
 	public static Result declineFriendRequest(long friendshipId){
 		Friendship requestLink = Friendship.findById(friendshipId);
-		if(requestLink != null){
+		if(requestLink != null && requestLink.friend.equals(Component.currentAccount())){
 			requestLink.linkType = LinkType.reject;
 			requestLink.update();
 			Notification.newNotification(NotificationType.FRIEND_REQUEST_DECLINE, requestLink.friend.id, requestLink.account);
