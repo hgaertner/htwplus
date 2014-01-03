@@ -277,7 +277,7 @@ public class Account extends BaseModel {
 		// Create a querybuilder for the account entity
 		final QueryBuilder qBuilder = fullTextEntityManager.getSearchFactory()
 				.buildQueryBuilder().forEntity(Account.class).get();
-		if (tokenized != null) {
+		if (tokenized != null && tokenized.length > 1) {
 			for (int i = 0; i < tokenized.length; i++) {
 				if (i == (tokenized.length - 1)) {
 					org.apache.lucene.search.Query query = qBuilder.keyword()
