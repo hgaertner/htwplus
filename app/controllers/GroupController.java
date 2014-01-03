@@ -58,7 +58,7 @@ public class GroupController extends BaseController {
 			Navigation.set(Level.GROUPS, "Newsstream", group.title, routes.GroupController.view(group.id));
 			Logger.info("Found group with id: " +id);
 			List<Post> posts = Post.getPostForGroup(group);
-			return ok(view.render(group, posts, postForm, Secured.isMemberOfGroup(group, account)));
+			return ok(view.render(group, posts, postForm));
 		}
 	}
 	
@@ -77,7 +77,7 @@ public class GroupController extends BaseController {
 		} else {
 			Navigation.set(Level.GROUPS, "Media", group.title, routes.GroupController.view(group.id));
 			List<Media> mediaSet = group.media; 
-			return ok(media.render(group, mediaForm, mediaSet, Secured.isMemberOfGroup(group, account)));
+			return ok(media.render(group, mediaForm, mediaSet));
 		}
 	}
 	
@@ -144,6 +144,8 @@ public class GroupController extends BaseController {
 	@Transactional
 	public static Result edit(Long id) {
 		Group group = Group.findById(id);
+		
+		
 		if (group == null) {
 			return redirect(routes.GroupController.index());
 		} else {
@@ -157,10 +159,11 @@ public class GroupController extends BaseController {
 	@Transactional
 	public static Result update(Long groupId) {
 		Group group = Group.findById(groupId);
-		Navigation.set(Level.GROUPS, "Bearbeiten", group.title, routes.GroupController.view(group.id));		
+		Navigation.set(Level.GROUPS, "Bearbeiten", group.title, routes.GroupController.view(group.id));	
+		
 		// Check rights
-		if(!Secured.isOwnerOfGroup(group, Component.currentAccount())) {
-			return redirect(routes.Application.index());
+		if(!Secured.editGroup(group)) {
+			return redirect(routes.GroupController.index());
 		}
 		
 		Form<Group> filledForm = groupForm.bindFromRequest();
@@ -200,7 +203,7 @@ public class GroupController extends BaseController {
 	public static Result delete(Long id) {
 		Group group = Group.findById(id);
 		Account account = Component.currentAccount();
-		if(Secured.isOwnerOfGroup(group, account)){
+		if(Secured.deleteGroup(group)){
 			group.delete();
 			flash("info", "'" + group.title + "' wurde erfolgreich gelöscht!");
 		} else {
@@ -215,12 +218,20 @@ public class GroupController extends BaseController {
 	
 	public static Result token(Long groupId) {
 		Group group = Group.findById(groupId);
+		Navigation.set(Level.GROUPS, "Token eingeben", group.title, routes.GroupController.view(group.id));	
 		return ok(token.render(group, groupForm));
 	}
 	
 	public static Result validateToken(Long groupId) {
 		Group group = Group.findById(groupId);
 		
+		if(Secured.isMemberOfGroup(group, Component.currentAccount())){
+			Logger.debug("User is already member of group or course");
+			flash("error", "Du bist bereits Mitglied dieser Gruppe!");
+			return redirect(routes.GroupController.view(groupId));
+		}
+		
+		Navigation.set(Level.GROUPS, "Token eingeben", group.title, routes.GroupController.view(group.id));	
 		Form<Group> filledForm = groupForm.bindFromRequest();
 		String enteredToken = filledForm.data().get("token");
 		
@@ -231,7 +242,7 @@ public class GroupController extends BaseController {
 			flash("success", "Kurs erfolgreich beigetreten!");
 			return redirect(routes.GroupController.view(groupId));
 		} else {
-			flash("error", "Der Token ist falsch.");
+			flash("error", "Hast du dich vielleicht vertippt? Der Token ist leider falsch.");
 			return badRequest(token.render(group, filledForm));
 		}
 	}
@@ -286,7 +297,12 @@ public class GroupController extends BaseController {
 		Account account = Account.findById(accountId);
 		Group group = Group.findById(groupId);
 		GroupAccount groupAccount = GroupAccount.find(account, group);
-		if(groupAccount != null && !Secured.isOwnerOfGroup(group, account)){
+		
+		if(!Secured.removeGroupMember(group, account)) {
+			return redirect(routes.GroupController.index());
+		}
+		
+		if(groupAccount != null){
 			groupAccount.delete();
 			if(account.equals(Component.currentAccount())){
 				flash("info", "Gruppe erfolgreich verlassen!");

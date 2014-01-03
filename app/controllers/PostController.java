@@ -12,7 +12,9 @@ import play.api.mvc.Call;
 import play.data.Form;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
+import play.mvc.Security;
 
+@Security.Authenticated(Secured.class)
 public class PostController extends BaseController {
 	
 	static Form<Post> postForm = Form.form(Post.class);
@@ -87,6 +89,11 @@ public class PostController extends BaseController {
 	public static Result addComment(long postId) {
 		Post parent = Post.findById(postId);
 		Account account = Component.currentAccount();
+		
+		if(!Secured.addComment(parent)){
+			return badRequest();
+		}
+		
 		Form<Post> filledForm = postForm.bindFromRequest();
 		if (filledForm.hasErrors()) {
 			return badRequest();
@@ -125,6 +132,12 @@ public class PostController extends BaseController {
 	
 	@Transactional
 	public static Result getOlderComments(Long id, Integer current) {
+		Post parent = Post.findById(id);
+		
+		if(!Secured.viewComments(parent)){
+			return badRequest();
+		}
+		
 		String result = "";
 		//int max = Integer.parseInt(Play.application().configuration().getString("htwplus.comments.init"));
 		int max = current;

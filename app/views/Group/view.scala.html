@@ -1,4 +1,4 @@
-@(group: Group, posts:List[Post], postForm: Form[Post], isMember: Boolean)
+@(group: Group, posts:List[Post], postForm: Form[Post])
 @import helper._
 @import models.enums._
 
@@ -16,7 +16,6 @@
 	</div>
 	<!-- End confirmDeleteGroupModal -->
 	
-	@if(group.groupType != GroupType.close || Secured.isMemberOfGroup(group, Component.currentAccount)) {
 		@views.html.Group.snippets.navTabs(group)
 	
 	<div class="clear">
@@ -39,15 +38,5 @@
 			}
 		}
 	
-	} else {
-		<ul class="nav nav-tabs nav-justified">
-			<li><a href="#infoModal@group.id" type="button" class="btn btn-default" data-toggle="modal" rel="tooltip" data-original-title="Gruppeninfo" data-container="body"><span class="glyphicon glyphicon-info-sign"></span></a></li>
-			<li><a href="@routes.GroupController.join(group.id)" type="button" class="btn btn-default" rel="tooltip" data-original-title="Beitreten" data-container="body"><span class="glyphicon glyphicon-ok"></span></a></li>
-		</ul>
-		
-		<br />
-		<h4>Diese Gruppe ist leider geschlossen.</h4>
-
-	}
 	</div>
 }

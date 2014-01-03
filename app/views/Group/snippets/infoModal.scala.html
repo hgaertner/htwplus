@@ -27,6 +27,13 @@
 				<dt>Erstellt am</dt>
 				<dd>@group.createdAt.format("dd.MM.yyyy")</dd>
 			</dl>
+			@if(group.groupType == GroupType.course) {
+				<dl>
+					<dt>Token</dt>
+					<dd>@group.token</dd>
+				</dl>
+			}
+			
 			<dl>
 				<dt>Beschreibung</dt>
 				<dd>@group.description</dd>
