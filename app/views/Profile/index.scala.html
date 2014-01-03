@@ -1,5 +1,6 @@
 @(user: Account, postForm: Form[Post])
 @import helper._
+@import models.enums._
 
 @main("Profil") {
 @defining(Component.currentAccount()) { curUser =>
@@ -38,22 +39,25 @@
 			<td>Keine Angabe</td>
 		}
 	</tr>
-	<tr>
-		<th>Semester</th>
-		@if(user.semester != null) {
-			<td>@{user.semester + "."} Semester</td>
-		} else {
-			<td>Keine Angabe</td>
-		}
-	</tr>
-	<tr>
-		<th>Abschluss</th>
-		@if(user.degree != null) {
-			<td>@user.degree</td>
-		} else {
-			<td>Keine Angabe</td>
-		}
-	</tr>
+	
+	@if(user.role == models.enums.AccountRole.STUDENT) {
+		<tr>
+			<th>Semester</th>
+			@if(user.semester != null) {
+				<td>@{user.semester + "."} Semester</td>
+			} else {
+				<td>Keine Angabe</td>
+			}
+		</tr>
+		<tr>
+			<th>Abschluss</th>
+			@if(user.degree != null) {
+				<td>@user.degree</td>
+			} else {
+				<td>Keine Angabe</td>
+			}
+		</tr>
+	}
 	<tr>
 		<th>Rolle</th>
 		<td>@user.role.getDisplayName()</td>
