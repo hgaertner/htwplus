@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -51,6 +52,7 @@ import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
 
 import play.Logger;
+import play.data.validation.ValidationError;
 import play.data.validation.Constraints.Required;
 import play.db.jpa.JPA;
 
@@ -120,9 +122,11 @@ public class Group extends BaseModel {
 		this.media = media;
 	}
 
-	public String validate() {
+	public List<ValidationError> validate() {
+		List<ValidationError> errors = new ArrayList<ValidationError>();
 		if (Group.findByTitle(this.title) != null) {
-			return "Der Titel ist bereits vergeben";
+			errors.add(new ValidationError("title", "error.title"));
+			return errors;
 		}
 		return null;
 	}
