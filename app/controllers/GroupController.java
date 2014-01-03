@@ -15,6 +15,7 @@ import models.enums.LinkType;
 import play.Logger;
 import play.data.Form;
 import play.db.jpa.Transactional;
+import play.mvc.Call;
 import play.mvc.Result;
 import play.mvc.Security;
 import views.html.Group.index;
@@ -137,7 +138,7 @@ public class GroupController extends BaseController {
 			
 			group.createWithGroupAccount(Component.currentAccount());
 			flash("success", successMsg+" erstellt!");
-			return redirect(routes.GroupController.index());
+			return redirect(routes.GroupController.view(group.id));
 		}
 	}
 
@@ -298,6 +299,8 @@ public class GroupController extends BaseController {
 		Group group = Group.findById(groupId);
 		GroupAccount groupAccount = GroupAccount.find(account, group);
 		
+		Call defaultRedirect = routes.GroupController.index();
+		
 		if(!Secured.removeGroupMember(group, account)) {
 			return redirect(routes.GroupController.index());
 		}
@@ -308,6 +311,7 @@ public class GroupController extends BaseController {
 				flash("info", "Gruppe erfolgreich verlassen!");
 			} else {
 				flash("info", "Mitglied erfolgreich entfernt!");
+				defaultRedirect = routes.GroupController.edit(groupId);
 			}
 			if(groupAccount.linkType.equals(LinkType.request)){
 				flash("info", "Anfrage zurückgezogen!");			
@@ -318,7 +322,7 @@ public class GroupController extends BaseController {
 		} else {
 			flash("info", "Das geht leider nicht :(");
 		}
-		return redirect(routes.GroupController.index());
+		return redirect(defaultRedirect);
 	}
 	
 	public static Result acceptRequest(long groupId, long accountId){
