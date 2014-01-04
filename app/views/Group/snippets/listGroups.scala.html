@@ -39,32 +39,32 @@
 				@views.html.snippets.userLink(group.owner)
 			</td>
 			<td>
-				<a href="#infoModal@group.id" rel="tooltip" data-toggle="modal" data-original-title="Info" data-container="body">
+				<a href="#infoModal@group.id" rel="tooltip" data-toggle="modal" data-original-title="Info ansehen" data-container="body">
 					<i class="glyphicon glyphicon-info-sign"></i>
 				</a>
 				@if(group.groupType.equals(GroupType.open)) {
-					<a href="@routes.GroupController.view(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Newsstream" data-container="body">
+					<a href="@routes.GroupController.view(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Newsstream ansehen" data-container="body">
 						<span class="glyphicon glyphicon-comment"></span>
 					</a>
-					<a href="@routes.GroupController.media(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Medien" data-container="body">
+					<a href="@routes.GroupController.media(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Medien ansehen" data-container="body">
 						<span class="glyphicon glyphicon-file"></span>
 					</a>
 				}
 				@if(Secured.isOwnerOfGroup(group, user)) {
-					<a href="@routes.GroupController.edit(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Bearbeiten" data-container="body"><i class="glyphicon glyphicon-pencil"></i></a>
-					<a href="#confirmDeleteGroup@group.id" rel="tooltip" data-toggle="modal" data-original-title="Löschen" data-container="body"><i class="glyphicon glyphicon-trash"></i></a>
+					<a href="@routes.GroupController.edit(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Gruppe bearbeiten" data-container="body"><i class="glyphicon glyphicon-pencil"></i></a>
+					<a href="#confirmDeleteGroup@group.id" rel="tooltip" data-toggle="modal" data-original-title="Gruppe löschen" data-container="body"><i class="glyphicon glyphicon-trash"></i></a>
 				} 
 				@if(Secured.isMemberOfGroup(group, Component.currentAccount) && !Secured.isOwnerOfGroup(group, Component.currentAccount)) {
-					<a href="@routes.GroupController.removeMember(group.id, user.id)" rel="tooltip" data-toggle="modal" data-original-title="Verlassen" data-container="body">
+					<a href="@routes.GroupController.removeMember(group.id, user.id)" rel="tooltip" data-toggle="modal" data-original-title="Gruppe verlassen" data-container="body">
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
 				} 
 				@if(!Secured.isMemberOfGroup(group, Component.currentAccount)) {
 					
 						@if(group.groupType.equals(GroupType.open)) {
-							<a href="@routes.GroupController.join(group.id)" rel="tooltip" data-original-title="Beitreten" data-container="body"> <span class="glyphicon glyphicon-ok"></span>
+							<a href="@routes.GroupController.join(group.id)" rel="tooltip" data-original-title="Gruppe beitreten" data-container="body"> <span class="glyphicon glyphicon-ok"></span>
 						} else { 
-							<a href="@routes.GroupController.join(group.id)" rel="tooltip" data-original-title="Anfrage senden" data-container="body"> <span class="glyphicon glyphicon-envelope"></span>
+							<a href="@routes.GroupController.join(group.id)" rel="tooltip" data-original-title="Anfrage zum Beitritt senden" data-container="body"> <span class="glyphicon glyphicon-envelope"></span>
 						}
 					</a>
 				  }
