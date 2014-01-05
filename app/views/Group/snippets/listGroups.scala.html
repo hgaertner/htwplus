@@ -42,7 +42,7 @@
 				<a href="#infoModal@group.id" rel="tooltip" data-toggle="modal" data-original-title="Info ansehen" data-container="body">
 					<i class="glyphicon glyphicon-info-sign"></i>
 				</a>
-				@if(group.groupType.equals(GroupType.open)) {
+				@if(Secured.isMemberOfGroup(group, Component.currentAccount)) {
 					<a href="@routes.GroupController.view(group.id)" rel="tooltip" data-toggle="modal" data-original-title="Newsstream ansehen" data-container="body">
 						<span class="glyphicon glyphicon-comment"></span>
 					</a>

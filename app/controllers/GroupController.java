@@ -196,7 +196,7 @@ public class GroupController extends BaseController {
 		}
 		group.description = description;
 		group.update();
-		flash("info", "'" + group.title + "' erfolgreich bearbeitet!");
+		flash("success", "'" + group.title + "' erfolgreich bearbeitet!");
 		return redirect(routes.GroupController.view(groupId));
 		
 	}
@@ -227,7 +227,6 @@ public class GroupController extends BaseController {
 		Group group = Group.findById(groupId);
 		
 		if(Secured.isMemberOfGroup(group, Component.currentAccount())){
-			Logger.debug("User is already member of group or course");
 			flash("error", "Du bist bereits Mitglied dieser Gruppe!");
 			return redirect(routes.GroupController.view(groupId));
 		}
