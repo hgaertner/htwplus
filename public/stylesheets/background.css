@@ -7,6 +7,14 @@ body {
 	overflow-y: scroll;
 }
 
+body#hp-landingpage {
+	margin-top: 0px !important;
+}
+
+body#hp-landingpage div.alert {
+	margin-top: 15px !important;
+}
+
 a {
 	outline: none!important;
 }
@@ -212,7 +220,7 @@ h1 {
 .hp-logo img {
 	width: 90%;
 	height: auto;
-	margin: 50px 0 70px;
+	margin: 50px 0 100px;
 }
 
 .hp-navbar .hp-logo {
@@ -236,6 +244,12 @@ h1 {
 	display: none!important;
 }
 
+#hp-plusi {
+	width: 170px;
+	position: absolute;
+	right: -30px;
+	bottom: 149px;
+}
 
 /*============================== Notepad ==============================*/
 
