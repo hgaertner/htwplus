@@ -62,7 +62,7 @@
 									<div id="hp-content">
 										<a id="hp-feedback" type="button" class="btn btn-danger" href="@routes.Application.feedback()">
 											<span id="hp-feedback-icon" class="glyphicon glyphicon-bullhorn"></span><br />
-											<div class="hp-easy-feedback">EasyFeedback</div>
+											<div class="hp-easy-feedback">Feedback</div>
 										</a>
 			                  				@content
 									</div> <!-- /content -->
@@ -81,8 +81,10 @@
 						<div id="hp-footer">
 							<div id="hp-footer-links">
 								<a href="@routes.Application.index()" data-toggle="modal">Home</a> |
-								<!-- <a href="#impressumModal" data-toggle="modal">Impressum</a> |  -->
+								<a href="#impressumModal" data-toggle="modal">Impressum</a> |
+								<a href="#datenschutzModal" data-toggle="modal">Datenschutz</a> |
 								<a href="@routes.Application.feedback()">Feedback</a> |
+								<a href="@routes.Application.feedback()">Kontakt</a> |
 								<a href="@routes.Application.help()">Hilfe</a>
 							</div>
 							<div id="hp-footer-logo"></div>
@@ -91,6 +93,7 @@
 				</div>
 			</div>
 			@views.html.snippets.impressumModal()
+			@views.html.snippets.datenschutzModal()
 		</footer>
 	
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.js")"></script>
