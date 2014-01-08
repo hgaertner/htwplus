@@ -17,7 +17,7 @@ import play.mvc.Http.RequestHeader;
 
 
 public class Global extends GlobalSettings {
-
+	
 	@Override
 	public void beforeStart(Application app) {
 		Logger.info(" Global beforeStart");
@@ -40,11 +40,11 @@ public class Global extends GlobalSettings {
 			
 			@Override
 			public void invoke() throws Throwable {
-				Group group = Group.findByTitle("HTWplus");
+				Group group = Group.findByTitle(play.Play.application().configuration().getString("htwplus.admin.group"));
 				if(group != null){
 					Post p = new Post();
 					p.content = "Request: "+rh+"\nError: "+t;
-					p.owner = Account.findByEmail("admin@htwplus.de");
+					p.owner = Account.findByEmail(play.Play.application().configuration().getString("htwplus.admin.mail"));
 					p.group = group;
 					p.create();
 				}
@@ -65,6 +65,10 @@ public class Global extends GlobalSettings {
 
 		public static void insert(Application app) {
 			
+			final String adminGroupTitle = play.Play.application().configuration().getString("htwplus.admin.group");
+			final String adminMail = play.Play.application().configuration().getString("htwplus.admin.mail");
+			final String adminPassword = play.Play.application().configuration().getString("htwplus.admin.pw");
+			
 			// Do some inital db stuff
 			JPA.withTransaction(new play.libs.F.Callback0() {
 				
@@ -72,25 +76,24 @@ public class Global extends GlobalSettings {
 				public void invoke() throws Throwable {
 					
 					//create Admin account if none exists
-					Account admin = Account.findByEmail("admin@htwplus.de");
+					Account admin = Account.findByEmail(adminMail);
 					if(admin == null){
 						admin = new Account();
-						admin.email = "admin@htwplus.de";
+						admin.email = adminMail;
 						admin.firstname = "Admin";
-						admin.lastname = "Plus";
 						admin.role = AccountRole.ADMIN;
 						admin.avatar = "a1";
-						admin.password = Component.md5("123456");
+						admin.password = Component.md5(adminPassword);
 						admin.create();
 					}
 					
 					// create Admin group if none exists
-					Group group = Group.findByTitle("HTWplus");
+					Group group = Group.findByTitle(adminGroupTitle);
 					if(group == null && admin != null){
 						group = new Group();
-						group.title = "HTWplus";
+						group.title = adminGroupTitle;
 						group.groupType = GroupType.close;
-						group.description = "reserved ...";
+						group.description = "for HTWplus Admins only";
 						group.createWithGroupAccount(admin);
 					}
 					// Generate indexes
