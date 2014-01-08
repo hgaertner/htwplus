@@ -65,9 +65,9 @@ public class Global extends GlobalSettings {
 
 		public static void insert(Application app) {
 			
-			final String adminGroupTitle = play.Play.application().configuration().getString("htwplus.admin.group");
-			final String adminMail = play.Play.application().configuration().getString("htwplus.admin.mail");
-			final String adminPassword = play.Play.application().configuration().getString("htwplus.admin.pw");
+			final String adminGroupTitle = app.configuration().getString("htwplus.admin.group");
+			final String adminMail = app.configuration().getString("htwplus.admin.mail");
+			final String adminPassword = app.configuration().getString("htwplus.admin.pw");
 			
 			// Do some inital db stuff
 			JPA.withTransaction(new play.libs.F.Callback0() {
@@ -81,6 +81,7 @@ public class Global extends GlobalSettings {
 						admin = new Account();
 						admin.email = adminMail;
 						admin.firstname = "Admin";
+						admin.lastname = "@HTWplus";
 						admin.role = AccountRole.ADMIN;
 						admin.avatar = "a1";
 						admin.password = Component.md5(adminPassword);
