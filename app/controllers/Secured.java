@@ -166,6 +166,51 @@ public class Secured extends Security.Authenticator {
 	 * POST
 	 */
 	
+	public static boolean viewPost(Post post) {
+		Account current = Component.currentAccount();
+		
+		if (post == null) {
+			return false;
+		}
+		
+		if (Secured.isAdmin()) {
+			return true;
+		}
+		
+		if(post.belongsToAccount()) {
+			if(post.account.equals(current)) {
+				return true;
+			}
+			if(Secured.isFriend(post.account)) {
+				return true;
+			}
+			return false;
+		}
+		
+		
+		if (post.belongsToGroup()) {
+
+			switch (post.group.groupType) {
+			case open:
+				return true;
+
+			case close:
+				if (Secured.isMemberOfGroup(post.group, current)) {
+					return true;
+				}
+			case course:
+				if (Secured.isMemberOfGroup(post.group, current)) {
+					return true;
+				}
+			default:
+				return false;
+			}
+		}
+		
+		return false;
+	}
+	
+	
 	public static boolean isAllowedToDeletePost(Post post, Account account){		
 		if(post == null) {
 			return false;

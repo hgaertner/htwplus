@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.List;
 
+import controllers.Navigation.Level;
 import models.Account;
 import models.Group;
 import models.Notification;
@@ -13,12 +14,39 @@ import play.data.Form;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 import play.mvc.Security;
+import views.html.Post.view;
 
 @Security.Authenticated(Secured.class)
 public class PostController extends BaseController {
 	
 	static Form<Post> postForm = Form.form(Post.class);
 	static final int PAGE = 1;
+	
+	public static Result view (Long id) {
+		Post post = Post.findById(id);
+		
+		if(post == null){
+			return redirect(routes.Application.error());
+		}
+		
+		if(post.parent != null) {
+			return redirect(routes.Application.error());
+		}
+		
+		if(!Secured.viewPost(post)) {
+			return redirect(routes.Application.index());
+		}
+		
+		if(post.belongsToGroup()) {
+			Navigation.set(Level.GROUPS, "Post", post.group.title, routes.GroupController.view(post.group.id));
+		}
+		
+		if(post.belongsToAccount()) {
+			Navigation.set(Level.FRIENDS, "Post", post.account.name, routes.ProfileController.stream(post.account.id, 1));
+		}
+		
+		return ok(view.render(post, postForm));
+	}
 	
 	/**
 	 * @author Iven

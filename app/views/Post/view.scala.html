@@ -1,0 +1,36 @@
+@(post: Post, postForm: Form[Post])
+
+@import models.enums._
+
+@main("Post") {
+
+	@if(post.belongsToGroup()) {
+			@views.html.Group.snippets.navTabs(post.group)
+		<div class="clear">
+		<h2 class="hp-truncate">
+			@if(post.group.groupType.equals(GroupType.open)) { <span class="glyphicon glyphicon-globe"></span> }
+			@if(post.group.groupType.equals(GroupType.close)) { <span class="glyphicon glyphicon-lock"></span> }
+			@if(post.group.groupType.equals(GroupType.course)) { <span class="glyphicon glyphicon-briefcase"></span> }
+			@post.group.title
+		</h2>
+		<br />
+		<br />
+		
+		@views.html.snippets.postView(post, postForm, models.Post.GROUP)
+				
+	}
+	
+	@if(post.belongsToAccount()) {
+			@views.html.Profile.snippets.navTabs(post.account)
+			<h2>@post.account.name</h2>
+			<br />
+			<br />
+		@views.html.snippets.postView(post, postForm, models.Post.PROFILE)
+	}
+
+	
+
+
+
+
+}

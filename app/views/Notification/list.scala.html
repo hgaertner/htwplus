@@ -2,6 +2,7 @@
 
 @import models.Notification.NotificationType
 @import models.Group
+@import models.Post
 @import routes.NotificationController._
 @import routes._
 @import helper._
@@ -64,7 +65,7 @@
 		case NotificationType.POST_GROUP_NEW_COMMENT => {
 			@defining(Post.findById(note.objectId)) { post =>
 				@if(post != null && post.group != null) {
-					@element(forward(note.id,GroupController.view(post.group.id).toString()).toString()){
+					@element(forward(note.id,PostController.view(post.id).toString()).toString()){
 						Neuer Kommentar zum Post <span class="hp-green">@truncate(post.content,20)</span> in der Gruppe <span class="hp-green">@truncate(post.group.title,20)</span>
 					}
 				}
@@ -84,7 +85,7 @@
 		case NotificationType.POST_PROFILE_NEW_COMMENT => {
 			@defining(Post.findById(note.objectId)) { post =>
 				@if(post != null) {
-					@element(forward(note.id,ProfileController.stream(post.account.id).toString()).toString()){
+					@element(forward(note.id,PostController.view(post.id).toString()).toString()){
 						Neuer Kommentar zu deinem Post <span class="hp-green">@truncate(post.content,20)</span> auf dem Newstream von <span class="hp-green">@post.account.name</span>
 					}
 				}
@@ -124,7 +125,7 @@
 		case NotificationType.POST_MY_PROFILE_NEW_COMMENT => {
 			@defining(Post.findById(note.objectId)) { post =>
 				@if(post != null) {
-					@element(forward(note.id,ProfileController.stream(post.account.id).toString()).toString()){
+					@element(forward(note.id,PostController.view(post.id).toString()).toString()){
 						Neuer Kommentar zum Post <span class="hp-green">@truncate(post.content,20)</span> auf deinem Newsstream
 					}
 				}
