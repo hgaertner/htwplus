@@ -35,7 +35,7 @@
 			<td><input name="selection" value="@m.id" type="checkbox"></td>
 	        <td><a href="@routes.MediaController.view(m.id)" rel="tooltip" data-delay="500" data-original-title="von @m.owner.name">@m.title</a></td>
 	        <td>@m.createdAt.format("dd.MM.yyyy")</td>
-	        <td>@m.size Bytes</td>
+	        <td>@{Math.round((m.size / 1024.0 / 1024.0)*100.0) / 100.0 } MB</td>
 	        <td>
 	        <a href="@routes.MediaController.view(m.id)" rel="tooltip" data-toggle="modal" data-original-title="Datei herunterladen"><span class="glyphicon glyphicon-download"></span></a>
 	        @if(Secured.deleteMedia(m)) {

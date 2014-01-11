@@ -16,6 +16,7 @@ import models.Group;
 import models.Media;
 import models.Notification;
 import models.Notification.NotificationType;
+import play.Logger;
 import play.Play;
 import play.data.Form;
 import play.db.jpa.Transactional;
@@ -119,7 +120,7 @@ public class MediaController extends BaseController {
     
     private static File createZIP(List<Media> media, String fileName) throws IOException {
     	
-       	cleanUpTemp(); // JUST FOR DEVELOPMENT, DO NOT USE IN PRODUCTION
+       	//cleanUpTemp(); // JUST FOR DEVELOPMENT, DO NOT USE IN PRODUCTION
 	    String path = Play.application().path().toString();
 	    String tmpPath = Play.application().configuration().getString("media.tempPath");
     	File file = File.createTempFile(tempPrefix, ".tmp", new File(path + "/" + tmpPath));
@@ -145,14 +146,23 @@ public class MediaController extends BaseController {
     	return file;
     }
     
+    /**
+     * Cleans the temporary media directoy used for ZIP Downloads
+     */
     public static void cleanUpTemp() {
+	    Logger.info("Cleaning the Tempory Media Directory");
+    	
 	    String tmpPath = Play.application().configuration().getString("media.tempPath");
 	    File dir = new File(tmpPath);
-
 	    File[] files = dir.listFiles();
+	    
+	    // Just delete files older than 1 hour
+	    long hours = 1;
+		long eligibleForDeletion = System.currentTimeMillis() - (hours * 60 * 60 * 1000L);
+	    
 	    if(files != null){	    
 		    for (File file : files) {
-				if(file.getName().startsWith(tempPrefix)) {
+				if(file.getName().startsWith(tempPrefix) && file.lastModified() < eligibleForDeletion) {
 					file.delete();
 				}
 			}

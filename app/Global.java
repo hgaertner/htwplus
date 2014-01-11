@@ -1,7 +1,10 @@
+import java.util.concurrent.TimeUnit;
+
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 
 import controllers.Component;
+import controllers.MediaController;
 import controllers.routes;
 import models.Account;
 import models.Group;
@@ -13,7 +16,9 @@ import play.GlobalSettings;
 import play.Logger;
 import play.api.Play;
 import play.db.jpa.JPA;
+import play.libs.Akka;
 import play.mvc.Http.RequestHeader;
+import scala.concurrent.duration.Duration;
 
 
 public class Global extends GlobalSettings {
@@ -28,7 +33,19 @@ public class Global extends GlobalSettings {
 	public void onStart(Application app) {
 		Logger.info("Global - onStart");
 		super.onStart(app);
-	
+	/*
+	 * Sets the schedule for cleaning the media temp directory
+	 */
+		Akka.system().scheduler().schedule(
+				Duration.create(0, TimeUnit.MILLISECONDS),  
+				Duration.create(30, TimeUnit.SECONDS),  
+				 new Runnable() {
+				    public void run() {
+				      MediaController.cleanUpTemp();
+				    }
+				  },
+				  Akka.system().dispatcher());
+		
 		InitialData.insert(app);
 	}
 	

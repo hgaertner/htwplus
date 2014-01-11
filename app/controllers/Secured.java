@@ -189,7 +189,6 @@ public class Secured extends Security.Authenticator {
 		
 		
 		if (post.belongsToGroup()) {
-
 			switch (post.group.groupType) {
 			case open:
 				return true;
