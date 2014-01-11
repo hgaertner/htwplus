@@ -153,13 +153,19 @@ public class Post extends BaseModel {
 		
 		if(isVisitor){
 			/**
-			 * if a visitor wants to see a friends newsstream
-			 * show only posts where he (the friend) is owner of => 'p.owner = :account'
 			 * since 'myPostsClause' includes posts where the given account posted to someone ('OR (p.owner = :account AND p.parent = NULL)').
-			 * we have to modify 'myPostsClause' (cut it out).
+			 * we have to modify it for the friends-stream (cut it out).
 			 */
 			myPostsClause = " p.account = :account ";
-			visitorClause = " AND p.owner = :account ";
+			
+			/**
+			 * groupListClause includes all posts where my friend is member/owner of.
+			 * but we only need those posts where he/she is owner of.
+			 */
+			if(groupList != null && !groupList.isEmpty()){
+				visitorClause = " AND p.owner = :account ";
+			}
+			
 		}
 		
 		// create Query. 
