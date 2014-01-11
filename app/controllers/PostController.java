@@ -121,6 +121,7 @@ public class PostController extends BaseController {
 	
 
 	
+	
 	@Transactional
 	public static List<Post> getCommentsForPostInGroup(Long id) {
 		int max = Integer.parseInt(Play.application().configuration().getString("htwplus.comments.init"));
