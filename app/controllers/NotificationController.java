@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import models.Account;
@@ -11,6 +12,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import play.mvc.With;
+import scala.Array;
 import scala.collection.mutable.StringBuilder;
 
 @Transactional
@@ -18,14 +20,25 @@ import scala.collection.mutable.StringBuilder;
 public class NotificationController extends BaseController{
 	
 	public static Html view() {
+		return getNotifications();
+	}
+	
+	public static Result viewAjax() {
+		return ok(getNotifications());
+	}
+	
+	private static Html getNotifications() {
 		Account account = Component.currentAccount();
 		
 		if(account == null) {
 			return new Html(new StringBuilder("Das wird nichts"));
 		}
 		
-		List<Notification> list = Notification.findByUser(account);
-		return views.html.Notification.list.render(list);
+		List<Notification> list = new ArrayList<Notification>();
+		if(Notification.countForAccount(account) >= 0) {
+			list = Notification.findByUser(account);			
+		} 
+		return views.html.Notification.menuitem.render(list);
 	}
 	
 	public static Result forward(Long notificationId, String url) {
@@ -44,10 +57,10 @@ public class NotificationController extends BaseController{
 		return redirect(url);
 	}
 	
-	public static Result deleteAll(String url) {
+	public static Result deleteAll() {
 		Notification.deleteByUser(Component.currentAccount());
 		flash("success", "Alle Neuigkeiten wurden gelöscht.");
-		return redirect(url);
+		return ok();
 	}
 	
 	

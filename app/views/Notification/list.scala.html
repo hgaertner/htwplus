@@ -5,7 +5,7 @@
 @import routes.NotificationController._
 @import routes._
 @import helper._
-
+	
 @for(note <- notification){
 
 	@note.noteType match {
@@ -135,4 +135,4 @@
 
 }
 
-<li><a href="@routes.NotificationController.deleteAll(request.path)"><b>Alle löschen</b></a></li>
+<li><a href="#" id="hp-delete-notifications"><b>Alle löschen</b></a></li>

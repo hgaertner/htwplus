@@ -89,53 +89,7 @@ $(document).ready(function () {
 	 * END GENERIC AJAX FORM REQUEST
 	 */
 	
-	/*
-	 * NEW GROUP MODAL
-	 * 
-	 * Bind the action.
-	 * Using 'on' is critical, otherwise the binding would be lost after the request
-	 */
-	$('#createNewGroupModal').on("click", "#submitGroup", createGroupRequest);
-
-	function createGroupRequest() {
-		jsRoutes.controllers.GroupController.create().ajax({
-			type: "POST",
-			data: $('#newGroupForm').serialize(),
-			success: createGroup
-		});
-		return false;
-	}
 	
-
-	function createGroup(data) {
-		$('#createNewGroupModal').html(data);
-	}
-	
-	/*
-	 * END NEW GROUP MODAL 
-	 */
-	
-	
-	/*
-	 * REGISTER MODAL
-	 */
-	$('#registerModal').on("click", "#submitSignup", sumitSignupRequest);
-	
-	function sumitSignupRequest() {
-		jsRoutes.controllers.AccountController.submit().ajax({
-			type: "POST",
-			data: $('#newSignupForm').serialize(),
-			success: submitSignup
-		});
-		return false;
-	}
-	
-	function submitSignup(data) {
-		$('#registerModal').html(data);
-	}
-	/*
-	 * END REGISTER MODAL
-	 */
 		
 	/*
 	 * GROUP COMMENTS
@@ -209,5 +163,5 @@ $(document).ready(function () {
 	/*
 	 * END GROUP COMMENTS
 	 */
-
+	
 });
