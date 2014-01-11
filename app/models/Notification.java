@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -136,22 +137,28 @@ public class Notification extends BaseModel {
 	}
 	
 	public static Notification findUnique(NotificationType type, Account account, Long objectId) {
+		Notification note = null;
+		
     	try{
-	    	return (Notification) JPA.em()
+    		note = (Notification) JPA.em()
 					.createQuery("from Notification n where n.noteType = :type AND n.account.id = :account AND n.objectId = :object")
 					.setParameter("type", type)
 					.setParameter("account", account.id)
 					.setParameter("object", objectId)
 					.getSingleResult();
+    		note.updatedAt = new Date();
+    		note.update();
 	    } catch (NoResultException exp) {
 	    	return null;
 		}
+    	
+    	return note;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public static List<Notification> findByUser(Account account) {
 		return (List<Notification>) JPA.em()
-				.createQuery("FROM Notification n WHERE n.account.id = :account ORDER BY n.createdAt DESC")
+				.createQuery("FROM Notification n WHERE n.account.id = :account ORDER BY n.updatedAt DESC")
 				.setParameter("account", account.id)
 				.getResultList();
 	}
