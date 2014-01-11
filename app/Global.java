@@ -38,7 +38,7 @@ public class Global extends GlobalSettings {
 	 */
 		Akka.system().scheduler().schedule(
 				Duration.create(0, TimeUnit.MILLISECONDS),  
-				Duration.create(30, TimeUnit.SECONDS),  
+				Duration.create(30, TimeUnit.MINUTES),  
 				 new Runnable() {
 				    public void run() {
 				      MediaController.cleanUpTemp();
