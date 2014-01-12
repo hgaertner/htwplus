@@ -87,7 +87,7 @@
 		@if(!approvedCourses.isEmpty){
 			@views.html.Group.snippets.listCourses(approvedCourses, user)
 		} else {
-		<p><i>Noch keinen Kursen beigetreten.</i></p>
+		<p><i>Du bist noch keinem Kurs beigetreten. Jetzt einen <b><a class="hp-group-search">suchen</a></b>.</i></p>
 		}
 		
 		</br>
@@ -101,7 +101,7 @@
 		@if(!approvedGroups.isEmpty){
 			@views.html.Group.snippets.listGroups(approvedGroups, user)
 		} else {
-		<p><i>Noch keiner Gruppe beigetreten.</i></p>
+		<p><i>Du bist noch keiner Gruppe beigetreten. Jetzt eine <b><a class="hp-group-search">suchen</a></b>.</i></p>
 		}
 	}
 }

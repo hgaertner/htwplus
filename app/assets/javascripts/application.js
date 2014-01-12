@@ -33,6 +33,9 @@ resizeRings();
 $('[rel="tooltip"]').tooltip();
 $('[rel="popover"]').popover();
 
+$('.hp-group-search').click(function() {
+    $('.hp-easy-search').focus();
+});
 
 /*
  *  Token
