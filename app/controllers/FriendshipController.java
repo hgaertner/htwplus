@@ -19,7 +19,7 @@ import views.html.Friends.*;
 public class FriendshipController extends BaseController {
 	
 	public static Result index() {
-		Navigation.set(Level.FRIENDS);
+		Navigation.set(Level.FRIENDS, "Übersicht");
 		Account currentUser = Component.currentAccount();
 		List<Account> friends = Friendship.findFriends(currentUser);
 		

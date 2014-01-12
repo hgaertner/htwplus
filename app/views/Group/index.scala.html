@@ -73,8 +73,9 @@
 			</tbody>
 		</table>
 		} else {
-		<p><i>Keine Anfragen vorhanden.</i></p>
+		<p><i>Es gibt keine offenen Anfragen.</i></p>
 		}
+		<hr />
 		<br />
 		
 		<h2>
@@ -87,7 +88,7 @@
 		@if(!approvedCourses.isEmpty){
 			@views.html.Group.snippets.listCourses(approvedCourses, user)
 		} else {
-		<p><i>Du bist noch keinem Kurs beigetreten. Jetzt einen <b><a class="hp-group-search">suchen</a></b>.</i></p>
+		<p><i>Du bist noch keinem Kurs beigetreten. Jetzt einen Kurs <b><a class="hp-focus-search">suchen</a></b>@if(user.role == AccountRole.TUTOR) { oder einfach einen <b><a href="@routes.GroupController.create()">gründen</a></b>}.</i></p>
 		}
 		
 		</br>
@@ -101,7 +102,7 @@
 		@if(!approvedGroups.isEmpty){
 			@views.html.Group.snippets.listGroups(approvedGroups, user)
 		} else {
-		<p><i>Du bist noch keiner Gruppe beigetreten. Jetzt eine <b><a class="hp-group-search">suchen</a></b>.</i></p>
+		<p><i>Du bist noch keiner Gruppe beigetreten. Jetzt eine Gruppe <b><a class="hp-focus-search">suchen</a></b> oder einfach eine <b><a href="@routes.GroupController.create()">gründen</a></b>.</i></p>
 		}
 	}
 }
