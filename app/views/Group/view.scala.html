@@ -1,4 +1,4 @@
-@(group: Group, posts:List[Post], postForm: Form[Post])
+@(group: Group, posts:List[Post], postForm: Form[Post], count: Integer, limit: Integer, currentPage: Integer)
 @import helper._
 @import models.enums._
 
@@ -37,6 +37,8 @@
 				}
 			}
 		}
+		
+		@views.html.pagination(count, limit, currentPage, routes.GroupController.view(group.id).toString, "?")
 	
 	</div>
 }

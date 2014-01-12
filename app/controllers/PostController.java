@@ -38,11 +38,11 @@ public class PostController extends BaseController {
 		}
 		
 		if(post.belongsToGroup()) {
-			Navigation.set(Level.GROUPS, "Post", post.group.title, routes.GroupController.view(post.group.id));
+			Navigation.set(Level.GROUPS, "Post", post.group.title, routes.GroupController.view(post.group.id, PAGE));
 		}
 		
 		if(post.belongsToAccount()) {
-			Navigation.set(Level.FRIENDS, "Post", post.account.name, routes.ProfileController.stream(post.account.id, 1));
+			Navigation.set(Level.FRIENDS, "Post", post.account.name, routes.ProfileController.stream(post.account.id, PAGE));
 		}
 		
 		return ok(view.render(post, postForm));
@@ -73,7 +73,7 @@ public class PostController extends BaseController {
 			} else {
 				flash("info","Bitte tritt der Gruppe erst bei.");
 			}
-			return redirect(routes.GroupController.view(group.id));
+			return redirect(routes.GroupController.view(group.id, PAGE));
 		}
 		
 		if(target.equals(Post.PROFILE)) {
@@ -191,7 +191,7 @@ public class PostController extends BaseController {
 		// verify redirect after deletion
 		Call routesTo = null;
 		if(post.group != null){
-			routesTo = routes.GroupController.view(post.group.id);
+			routesTo = routes.GroupController.view(post.group.id, PAGE);
 		}
 		else if(post.account != null){
 			routesTo = routes.Application.index();
@@ -199,7 +199,7 @@ public class PostController extends BaseController {
 		else if(post.parent != null)
 		{
 			if(post.parent.group != null){
-				routesTo = routes.GroupController.view(post.parent.group.id);
+				routesTo = routes.GroupController.view(post.parent.group.id, PAGE);
 			}else if(post.account != null) {
 				routesTo = routes.Application.index();
 			}

@@ -71,11 +71,20 @@ public class Post extends BaseModel {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<Post> getPostForGroup(Group group) {
-		return (List<Post>) JPA.em()
+	public static List<Post> getPostsForGroup(Group group, int limit, int page) {
+		Query query = JPA.em()
 				.createQuery("SELECT p FROM Post p WHERE p.group.id = ?1 ORDER BY p.createdAt DESC")
-				.setParameter(1, group.id)
-				.getResultList();
+				.setParameter(1, group.id);
+		
+		int offset = (page * limit) - limit;
+		query = limit(query, limit, offset);
+		
+		List<Post> posts = query.getResultList();
+		return posts;
+	}
+	
+	public static int countPostsForGroup(Group group) {
+		return ((Number)JPA.em().createQuery("SELECT COUNT(p) FROM Post p WHERE p.group.id = ?1").setParameter(1, group.id).getSingleResult()).intValue();
 	}
 	
 	
