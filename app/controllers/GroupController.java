@@ -49,7 +49,6 @@ public class GroupController extends BaseController {
 	public static Result view(Long id, int page) {
 		Logger.info("Show group with id: " +id);
 		Group group = Group.findById(id);
-		
 		if(!Secured.viewGroup(group)){
 			return redirect(routes.Application.index());
 		}

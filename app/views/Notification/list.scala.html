@@ -75,7 +75,7 @@
 		case NotificationType.PROFILE_NEW_POST => {
 			@defining(Account.findById(note.objectId)) { account =>
 				@if(account != null) {
-					@element(forward(note.id,ProfileController.stream(Component.currentAccount().id).toString()).toString()){
+					@element(forward(note.id,ProfileController.stream(Component.currentAccount().id,1).toString()).toString()){
 						Neuer Post von <span class="hp-green">@account.name</span> auf deinem Newsstream
 					}
 				}

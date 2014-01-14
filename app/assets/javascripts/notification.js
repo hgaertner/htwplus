@@ -35,6 +35,6 @@ $(document).ready(function () {
 		return false;
 	});
 	
-	setInterval( reloadNotifications, 10000 );
+	setInterval( reloadNotifications, 30000 );
 	
 });
