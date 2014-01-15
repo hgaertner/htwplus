@@ -74,7 +74,7 @@ public class Application extends BaseController {
 				Navigation.set("Suchergebnisse");
 				courseResults = Group.courseSearch(keyword, SEARCH_LIMIT, 0);
 				groupResults = Group.groupSearch(keyword, SEARCH_LIMIT, 0);
-				accResults = Account.accountSearch(keyword, 0, 0);
+				accResults = Account.accountSearch(keyword, SEARCH_LIMIT, 0);
 			}
 
 		}
