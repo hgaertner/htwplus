@@ -114,6 +114,17 @@ public class Global extends GlobalSettings {
 						group.description = "for HTWplus Admins only";
 						group.createWithGroupAccount(admin);
 					}
+					
+					// create Feedback group if none exists
+					Group feedbackGroup = Group.findByTitle("HTWplus Feedback");
+					if(feedbackGroup == null && admin != null){
+						group = new Group();
+						group.title = "HTWplus Feedback";
+						group.groupType = GroupType.open;
+						group.description = "Du hast Wünsche, Ideen, Anregungen, Kritik oder Probleme mit der Seite? Hier kannst du es loswerden!";
+						group.createWithGroupAccount(admin);
+					}
+					
 					// Generate indexes
 					FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(JPA.em());
 					try {
