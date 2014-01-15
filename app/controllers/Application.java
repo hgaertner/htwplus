@@ -120,7 +120,7 @@ public class Application extends BaseController {
 	public static Result addFeedback() {
 		
 		Account account = Component.currentAccount();
-		Group group = Group.findByTitle("HTWplus");
+		Group group = Group.findByTitle("HTWplus Feedback");
 		
 		// Guest case
 		if(account == null) {
