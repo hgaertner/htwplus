@@ -63,6 +63,7 @@
 		}
 		<dt>Avatar</dt>
 		<dd id="hp-avatars">
+			<img id="aDefault" class="img-thumbnail" src="@routes.Assets.at("images/avatars/aDefault.png")" alt="avatar" onclick="updateAvatar(this)" />
 			@for( i <- 0 to 29) {
          		<img id="a@i" class="img-thumbnail" src="@routes.Assets.at("images/avatars/a"+i+".png")" alt="avatar" onclick="updateAvatar(this)" />
       		}
