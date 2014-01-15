@@ -200,7 +200,7 @@ public class PostController extends BaseController {
 		{
 			if(post.parent.group != null){
 				routesTo = routes.GroupController.view(post.parent.group.id, PAGE);
-			}else if(post.account != null) {
+			}else if(post.parent.account != null) {
 				routesTo = routes.Application.index();
 			}
 		}
