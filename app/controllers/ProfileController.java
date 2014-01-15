@@ -4,6 +4,7 @@ import models.Account;
 import models.Friendship;
 import models.Post;
 import models.Studycourse;
+import models.enums.AccountRole;
 import play.Play;
 import play.data.Form;
 import play.db.jpa.Transactional;
@@ -67,7 +68,7 @@ public class ProfileController extends BaseController {
 
 		// case for friends and own profile
 		if (Friendship.alreadyFriendly(Component.currentAccount(), account)
-				|| Component.currentAccount().equals(account)) {
+				|| currentUser.equals(account) || Secured.isAdmin()) {
 			return ok(stream.render(account, Post.getFriendStream(account, LIMIT, page),
 					postForm,Post.countFriendStream(account), LIMIT, page));
 		}

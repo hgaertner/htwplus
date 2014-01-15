@@ -78,7 +78,7 @@ public class PostController extends BaseController {
 		
 		if(target.equals(Post.PROFILE)) {
 			Account profile = Account.findById(anyId);
-			if(Secured.isFriend(profile) || profile.equals(account)){
+			if(Secured.isFriend(profile) || profile.equals(account) || Secured.isAdmin()){
 				if (filledForm.hasErrors()) {
 					flash("error", "Jo, fast. Probiere es noch einmal mit Inhalt ;-)");
 				} else {
