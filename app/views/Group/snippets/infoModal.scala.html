@@ -27,7 +27,7 @@
 				<dt>Erstellt am</dt>
 				<dd>@group.createdAt.format("dd.MM.yyyy")</dd>
 			</dl>
-			@if(group.groupType == GroupType.course) {
+			@if(group.groupType == GroupType.course && Secured.viewGroup(group)) {
 				<dl>
 					<dt>Token</dt>
 					<dd>@group.token</dd>
