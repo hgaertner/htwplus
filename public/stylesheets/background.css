@@ -252,7 +252,13 @@ h1 {
 	right: 5px;
 	bottom: 135px
 }
-@media all and (max-width: 480px) { #hp-plusi { width: 130px; bottom: 140px; }}
+
+@media all and (max-width: 480px) {
+	#hp-plusi {
+		width: 130px;
+		bottom: 140px;
+	}
+}
 
 /*============================== Notepad ==============================*/
 
