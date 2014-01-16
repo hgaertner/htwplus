@@ -1,9 +1,10 @@
 @(groups: List[Group], courses: List[Group], users: List[Account], keyword: String, courseCount: Integer, groupCount: Integer, accountCount: Integer, limit: Integer, currentPage: Integer)
+@import helper._
 @import models.enums._
 
 @main("Searchresult"){
 
-	<h1>Suchergebnisse @keyword</h1>
+	<h1>Suchergebnis für '@truncate(keyword,30)'</h1>
 	<br />
 
 	@defining(Component.currentAccount()) { user =>
